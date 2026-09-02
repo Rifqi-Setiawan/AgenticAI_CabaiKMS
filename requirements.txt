@@ -1,0 +1,56 @@
+# cabai-kms-akuisisi — dependencies
+#
+# Convention: only packages actually exercised by code in src/ are
+# active (uncommented) here. When a later fase starts using a package,
+# uncomment it in the same commit that introduces the import.
+#
+# Setup:
+#   python -m venv .venv
+#   source .venv/Scripts/activate   (Windows Git Bash)  |  .venv\Scripts\activate (cmd/PowerShell)
+#   pip install -r requirements.txt
+
+# --- Fase 0: data profiling / schema plumbing (active now) ---
+pandas
+openpyxl
+pydantic
+python-dotenv
+pyyaml
+
+# --- Fase 2: orchestrator skeleton (active now) ---
+langgraph
+langgraph-checkpoint-sqlite
+
+# --- Fase 7: reliability layer (active now) ---
+tenacity
+aiolimiter
+
+# --- Fase 3+: not imported anywhere yet ---
+# langchain-core
+
+# --- Fase 3a: schema-matching retrieval index (active now) ---
+chromadb
+sentence-transformers
+torchvision  # not imported by our code — but the resolved transformers version
+             # (sentence-transformers' dependency) eagerly imports
+             # torchvision.transforms.v2 while loading the embedding model, even
+             # for a pure text model. Without it, indexing/retrieval/anchor
+             # detection crash with ModuleNotFoundError on first model load.
+             # Confirmed compatible pairing: torch==2.13.0 + torchvision==0.28.0.
+
+# --- Fase 3c/5: structured LLM/LVM output + providers (active now) ---
+instructor
+groq
+openai  # OpenAI-compat bridge: Ollama, Gemini, and OpenRouter all speak this API
+
+# --- Fase 3+: additional LLM providers ---
+# google-genai  # not imported — Gemini is reached via its OpenAI-compat endpoint instead (src/llm/vision_providers.py)
+
+# --- Fase 4: Drive Crawler (active now) ---
+google-api-python-client
+google-auth
+
+# --- Fase 8: Streamlit UI (active now) ---
+streamlit
+
+# --- tests ---
+pytest

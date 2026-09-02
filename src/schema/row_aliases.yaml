@@ -1,0 +1,135 @@
+# Manually-curated alternate labels ("alias") per canonical row.
+#
+# WHY THIS FILE EXISTS: source spreadsheets label the same character
+# differently across formats/collectors (e.g. "tinggi tanaman" vs "tinggi
+# batang" vs "plant height"). alt_labels lets the schema-mapping agent
+# recognize a source column/row header as matching a canonical row even
+# when the exact text differs, without hardcoding synonyms in Python.
+#
+# Matching key is `label` (trimmed "Karakter" text), same convention as
+# row_domains.yaml. This file is intentionally left with empty alt_labels
+# lists — fill them in manually as real-world label variants are observed
+# in raw samples. A missing or empty list is not an error; it just means
+# no aliases are known yet for that row.
+
+rows:
+  - label: habitus
+    alt_labels: []
+  - label: tinggi tanaman
+    alt_labels: []
+  - label: umur
+    alt_labels: []
+  - label: adaptasi ekologi
+    alt_labels: []
+  - label: batang
+    alt_labels: []
+  - label: tekstur daun
+    alt_labels: []
+  - label: warna daun
+    alt_labels: []
+  - label: panjang daun
+    alt_labels: []
+  - label: lebar daun
+    alt_labels: []
+  - label: luas daun
+    alt_labels: []
+  - label: panjang tangkai daun
+    alt_labels: []
+  - label: warna pangkal tangkai daun bag atas
+    alt_labels: []
+  - label: warna pangkal tangkai daun bag bawah
+    alt_labels: []
+  - label: bentuk ujung daun
+    alt_labels: []
+  - label: bentuk pangkal daun
+    alt_labels: []
+  - label: bentuk daun
+    alt_labels: []
+  - label: tepi daun
+    alt_labels: []
+  - label: kedudukan daun
+    alt_labels: []
+  - label: warna mahkota
+    alt_labels: []
+  - label: panjang mahkota
+    alt_labels: []
+  - label: lebar mahkota bunga
+    alt_labels: []
+  - label: jumlah mahkota bunga
+    alt_labels: []
+  - label: bentuk bunga
+    alt_labels: []
+  - label: warna tangkai putik
+    alt_labels: []
+  - label: panjang putik
+    alt_labels: []
+  - label: warna kepala sari
+    alt_labels: []
+  - label: warna tangkai sari
+    alt_labels: []
+  - label: panjang benangsari
+    alt_labels: []
+  - label: warna gagang bunga
+    alt_labels: []
+  - label: panjang gagang bunga
+    alt_labels: []
+  - label: jumlah gagang bunga/ruas
+    alt_labels: []
+  - label: posisi bunga
+    alt_labels: []
+  - label: bentuk kelopak bunga
+    alt_labels: []
+  - label: panjang kelopak bunga
+    alt_labels: []
+  - label: warna kelopak bunga
+    alt_labels: []
+  - label: kedudukan kelopak bunga
+    alt_labels: []
+  - label: panjang buah muda
+    alt_labels: []
+  - label: keliling buah muda
+    alt_labels: []
+  - label: panjang tangkai buah muda
+    alt_labels: []
+  - label: panjang kelopak buah muda
+    alt_labels: []
+  - label: keliling kelopak buah muda
+    alt_labels: []
+  - label: bentuk kelopak buah muda
+    alt_labels: []
+  - label: bentuk buah
+    alt_labels: []
+  - label: warna buah  muda
+    alt_labels: []
+  - label: warna buah  masak
+    alt_labels: []
+  - label: posisi buah muda
+    alt_labels: []
+  - label: posisi buah masak
+    alt_labels: []
+  - label: panjang tangkai buah masak
+    alt_labels: []
+  - label: panjang buah masak
+    alt_labels: []
+  - label: keliling buah masak
+    alt_labels: []
+  - label: panjang kelopak buah masak
+    alt_labels: []
+  - label: keliling kelopak buah masak
+    alt_labels: []
+  - label: bentuk ujung buah
+    alt_labels: []
+  - label: warna biji
+    alt_labels: []
+  - label: jumlah biji/buah masak
+    alt_labels: []
+  - label: Lokasi
+    alt_labels: []
+  - label: Gambar Daun
+    alt_labels: []
+  - label: Gambar Batang
+    alt_labels: []
+  - label: Gambar Buah
+    alt_labels: []
+  - label: Gambar Bunga
+    alt_labels: []

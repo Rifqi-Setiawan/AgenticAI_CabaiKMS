@@ -1,0 +1,220 @@
+# Row -> domain mapping for the canonical template (data/canonical/template_kanonik.xlsx).
+#
+# WHY THIS FILE EXISTS: "domain" is not predicted by any agent. It is looked up
+# from this file for whichever canonical row a value belongs to, and used only for
+# (1) extra context injected into LLM prompts and (2) Macro-F1 grouped by category
+# during evaluation. See docs/DESIGN_DECISIONS.md (b).
+#
+# Domains: vegetatif, daun, bunga, buah, biji, lokasi. Confirmed with the user
+# 2026-07-20: buah/biji are separate domains (not a merged "buah_biji"), and the
+# four image rows (Gambar Daun/Batang/Buah/Bunga) each reuse the domain of the
+# plant part they depict rather than sharing one generic "path_citra" bucket —
+# e.g. Gambar Daun -> daun, Gambar Buah -> buah. Gambar Batang -> vegetatif since
+# "batang" itself has no dedicated domain (it's one vegetatif row, #5).
+#
+# Matching key is `label` (the "Karakter" column text), NOT `row` number.
+# Labels are stable identifiers; row numbers shift if rows are inserted/reordered
+# in the template. `row` is recorded here only as a human cross-reference to the
+# template as of the date below and MUST NOT be relied on by code.
+#
+# N (row count) is READ DYNAMICALLY from the template at runtime — this file is
+# expected to grow past 60 entries whenever new canonical rows are added, and
+# nothing in src/ should assume a fixed length for this list.
+#
+# Domain values are NOT an enum defined elsewhere: code must derive the set of
+# valid domains by collecting the unique `domain` values actually present below.
+#
+# If a future row's category is genuinely unclear, set `domain: unassigned` and
+# raise it in docs/OPEN_QUESTIONS.md instead of guessing.
+#
+# NORMALIZATION WARNING: several labels in the actual template have inconsistent
+# leading/trailing whitespace (e.g. "bentuk ujung daun ", "warna mahkota ").
+# Labels below are stored TRIMMED. Any code matching a template cell against this
+# file MUST strip() the template's label before comparing.
+
+# as_of_row_count: snapshot of the template's row count when this file was last
+# reconciled against it. Used only to detect drift (template grew/shrunk without
+# this file being updated) — never used as the source of truth for N.
+as_of_row_count: 60
+
+rows:
+  - row: 1
+    label: habitus
+    domain: vegetatif
+  - row: 2
+    label: tinggi tanaman
+    domain: vegetatif
+  - row: 3
+    label: umur
+    domain: vegetatif
+  - row: 4
+    label: adaptasi ekologi
+    domain: vegetatif
+  - row: 5
+    label: batang
+    domain: vegetatif
+  - row: 6
+    label: tekstur daun
+    domain: daun
+  - row: 7
+    label: warna daun
+    domain: daun
+  - row: 8
+    label: panjang daun
+    domain: daun
+  - row: 9
+    label: lebar daun
+    domain: daun
+  - row: 10
+    label: luas daun
+    domain: daun
+  - row: 11
+    label: panjang tangkai daun
+    domain: daun
+  - row: 12
+    label: warna pangkal tangkai daun bag atas
+    domain: daun
+  - row: 13
+    label: warna pangkal tangkai daun bag bawah
+    domain: daun
+  - row: 14
+    label: bentuk ujung daun
+    domain: daun
+  - row: 15
+    label: bentuk pangkal daun
+    domain: daun
+  - row: 16
+    label: bentuk daun
+    domain: daun
+  - row: 17
+    label: tepi daun
+    domain: daun
+  - row: 18
+    label: kedudukan daun
+    domain: daun
+  - row: 19
+    label: warna mahkota
+    domain: bunga
+  - row: 20
+    label: panjang mahkota
+    domain: bunga
+  - row: 21
+    label: lebar mahkota bunga
+    domain: bunga
+  - row: 22
+    label: jumlah mahkota bunga
+    domain: bunga
+  - row: 23
+    label: bentuk bunga
+    domain: bunga
+  - row: 24
+    label: warna tangkai putik
+    domain: bunga
+  - row: 25
+    label: panjang putik
+    domain: bunga
+  - row: 26
+    label: warna kepala sari
+    domain: bunga
+  - row: 27
+    label: warna tangkai sari
+    domain: bunga
+  - row: 28
+    label: panjang benangsari
+    domain: bunga
+  - row: 29
+    label: warna gagang bunga
+    domain: bunga
+  - row: 30
+    label: panjang gagang bunga
+    domain: bunga
+  - row: 31
+    label: jumlah gagang bunga/ruas
+    domain: bunga
+  - row: 32
+    label: posisi bunga
+    domain: bunga
+  - row: 33
+    label: bentuk kelopak bunga
+    domain: bunga
+  - row: 34
+    label: panjang kelopak bunga
+    domain: bunga
+  - row: 35
+    label: warna kelopak bunga
+    domain: bunga
+  - row: 36
+    label: kedudukan kelopak bunga
+    domain: bunga
+  - row: 37
+    label: panjang buah muda
+    domain: buah
+  - row: 38
+    label: keliling buah muda
+    domain: buah
+  - row: 39
+    label: panjang tangkai buah muda
+    domain: buah
+  - row: 40
+    label: panjang kelopak buah muda
+    domain: buah
+  - row: 41
+    label: keliling kelopak buah muda
+    domain: buah
+  - row: 42
+    label: bentuk kelopak buah muda
+    domain: buah
+  - row: 43
+    label: bentuk buah
+    domain: buah
+  - row: 44
+    label: "warna buah  muda"
+    domain: buah
+  - row: 45
+    label: "warna buah  masak"
+    domain: buah
+  - row: 46
+    label: posisi buah muda
+    domain: buah
+  - row: 47
+    label: posisi buah masak
+    domain: buah
+  - row: 48
+    label: panjang tangkai buah masak
+    domain: buah
+  - row: 49
+    label: panjang buah masak
+    domain: buah
+  - row: 50
+    label: keliling buah masak
+    domain: buah
+  - row: 51
+    label: panjang kelopak buah masak
+    domain: buah
+  - row: 52
+    label: keliling kelopak buah masak
+    domain: buah
+  - row: 53
+    label: bentuk ujung buah
+    domain: buah
+  - row: 54
+    label: warna biji
+    domain: biji
+  - row: 55
+    label: jumlah biji/buah masak
+    domain: biji
+  - row: 56
+    label: Lokasi
+    domain: lokasi
+  - row: 57
+    label: Gambar Daun
+    domain: daun
+  - row: 58
+    label: Gambar Batang
+    domain: vegetatif
+  - row: 59
+    label: Gambar Buah
+    domain: buah
+  - row: 60
+    label: Gambar Bunga
+    domain: bunga

@@ -1,0 +1,7 @@
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+markers = [
+    "indexing: needs network on first run to download the HF embedding model (cached after that)",
+    "llm_fallback_live: attempts a real localhost connection to a (non-running) Ollama server, ~15-20s",
+]

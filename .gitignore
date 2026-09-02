@@ -1,0 +1,41 @@
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache / compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pyre/
+
+# Test / tooling cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+credentials.json
+*.pem
+*.key
+secrets/
+service-account*.json
+
+# Local data outputs
+data/.chroma/
+data/review/*.jsonl
+
+# Editor / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+~$*

@@ -1,0 +1,273 @@
+"""Fase 8 — pipeline runner behind the Streamlit UI.
+
+Wires together what's already built (Fase 3 schema-matching, Fase 4 Drive
+crawler, Fase 5 vision classification, Fase 6 tabular update, Fase 7
+reliability wrappers, and Fase 2's checkpointed stub orchestrator) into one
+function the UI calls. No new agent logic lives here — this module is glue
++ presentation-shaping, same spirit as eval/review_schema_matching.py.
+
+The "hasil akhir" this produces is a real instance of the canonical
+template's shape (data/canonical/template_kanonik.xlsx) — same row
+labels, read dynamically — with varietas columns taken from whatever the
+uploaded file's anchor column (row-oriented) or column headers
+(transposed) actually contain. A canonical row nothing mapped to is left
+blank; if Drive has no images (or none is given), the Gambar rows are
+simply left blank too — see src/ui/output_builder.py.
+
+Kept deliberately synchronous and capped (see max_images) — this is the
+prototype phase named in the brief ("Overhead minimal; semua render dari
+Python"), not a production job queue.
+"""
+
+from __future__ import annotations
+
+import io
+import uuid
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Callable
+
+import openpyxl
+import pandas as pd
+
+from src.agents.drive_crawler import DriveCrawlerError, list_images, normalize_folder_id
+from src.agents.schema_matching.anchor import AnchorCandidate, detect_anchor
+from src.agents.schema_matching.indexing import ensure_indexed
+from src.agents.schema_matching.normalize import normalize
+from src.agents.schema_matching.retrieval import DEFAULT_K, SourceAttributeProfile, retrieve
+from src.agents.schema_matching.source_parsing import load_row_oriented_columns, load_transposed_rows
+from src.agents.tabular_update import apply_vision_result_to_worksheet
+from src.agents.vision_classification import VisionSession
+from src.orchestrator.graph import run_pipeline
+from src.reliability.wrappers import safe_classify_image, safe_rerank
+from src.schema.canonical import CanonicalSchema
+from src.schema.contracts import NULL_ROW
+from src.ui.output_builder import SHEET_NAME, CanonicalOutputBuilder, combine_multi_value, values_by_variety, worksheet_to_dataframe
+
+MAPPING_COLUMNS = [
+    "source_attribute",
+    "predicted_row",
+    "predicted_label",
+    "target_domain",
+    "confidence",
+    "normalization_required",
+    "reasoning",
+]
+
+ProgressCallback = Callable[[str], None]
+
+
+@dataclass
+class PipelineRunResult:
+    mapping_df: pd.DataFrame
+    canonical_df: pd.DataFrame
+    workbook_bytes: bytes
+    vision_rows: list[dict]
+    agent_status: dict[str, str] = field(default_factory=dict)
+    checkpoint_thread_id: str = ""
+    error_trace: list[str] = field(default_factory=list)
+
+
+def _noop(_: str) -> None:
+    return None
+
+
+def run_pipeline_ui(
+    file_path: Path,
+    *,
+    source_format: str = "row-oriented",
+    sheet_name: str | None = None,
+    drive_folder_id: str | None = None,
+    k: int = DEFAULT_K,
+    max_images: int = 5,
+    on_progress: ProgressCallback = _noop,
+) -> PipelineRunResult:
+    state: dict = {"error_trace": []}
+    agent_status: dict[str, str] = {}
+
+    # --- parsing + variety-column discovery ---
+    on_progress(f"Memuat berkas: {file_path.name} (format={source_format!r})")
+    if source_format == "row-oriented":
+        parsed = load_row_oriented_columns(file_path, sheet_name or _first_sheet(file_path))
+        candidates = [AnchorCandidate(p.attribute_name, p.sample_values) for p in parsed]
+        anchor_result = detect_anchor(candidates, source_format="row-oriented")
+        on_progress(f"Deteksi anchor: status={anchor_result.status!r} kolom={anchor_result.column_name!r}")
+
+        anchor_attr = next((p for p in parsed if p.attribute_name == anchor_result.column_name), None)
+        position_to_variety = anchor_attr.row_values if anchor_attr is not None else []
+        variety_names_seen: list[str] = []
+        for v in position_to_variety:
+            if v is not None and v not in variety_names_seen:
+                variety_names_seen.append(v)
+        attributes = [p for p in parsed if p.attribute_name != anchor_result.column_name]
+    else:
+        on_progress("Format transposed — anchor tidak diperlukan (varietas sudah jadi header kolom).")
+        parsed, variety_names_seen = load_transposed_rows(file_path, sheet_name or _first_sheet(file_path))
+        position_to_variety = variety_names_seen  # row_values[i] <-> variety_names_seen[i]
+        attributes = parsed
+
+    on_progress(f"Atribut untuk schema matching: {len(attributes)}")
+    on_progress(f"Varietas terdeteksi dari sumber: {variety_names_seen}")
+
+    schema = CanonicalSchema.from_template()
+    on_progress("Memastikan indeks ChromaDB (idempoten)...")
+    ensure_indexed(schema)
+
+    builder = CanonicalOutputBuilder(schema=schema)
+    for name in variety_names_seen:
+        builder.add_variety(name)
+
+    # --- schema matching (Fase 3, via the Fase 7 reliability wrapper) ---
+    mapping_rows: list[dict] = []
+    n_review = 0
+
+    for attr in attributes:
+        on_progress(f"  schema_matching: '{attr.attribute_name}' — retrieval...")
+        profile = SourceAttributeProfile(
+            attribute_name=attr.attribute_name,
+            structural_context=attr.structural_context,
+            sample_values=attr.sample_values,
+        )
+        retrieved = retrieve(profile, k=k, schema=schema)
+
+        on_progress(f"  schema_matching: '{attr.attribute_name}' — reranking...")
+        mapping, patch = safe_rerank(profile, retrieved, state, source_format=source_format, schema=schema)
+        state.update(patch)  # safe_* returns a patch; the caller applies it — see wrappers.py
+
+        if mapping is None:
+            n_review += 1
+            on_progress(f"  schema_matching: '{attr.attribute_name}' -> GAGAL, diarahkan ke manual_review")
+            continue
+
+        if patch:
+            n_review += 1
+            on_progress(f"  schema_matching: '{attr.attribute_name}' -> ditandai untuk review (lihat error_trace)")
+        else:
+            on_progress(
+                f"  schema_matching: '{attr.attribute_name}' -> {mapping.target_canonical_row} "
+                f"(confidence={mapping.confidence:.2f})"
+            )
+
+        target_row = schema.row_by_id(mapping.target_canonical_row) if mapping.target_canonical_row != NULL_ROW else None
+        mapping_rows.append(
+            {
+                "source_attribute": attr.attribute_name,
+                "predicted_row": mapping.target_canonical_row,
+                "predicted_label": target_row.label if target_row else None,
+                "target_domain": mapping.target_domain,
+                "confidence": mapping.confidence,
+                "normalization_required": mapping.normalization_required,
+                "reasoning": mapping.reasoning,
+            }
+        )
+
+        if target_row is None:
+            continue  # NULL/unmapped attribute — its canonical row(s) simply stay blank
+
+        grouped = values_by_variety(attr.row_values, position_to_variety)
+        for variety_name, raw_values in grouped.items():
+            combined = combine_multi_value(raw_values)
+            if combined is None:
+                continue
+            normalized = normalize(combined, target_row)
+            builder.set_cell(target_row.id, variety_name, normalized.value)
+
+    agent_status["schema_matching"] = f"selesai — {len(mapping_rows)} dipetakan, {n_review} ditandai untuk review"
+
+    mapping_df = pd.DataFrame(mapping_rows, columns=MAPPING_COLUMNS)
+    if not mapping_df.empty:
+        mapping_df = mapping_df.sort_values("confidence", ascending=True, kind="stable").reset_index(drop=True)
+
+    # --- materialize the canonical-shaped workbook (schema-matching values only, so far) ---
+    workbook = builder.build_workbook()
+    worksheet = workbook[SHEET_NAME]
+
+    # --- vision classification (Fase 4 + 5, via the Fase 7 wrapper), writing
+    # straight onto the SAME worksheet via Fase 6's own tabular_update logic ---
+    vision_rows: list[dict] = []
+    folder_id = (drive_folder_id or "").strip()
+    if not folder_id:
+        agent_status["vision_classification"] = "dilewati (tidak ada folder Drive)"
+        on_progress("vision_classification: dilewati — tidak ada folder Drive diberikan.")
+    else:
+        try:
+            on_progress(f"vision_classification: membuka folder Drive {folder_id!r}...")
+            images = list_images(normalize_folder_id(folder_id))[:max_images]
+            if not images:
+                agent_status["vision_classification"] = "dilewati (folder Drive kosong, tidak ada citra)"
+                on_progress("vision_classification: folder Drive kosong — dilewati.")
+            else:
+                on_progress(f"vision_classification: {len(images)} citra ditemukan (dibatasi {max_images})")
+                session = VisionSession()
+                n_uncertain = 0
+                n_written = 0
+                for image in images:
+                    on_progress(f"  vision_classification: '{image.filename}'...")
+                    result, patch = safe_classify_image(
+                        image, session.knowledge_source_text, session.varieties, state,
+                    )
+                    state.update(patch)
+                    if result is None:
+                        on_progress(f"  vision_classification: '{image.filename}' -> GAGAL, diarahkan ke manual_review")
+                        continue
+                    if result.classification_status == "UNCERTAIN":
+                        n_uncertain += 1
+                    on_progress(
+                        f"  vision_classification: '{image.filename}' -> {result.classification_status} "
+                        f"({result.identified_part}, varietas={result.matched_variety})"
+                    )
+                    update_result = apply_vision_result_to_worksheet(worksheet, image, result)
+                    if update_result.applied:
+                        n_written += 1
+                    elif update_result.reason:
+                        on_progress(f"    tidak ditulis ke sel: {update_result.reason}")
+                    vision_rows.append(
+                        {
+                            "filename": image.filename,
+                            "status": result.classification_status,
+                            "matched_variety": result.matched_variety,
+                            "identified_part": result.identified_part,
+                            "confidence": result.confidence,
+                            "visual_evidence": result.visual_evidence,
+                        }
+                    )
+                agent_status["vision_classification"] = (
+                    f"selesai — {len(vision_rows)} citra diklasifikasi, {n_written} ditulis ke sel, "
+                    f"{n_uncertain} UNCERTAIN"
+                )
+        except DriveCrawlerError as exc:
+            agent_status["vision_classification"] = f"gagal: {exc}"
+            on_progress(f"vision_classification: GAGAL — {exc}")
+
+    canonical_df = worksheet_to_dataframe(worksheet, schema, builder.variety_names)
+
+    buffer = io.BytesIO()
+    workbook.save(buffer)
+    workbook_bytes = buffer.getvalue()
+
+    # --- checkpointed stub orchestrator run (Fase 2), purely so the UI's
+    # checkpoint debugger has a real thread/checkpoint to open ---
+    thread_id = uuid.uuid4().hex
+    on_progress(f"orchestrator: menjalankan graf (thread_id={thread_id})...")
+    run_pipeline(str(file_path), f"drive-folder:{folder_id or '-'}", thread_id=thread_id)
+    agent_status["orchestrator"] = f"checkpoint tersimpan (thread_id={thread_id})"
+    on_progress("orchestrator: checkpoint tersimpan.")
+
+    on_progress("Selesai.")
+
+    return PipelineRunResult(
+        mapping_df=mapping_df,
+        canonical_df=canonical_df,
+        workbook_bytes=workbook_bytes,
+        vision_rows=vision_rows,
+        agent_status=agent_status,
+        checkpoint_thread_id=thread_id,
+        error_trace=list(state.get("error_trace", [])),
+    )
+
+
+def _first_sheet(path: Path) -> str:
+    wb = openpyxl.load_workbook(path, read_only=True)
+    name = wb.sheetnames[0]
+    wb.close()
+    return name
