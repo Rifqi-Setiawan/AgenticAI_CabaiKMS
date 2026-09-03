@@ -64,6 +64,12 @@ GOOGLE_DRIVE_CREDENTIALS_PATH=credentials.json
 GOOGLE_DRIVE_FOLDER_ID=<FOLDER_ID or the full share URL>
 ```
 
+For the current Streamlit UI, also enter the folder URL/ID in the Input
+page: a blank UI field deliberately skips vision, even when the environment
+variable is set. Only service-account JSON credentials are implemented;
+an OAuth client JSON is not interchangeable. Image classification additionally
+needs `GOOGLE_API_KEY`; metadata listing alone does not call Gemini.
+
 Put the downloaded JSON key file at the path you set above (the project
 root's `.gitignore` already excludes `credentials.json` — never commit it).
 

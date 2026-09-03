@@ -1,5 +1,11 @@
 # Open Questions — Fase 0
 
+> Riwayat keputusan Juli 2026. Pembaruan audit 3 September 2026: kolom output
+> tabular kini berasal dari varietas input, sehingga tidak wajib cocok dengan
+> varietas template. Crosswalk nama masih relevan untuk vision, yang memakai
+> referensi template. Penyusunan `Lokasi` komposit belum diimplementasikan.
+> Lihat [PROJECT_GUIDE.md](PROJECT_GUIDE.md) untuk daftar keterbatasan terkini.
+
 Answered by the user on 2026-07-20. Kept as a record of *why* each decision
 in `docs/DESIGN_DECISIONS.md` is the way it is — see that file for the
 authoritative current state.

@@ -1,5 +1,9 @@
 # CLAUDE.md — cabai-kms-akuisisi
 
+Current implementation reference (audited 2026-09-03):
+[`README.md`](README.md) and [`docs/PROJECT_GUIDE.md`](docs/PROJECT_GUIDE.md).
+This file states project conventions, not a claim that the proposal is complete.
+
 ## What this system is
 
 Adaptive Knowledge Acquisition berbasis Agentic AI untuk standardisasi data
@@ -31,14 +35,16 @@ Full project reference (flow, tech stack, role of every folder/file):
    multi-value, color code, ...) into the canonical row's expected format,
    plus an image-to-plant-part classification agent.
 4. **Orchestration & Reliability** (`src/orchestrator/`, `src/reliability/`)
-   — a LangGraph graph coordinating agent calls across rows/domains for a
-   given varietas, with retry/rate-limiting policy and (once needed)
-   vector-store-backed few-shot retrieval for grounding agent prompts.
+   — a stub LangGraph graph for checkpoint/routing tests. Real agents run
+   synchronously through `src/ui/pipeline_runner.py`, using retry/validation
+   wrappers; the implemented rate limiter is not yet supplied by this runner.
+   Chroma retrieves canonical-row candidates, not a reviewed few-shot corpus.
 5. **Interface & Evaluation** (`src/ui/`, `eval/`) — a Streamlit review UI
-   for human-in-the-loop correction, and the Macro-F1-per-domain evaluation
-   harness against `data/gold/`.
+   for inspection/download. Review queue approve/revise APIs exist in Python
+   but are not wired into an editor or output replay. `eval/` exports mappings
+   for manual grading; Macro-F1 is not implemented yet.
 
-`src/llm/` is a cross-cutting provider abstraction (Groq / Gemini clients)
+`src/llm/` is a cross-cutting provider abstraction (Groq / Gemini / Ollama / OpenRouter clients)
 used by layers 3 and 4 — not a layer of its own.
 
 Inter-agent contracts (Fase 1, `src/schema/contracts.py`): `SchemaMapping`
@@ -55,11 +61,12 @@ never a hardcoded `Literal`. Shared LangGraph state shape is
 ## Stack
 
 Python, `pandas` + `openpyxl` (spreadsheet I/O), `pydantic` (schema
-validation), `langgraph` + `langchain-core` (orchestration, Fase 1+),
-`chromadb` + `sentence-transformers` (few-shot retrieval, Fase 2+),
-`instructor` (structured LLM output, Fase 2+), `tenacity` + `aiolimiter`
-(retry/rate-limit, Fase 1+), `groq` + `google-genai` (LLM providers, Fase
-3+), `google-api-python-client` (Drive crawler), `streamlit` (review UI).
+validation), `langgraph` + `langgraph-checkpoint-sqlite` (stub graph),
+`chromadb` + `sentence-transformers` (canonical-row retrieval),
+`instructor` (structured LLM output), `tenacity` + `aiolimiter`
+(retry/optional rate-limit), `groq` + `openai` (provider clients),
+`google-api-python-client` + `google-auth` (Drive), `streamlit` (UI).
+No direct `google-genai` or `langchain-core` imports exist in project code.
 See `requirements.txt` — only packages actually imported by code in `src/`
 are left uncommented there; uncomment a dependency in the same commit that
 introduces its first import.
@@ -73,9 +80,11 @@ introduces its first import.
 - Domain lookups always go through `src/schema/row_domains.yaml`; never
   hardcode a domain enum in Python — derive the valid set from that file's
   unique `domain` values.
-- Files under `data/` (canonical template, samples, gold, Drive images once
-  fetched) are inputs — read them, never write/overwrite them from code
-  without an explicit user-approved reason.
+- Canonical templates, samples, and annotated gold under `data/` are protected
+  inputs; never overwrite them without an explicit user-approved reason.
+  `data/.chroma/`, `data/.checkpoints/`, and `data/review/` are runtime stores;
+  preserve their existing contents unless cleanup/reset is explicitly needed.
+  Use fresh `--output` paths under `data/outputs/` for review harness runs.
 
 ## Working rules
 

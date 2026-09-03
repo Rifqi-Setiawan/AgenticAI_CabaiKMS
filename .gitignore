@@ -32,6 +32,9 @@ service-account*.json
 # Local data outputs
 data/.chroma/
 data/review/*.jsonl
+data/outputs/
+# New runtime checkpoints only; an already-tracked SQLite DB remains tracked.
+data/.checkpoints/
 
 # Editor / OS files
 .vscode/

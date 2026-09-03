@@ -1,5 +1,8 @@
 # Design Decisions — CABAI-KMS Akuisisi
 
+> Keputusan desain tidak berarti semua fitur sudah selesai diimplementasikan.
+> Status kode per 3 September 2026 ada di [PROJECT_GUIDE.md](PROJECT_GUIDE.md).
+
 Status legend: **[FINAL]** decided by the user, not up for debate.
 **[PROPOSED]** my inference from profiling, needs a yes/no.
 **[OPEN]** genuinely blocked on the user — see `docs/OPEN_QUESTIONS.md` for
@@ -29,7 +32,8 @@ later.
 **[FINAL]** "Domain" is a category tag attached to each canonical row
 (`vegetatif`, `daun`, `bunga`, `buah`, `biji`, `lokasi`). It is used only for:
 1. Extra context injected into the LLM prompt for that row.
-2. Grouping rows for Macro-F1 in `eval/metrics/`.
+2. Planned grouping of rows for Macro-F1 (not implemented yet; the empty
+   `eval/metrics/` placeholder was removed during the September cleanup).
 
 No agent predicts domain directly — it is always looked up from
 `src/schema/row_domains.yaml` for whatever row is being processed. The set
@@ -56,8 +60,9 @@ All 60 current rows have an unambiguous domain assignment (see
 
 **[FINAL]** Drive folder has no subfolders; every image is a direct child.
 Plant-part classification (daun/batang/buah/bunga) is decided from image
-content plus filename signal, never from folder structure. Not yet
-implemented — pending Drive credentials.
+content plus filename signal, never from folder structure. The crawler is
+implemented in `src/agents/drive_crawler.py`; its historical live verification
+is recorded in `docs/CHECKPOINTS.md`. Vision is implemented separately.
 
 ## (d) Exactly two raw-format variants
 

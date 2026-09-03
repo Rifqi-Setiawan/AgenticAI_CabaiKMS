@@ -1,701 +1,440 @@
-# CABAI-KMS Akuisisi — Project Guide
+# Panduan Lengkap CABAI-KMS Akuisisi
 
-A single, detailed reference for this project: what it does, how data flows
-through it end to end, the full tech stack and why each piece was chosen,
-and the role of every folder and file in the repository. `CLAUDE.md` is the
-short version for an AI assistant working in this repo; this document is
-the long version for a human (or a new contributor) who wants the whole
-picture.
+**Audit implementasi: 3 September 2026.** Dokumen ini menjelaskan apa yang benar-benar tersedia pada kode saat audit. Nama model dan nilai default di sini adalah konfigurasi kode, bukan jaminan ketersediaan layanan eksternal. Catatan eksperimen Juli 2026 tetap disimpan sebagai riwayat.
 
-Companion documents, each covering one narrower slice in more depth:
-- [`PROFILING.md`](PROFILING.md) — raw inspection of every input asset (the
-  canonical template's exact shape, the two real/synthetic sample files,
-  the messy value patterns catalogued cell-by-cell).
-- [`DESIGN_DECISIONS.md`](DESIGN_DECISIONS.md) — the "why" behind every
-  non-obvious modeling choice (domain semantics, Lokasi as a composite
-  string, flat Drive listing, the two raw-format variants), each tagged
-  FINAL/PROPOSED/OPEN.
-- [`OPEN_QUESTIONS.md`](OPEN_QUESTIONS.md) — the historical record of
-  questions raised to the user and how they were resolved.
-- [`DRIVE_SETUP.md`](DRIVE_SETUP.md) — step-by-step Google Cloud service
-  account setup for the Drive Crawler.
-- [`CHECKPOINTS.md`](CHECKPOINTS.md) — a running log of blueprint
-  checkpoints verified against real data/APIs (not mocks), with evidence.
+## Daftar isi
 
----
+1. [Tujuan dan cakupan](#1-tujuan-dan-cakupan)
+2. [Status implementasi](#2-status-implementasi)
+3. [Arsitektur dan alur eksekusi](#3-arsitektur-dan-alur-eksekusi)
+4. [Struktur repositori](#4-struktur-repositori)
+5. [Input dan skema kanonik](#5-input-dan-skema-kanonik)
+6. [Kontrak data dan hasil](#6-kontrak-data-dan-hasil)
+7. [Instalasi dan konfigurasi](#7-instalasi-dan-konfigurasi)
+8. [Penggunaan UI dan API Python](#8-penggunaan-ui-dan-api-python)
+9. [Review dan evaluasi](#9-review-dan-evaluasi)
+10. [Reliability dan checkpoint](#10-reliability-dan-checkpoint)
+11. [Pengujian dan troubleshooting](#11-pengujian-dan-troubleshooting)
+12. [Keterbatasan dan pekerjaan lanjutan](#12-keterbatasan-dan-pekerjaan-lanjutan)
+13. [Pemeliharaan, keamanan, dan pembersihan](#13-pemeliharaan-keamanan-dan-pembersihan)
 
-## 1. What this system does
+## 1. Tujuan dan cakupan
 
-**Problem:** field researchers collect chili (*cabai*) varietas
-characterization data into spreadsheets with inconsistent, ad-hoc formats
-(sometimes varietas as columns, sometimes as rows; decimal commas; range
-dashes written three different ways; multi-value cells; free-text colors
-instead of an RHS color code; ...), plus a flat, unsorted folder of plant
-photos on Google Drive. All of it needs to end up as clean rows in one
-canonical template.
+Data lapangan cabai dapat menggunakan nama atribut berbeda, susunan spreadsheet berbeda, nilai rentang/desimal tidak konsisten, serta foto tanaman tanpa pengelompokan bagian tanaman. Proyek ini membantu menyelaraskan data tersebut ke template kanonik untuk CABAI-KMS.
 
-**Approach:** rather than hand-writing a parser per spreadsheet format,
-LLM/LVM agents do the semantic work — matching a messy source column to
-the right canonical row, normalizing its values, and classifying which
-plant part + varietas a photo shows — while deterministic Python code does
-everything that doesn't need judgment (I/O, anchor-column detection by
-embedding similarity, writing cells, retry/rate-limit bookkeeping). A human
-stays in the loop for anything the agents aren't confident about, via a
-Manual Review Queue rather than the pipeline silently guessing.
+Masukan utama adalah workbook Excel; foto dari satu folder Google Drive bersifat opsional. Keluaran UI adalah workbook `hasil_akuisisi.xlsx`, tabel pemetaan, hasil klasifikasi citra, status agen, dan log proses.
 
-**Output:** a real `.xlsx` workbook shaped *exactly* like
-`data/canonical/template_kanonik.xlsx` — same canonical rows (read
-dynamically, never hardcoded), but with varietas **columns** taken from
-whatever the uploaded source file actually contains (not the template's
-original 10 reference varieties). A canonical row nothing mapped to for a
-given varietas is left blank; a varietas with no Drive photos simply has
-blank `Gambar *` cells.
+Ini adalah **prototipe penelitian**, bukan sistem produksi, API backend, atau platform pengelolaan knowledge base lengkap. Normalisasi nilai saat ini menggunakan aturan Python; LLM melakukan pemetaan semantik atribut dan LVM melakukan interpretasi citra.
 
-## 2. Architecture — 5 layers
+## 2. Status implementasi
 
-```
-1. Data & Schema        data/, src/schema/
-2. Ingestion            src/agents/schema_matching/source_parsing.py, anchor.py
-                        src/agents/drive_crawler.py
-3. Agents               src/agents/  (+ src/llm/ as a cross-cutting provider layer)
-4. Orchestration         src/orchestrator/, src/reliability/
-   & Reliability
-5. Interface             src/ui/, eval/
-   & Evaluation
-```
+| Komponen | Kondisi pada kode |
+|---|---|
+| Skema kanonik dan domain | Aktif; dibaca dari Excel dan YAML, jumlah baris dinamis |
+| Parsing spreadsheet | Aktif untuk dua bentuk `.xlsx` dengan batasan struktur pada §5 |
+| Anchor varietas | Aktif, embedding header, ambang similarity `0.7` |
+| Retrieval | Aktif, indeks baris kanonik ChromaDB; default top-k `8` |
+| Reranking | Aktif, Groq dengan fallback Ollama; output Pydantic |
+| Normalisasi | Aktif, deterministik; bukan ekstraksi/penalaran bebas oleh LLM |
+| Google Drive | Aktif, service account read-only, daftar foto anak langsung folder |
+| Vision | Aktif, Gemini; consensus dua model tersedia di API Python, tidak di UI |
+| Penulisan Excel | Aktif, varietas dari input, URL citra untuk hasil `KNOWN` |
+| Retry dan validasi ulang | Dipakai runner UI melalui reliability wrappers |
+| Rate limiter | Implementasi dan tes tersedia, tetapi runner UI tidak memasok instance limiter |
+| Manual review | Queue JSONL dan API approve/revise tersedia; belum menjadi alur koreksi UI |
+| LangGraph | Node stub dengan checkpoint/resume SQLite; agen nyata belum terpasang di node |
+| UI | Tiga halaman Streamlit: Input, Progres, Hasil |
+| Evaluasi | Harness ekspor untuk review manual; belum ada perhitungan Macro-F1 |
 
-1. **Data & Schema** — the canonical template, gold labels, and
-   `row_domains.yaml` (row → domain lookup; domain is *looked up*, never
-   predicted by any agent — see [DESIGN_DECISIONS.md (b)](DESIGN_DECISIONS.md)).
-2. **Ingestion** — raw-format detection and normalization into a common
-   intermediate representation (`ParsedAttribute`): variant (i) transposed
-   vs. (ii) row-oriented spreadsheets (anchor-column detection required for
-   (ii)), and the Drive image crawler (flat file list — part is inferred
-   from image content + filename, never folder structure).
-3. **Agents** — LLM-driven extraction/standardization per canonical row
-   (schema matching + normalization), and an image-to-plant-part
-   classification agent (vision).
-4. **Orchestration & Reliability** — a LangGraph graph coordinating agent
-   calls with retry/rate-limiting policy and a verify-then-revise loop; a
-   separate, currently-parallel Streamlit pipeline runner that calls the
-   same agents directly for the UI's synchronous request/response flow.
-5. **Interface & Evaluation** — a Streamlit review UI for human-in-the-loop
-   correction/inspection, and a review-harness script that runs the real
-   schema-matching pipeline against a sample file for manual grading.
+**Implikasi:** status “selesai” menunjukkan eksekusi selesai, bukan seluruh data sudah benar atau telah disetujui manusia. Baca detail pemetaan dan log sebelum menggunakan hasil untuk penelitian.
 
-`src/llm/` is a cross-cutting provider abstraction (Groq / Gemini / Ollama
-/ OpenRouter clients) used by layer 3's agents — not a layer of its own.
+## 3. Arsitektur dan alur eksekusi
 
-### Two parallel "orchestrators" — why
+Lima lapisan utama adalah data/skema, ingestion, agen, orkestrasi/reliability, serta UI/evaluasi. `src/llm/` menyediakan akses provider lintas agen.
 
-There are, deliberately, two different things that run the pipeline:
+```text
+Input .xlsx
+  -> parser sesuai format pilihan pengguna
+  -> identitas varietas (anchor / header transposed)
+  -> indeks dan retrieval kandidat baris kanonik
+  -> safe_rerank -> SchemaMapping -> normalisasi -> akumulasi nilai
+  -> workbook berdasarkan salinan template
+  -> [opsional] Drive -> download -> Gemini -> URL foto pada sel Gambar
+  -> tabel preview + bytes Excel + log/status
 
-- **`src/orchestrator/graph.py`** — a real LangGraph `StateGraph` with
-  SQLite checkpointing, built in Fase 2 as stub nodes (dummy-but-valid
-  contract objects, no network calls) to prove out the graph shape,
-  conditional verify/retry/manual-review routing, and checkpoint/resume —
-  independent of whether any real agent existed yet.
-- **`src/ui/pipeline_runner.py`** — the function the Streamlit UI actually
-  calls. It wires together the *real* agents (schema matching, Drive
-  crawler, vision classification, tabular update) directly, wrapped in the
-  Fase 7 reliability layer, as one synchronous Python function — no graph
-  needed for a single-request/response UI flow. It additionally calls
-  `run_pipeline()` from `graph.py` purely so the UI's checkpoint debugger
-  (Page 3) has a real thread/checkpoint to open; that stub run does not
-  affect the actual output the user downloads.
-
-If a future fase moves the real agents to run *inside* `graph.py`'s nodes
-(a genuine async/long-running/multi-worker execution), `pipeline_runner.py`
-is the reference for what each node's real logic should look like.
-
-## 3. Canonical schema shape (today)
-
-Read dynamically at runtime from `data/canonical/template_kanonik.xlsx`,
-never hardcoded — but as of this writing:
-
-- **N = 60 rows.** Rows 1–55 are morphological characters; row 56 is
-  `Lokasi`; rows 57–60 are `Gambar Daun` / `Gambar Batang` / `Gambar Buah`
-  / `Gambar Bunga`.
-- **6 domains:** `vegetatif`, `daun`, `bunga`, `buah`, `biji`, `lokasi`
-  (derived from `src/schema/row_domains.yaml`, matched by row **label
-  text**, not row number — see [PROFILING.md §1.1](PROFILING.md) for the
-  full row-by-row table).
-- **Template's own 10 reference varietas columns** (Gendot, Kopay,
-  Katokkon, Cabai merah keriting Jotanbar, Cabai merah keriting akar, Cabai
-  rawit NTB, Cabai landung, Cabai tanjung, Domba, Cabai H) are used only as
-  a source of `contoh_nilai` (example values for prompting/vocabulary
-  snapping) and as the Vision Agent's dynamic knowledge base — **not**
-  copied into pipeline output. Output columns come from whatever varietas
-  the uploaded source file names.
-
-## 4. End-to-end pipeline flow (Streamlit UI path)
-
-This is what `src/ui/pipeline_runner.py:run_pipeline_ui()` actually does,
-step by step, for one uploaded file:
-
-```mermaid
-flowchart TD
-    A[Upload spreadsheet + optional Drive folder URL] --> B{source_format?}
-    B -- row-oriented --> C[load_row_oriented_columns]
-    C --> D[detect_anchor: find the 'Jenis Cabai'-like column]
-    D --> E[anchor's row_values = position -> varietas name]
-    B -- transposed --> F[load_transposed_rows]
-    F --> G[column headers = varietas names directly]
-    E --> H[For each remaining source attribute]
-    G --> H
-    H --> I[retrieve: ChromaDB top-k canonical row candidates]
-    I --> J[safe_rerank: LLM picks best row or NULL, wrapped in retry+revise]
-    J -->|needs review| K[Manual Review Queue: data/review/manual_review_queue.jsonl]
-    J -->|confident| L[values_by_variety + combine_multi_value]
-    L --> M[normalize: notation cleanup, vocab snap]
-    M --> N[CanonicalOutputBuilder.set_cell]
-    H --> O[build_workbook: template-shaped output, only source varieties as columns]
-    O --> P{Drive folder given and non-empty?}
-    P -- no --> Q[Gambar rows stay blank]
-    P -- yes --> R[list_images, capped at max_images]
-    R --> S[VisionSession: read template's own varietas descriptions once]
-    S --> T[For each image: safe_classify_image, wrapped in retry+revise]
-    T -->|KNOWN + confident column match| U[apply_vision_result_to_worksheet: write Drive URL into Gambar cell]
-    T -->|OTHER / UNCERTAIN / no matching column| V[skip cell write, log to error_trace]
-    U --> W[worksheet_to_dataframe: read final cell contents back for the UI table]
-    Q --> W
-    V --> W
-    W --> X[Page 3: preview table + mapping detail + download real .xlsx]
+Di akhir runner UI:
+  -> graf LangGraph STUB -> SQLite -> debugger checkpoint
+     (bukan rekaman/resume pemrosesan agen nyata di atas)
 ```
 
-Narrated:
+### Jalur aplikasi nyata
 
-1. **Parse.** Row-oriented files go through `load_row_oriented_columns`
-   (two-row hierarchical header: an optional section row, forward-filled,
-   plus a real field-name row); transposed files go through
-   `load_transposed_rows` (varietas already are the column headers). Both
-   return a flat list of `ParsedAttribute` with `row_values` positionally
-   aligned across every attribute from the same call — this alignment is
-   what later lets a raw value be traced back to "which varietas does this
-   belong to".
-2. **Anchor detection** (row-oriented only). Embeds each candidate column's
-   **header text alone** with a multilingual sentence-transformer and
-   ranks cosine similarity against reference phrases for the concept
-   "varietas cabai / aksesi". The highest-scoring column above a 0.7
-   threshold is the anchor (e.g. "Jenis Cabai"); below threshold, it
-   escalates rather than guessing. (Transposed format skips this entirely
-   — varietas identity is already the column headers.)
-3. **Schema matching**, per non-anchor attribute:
-   - **Retrieve** (ChromaDB, cosine similarity) the top-k canonical row
-     candidates for a query built from the attribute's name + structural
-     context + up to 10 sample values + a heuristically detected data type
-     (numerik/kategorik/tekstual).
-   - **Rerank** (Groq LLM via `instructor`, constrained to the
-     `SchemaMapping` Pydantic contract): pick exactly one of the k
-     candidates, or `NULL` if none confidently fits. Wrapped in
-     `safe_rerank` — retries transient provider errors, revises on
-     contract-invalid output, and routes low-confidence/NULL mappings to
-     the Manual Review Queue (JSONL, append-only).
-4. **Value assembly.** For a confidently-mapped attribute, its raw values
-   are grouped by varietas (`values_by_variety`, using the anchor's/
-   transposed header's position alignment), multiple raw values for the
-   same (row, varietas) pair are joined (`combine_multi_value`, `"; "`
-   separator), then **normalized** (`normalize()`): empty tokens → `None`,
-   decimal comma → dot, range dash unified to `"--"`, multi-value separator
-   unified, whitespace collapsed, categorical values snapped to the target
-   row's own example vocabulary on exact case-insensitive match. Ambiguous
-   values (garbled numbers) are left as-is with a trace note, never
-   guessed.
-5. **Build the output workbook.** `CanonicalOutputBuilder` accumulates
-   `(canonical_row, varietas) -> value` pairs, then `build_workbook()`
-   loads a **copy** of the template, fully clears its old reference
-   columns (both headers and values), writes the source-derived varietas
-   headers, and writes every accumulated value — everything unmapped stays
-   blank.
-6. **Vision classification** (only if a Drive folder was given and isn't
-   empty). `VisionSession` reads the template's own already-filled-in
-   varietas columns once per session as the dynamic knowledge source, then
-   for each image (capped at `max_images`, default 5): download bytes →
-   Gemini call (via `safe_classify_image`, same retry+revise wrapping) →
-   `VisionResult` (plant part + KNOWN/OTHER/UNCERTAIN + matched varietas).
-   Only `KNOWN` results get written to a cell, and only if the matched
-   varietas name matches an existing output column — never a new column.
-   Writes go straight onto the **same worksheet** already built in step 5,
-   reusing `src/agents/tabular_update.py`'s cell-writing logic exactly
-   (Fase 6's own module, not reimplemented).
-7. **Finalize.** The worksheet's actual current cell contents are read back
-   into a DataFrame (`worksheet_to_dataframe` — single source of truth,
-   post schema-matching *and* post vision writes, so nothing can drift
-   between two separately-tracked representations), the workbook is saved
-   to an in-memory buffer, and (side effect only) Fase 2's stub
-   orchestrator graph is run once so the checkpoint debugger has real data.
+Fungsi `run_pipeline_ui()` di `src/ui/pipeline_runner.py` menjalankan proses secara sinkron:
 
-## 5. End-to-end pipeline flow (review-harness script path)
+1. Membaca sheet pilihan; secara default sheet pertama. UI tidak memiliki pilihan sheet.
+2. Pada format row-oriented, mendeteksi kolom varietas dari embedding teks header saja. Pada transposed, memakai nama kolom setelah `Karakter`.
+3. Memuat `CanonicalSchema` dan memastikan indeks Chroma tersedia.
+4. Untuk setiap atribut non-anchor, membuat profil nama/konteks/contoh nilai, mengambil kandidat, lalu memanggil `safe_rerank()`.
+5. Mapping `NULL` tidak mengisi sel. Kegagalan yang tidak menghasilkan mapping dilewati. Mapping dengan target valid dinormalisasi dan ditulis, **termasuk yang confidence-nya rendah dan ditandai untuk review**.
+6. Menggabungkan nilai per varietas dengan pemisah `; `, lalu membangun workbook dari template. Sel referensi varietas lama dibersihkan pada salinan yang berada di memori, bukan file template asli.
+7. Jika URL/ID Drive diberikan, mengambil metadata foto lalu memproses maksimal lima gambar secara default. Pembatasan dilakukan setelah listing, bukan membatasi jumlah metadata yang diminta dari Drive.
+8. Membaca deskripsi varietas template sekali melalui `VisionSession`, mengunduh foto, dan memanggil `safe_classify_image()`.
+9. Menulis URL Drive hanya jika status `KNOWN`, varietas ada di kolom output, dan baris bagian tanaman ditemukan. Tidak ada threshold confidence numerik tambahan di penulis sel.
+10. Membaca kembali worksheet menjadi DataFrame, menyimpan workbook ke bytes, lalu menjalankan graf stub untuk debugger.
 
-`eval/review_schema_matching.py` runs the same parse → anchor → retrieve →
-rerank → normalize sequence as steps 1–4 above, directly against the real
-Fase 3a–3f modules (no reliability wrapping, no vision, no output
-workbook) — its only job is producing a human-reviewable Excel table
-(`data/gold/schema_matching_review.xlsx`, sorted lowest-confidence first)
-with blank `gold_row` / `is_correct` / `catatan` columns for a human to
-fill in by hand afterward.
+### Jalur evaluasi manual
 
-## 6. Tech stack
+`eval/review_schema_matching.py` memakai parser, anchor, retrieval, reranker, dan normalizer yang sama, tetapi tanpa wrapper reliability UI, tanpa foto, dan tanpa workbook kanonik akhir. Hasilnya tabel pemetaan untuk dinilai manusia, bukan laporan metrik otomatis.
 
-| Concern | Library | Why / notes |
-|---|---|---|
-| Spreadsheet I/O | `pandas` + `openpyxl` | `openpyxl` for cell-level read/write (needed to preserve exact template shape); `pandas` for the tabular views shown in the UI. |
-| Data contracts | `pydantic` (v2) | `SchemaMapping`, `VisionResult`, `ImageMetadata` — validated shapes for every agent output; `target_domain` is a `computed_field`, never LLM-settable. |
-| Env config | `python-dotenv` | `.env` loaded once at each provider module's import time (not per-call) — see the "load once" note in §8. |
-| Domain/alias data | `pyyaml` | `row_domains.yaml`, `row_aliases.yaml`. |
-| Orchestration graph | `langgraph` + `langgraph-checkpoint-sqlite` | `StateGraph` with SQLite-backed checkpointing for `src/orchestrator/graph.py`; not (yet) used to run the real agents — see §4's note on the two parallel orchestrators. |
-| Retrieval | `chromadb` (`PersistentClient`, cosine `hnsw:space`) + `sentence-transformers` (`paraphrase-multilingual-MiniLM-L12-v2`) | Multilingual (Indonesian + English) embedding model for both schema-row retrieval and anchor-column detection, sharing one index/cache. |
-| (transitive) | `torchvision` | Not imported directly by this project's code — but `sentence-transformers`' resolved `transformers` version eagerly imports `torchvision.transforms.v2` on model load even for a pure text model. Without it: `ModuleNotFoundError` on first embedding-model load. Confirmed pairing: `torch==2.13.0` + `torchvision==0.28.0`. |
-| Constrained LLM/LVM output | `instructor` | Wraps an OpenAI-compatible client so the model's output is parsed straight into a Pydantic model (`SchemaMapping`, `VisionResult`), retried internally on schema mismatch. |
-| Text LLM providers | `groq` (primary, `llama-3.3-70b-versatile`) + `openai`-compatible Ollama (`llama3.1:8b`, fallback) | `call_with_fallback()` in `src/llm/providers.py`. |
-| Vision/LVM providers | Gemini via OpenAI-compat endpoint (`gemini-flash-latest`) as primary, no fallback of its own; optional second voter Qwen2.5-VL-72B via OpenRouter → Ollama Qwen2.5-VL-7B fallback, only for consensus mode | `src/llm/vision_providers.py`. Model note: `gemini-2.5-flash` (the brief's named model) returns 404 for newly-provisioned API keys — `gemini-flash-latest` is used, configurable via `GEMINI_MODEL_NAME`. |
-| Retry | `tenacity` | Exponential backoff, `retry_if_exception_type` filtered to transient provider errors only — never contract/validation failures. |
-| Rate limiting | `aiolimiter` (`AsyncLimiter`) | Bridged to synchronous call sites via one persistent event loop per `RateLimiter` instance (not `asyncio.run()` per call). |
-| Drive access | `google-api-python-client` + `google-auth` | Read-only service account, flat file listing (`'{folder_id}' in parents`), never recurses into subfolders. |
-| UI | `streamlit` | 3-page multi-page app; `streamlit.testing.v1.AppTest` for real (non-mocked) page-script tests. |
-| Tests | `pytest` | `pyproject.toml` sets `pythonpath=["."]`, `testpaths=["tests"]`, and two custom markers (`indexing`, `llm_fallback_live`). |
+## 4. Struktur repositori
 
-Convention (`requirements.txt`'s own header comment): a dependency is only
-ever uncommented in the same commit that introduces its first real import
-in `src/`.
-
-Deliberately **not** used, with reasons on record: `langchain-core`
-(nothing in this project needs its abstractions beyond what `langgraph`
-itself provides); `google-genai` (Gemini is reached through its
-OpenAI-compatible endpoint instead, so every provider in the project goes
-through one consistent `instructor` + OpenAI-client pattern).
-
-## 7. Repository layout
-
-```
-.
-├── CLAUDE.md                  Short project-convention reference for AI assistants
-├── requirements.txt            Active dependency list with per-fase rationale comments
-├── pyproject.toml               pytest config (pythonpath, testpaths, markers)
-├── .env / .env.example          API keys + Drive/Chroma config (never commit .env)
+```text
+project/
+├── README.md                    Pintu masuk dan cara cepat menjalankan
+├── CLAUDE.md                    Ringkasan konvensi kontribusi
+├── requirements.txt             Dependensi runtime dan pytest (belum dipin)
+├── pyproject.toml               Konfigurasi pytest; bukan manifest paket lengkap
+├── .env.example                Contoh konfigurasi tanpa rahasia
 ├── .gitignore
-├── credentials.json              Drive service-account key (gitignored)
-│
-├── data/                          INPUT assets — read-only except gold/review/.chroma
-│   ├── canonical/template_kanonik.xlsx   THE canonical template (never overwritten)
-│   ├── samples/                   Real + synthetic source spreadsheets for dev/testing
-│   ├── gold/                       Generated human-review Excel exports (eval harness output)
-│   ├── review/manual_review_queue.jsonl   Append-only Manual Review Queue
-│   └── .chroma/                    ChromaDB persistence (gitignored)
-│
-├── docs/                           All project documentation (this file included)
-│   ├── PROJECT_GUIDE.md            (this file)
-│   ├── PROFILING.md                 Raw per-file/per-cell data inspection
-│   ├── DESIGN_DECISIONS.md          Why every non-obvious modeling choice was made
-│   ├── OPEN_QUESTIONS.md            Historical Q&A record with the user
-│   ├── DRIVE_SETUP.md               GCP service-account setup walkthrough
-│   └── CHECKPOINTS.md               Verified-against-real-data checkpoint log
-│
+├── docs/                       Panduan, keputusan, profiling, riwayat audit
+├── data/
+│   ├── canonical/              template_kanonik.xlsx, input utama
+│   ├── samples/                Tiga workbook contoh nyata/sintetis
+│   ├── gold/                   Dua workbook review historis, dipertahankan
+│   ├── review/                 Queue JSONL lokal, dibuat saat diperlukan
+│   ├── .chroma/                Indeks embedding lokal
+│   └── .checkpoints/           SQLite graf stub
 ├── src/
-│   ├── schema/                     Layer 1: canonical schema + Pydantic contracts
-│   │   ├── canonical.py             CanonicalRow, CanonicalSchema, template hashing
-│   │   ├── contracts.py              SchemaMapping, VisionResult, ImageMetadata
-│   │   ├── state.py                  GlobalState (LangGraph shared state TypedDict)
-│   │   ├── row_domains.yaml          Row-label -> domain lookup (source of truth)
-│   │   └── row_aliases.yaml          Skeleton for manual alt-label curation
-│   │
-│   ├── agents/                     Layer 3: LLM/deterministic agents
-│   │   ├── schema_matching/          Sub-package, one file per Fase 3 sub-step
-│   │   │   ├── indexing.py            ChromaDB indexing of canonical rows
-│   │   │   ├── retrieval.py           Top-k candidate retrieval + data-type heuristic
-│   │   │   ├── reranking.py            LLM picks the single best candidate (or NULL)
-│   │   │   ├── anchor.py               Header-embedding anchor-column detection
-│   │   │   ├── review_queue.py         NULL/low-confidence -> Manual Review Queue
-│   │   │   ├── normalize.py            Post-mapping value notation cleanup
-│   │   │   └── source_parsing.py       Row-oriented / transposed spreadsheet parsing
-│   │   ├── drive_crawler.py           Flat Google Drive image listing
-│   │   ├── vision_classification.py   Description-grounded plant-part + varietas ID
-│   │   └── tabular_update.py           Deterministic: write a VisionResult into a cell
-│   │
-│   ├── llm/                         Cross-cutting LLM/LVM provider abstraction
-│   │   ├── providers.py               Groq -> Ollama text-LLM fallback
-│   │   └── vision_providers.py        Gemini (primary) + Qwen consensus voter
-│   │
-│   ├── orchestrator/                Layer 4: LangGraph graph (stub nodes) + checkpointing
-│   │   └── graph.py
-│   │
-│   ├── reliability/                  Layer 4: retry / rate-limit / verify-revise
-│   │   ├── retry.py                    tenacity exponential-backoff wrapper
-│   │   ├── rate_limit.py               aiolimiter bridge for sync call sites
-│   │   ├── verifier.py                  Generic contract-validation revise loop
-│   │   └── wrappers.py                  Composes all three around the real agent calls
-│   │
-│   └── ui/                          Layer 5: Streamlit review/inspection app
-│       ├── app.py                     Page 1 — Input
-│       ├── pages/2_Progress.py         Page 2 — Progres (per-agent status, log)
-│       ├── pages/3_Hasil.py            Page 3 — Hasil (result inspector, download)
-│       ├── state.py                    Typed st.session_state accessors
-│       ├── pipeline_runner.py          Wires every agent together for one UI run
-│       └── output_builder.py           Builds the template-shaped output workbook
-│
-├── eval/
-│   └── review_schema_matching.py      CLI harness: real pipeline -> human-reviewable Excel
-│
-└── tests/                            250+ tests, one file per src/ module (pytest)
+│   ├── schema/                 Skema, domain, alias, kontrak, shared state
+│   ├── agents/
+│   │   ├── schema_matching/    Parsing sampai review/normalisasi
+│   │   ├── drive_crawler.py
+│   │   ├── vision_classification.py
+│   │   └── tabular_update.py
+│   ├── llm/                    Provider teks dan vision
+│   ├── orchestrator/           Graf stub dan checkpoint/resume
+│   ├── reliability/            Retry, rate limiter, verifier, wrappers
+│   └── ui/                     Aplikasi, runner, output builder, state
+│       └── pages/              2_Progress.py dan 3_Hasil.py
+├── eval/review_schema_matching.py
+└── tests/                      Tes modul dan halaman Streamlit
 ```
 
-### Directory-by-directory detail
+`.venv/`, `.env`, dan `credentials.json` dapat tersedia secara lokal; bukan bagian source yang perlu dibagikan. File `__init__.py` kosong merupakan penanda paket dan tetap dipertahankan.
 
-#### `data/` — inputs, read-only by convention
+### Tanggung jawab modul
 
-- **`data/canonical/template_kanonik.xlsx`** — the canonical template.
-  `Sheet1` is the only meaningful sheet (`Sheet2`/`Sheet3` are empty
-  leftovers). Row 1 = header; rows 2–61 = the 60 canonical rows; column A =
-  `Nomor`, column B = `Karakter` (the label matching key), columns C–L =
-  the template's own 10 reference varietas (used for `contoh_nilai` and as
-  the Vision Agent's knowledge base, never copied into pipeline output).
-  **Never written to by code** — every module that touches it opens it
-  read-only or loads a fresh in-memory copy to build output from.
-- **`data/samples/`** — three source-spreadsheet fixtures used throughout
-  development and testing: `data_input.xlsx` (real row-oriented, anchor =
-  "Jenis Cabai"), `data_input_sintetis_1.xlsx` (row-oriented, but with real
-  canonical varietas names so schema-matching output is directly
-  eyeballable), `sample_transposed_sintetis.xlsx` (synthetic — no real
-  transposed-format sample ever surfaced, so one was fabricated from the
-  template's own labels with deliberately messy injected values, per
-  `DESIGN_DECISIONS.md` (d)).
-- **`data/gold/`** — generated by `eval/review_schema_matching.py`; each
-  file is one run's schema-matching output ready for a human reviewer to
-  fill in `gold_row`/`is_correct`/`catatan`.
-- **`data/review/manual_review_queue.jsonl`** — append-only event log of
-  every `SchemaMapping` that needed human attention (NULL target or
-  below-threshold confidence). "Current" state of an item is always its
-  *latest* line by `item_id` (enqueue/approve/revise each append a new
-  line rather than mutating in place).
-- **`data/.chroma/`** — ChromaDB's on-disk persistence for the canonical-row
-  embedding index (gitignored, rebuilt automatically if missing/stale).
+| Modul | Tanggung jawab |
+|---|---|
+| `schema/canonical.py` | Memuat label/contoh, lookup domain/alias, membuat ID dan hash template |
+| `schema/contracts.py` | Validasi `SchemaMapping`, `VisionResult`, `ImageMetadata` |
+| `schema/state.py` | `GlobalState`, struktur state graf |
+| `schema/row_domains.yaml` | Domain berdasarkan label, bukan prediksi LLM |
+| `schema/row_aliases.yaml` | Alias opsional untuk representasi retrieval; bukan file tidak terpakai |
+| `agents/schema_matching/source_parsing.py` | Dua parser dan `ParsedAttribute`, menjaga posisi nilai terhadap varietas |
+| `agents/schema_matching/anchor.py` | Deteksi kolom identitas varietas |
+| `agents/schema_matching/indexing.py` | Model embedding, persistent client, koleksi, reindex |
+| `agents/schema_matching/retrieval.py` | Profil atribut, deteksi tipe heuristik, top-k kandidat |
+| `agents/schema_matching/reranking.py` | Prompt pemilihan kandidat/NULL, pemanggilan provider terstruktur |
+| `agents/schema_matching/normalize.py` | Pembersihan notasi dan pencocokan vocabulary konservatif |
+| `agents/schema_matching/review_queue.py` | Event log enqueue/approve/revise serta patch error trace |
+| `agents/drive_crawler.py` | Autentikasi service account, normalisasi folder ID, pagination dan filter MIME |
+| `agents/vision_classification.py` | Deskripsi varietas, petunjuk filename, download citra, klasifikasi/consensus |
+| `agents/tabular_update.py` | Penulisan URL citra tanpa menambah kolom varietas |
+| `llm/providers.py`, `llm/vision_providers.py` | Klien provider melalui instructor dan penanganan fallback |
+| `reliability/retry.py`, `rate_limit.py` | Backoff dan pembatas permintaan opsional |
+| `reliability/verifier.py`, `wrappers.py` | Validasi ulang, pemanggilan aman, pencatatan error |
+| `orchestrator/graph.py` | Graf stub, routing, penyimpanan dan resume checkpoint |
+| `ui/app.py` | Upload, parameter pengguna, file sementara, pemanggilan pipeline |
+| `ui/pipeline_runner.py` | Integrasi agen nyata yang dipakai UI |
+| `ui/output_builder.py` | Pengelompokan nilai, konstruksi workbook, tabel preview |
+| `ui/state.py` | Akses session state untuk hasil, log, input terakhir, status berjalan |
+| `ui/pages/2_Progress.py` | Status agen, error trace, log run |
+| `ui/pages/3_Hasil.py` | Inspeksi hasil/reasoning, debugger stub, download Excel |
 
-#### `src/schema/` — Layer 1
+## 5. Input dan skema kanonik
 
-- **`canonical.py`** — `CanonicalRow` (frozen dataclass: `id`, `label`,
-  `domain`, `contoh_nilai`, `alt_labels`, with a `serialize()` method used
-  as the ChromaDB document text) and `CanonicalSchema` (the full row list
-  plus a `template_hash` used for drift detection, and `varietas`/`cells`
-  fields for the *current run's* data — starting empty, never the
-  template's own 10). `CanonicalSchema.from_template()` is the standard
-  entry point: reads `Sheet1`, derives labels + example values, looks up
-  each row's domain from `row_domains.yaml` (warns and marks
-  `"unassigned"` if a label has none), and computes the template hash from
-  the `(position, label)` sequence.
-- **`contracts.py`** — the three Pydantic v2 contracts. `SchemaMapping`
-  validates `target_canonical_row` dynamically against whatever rows the
-  *currently loaded* `CanonicalSchema` has (never a hardcoded `Literal`),
-  and derives `target_domain` as a `computed_field` — the LLM is never
-  asked for domain directly. `VisionResult` and `ImageMetadata` are the
-  vision-agent and Drive-metadata shapes.
-- **`state.py`** — `GlobalState(TypedDict, total=False)`, the shared state
-  shape threaded through `src/orchestrator/graph.py`'s LangGraph nodes.
-- **`row_domains.yaml`** — the single source of truth for row → domain;
-  matched by label text, never row number, so it survives template edits.
-- **`row_aliases.yaml`** — user-maintained skeleton for alternate labels a
-  source spreadsheet might use for a canonical row (optional; empty file
-  is handled gracefully).
+### Template
 
-#### `src/agents/schema_matching/` — Fase 3, one file per sub-step
+`data/canonical/template_kanonik.xlsx` menggunakan `Sheet1`, dengan header pada baris pertama: `Nomor`, `Karakter`, lalu kolom varietas referensi. Berdasarkan snapshot profiling, template memiliki 60 karakter, enam domain, dan sepuluh varietas referensi. Angka ini bukan konstanta yang boleh di-hardcode.
 
-- **`indexing.py`** — embeds every canonical row's `serialize()` text with
-  `paraphrase-multilingual-MiniLM-L12-v2` and upserts into a ChromaDB
-  collection (cosine distance). `ensure_indexed()` is idempotent: a no-op
-  if the collection already matches the current template's row count +
-  hash + id set, otherwise a full rebuild (never a partial upsert, since
-  row ids are positional and could otherwise leave stale trailing ids
-  after a template shrink).
-- **`retrieval.py`** — builds a query from an attribute's name + structural
-  context + up to 10 sample values + a heuristically detected data type
-  (`detect_data_type`: ratio of numeric-looking values, else short/small-
-  vocabulary → categorical, else textual), then returns the top-k
-  (5–10, default 8) nearest canonical rows by cosine distance.
-- **`reranking.py`** — one LLM call (via `instructor`, defaulting to
-  `call_with_fallback`) that picks exactly one of the retrieved candidates
-  or `NULL`, producing a validated `SchemaMapping`. The candidate list and
-  system prompt are built here; the actual network call is injected so
-  tests never need real network access.
-- **`anchor.py`** — for row-oriented sources only: embeds each candidate
-  **column header alone** (deliberately not blended with sample values —
-  see the module's own docstring for the empirical reason this backfired)
-  and ranks cosine similarity against reference phrases for "varietas
-  cabai / aksesi". `DEFAULT_THRESHOLD = 0.7`. Below threshold → escalate,
-  never guess. Transposed sources skip this (`status="not_required"`).
-- **`review_queue.py`** — `needs_review()` (NULL target or below-threshold
-  confidence) and the append-only JSONL queue (`enqueue`/`approve`/
-  `revise`/`list_pending`). `process_mapping()` is the one-call convenience
-  an orchestrator node/UI runner uses: enqueue if needed, return the
-  `error_trace` patch explaining why.
-- **`normalize.py`** — deterministic, conservative notation cleanup (never
-  touches botanical meaning): empty-token detection, decimal comma → dot,
-  range dash → `"--"`, multi-value separator → `"; "`, whitespace
-  collapse, then case-insensitive exact-match snapping to the target row's
-  own `contoh_nilai` vocabulary. A value that "looks numeric" but doesn't
-  parse cleanly is left untouched with a trace note — never guessed.
-- **`source_parsing.py`** — pure I/O, shared by both `eval/` and `src/ui/`.
-  `ParsedAttribute(attribute_name, structural_context, row_values)` keeps
-  `row_values` positionally aligned across every attribute from the same
-  parse call, which is what lets a later step zip an attribute's values
-  against the anchor column's (or the transposed header's) values to know
-  which varietas each value belongs to. `load_row_oriented_columns()`
-  handles the two-row hierarchical header (forward-filled section row +
-  real field row); `load_transposed_rows()` finds the header row (first
-  row whose first cell is `"Karakter"`) and returns `(attributes,
-  variety_names)`.
+- Loader mengambil baris dengan `Nomor` dan label karakter tidak kosong.
+- ID `r_1 ... r_N` mengikuti urutan pemuatan; ID bukan identitas stabil lintas perubahan urutan template.
+- Domain dan alias dihubungkan melalui teks label yang di-trim.
+- Domain saat ini: `vegetatif`, `daun`, `bunga`, `buah`, `biji`, `lokasi`.
+- Label `Lokasi` menampung informasi lokasi; `Gambar Daun/Batang/Buah/Bunga` untuk URL citra. Domain `Gambar Batang` adalah `vegetatif`.
+- Varietas referensi digunakan untuk contoh nilai dan pengetahuan vision, bukan otomatis menjadi kolom output.
+- Loader, output builder, dan penulis sel belum sepenuhnya bebas asumsi tata letak: pertahankan `Sheet1`, kolom A/B, dan baris karakter berurutan tanpa celah untuk output yang konsisten.
 
-#### `src/agents/` — the rest (Fase 4–6)
+### Format row-oriented
 
-- **`drive_crawler.py`** — read-only service-account auth, lists direct
-  children only of the target folder (`'{folder_id}' in parents` — never
-  recurses; a stray subfolder is skipped, not walked into), filters to
-  `image/*` MIME types, paginates automatically. `normalize_folder_id()`
-  accepts either a bare id or a pasted Drive share URL.
-- **`vision_classification.py`** — `VisionSession` reads the template's own
-  filled-in varietas columns once (`load_variety_descriptions`) and reuses
-  the resulting knowledge-source text for every image classified through
-  that session (the practical meaning of "prompt caching" here — see the
-  module docstring for why Gemini's native server-side context cache isn't
-  used instead: it isn't reachable through the OpenAI-compatible bridge
-  `instructor` uses, and a consistent provider pattern across the whole
-  project was preferred over one exception). Filename text is only ever an
-  auxiliary hint fed into the prompt — nothing in this module inspects the
-  model's output and overrides it based on filename after the fact.
-  Optional `consensus=True` mode adds a second voter (Qwen2.5-VL) and
-  reconciles agreement/disagreement (`_combine_consensus`).
-- **`tabular_update.py`** — the only agent module with **no LLM call**.
-  Writes at most one cell per call: the intersection of the `Gambar *` row
-  matching `VisionResult.identified_part` and the column matching
-  `matched_variety`. Only `classification_status == "KNOWN"` is ever
-  written; `OTHER`/`UNCERTAIN` are surfaced via `error_trace` instead. If
-  the matched varietas doesn't correspond to an existing column, the
-  update is refused (no column is ever silently added) and reported via
-  `TabularUpdateResult`, never raised as an exception (an unmatched
-  variety/row is an expected, everyday outcome, not a bug). Repeated
-  references to the same cell are appended (`"; "` separator) and
-  deduplicated, matching `normalize.py`'s convention.
+Contoh: `data/samples/data_input.xlsx` dan `data_input_sintetis_1.xlsx`.
 
-#### `src/llm/` — cross-cutting provider abstraction
+- Baris 1: header kelompok atau header atribut mandiri.
+- Baris 2: nama field dalam kelompok; bila kosong, parser memakai teks asli baris 1 pada kolom tersebut.
+- Data mulai baris 3. Spreadsheet satu baris header belum didukung sebagai format umum.
+- Kolom identitas varietas dapat berpindah posisi; anchor detector memilihnya dari nama header.
+- Data beberapa observasi dengan nama varietas sama digabung; bukan dihitung rata-ratanya.
 
-- **`providers.py`** — `call_with_fallback()`: Groq (`llama-3.3-70b-versatile`)
-  first, then local Ollama (`llama3.1:8b`) if Groq raises for any reason.
-  Both go through `instructor` for constrained decoding. `LLMCallError` if
-  both fail. `.env` is loaded once at import (not per-call), so a
-  caller/test that deletes an env var doesn't get it silently repopulated.
-- **`vision_providers.py`** — `call_gemini()`: the always-used primary,
-  no fallback of its own (per the brief). `call_second_voter()`: OpenRouter
-  Qwen2.5-VL-72B → local Ollama Qwen2.5-VL-7B, used only when
-  `VisionSession(consensus=True)`. `VisionCallError` normalizes every
-  failure mode to one exception type.
+Contoh nyata `data_input.xlsx` berisi lokasi, koordinat, fisiologi, tanah, dan mikroklimat. Banyak atribut tersebut tidak memiliki padanan karakter morfologi di template; hasil `NULL` tidak otomatis berarti bug. Sampel sintetis merupakan bahan pengujian, bukan bukti akurasi pada data lapangan.
 
-#### `src/orchestrator/` — Layer 4, the LangGraph graph
+### Format transposed
 
-- **`graph.py`** — `build_graph()` assembles a `StateGraph(GlobalState)`
-  with stub nodes (`schema_matching → drive_crawler →
-  vision_classification → [conditional: retry/manual_review/continue] →
-  tabular_update → finalization`), a real SQLite-backed checkpointer
-  (`_sqlite_checkpointer`, with an explicit allow-list of contract types
-  the msgpack serializer is permitted to (de)serialize), and `run_pipeline`
-  / `resume_pipeline` entry points for a fresh run vs. continuing an
-  interrupted one. `route_after_vision` is a genuine conditional edge —
-  routes by `error_trace` length and the last classification's confidence,
-  never by re-running a model "to see if it feels ok". See §4's note: this
-  module's nodes are still stubs; the real agent wiring for a UI request
-  lives in `src/ui/pipeline_runner.py` instead.
+Contoh: `data/samples/sample_transposed_sintetis.xlsx`.
 
-#### `src/reliability/` — Layer 4, cross-cutting robustness
+- Parser mencari baris yang sel pertamanya sama persis dengan `Karakter` setelah trim.
+- Sel berikutnya adalah nama varietas; atribut dan nilainya berada pada baris-baris setelah header.
+- Boleh ada judul sebelum header. Jangan sisipkan kolom varietas kosong di tengah header karena parser memadatkan nama tetapi mengambil nilai berdasarkan posisi.
+- Template kanonik dengan `Nomor` di kolom pertama **tidak langsung cocok** sebagai input parser transposed ini.
 
-- **`retry.py`** — `with_retry()` (decorator factory) / `run_with_retry()`
-  (plain-call form) wrap a callable with `tenacity` exponential backoff,
-  filtered to specific transient exception types only — deliberately *not*
-  for contract/validation failures, which need a different remedy (revise,
-  not retry-unchanged).
-- **`rate_limit.py`** — `RateLimiter` wraps `aiolimiter.AsyncLimiter` behind
-  one persistent event loop per instance (`acquire_sync()`), so every
-  currently-synchronous provider call site can still respect a token-bucket
-  rate limit without needing `asyncio.run()` per call.
-- **`verifier.py`** — the generic Verifier/Critic: `verify_with_revision()`
-  calls a zero-arg closure, and on a revisable exception (contract
-  violation), calls it again up to `max_revisions` times before giving up.
-  Deliberately state-schema-agnostic (`AgentState = MutableMapping[str,
-  Any]`, **not** `GlobalState`) — this is the fix for a real bug where
-  LangGraph inspects a node/edge callable's *own* parameter annotation to
-  decide which state keys it can see, silently stripping any key the
-  annotated type doesn't declare. Also exposes `make_agent_node` /
-  `make_verifier_node` / `make_verifier_router` so the same logic is
-  directly usable as real LangGraph nodes+router (proven in
-  `tests/test_verifier.py` by building and running an actual compiled
-  graph through them, not just calling the plain function).
-- **`wrappers.py`** — where retry + rate-limit + verify-revise actually get
-  composed around the two real network-calling agents:
-  `safe_classify_image` (download retried but never revised; classification
-  call retried on `VisionCallError`, revised on contract failure; a
-  successful `UNCERTAIN` result is still returned but flagged) and
-  `safe_rerank` (LLM call retried on `LLMCallError`, revised on contract
-  failure; delegates NULL/low-confidence handling to
-  `review_queue.process_mapping` rather than reimplementing it). Both
-  `VISION_REVISABLE_EXCEPTIONS` and `SCHEMA_MATCHING_REVISABLE_EXCEPTIONS`
-  include the provider's own error type (`VisionCallError`/`LLMCallError`)
-  specifically because an *exhausted* `run_with_retry` re-raises that same
-  exception, which must still be caught by the *outer* revise loop or it
-  crashes the whole pipeline run over one attribute/image — a real bug hit
-  against an exhausted Groq daily quota, not a hypothetical, and now
-  covered by regression tests.
+Format dipilih pengguna; aplikasi tidak otomatis menentukan orientasi. Semua parser saat ini memakai `openpyxl`, bukan parser CSV. Formula dibaca sebagai nilai tersimpan (`data_only=True`), sehingga workbook perlu sudah memiliki hasil kalkulasi dari aplikasi spreadsheet.
 
-#### `src/ui/` — Layer 5, the Streamlit app
+### Normalisasi
 
-Run with `streamlit run src/ui/app.py`. Streamlit auto-discovers
-`src/ui/pages/*.py` as additional sidebar pages.
+`normalize()` merapikan token kosong, desimal koma, penulisan rentang menjadi `--`, pemisah multi-nilai menjadi `; `, dan spasi. Vocabulary matching memakai kecocokan tepat tanpa membedakan kapitalisasi terhadap contoh pada baris kanonik.
 
-- **`app.py`** (Page 1 — Input) — file uploader (`.xlsx`/`.csv`), a
-  `source_format` radio (row-oriented / transposed), an optional Drive
-  folder URL/ID text input, and a "▶️ Jalankan Pipeline" button that saves
-  the upload to a temp file, calls `run_pipeline_ui()` with a progress
-  callback streamed live via `st.empty()`, and stores the `PipelineRunResult`
-  into session state for the other two pages to read.
-- **`pages/2_Progress.py`** (Page 2 — Progres) — per-agent status metrics
-  (OK/GAGAL + the human-readable status string), a validation-status
-  summary (`error_trace` count, expandable detail), and the raw streaming
-  log from the last run.
-- **`pages/3_Hasil.py`** (Page 3 — Hasil) — the canonical-shaped result
-  table (`canonical_df`), the schema-mapping detail table with a
-  reasoning-inspector selectbox, the vision-classification results table
-  (if any images were processed), a checkpoint debugger (opens
-  `orchestrator/graph.py`'s SQLite checkpoints for the stub run's
-  thread_id), and the download button — which serves `workbook_bytes`
-  directly (the actual saved workbook from the real run, not a
-  freshly-rebuilt one).
-- **`state.py`** — typed accessors over `st.session_state` (`has_result`,
-  `get_result`/`set_result`, log helpers, running flag, last-inputs cache)
-  so the three page scripts never scatter raw string-keyed session-state
-  access.
-- **`pipeline_runner.py`** — see §4 above for the full step-by-step flow.
-  `PipelineRunResult` is the dataclass every page reads from:
-  `mapping_df`, `canonical_df`, `workbook_bytes`, `vision_rows`,
-  `agent_status`, `checkpoint_thread_id`, `error_trace`.
-- **`output_builder.py`** — `CanonicalOutputBuilder` accumulates
-  `(canonical_row, varietas) -> value` (appending with `"; "` rather than
-  overwriting when two different source attributes map to the same row/
-  varietas pair) and `build_workbook()` materializes it: loads a **copy**
-  of the template, fully clears old reference columns (must assign
-  `.value = None` directly — `cell(value=None)` is a documented openpyxl
-  no-op, not a clear), writes the source-derived headers + values.
-  `worksheet_to_dataframe()` reads the worksheet's actual current cell
-  contents back out — the single source of truth for what the UI shows,
-  post both schema-matching *and* vision writes. `values_by_variety()` /
-  `combine_multi_value()` are the position-alignment + multi-value-merge
-  helpers `pipeline_runner.py` uses per attribute.
+Tidak ada konversi satuan otomatis, penghitungan rerata, penerjemahan warna bebas ke kode RHS, atau penyusunan koordinat `Lokasi` secara terstruktur. Nilai ambigu dapat dipertahankan dengan catatan; runner UI saat ini mengambil `.value` tanpa meneruskan semua catatan normalisasi ke `error_trace`.
 
-#### `eval/`
+## 6. Kontrak data dan hasil
 
-- **`review_schema_matching.py`** — CLI: `python eval/review_schema_matching.py
-  [--file ...] [--format row-oriented|transposed] [--sheet ...] [--k ...]
-  [--output ...]`. Runs the real Fase 3a–3f pipeline over one sample file
-  and writes `data/gold/schema_matching_review.xlsx` sorted lowest-
-  confidence-first, with blank `gold_row`/`is_correct`/`catatan` columns
-  for a human reviewer to fill in. Never modifies/wraps/reimplements any
-  agent logic — a pure harness.
+| Struktur | Field penting dan arti |
+|---|---|
+| `ParsedAttribute` | `attribute_name`, `structural_context`, `row_values`; `sample_values` menyaring nilai `None` |
+| `SchemaMapping` | Atribut/konteks/format sumber, `target_canonical_row`, confidence `[0,1]`, reasoning, `normalization_required` |
+| `SchemaMapping.target_domain` | Field turunan dari target row; `None` jika target `NULL` |
+| `ImageMetadata` | `file_id`, `filename`, `mime_type`, `size`, `created_time`; tidak ada path hierarki |
+| `VisionResult` | `classification_status` (`KNOWN/OTHER/UNCERTAIN`), `matched_variety`, `identified_part` (`DAUN/BATANG/BUAH/BUNGA`), confidence, bukti visual |
+| `PipelineRunResult` | `mapping_df`, `canonical_df`, `workbook_bytes`, `vision_rows`, `agent_status`, `checkpoint_thread_id`, `error_trace` |
 
-#### `tests/`
+`SchemaMapping` memvalidasi row ID terhadap skema default yang di-cache. Setelah mengubah template dalam proses Python yang sama, panggil `clear_default_schema_cache()` atau restart aplikasi.
 
-One file per `src/` module (19 files, 250+ tests), run with `pytest` from
-the project root (`pyproject.toml` sets `pythonpath=["."]` and
-`testpaths=["tests"]`). Two custom markers: `indexing` (first run needs
-network to download the HF embedding model, cached after) and
-`llm_fallback_live` (attempts a real, expected-to-fail localhost
-connection to a non-running Ollama server, ~15–20s — exercises the
-fallback path's failure branch honestly rather than mocking it away).
-`test_ui.py` uses Streamlit's own `AppTest` framework to run each page
-script for real (not mocked), with a `default_timeout=30` because
-`app.py`'s import chain pulls in the full stack (`torch`, `transformers`,
-`langgraph`, `chromadb`, the Google API client, ...) which reliably
-exceeds `AppTest`'s default 3s timeout on a cold run.
+Workbook keluaran mempertahankan struktur template, mengisi varietas dari sumber, serta membiarkan sel tak terpetakan kosong. Beberapa nilai pada sel yang sama ditambahkan dengan `; `, bukan menimpa nilai lama. Foto disimpan sebagai URL `https://drive.google.com/file/d/<file_id>/view`, **bukan gambar tertanam**, dan aksesnya tetap tunduk pada izin Drive. Sheet tambahan template dapat tetap ikut tersalin.
 
-## 8. Cross-cutting conventions worth knowing before touching this code
+Preview dibentuk dari worksheet yang sudah mengalami penulisan tabular dan vision. Unduhan memakai bytes workbook tersebut. Hasil UI disimpan dalam session state; tidak otomatis disimpan sebagai file hasil permanen pada server.
 
-These are enforced by `CLAUDE.md` and consistently followed everywhere:
+## 7. Instalasi dan konfigurasi
 
-- **Never hardcode N** (the canonical row count). Every place that needs it
-  reads `len(CanonicalSchema.from_template().rows)` (currently 60) at
-  runtime.
-- **Match canonical rows by label text (trimmed), never row number/index.**
-  Row order and count can change when the user edits the template; only
-  the label is a stable key.
-- **Domain is looked up, never predicted.** Every domain reference goes
-  through `row_domains.yaml`; the valid domain set is derived from that
-  file's unique values, never a hardcoded enum.
-- **`data/` files are inputs.** Anything under `data/` except
-  `data/gold/`, `data/review/`, and `data/.chroma/` is read-only from
-  code's perspective — read it, never overwrite it without an explicit,
-  user-approved reason. `output_builder.build_workbook()` always loads a
-  fresh **copy** of the template rather than mutating the file on disk.
-- **`"; "` is the one multi-value separator**, used consistently by
-  `normalize.py`, `tabular_update.py`, and `output_builder.py` — chosen
-  once, reused everywhere, rather than each module inventing its own.
-- **`load_dotenv()` runs once, at each provider module's import time**, not
-  inside the functions that use the env vars — so a caller/test that
-  clears an env var for a specific test doesn't get it silently
-  repopulated by a later call into the same module.
-- **A value/mapping/classification that isn't confidently resolvable is
-  never guessed.** It's either left exactly as given with a trace note
-  (`normalize.py`), routed to the Manual Review Queue
-  (`review_queue.py`), or simply not written to a cell
-  (`tabular_update.py`) — the `error_trace` list is the one consistent
-  channel every one of these paths reports through.
-- **Big design decisions get raised explicitly**, not silently guessed —
-  see `docs/OPEN_QUESTIONS.md` for the historical record of exactly this
-  happening (domain semantics, Lokasi's shape, the synthetic transposed
-  fixture).
+### Dependensi
 
-## 9. Running things
+Proyek memakai Python dengan `pandas`, `openpyxl`, Pydantic, dotenv, YAML, LangGraph/SQLite checkpoint, ChromaDB, sentence-transformers, instructor, Groq/OpenAI-compatible clients, Google API/auth, tenacity, aiolimiter, Streamlit, dan pytest.
 
-### Setup
+`requirements.txt` belum mengunci versi dan `pyproject.toml` belum mendeklarasikan rentang Python yang diuji. Jangan menganggap instalasi pada semua versi Python otomatis kompatibel. `torchvision` dicantumkan sebagai kebutuhan kompatibilitas stack embedding yang pernah digunakan. Versi pasangan yang tertulis pada komentar lama adalah catatan lingkungan terdahulu, bukan hasil verifikasi ulang audit ini. `google-genai` tidak dipakai langsung; Gemini memakai klien OpenAI-compatible. `langchain-core` dapat terpasang transitif lewat LangGraph, tetapi tidak diimpor langsung oleh kode proyek.
 
-```bash
+### PowerShell
+
+```powershell
 python -m venv .venv
-source .venv/Scripts/activate      # Git Bash on Windows
-# or: .venv\Scripts\activate       # cmd/PowerShell
-pip install -r requirements.txt
-cp .env.example .env                # then fill in GROQ_API_KEY, GOOGLE_API_KEY, ...
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+if (-not (Test-Path -LiteralPath .env)) { Copy-Item -LiteralPath .env.example -Destination .env }
+.\.venv\Scripts\python.exe -m streamlit run src/ui/app.py
 ```
 
-Google Drive access additionally needs a service account — see
-[`DRIVE_SETUP.md`](DRIVE_SETUP.md) for the full walkthrough, then set
-`GOOGLE_DRIVE_CREDENTIALS_PATH` and `GOOGLE_DRIVE_FOLDER_ID` in `.env`.
+Jika environment sudah tersedia, gunakan terlebih dahulu; jangan membuat ulang atau menghapusnya tanpa kebutuhan. Pemanggilan interpreter eksplisit tidak memerlukan aktivasi `Activate.ps1`. Untuk shell POSIX, interpreter environment umumnya `.venv/bin/python`, bukan `.venv/Scripts/python.exe`.
 
-### Streamlit UI
+### Variabel lingkungan yang benar-benar dibaca kode
 
-```bash
-streamlit run src/ui/app.py
+| Variabel | Kegunaan | Default/perilaku |
+|---|---|---|
+| `GROQ_API_KEY` | Provider teks utama | Jika kosong/gagal, mencoba Ollama |
+| `OLLAMA_BASE_URL` | Endpoint fallback teks dan vision | `http://localhost:11434/v1` |
+| `GOOGLE_API_KEY` | Gemini vision | Dibutuhkan ketika klasifikasi foto dipanggil |
+| `GEMINI_MODEL_NAME` | Nama model vision Gemini | `gemini-flash-latest`, dibaca saat import |
+| `OPENROUTER_API_KEY` | Voter kedua consensus | Opsional; bukan fallback langsung Gemini |
+| `GOOGLE_DRIVE_CREDENTIALS_PATH` | JSON service account Drive | Wajib untuk akses Drive; bukan OAuth client JSON |
+| `GOOGLE_DRIVE_FOLDER_ID` | Folder default bagi `list_images()` | Boleh ID/URL; UI tetap perlu input folder secara eksplisit |
+
+`CHROMA_PERSIST_DIR` dari contoh konfigurasi lama **tidak dibaca kode** dan telah dihapus dari `.env.example`. Default sebenarnya adalah `data/.chroma/`, ditentukan di `indexing.py`. API indexing/retrieval menerima parameter lokasi penyimpanan; UI tidak menyediakan pengaturan lokasi tersebut.
+
+Nama model lain berupa konstanta kode: teks Groq `llama-3.3-70b-versatile`, teks Ollama `llama3.1:8b`, voter kedua OpenRouter `qwen/qwen2.5-vl-72b-instruct`, fallback vision Ollama `qwen2.5-vl:7b`. Embedding menggunakan `paraphrase-multilingual-MiniLM-L12-v2`.
+
+`.env` dimuat ketika modul provider/crawler diimpor. Restart aplikasi setelah mengganti konfigurasi. Lihat [DRIVE_SETUP.md](DRIVE_SETUP.md) untuk pengaturan akun dan akses folder.
+
+## 8. Penggunaan UI dan API Python
+
+### Alur pengguna
+
+1. Jalankan Streamlit, lalu buka alamat lokal yang ditampilkan terminal.
+2. Unggah `.xlsx` dan pilih orientasi yang sesuai.
+3. Kosongkan folder Drive untuk uji tabular, atau isi URL/ID folder berisi foto yang dapat diakses service account.
+4. Klik **Jalankan Pipeline**; log diperbarui pada halaman Input selama proses sinkron berjalan.
+5. Buka **Progres** untuk status dan log run. Halaman ini bukan monitor worker latar belakang.
+6. Buka **Hasil** untuk tabel kanonik, mapping/confidence/reasoning, dan klasifikasi citra.
+7. Periksa warning dan sel hasil, kemudian unduh Excel.
+
+Input upload disalin ke file sementara dan dihapus dalam blok `finally`. Tidak ada antrean job atau kemampuan resume proses UI. Setelah run gagal, hasil sukses sebelumnya dapat masih tersimpan dalam session state; jangan menganggap tabel lama berasal dari input yang baru gagal.
+
+### Memanggil runner dari Python
+
+Contoh berikut melakukan pemrosesan nyata dan dapat memanggil provider teks:
+
+```python
+from pathlib import Path
+from src.ui.pipeline_runner import run_pipeline_ui
+
+result = run_pipeline_ui(
+    Path("data/samples/sample_transposed_sintetis.xlsx"),
+    source_format="transposed",
+    drive_folder_id=None,
+    k=8,
+    max_images=5,
+    on_progress=print,
+)
+print(result.canonical_df)
+print(result.error_trace)
+# result.workbook_bytes adalah konten .xlsx untuk disimpan/diunduh.
 ```
 
-Upload a spreadsheet from `data/samples/` (or your own, matching one of
-the two supported shapes), pick the matching `source_format`, optionally
-paste a Drive folder URL, and run. Page 2 shows live/streamed progress and
-per-agent status; Page 3 shows the result table and the download button.
+`sheet_name` dapat disuplai melalui API Python. Consensus dapat digunakan melalui `VisionSession(consensus=True)` atau parameter klasifikasi, tetapi `run_pipeline_ui()` belum mengekspos mode tersebut.
 
-### Review harness (schema matching only, no UI)
+## 9. Review dan evaluasi
 
-```bash
-python eval/review_schema_matching.py
-python eval/review_schema_matching.py --file data/samples/sample_transposed_sintetis.xlsx --format transposed
+### Manual review queue
+
+Mapping masuk queue jika target `NULL` atau confidence `< 0.6`. File default: `data/review/manual_review_queue.jsonl`. Setiap enqueue/approve/revise menambahkan event baru; status terkini ditentukan oleh event terakhir untuk `item_id` yang sama.
+
+Inspeksi tanpa mengubah data:
+
+```python
+from src.agents.schema_matching.review_queue import list_pending
+
+for item in list_pending():
+    print(item.item_id, item.mapping.source_attribute, item.reason)
 ```
 
-### Tests
+API `approve(item_id, resolved_by=...)` menandai persetujuan, sedangkan `revise(item_id, corrected_mapping, resolved_by=...)` menyimpan koreksi berupa `SchemaMapping`. Keduanya mengubah queue, **bukan workbook yang sudah dibuat**. Belum ada replay hasil koreksi ke pipeline, dan UI belum menyediakan tombol untuk keduanya.
 
-```bash
-pytest
+Kegagalan provider tanpa mapping serta masalah vision dicatat melalui trace tertentu, bukan semuanya menjadi `ReviewItem`. Jangan menyamakan jumlah queue, jumlah error trace, dan jumlah kesalahan di output.
+
+### Harness evaluasi
+
+Gunakan nama output baru agar label manual historis tidak tertimpa:
+
+```powershell
+.\.venv\Scripts\python.exe eval/review_schema_matching.py --help
+.\.venv\Scripts\python.exe eval/review_schema_matching.py --file data/samples/data_input.xlsx --format row-oriented --output data/outputs/review_row_run01.xlsx
+.\.venv\Scripts\python.exe eval/review_schema_matching.py --file data/samples/sample_transposed_sintetis.xlsx --format transposed --output data/outputs/review_transposed_run01.xlsx
 ```
 
-First run of anything touching `indexing`/`retrieval`/`anchor` downloads
-the embedding model from Hugging Face (cached after); expect that one to
-be slower the first time.
+Ganti nama output jika file tersebut sudah ada. Argumen tersedia: `--file`, `--format`, `--sheet`, `--output`, `--k`. Default top-k adalah 8; retrieval membatasi k pada 5–10.
 
-## 10. Known external constraint
+Kolom laporan: `source_attribute`, `source_format`, `predicted_row`, `predicted_label`, `target_domain`, `confidence`, `normalization_required`, `reasoning`, serta kolom kosong `gold_row`, `is_correct`, `catatan`. Urutan confidence rendah lebih dahulu.
 
-Groq's free-tier daily token quota (100,000 TPD) can be exhausted during
-heavy testing/usage — this is expected to reset on Groq's own schedule and
-is not a code issue. The pipeline degrades gracefully when this happens
-(the affected attribute/image is skipped and logged to `error_trace`
-instead of crashing the whole run) — see `src/reliability/wrappers.py`'s
-module docstring and its regression tests in `tests/test_reliability_wrappers.py`
-for exactly how.
+**Peringatan:** menjalankan harness tanpa `--output` menulis ke `data/gold/schema_matching_review.xlsx` dan dapat menimpa anotasi. Dua workbook di `data/gold/` dipertahankan; belum diverifikasi ulang kelengkapan anotasinya. Tidak ada klaim precision/recall/F1 atau akurasi vision berdasarkan keberadaan file itu saja.
+
+## 10. Reliability dan checkpoint
+
+- Retry menggunakan tenacity, default tiga percobaan, backoff dasar 1 detik dan maksimum 10 detik.
+- Verifier mengizinkan dua revisi setelah percobaan pertama. Pada implementasi sekarang revisi memanggil closure lagi; bukan critic LLM terpisah yang menyusun umpan balik baru.
+- Provider/instructor memiliki mekanisme retry internal. Lapisan-lapisan tersebut dapat memperbesar total request dan waktu tunggu; tiga percobaan wrapper bukan batas total request eksternal.
+- `safe_rerank()` menangani mapping gagal/NULL/low-confidence. `safe_classify_image()` mencoba download, klasifikasi, dan mencatat kegagalan/`UNCERTAIN`.
+- `RateLimiter` tersedia melalui parameter `rate_limiter`, tetapi nilai default adalah `None` dan UI tidak mengaktifkannya.
+- Gemini utama tidak memiliki fallback sendiri. OpenRouter → Ollama hanya jalur voter kedua pada consensus.
+
+Graf stub berurutan `schema_matching -> drive_crawler -> vision_classification -> tabular_update -> finalization`, dengan routing vision retry/manual_review/continue. `run_pipeline()` dan `resume_pipeline()` memakai `thread_id` dan file SQLite yang sama. Default file adalah `data/.checkpoints/orchestrator.sqlite`.
+
+Checkpoint menyimpan state graf stub, bukan nilai intermediate dari agen nyata di UI. Kegagalan checkpoint di akhir runner masih dapat membuat UI melaporkan run gagal walaupun workbook sudah dibangun di memori. Jangan menghapus database ketika aplikasi sedang berjalan atau ketika riwayat debugger masih diperlukan.
+
+## 11. Pengujian dan troubleshooting
+
+### Perintah tes
+
+Tes lokal tanpa kelompok embedding/live fallback:
+
+```powershell
+.\.venv\Scripts\python.exe -B -m pytest -q -p no:cacheprovider -m "not indexing and not llm_fallback_live"
+```
+
+Tes embedding/retrieval/anchor (model harus sudah di-cache atau dapat diunduh):
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest -q -m indexing
+```
+
+Seluruh suite, termasuk percobaan koneksi localhost untuk fallback:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest -q
+```
+
+Marker `llm_fallback_live` menguji koneksi fallback nyata yang diharapkan gagal saat server Ollama tidak berjalan. Baca tes sebelum menjalankannya pada mesin dengan Ollama aktif. Sebagian besar tes agen memakai klien mock/injeksi; `test_ui.py` memakai `Streamlit AppTest`, bukan browser end-to-end dengan API produksi.
+
+Kelompok tes mencakup skema/kontrak, indexing/retrieval/anchor, reranking/normalisasi/review, Drive/vision/provider, penulisan output, retry/limiter/verifier/wrappers, graf/resume, dan halaman UI. Tes pengelompokan nilai/output ada di `test_output_builder.py`; belum ditemukan tes langsung untuk dua fungsi parser atau tes integrasi menyeluruh khusus `run_pipeline_ui()` yang memastikan semua wiring dan layanan nyata berfungsi bersama.
+
+Hasil verifikasi audit terkini dicatat di [CHECKPOINTS.md](CHECKPOINTS.md), terpisah dari pengujian layanan eksternal terdahulu.
+
+### Gejala umum
+
+| Gejala | Pemeriksaan/tindakan |
+|---|---|
+| `.venv` gagal menjalankan Python | Periksa instalasi Python asal dan izin eksekusi; environment virtual tidak portabel antarinstalasi/mesin |
+| `ModuleNotFoundError` | Pastikan pip dan Streamlit/pytest menggunakan interpreter `.venv` yang sama |
+| Upload CSV gagal | Simpan sebagai `.xlsx` dengan struktur §5; mengganti ekstensi saja tidak cukup |
+| Header `Karakter` tidak ditemukan | Untuk transposed, tempatkan teks tersebut di kolom pertama header |
+| Tidak ada varietas/output kosong | Periksa format dan log anchor; runner belum menghentikan run secara tegas ketika anchor tidak ditemukan |
+| Banyak `NULL` | Cocokkan cakupan atribut sumber dengan template; atribut mikroklimat belum tentu punya target |
+| Banyak sel kosong | Bisa karena tidak ada padanan, provider gagal, nilai kosong, atau identitas varietas hilang; lihat log dan mapping |
+| Foto tidak ditulis | Periksa `KNOWN`, kecocokan nama varietas output, label baris Gambar, dan log alasan penolakan |
+| Folder `.env` terisi tetapi vision dilewati | UI tidak memakai folder env sebagai fallback; isi URL/ID pada form |
+| Kredensial/Drive 404 | Periksa path JSON service account, ID folder, dan sharing Viewer; jangan tempel isi private key pada log |
+| Groq/Gemini quota/auth/model error | Periksa akses akun, kuota dan konfigurasi; audit ini tidak memverifikasi ketersediaan model secara live |
+| Embedding lambat/gagal di awal | Periksa cache model, akses unduhan, dan kompatibilitas dependensi embedding |
+| Mengubah alias/domain tidak mengubah retrieval | Rebuild indeks dengan `ensure_indexed(force=True)` dan restart/bersihkan cache kontrak |
+| Hasil lama muncul setelah run gagal | Hasil sukses sebelumnya masih di session state; cek log run dan mulai sesi baru bila perlu |
+
+## 12. Keterbatasan dan pekerjaan lanjutan
+
+Temuan berikut adalah batas implementasi, **bukan fitur yang diperbaiki dalam audit dokumentasi ini**:
+
+1. **Review belum memblokir penulisan.** Target valid dengan confidence rendah tetap dipakai UI; diperlukan gerbang persetujuan bila hasil harus hanya berisi mapping yang disetujui.
+2. **CSV dan parsing umum belum tersedia.** Uploader menawarkan CSV, tetapi parser hanya workbook dengan tata letak tertentu. Format, sheet, header berlubang, dan input malformed perlu validasi lebih ketat.
+3. **Anchor gagal belum menghentikan runner.** Tidak ada kolom varietas dapat menghasilkan output tanpa kolom data walaupun pemetaan tetap berjalan.
+4. **Koreksi manual belum diterapkan ulang.** Queue belum tersambung ke editor UI, replay workbook, atau identitas run yang lengkap.
+5. **Graf masih stub.** Checkpoint/resume tidak memulihkan proses agen nyata; routing stub tidak menjadi jaminan reliability alur UI.
+6. **Rate limiter belum dipasang pada runner.** Retry provider juga dapat mengulangi error konfigurasi/kuota yang tidak akan pulih hanya dengan retry.
+7. **Trace belum mencakup semua jalur.** Catatan normalisasi dan alasan sel vision tidak ditulis hanya sebagian tampil di log; label validasi UI tidak mewakili semua masalah data.
+8. **Vision berlandaskan varietas template.** Nama input bisa berbeda dari referensi; belum ada crosswalk spesies/varietas, dan tidak ada numeric confidence gate tambahan pada penulisan foto `KNOWN`.
+9. **Lokasi belum disusun sesuai rancangan komposit.** Pemetaan beberapa atribut ke `Lokasi` baru menggabungkan nilai, belum merakit nama/koordinat/elevasi dengan semantik khusus.
+10. **Deteksi perubahan indeks terbatas.** Hash hanya mencakup urutan/label; perubahan contoh nilai, alias, domain, atau model embedding tidak otomatis membuat indeks stale. Gunakan force reindex setelah perubahan tersebut.
+11. **Belum ada evaluasi kuantitatif lengkap.** Macro-F1 per domain, gold vision, dataset holdout, dan analisis error perlu dibangun; sampel sintetis tidak menggantikan validasi lapangan.
+12. **Belum siap produksi.** Belum tersedia lockfile dependensi, autentikasi aplikasi, job queue, isolation per pengguna untuk review/checkpoint, kebijakan retensi, deployment teruji, dan monitoring layanan.
+
+Prioritas lanjutan yang masuk akal: validasi input dan pemblokiran mapping bermasalah; review/replay dan trace; integrasi graf dengan agen nyata serta limiter; terakhir reproduksibilitas dan evaluasi terukur. Perubahan semantik penelitian tetap perlu keputusan pemilik proyek.
+
+## 13. Pemeliharaan, keamanan, dan pembersihan
+
+### Mengubah template
+
+1. Simpan salinan aman template sebelum mengedit.
+2. Pertahankan tata letak yang didukung, label unik, serta `Nomor`/`Karakter` pada sheet utama.
+3. Tambahkan atau sesuaikan label pada `row_domains.yaml` dan alias bila diperlukan.
+4. Restart aplikasi agar cache kontrak/deskripsi varietas diperbarui.
+5. Jalankan `ensure_indexed(force=True)` setelah perubahan contoh, domain, alias, atau model; ini mengganti indeks turunan, bukan template.
+6. Jalankan tes skema, indexing, dan output. Tinjau ulang gold/queue lama karena row ID dapat berubah saat urutan berubah.
+
+### Data dan rahasia
+
+- Jangan commit `.env`, JSON private key, isi upload sensitif, atau token provider.
+- Share folder Drive minimum Viewer kepada service account; program tidak membuat folder publik.
+- Provider teks menerima nama/konteks/contoh nilai; provider vision menerima bytes foto, filename, dan deskripsi template. Pastikan data memang boleh dikirim ke layanan tersebut.
+- Queue dan checkpoint dapat memuat input/path/reasoning. Jangan membagikannya sebagai log publik tanpa pemeriksaan.
+- `data/gold/` dapat mengandung anotasi manusia; jangan jalankan harness dengan output menimpa file tersebut secara tidak sengaja.
+- Output baru dapat ditempatkan di `data/outputs/` (diabaikan Git); folder ini dibuat ketika diperlukan oleh harness.
+
+### Kebijakan pembersihan audit
+
+| Target | Keputusan dan alasan |
+|---|---|
+| `.pytest_cache/` | Hapus cache tes yang dapat dibuat ulang |
+| `__pycache__/` di `src/`, `tests/`, `eval/` | Hapus bytecode turunan, bukan source |
+| `eval/metrics/` kosong | Hapus placeholder tanpa implementasi; Macro-F1 tetap dicatat sebagai rencana |
+| `.venv/` | Pertahankan agar instalasi dependensi tidak hilang |
+| `data/.chroma/` | Pertahankan karena dipakai retrieval; bukan folder tidak terpakai |
+| `data/.checkpoints/orchestrator.sqlite` | Pertahankan riwayat debugger; file ini sudah tracked sebelum audit |
+| `data/review/`, `data/gold/` | Pertahankan antrean/hasil review; bisa memuat kerja manusia |
+| Template, tiga sampel, YAML, `__init__.py` | Pertahankan input, fixture, konfigurasi, dan struktur paket |
+| Dokumentasi historis | Pertahankan keputusan/evidence; beri keterangan historis bila kondisi sudah berubah |
+| `.env`, `credentials.json` | Tidak dibaca isinya atau dihapus dalam audit ini |
+
+Cache yang dihapus tidak memerlukan pemulihan: Python/pytest akan membuatnya lagi. Folder metrics kosong dapat dibuat kembali ketika implementasi evaluasi ditambahkan. `.gitignore` mengabaikan checkpoint baru dan output lokal; pola ignore **tidak** menghentikan tracking database checkpoint yang sudah masuk Git. Melepas database itu dari tracking memerlukan perubahan indeks Git tersendiri dan tidak dilakukan pada audit ini.
+
+Lihat [CHECKPOINTS.md](CHECKPOINTS.md) untuk hasil pembersihan dan verifikasi aktual; lihat [DESIGN_DECISIONS.md](DESIGN_DECISIONS.md), [OPEN_QUESTIONS.md](OPEN_QUESTIONS.md), dan [PROFILING.md](PROFILING.md) untuk konteks penelitian.

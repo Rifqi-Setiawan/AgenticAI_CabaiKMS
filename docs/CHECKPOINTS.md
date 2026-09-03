@@ -5,6 +5,59 @@ Each entry is a snapshot at the time it was verified — re-run the
 referenced command if you need current state, don't assume this stays
 accurate as the underlying Drive folder / templates / samples change.
 
+## Audit dokumentasi dan pembersihan — 3 September 2026
+
+**Cakupan:** membaca implementasi, menyelaraskan dokumentasi dengan perilaku
+kode, memperbaiki contoh konfigurasi, dan membersihkan artefak turunan.
+Tidak mengubah logika aplikasi, template/dataset, isi gold/review, kredensial,
+atau database checkpoint. Tidak memanggil API Groq, Gemini, OpenRouter,
+atau Drive untuk verifikasi live baru.
+
+**Dokumentasi:** menambahkan `README.md`, menyusun ulang `PROJECT_GUIDE.md`
+dalam bahasa Indonesia, dan memberi konteks historis pada dokumen terdahulu.
+Panduan kini membedakan agen nyata di runner UI dari graf LangGraph stub,
+review queue dari persetujuan UI yang belum ada, serta harness manual dari
+Macro-F1 yang belum diimplementasikan. Keterbatasan CSV, low-confidence writes,
+anchor, trace, cache indeks, dan rate limiter dicatat tanpa mengubah kode.
+
+**Konfigurasi:** `.env.example` memuat variabel provider yang benar-benar
+dibaca, membatasi jenis kredensial ke service account, dan menghapus assignment
+`CHROMA_PERSIST_DIR` yang tidak berfungsi. `.gitignore` mencakup output lokal
+dan checkpoint baru. Database checkpoint yang sudah tracked tetap dipertahankan.
+
+**Pembersihan selesai:**
+
+- Menghapus 10 direktori `__pycache__` pada `src/`, `tests/`, dan `eval/`,
+  berisi total 52 file bytecode `.pyc`.
+- Menghapus `.pytest_cache/` beserta lima file cache pytest.
+- Menghapus direktori `eval/metrics/` yang dipastikan kosong.
+- Tidak menghapus modul source, `__init__.py`, alias YAML, sampel,
+  workbook review, `.venv/`, ChromaDB, SQLite, `.env`, atau `credentials.json`.
+
+Semua target penghapusan diperiksa agar berada di dalam workspace, dan
+cache bytecode diperiksa agar tidak mengandung source/direktori lain.
+Artefak cache dapat dibuat ulang oleh Python/pytest; folder kosong dapat
+dibuat kembali ketika metrik mulai diimplementasikan. Tidak ada anotasi/data
+pengguna yang perlu dipulihkan.
+
+**Verifikasi lokal:**
+
+```powershell
+.\.venv\Scripts\python.exe -B -m pytest -q -p no:cacheprovider -m "not indexing and not llm_fallback_live"
+```
+
+Hasil: **212 passed, 38 deselected**, durasi **112.58 detik**. Environment
+lokal mencatat Python **3.13.14** pada `.venv/pyvenv.cfg`. Tes dijalankan dengan
+izin eksekusi di luar sandbox karena interpreter virtual environment ditolak
+aksesnya dalam sandbox. Tidak ada pemasangan/upgrade dependensi.
+
+Tes ini dilakukan sebelum penghapusan cache; hanya dokumen/contoh konfigurasi
+yang diubah dan artefak regeneratif yang dihapus. `git diff --check` juga
+dijalankan untuk memeriksa whitespace patch. Kelompok `indexing` dan
+`llm_fallback_live` tidak dijalankan; hasil ini bukan validasi akurasi model
+atau konektivitas layanan eksternal. Lihat [PROJECT_GUIDE.md](PROJECT_GUIDE.md)
+untuk prosedur pengujian tambahan dan batasan integrasi saat ini.
+
 ## Fase 4 — Drive Crawler
 
 **Checkpoint:** "Kamu buat service account & share folder citra sampel;
