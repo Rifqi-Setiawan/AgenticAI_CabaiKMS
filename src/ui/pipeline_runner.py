@@ -34,6 +34,7 @@ from src.agents.drive_crawler import DriveCrawlerError, list_images, normalize_f
 from src.agents.schema_matching.anchor import AnchorCandidate, detect_anchor
 from src.agents.schema_matching.indexing import ensure_indexed
 from src.agents.schema_matching.normalize import normalize
+from src.agents.schema_matching.review_queue import decide_mapping_acceptance
 from src.agents.schema_matching.retrieval import DEFAULT_K, SourceAttributeProfile, retrieve
 from src.agents.schema_matching.source_parsing import load_row_oriented_columns, load_transposed_rows
 from src.agents.tabular_update import apply_vision_result_to_worksheet
@@ -54,6 +55,9 @@ MAPPING_COLUMNS = [
     "confidence",
     "normalization_required",
     "reasoning",
+    "acceptance_status",
+    "acceptance_reason",
+    "canonical_write",
 ]
 
 ProgressCallback = Callable[[str], None]
@@ -156,38 +160,48 @@ def run_pipeline_ui(
         on_progress(f"  schema_matching: '{attr.attribute_name}' — reranking...")
         mapping, patch = safe_rerank(profile, retrieved, state, source_format=source_format, schema=schema)
         state.update(patch)  # safe_* returns a patch; the caller applies it — see wrappers.py
+        acceptance = decide_mapping_acceptance(mapping, reliability_patch=patch)
 
-        if mapping is None:
+        target_row = (
+            schema.row_by_id(mapping.target_canonical_row)
+            if mapping is not None and mapping.target_canonical_row != NULL_ROW
+            else None
+        )
+        mapping_row = {
+            "source_attribute_display": attr.display_name,
+            "source_attribute": attr.attribute_name,
+            "source_context": attr.structural_context,
+            "predicted_row": mapping.target_canonical_row if mapping is not None else None,
+            "predicted_label": target_row.label if target_row else None,
+            "target_domain": mapping.target_domain if mapping is not None else None,
+            "confidence": mapping.confidence if mapping is not None else None,
+            "normalization_required": mapping.normalization_required if mapping is not None else None,
+            "reasoning": mapping.reasoning if mapping is not None else None,
+            "acceptance_status": acceptance.status.value,
+            "acceptance_reason": acceptance.reason,
+            "canonical_write": False,
+        }
+        mapping_rows.append(mapping_row)
+
+        # Selective-acceptance safety invariant: only AUTO_ACCEPT may cross
+        # this boundary into normalization or canonical mutation.
+        if not acceptance.allows_canonical_write:
             n_review += 1
-            on_progress(f"  schema_matching: '{attr.attribute_name}' -> GAGAL, diarahkan ke manual_review")
+            on_progress(
+                f"  schema_matching: '{attr.attribute_name}' -> {acceptance.status.value}, "
+                f"tidak ditulis: {acceptance.reason}"
+            )
             continue
 
-        if patch:
-            n_review += 1
-            on_progress(f"  schema_matching: '{attr.attribute_name}' -> ditandai untuk review (lihat error_trace)")
-        else:
-            on_progress(
-                f"  schema_matching: '{attr.attribute_name}' -> {mapping.target_canonical_row} "
-                f"(confidence={mapping.confidence:.2f})"
-            )
-
-        target_row = schema.row_by_id(mapping.target_canonical_row) if mapping.target_canonical_row != NULL_ROW else None
-        mapping_rows.append(
-            {
-                "source_attribute_display": attr.display_name,
-                "source_attribute": attr.attribute_name,
-                "source_context": attr.structural_context,
-                "predicted_row": mapping.target_canonical_row,
-                "predicted_label": target_row.label if target_row else None,
-                "target_domain": mapping.target_domain,
-                "confidence": mapping.confidence,
-                "normalization_required": mapping.normalization_required,
-                "reasoning": mapping.reasoning,
-            }
+        on_progress(
+            f"  schema_matching: '{attr.attribute_name}' -> {mapping.target_canonical_row} "
+            f"(confidence={mapping.confidence:.2f}, AUTO_ACCEPT)"
         )
 
         if target_row is None:
-            continue  # NULL/unmapped attribute — its canonical row(s) simply stay blank
+            # Defensive fail-closed guard. The decision function must never
+            # AUTO_ACCEPT an absent/NULL/unknown target.
+            continue
 
         grouped = values_by_variety(attr.row_values, position_to_variety)
         for variety_name, raw_values in grouped.items():
@@ -196,6 +210,8 @@ def run_pipeline_ui(
                 continue
             normalized = normalize(combined, target_row)
             builder.set_cell(target_row.id, variety_name, normalized.value)
+            if normalized.value is not None and str(normalized.value).strip():
+                mapping_row["canonical_write"] = True
 
     agent_status["schema_matching"] = f"selesai — {len(mapping_rows)} dipetakan, {n_review} ditandai untuk review"
 

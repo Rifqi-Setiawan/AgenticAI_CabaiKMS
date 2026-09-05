@@ -18,7 +18,9 @@ from __future__ import annotations
 
 import json
 import uuid
+from dataclasses import dataclass
 from datetime import datetime, timezone
+from enum import Enum
 from pathlib import Path
 from typing import Any, Literal
 
@@ -32,6 +34,24 @@ DEFAULT_QUEUE_PATH = PROJECT_ROOT / "data" / "review" / "manual_review_queue.jso
 DEFAULT_CONFIDENCE_THRESHOLD = 0.6
 
 ReviewStatus = Literal["pending", "approved", "revised"]
+
+
+class AcceptanceStatus(str, Enum):
+    """The only statuses the canonical write path is allowed to act on."""
+
+    AUTO_ACCEPT = "AUTO_ACCEPT"
+    REVIEW = "REVIEW"
+    NO_WRITE = "NO_WRITE"
+
+
+@dataclass(frozen=True)
+class MappingAcceptance:
+    status: AcceptanceStatus
+    reason: str
+
+    @property
+    def allows_canonical_write(self) -> bool:
+        return self.status is AcceptanceStatus.AUTO_ACCEPT
 
 
 class ReviewItem(BaseModel):
@@ -59,6 +79,43 @@ def _reason_for(mapping: SchemaMapping, confidence_threshold: float) -> str:
     return (
         f'atribut "{mapping.source_attribute}" -> {mapping.target_canonical_row} punya '
         f"confidence {mapping.confidence:.2f} di bawah ambang {confidence_threshold}"
+    )
+
+
+def decide_mapping_acceptance(
+    mapping: SchemaMapping | None,
+    *,
+    reliability_patch: dict[str, Any] | None = None,
+    confidence_threshold: float = DEFAULT_CONFIDENCE_THRESHOLD,
+) -> MappingAcceptance:
+    """Return the single, deterministic commit decision for one mapping.
+
+    Fail closed: an absent mapping, a mapping covered by the existing review
+    rules, or any reliability-layer patch cannot reach canonical mutation.
+    The patch check also protects callers when a wrapper adds a new review
+    condition without simultaneously changing this function.
+    """
+    trace = list((reliability_patch or {}).get("error_trace", []))
+    patch_reason = trace[-1] if trace else None
+
+    if mapping is None:
+        return MappingAcceptance(
+            AcceptanceStatus.NO_WRITE,
+            patch_reason or "reliability layer produced no valid schema mapping",
+        )
+    if needs_review(mapping, confidence_threshold=confidence_threshold):
+        return MappingAcceptance(
+            AcceptanceStatus.REVIEW,
+            patch_reason or _reason_for(mapping, confidence_threshold),
+        )
+    if reliability_patch:
+        return MappingAcceptance(
+            AcceptanceStatus.REVIEW,
+            patch_reason or "reliability layer requires manual review",
+        )
+    return MappingAcceptance(
+        AcceptanceStatus.AUTO_ACCEPT,
+        f"valid non-NULL mapping with confidence {mapping.confidence:.2f}",
     )
 
 
@@ -136,9 +193,10 @@ def process_mapping(
     """One call for an orchestrator node: enqueue `mapping` if it needs
     review and return the GlobalState patch recording why. Returns {} if no
     review was needed — nothing to patch."""
-    item = submit_for_review(mapping, confidence_threshold=confidence_threshold, queue_path=queue_path)
-    if item is None:
+    decision = decide_mapping_acceptance(mapping, confidence_threshold=confidence_threshold)
+    if decision.status is not AcceptanceStatus.REVIEW:
         return {}
+    item = enqueue(mapping, reason=decision.reason, queue_path=queue_path)
     return append_error_trace(state, item.reason)
 
 

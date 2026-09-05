@@ -41,6 +41,34 @@ class TestNeedsReview:
         assert rq.needs_review(mapping, confidence_threshold=0.8) is True
 
 
+class TestMappingAcceptance:
+    def test_confident_non_null_mapping_is_auto_accepted(self):
+        decision = rq.decide_mapping_acceptance(_mapping("r_1", confidence=0.95))
+        assert decision.status is rq.AcceptanceStatus.AUTO_ACCEPT
+        assert decision.allows_canonical_write is True
+
+    def test_low_confidence_mapping_requires_review(self):
+        decision = rq.decide_mapping_acceptance(_mapping("r_1", confidence=0.4))
+        assert decision.status is rq.AcceptanceStatus.REVIEW
+        assert decision.allows_canonical_write is False
+        assert "confidence" in decision.reason
+
+    def test_missing_mapping_fails_closed(self):
+        patch = {"error_trace": ["format invalid; manual_review"]}
+        decision = rq.decide_mapping_acceptance(None, reliability_patch=patch)
+        assert decision.status is rq.AcceptanceStatus.NO_WRITE
+        assert decision.allows_canonical_write is False
+        assert decision.reason == patch["error_trace"][0]
+
+    def test_reliability_patch_blocks_otherwise_confident_mapping(self):
+        decision = rq.decide_mapping_acceptance(
+            _mapping("r_1", confidence=0.95),
+            reliability_patch={"error_trace": ["explicit wrapper review"]},
+        )
+        assert decision.status is rq.AcceptanceStatus.REVIEW
+        assert decision.allows_canonical_write is False
+
+
 class TestSubmitForReview:
     def test_returns_none_when_no_review_needed(self, queue_path):
         mapping = _mapping("r_1", confidence=0.95)
@@ -76,6 +104,10 @@ class TestProcessMapping:
         assert "error_trace" in patch
         assert patch["error_trace"][0] == "prior issue"  # existing trace preserved
         assert len(patch["error_trace"]) == 2
+        pending = rq.list_pending(queue_path=queue_path)
+        assert len(pending) == 1
+        assert pending[0].mapping == mapping
+        assert pending[0].reason == patch["error_trace"][-1]
 
     def test_empty_patch_when_no_review_needed(self, queue_path):
         state = {"error_trace": []}
