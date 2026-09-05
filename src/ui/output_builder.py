@@ -42,22 +42,30 @@ class CanonicalOutputBuilder:
         if name not in self.variety_names:
             self.variety_names.append(name)
 
-    def set_cell(self, row_id: str, variety_name: str, value: str | None) -> None:
+    def set_cell(self, row_id: str, variety_name: str, value: str | None) -> bool:
         """If this cell already has a value — e.g. two different source
         attributes both mapped to the same canonical row for this variety —
         the new value is APPENDED with the project's multi-value separator
         rather than silently overwriting it, matching the same convention
-        src/agents/tabular_update.py already uses for image references."""
+        src/agents/tabular_update.py already uses for image references.
+
+        Returns ``True`` only when the accumulated canonical cell actually
+        changes. Callers use this acknowledgement to avoid false provenance
+        for blank or duplicate no-op writes.
+        """
         if value is None or str(value).strip() == "":
-            return
+            return False
         self.add_variety(variety_name)
         existing = self._cells.get((row_id, variety_name))
         if existing is None:
             self._cells[(row_id, variety_name)] = value
+            return True
         else:
             existing_parts = [p.strip() for p in existing.split(MULTI_VALUE_SEPARATOR)]
             if value not in existing_parts:
                 self._cells[(row_id, variety_name)] = existing + MULTI_VALUE_SEPARATOR + value
+                return True
+        return False
 
     def build_workbook(self, template_path: Path | str = DEFAULT_TEMPLATE_PATH) -> openpyxl.Workbook:
         wb = openpyxl.load_workbook(template_path)

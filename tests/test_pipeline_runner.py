@@ -1,4 +1,5 @@
 import io
+import hashlib
 
 import openpyxl
 import pytest
@@ -46,6 +47,29 @@ def test_flat_input_values_reach_downloaded_workbook(flat_observations, monkeypa
         assert_frame_equal(downloaded, result.canonical_df)
         assert "terna" not in result.mapping_df.source_attribute.tolist()
         assert result.mapping_df.source_attribute_display.tolist() == result.mapping_df.source_attribute.tolist()
+        assert len(result.provenance_records) == 5
+        assert len({record.run_id for record in result.provenance_records}) == 1
+        assert result.provenance_records[0].run_id == result.checkpoint_thread_id
+        height_records = [
+            record for record in result.provenance_records
+            if record.source_attribute == "Plant Height (cm)"
+        ]
+        assert {record.variety for record in height_records} == {"Domba", "Gendot"}
+        domba_height = next(record for record in height_records if record.variety == "Domba")
+        assert domba_height.source_file_name == flat_observations.name
+        assert domba_height.source_file_sha256 == hashlib.sha256(flat_observations.read_bytes()).hexdigest()
+        assert domba_height.source_sheet == "Observations"
+        assert domba_height.source_cells == []
+        assert domba_height.canonical_row_id == schema.row_by_label("tinggi tanaman").id
+        assert domba_height.canonical_key == "tinggi_tanaman"
+        assert domba_height.canonical_label == "tinggi tanaman"
+        assert domba_height.raw_value == "50 - 77 cm"
+        assert domba_height.normalized_value == "50--77 cm"
+        assert domba_height.acceptance_status == "AUTO_ACCEPT"
+        assert domba_height.canonical_write is True
+        assert domba_height.schema_version == schema.schema_version
+        assert domba_height.template_hash == schema.template_hash
+        assert domba_height.mapping_method is None
     finally:
         wb.close()
 
@@ -180,9 +204,11 @@ def test_review_mapping_never_normalizes_or_writes_but_later_attributes_do(
     assert "confidence" in review.acceptance_reason
     assert not any("terna" in str(value) or "perdu" in str(value) for value in normalized_raw_values)
     assert result.canonical_df.loc[result.canonical_df.Karakter == "habitus", "Domba"].item() == ""
+    assert not any(record.source_attribute == "Growth habit" for record in result.provenance_records)
     assert later.acceptance_status == "AUTO_ACCEPT"
     assert later.canonical_write == True  # noqa: E712
     assert result.canonical_df.loc[result.canonical_df.Karakter == "tinggi tanaman", "Domba"].item() == "50--77 cm"
+    assert "2 AUTO_ACCEPT, 1 REVIEW, 0 NO_WRITE" in result.agent_status["schema_matching"]
 
 
 def test_structurally_invalid_result_is_observable_and_does_not_block_next_attribute(
@@ -207,9 +233,11 @@ def test_structurally_invalid_result_is_observable_and_does_not_block_next_attri
     assert invalid.acceptance_status == "NO_WRITE"
     assert invalid.canonical_write == False  # noqa: E712
     assert "format invalid" in invalid.acceptance_reason
+    assert not any(record.source_attribute == "Sample_ID" for record in result.provenance_records)
     assert following.acceptance_status == "AUTO_ACCEPT"
     assert following.canonical_write == True  # noqa: E712
     assert result.canonical_df.loc[result.canonical_df.Karakter == "habitus", "Domba"].item() == "terna"
+    assert "2 AUTO_ACCEPT, 0 REVIEW, 1 NO_WRITE" in result.agent_status["schema_matching"]
 
 
 def test_exact_alias_shortcut_still_writes_without_review(tmp_path, monkeypatch):

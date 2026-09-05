@@ -159,7 +159,9 @@ project/
 `data/canonical/template_kanonik.xlsx` menggunakan `Sheet1`, dengan header pada baris pertama: `Nomor`, `Karakter`, lalu kolom varietas referensi. Berdasarkan snapshot profiling, template memiliki 60 karakter, enam domain, dan sepuluh varietas referensi. Angka ini bukan konstanta yang boleh di-hardcode.
 
 - Loader mengambil baris dengan `Nomor` dan label karakter tidak kosong.
-- ID `r_1 ... r_N` mengikuti urutan pemuatan; ID bukan identitas stabil lintas perubahan urutan template.
+- `CanonicalRow.id` (`r_1 ... r_N`) mengikuti posisi pemuatan dan dapat berubah jika template diurutkan ulang.
+- `CanonicalRow.canonical_key` berasal dari `src/schema/row_keys.yaml`; ini adalah identitas semantik stabil yang tidak bergantung pada posisi baris. `CanonicalRow.label` tetap menjadi teks tampilan dan pencocokan yang dapat dibaca manusia.
+- `schema_version` (`cabai-kms-canonical-v1`) menyatakan versi spesifikasi identitas kanonik, sedangkan `template_hash` adalah fingerprint tepat dari urutan/label template yang sedang dimuat. Reordering mengubah hash dan `r_N`, tetapi tidak mengubah canonical key.
 - Domain dan alias dihubungkan melalui teks label yang di-trim. Nama sumber yang sama persis dengan label/alias terkurasi dipetakan secara deterministik tanpa bergantung pada recall embedding atau keputusan LLM; contohnya `Seeds per mature fruit` → `jumlah biji/buah masak`.
 - Domain saat ini: `vegetatif`, `daun`, `bunga`, `buah`, `biji`, `lokasi`.
 - Label `Lokasi` menampung informasi lokasi; `Gambar Daun/Batang/Buah/Bunga` untuk URL citra. Domain `Gambar Batang` adalah `vegetatif`.
@@ -205,13 +207,16 @@ Tidak ada konversi satuan otomatis, penghitungan rerata, penerjemahan warna beba
 | `SchemaMapping.target_domain` | Field turunan dari target row; `None` jika target `NULL` |
 | `ImageMetadata` | `file_id`, `filename`, `mime_type`, `size`, `created_time`; tidak ada path hierarki |
 | `VisionResult` | `classification_status` (`KNOWN/OTHER/UNCERTAIN`), `matched_variety`, `identified_part` (`DAUN/BATANG/BUAH/BUNGA`), confidence, bukti visual |
-| `PipelineRunResult` | `mapping_df`, `canonical_df`, `workbook_bytes`, `vision_rows`, `agent_status`, `checkpoint_thread_id`, `error_trace` |
+| `CellProvenanceRecord` | Run dan fingerprint sumber, atribut/konteks, varietas, referensi kanonik posisi+stabil, nilai mentah+normal, keputusan acceptance, serta versi/hash skema untuk satu penulisan sel nyata |
+| `PipelineRunResult` | `mapping_df`, `canonical_df`, `workbook_bytes`, `vision_rows`, `provenance_records`, `agent_status`, `checkpoint_thread_id`, `error_trace` |
 
 `SchemaMapping` memvalidasi row ID terhadap skema default yang di-cache. Setelah mengubah template dalam proses Python yang sama, panggil `clear_default_schema_cache()` atau restart aplikasi.
 
 Workbook keluaran mempertahankan struktur template, mengisi varietas dari sumber, serta membiarkan sel tak terpetakan kosong. Beberapa nilai pada sel yang sama ditambahkan dengan `; `, bukan menimpa nilai lama. Foto disimpan sebagai URL `https://drive.google.com/file/d/<file_id>/view`, **bukan gambar tertanam**, dan aksesnya tetap tunduk pada izin Drive. Sheet tambahan template dapat tetap ikut tersalin.
 
 Preview dibentuk dari worksheet yang sudah mengalami penulisan tabular dan vision. Unduhan memakai bytes workbook tersebut. Hasil UI disimpan dalam session state; tidak otomatis disimpan sebagai file hasil permanen pada server.
+
+Provenance sel dibuat hanya setelah penulisan kanonik non-kosong benar-benar mengubah builder. `REVIEW`, `NO_WRITE`, nilai kosong, dan penulisan duplikat/no-op tidak menghasilkan provenance. Koordinat sel sumber belum tersedia dari parser saat ini, sehingga `source_cells` sengaja kosong sampai fase Source IR/Structure Understanding; sistem tidak mengarang alamat sel.
 
 ## 7. Instalasi dan konfigurasi
 

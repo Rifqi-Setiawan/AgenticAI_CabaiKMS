@@ -10,25 +10,25 @@ from src.schema.canonical import CanonicalRow
 # cells those values came from, including the template's own unresolved
 # messiness (e.g. row 37's "5 1," and row 50's "5  - " are real cell
 # contents, not invented edge cases).
-ROW_HABITUS = CanonicalRow(id="r_1", label="habitus", domain="vegetatif", contoh_nilai=("perdu", "terna"))
+ROW_HABITUS = CanonicalRow(id="r_1", canonical_key="habitus", label="habitus", domain="vegetatif", contoh_nilai=("perdu", "terna"))
 ROW_TINGGI = CanonicalRow(
-    id="r_2", label="tinggi tanaman", domain="vegetatif", contoh_nilai=("˃ 100 cm; 20 cm",)
+    id="r_2", canonical_key="tinggi_tanaman", label="tinggi tanaman", domain="vegetatif", contoh_nilai=("˃ 100 cm; 20 cm",)
 )
 ROW_PANJANG_DAUN = CanonicalRow(
-    id="r_8", label="panjang daun", domain="daun", contoh_nilai=("11 - 12 cm", "8,7 - 14,5 cm")
+    id="r_8", canonical_key="panjang_daun", label="panjang daun", domain="daun", contoh_nilai=("11 - 12 cm", "8,7 - 14,5 cm")
 )
 ROW_WARNA_DAUN = CanonicalRow(
-    id="r_7", label="warna daun", domain="daun", contoh_nilai=("green group 139 B", "green group 137 A")
+    id="r_7", canonical_key="warna_daun", label="warna daun", domain="daun", contoh_nilai=("green group 139 B", "green group 137 A")
 )
 ROW_PANJANG_BUAH_MUDA = CanonicalRow(
-    id="r_37", label="panjang buah muda", domain="buah", contoh_nilai=("5 1,", "8,2 - 11 cm")
+    id="r_37", canonical_key="panjang_buah_muda", label="panjang buah muda", domain="buah", contoh_nilai=("5 1,", "8,2 - 11 cm")
 )
-ROW_LOKASI = CanonicalRow(id="r_56", label="Lokasi", domain="lokasi", contoh_nilai=())
+ROW_LOKASI = CanonicalRow(id="r_56", canonical_key="lokasi", label="Lokasi", domain="lokasi", contoh_nilai=())
 ROW_KELILING_BUAH_MASAK = CanonicalRow(
-    id="r_50", label="keliling buah masak", domain="buah", contoh_nilai=("5  - ", "3,2 - 5,3 cm")
+    id="r_50", canonical_key="keliling_buah_masak", label="keliling buah masak", domain="buah", contoh_nilai=("5  - ", "3,2 - 5,3 cm")
 )
 ROW_JUMLAH_MAHKOTA = CanonicalRow(
-    id="r_22", label="jumlah mahkota bunga", domain="bunga", contoh_nilai=("7", "5 -'6")
+    id="r_22", canonical_key="jumlah_mahkota_bunga", label="jumlah mahkota bunga", domain="bunga", contoh_nilai=("7", "5 -'6")
 )
 
 

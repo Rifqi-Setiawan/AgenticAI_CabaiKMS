@@ -12,10 +12,10 @@
 # e.g. Gambar Daun -> daun, Gambar Buah -> buah. Gambar Batang -> vegetatif since
 # "batang" itself has no dedicated domain (it's one vegetatif row, #5).
 #
-# Matching key is `label` (the "Karakter" column text), NOT `row` number.
-# Labels are stable identifiers; row numbers shift if rows are inserted/reordered
-# in the template. `row` is recorded here only as a human cross-reference to the
-# template as of the date below and MUST NOT be relied on by code.
+# Matching key in this domain metadata is `label` (the "Karakter" column text),
+# NOT `row` number. Durable semantic identity lives separately in row_keys.yaml;
+# labels remain human-readable matching/display text. `row` is only a human
+# cross-reference and MUST NOT be relied on by code.
 #
 # N (row count) is READ DYNAMICALLY from the template at runtime — this file is
 # expected to grow past 60 entries whenever new canonical rows are added, and

@@ -14,10 +14,10 @@ from src.ui.output_builder import (
 
 def _tiny_schema() -> CanonicalSchema:
     rows = [
-        CanonicalRow(id="r_1", label="habitus", domain="vegetatif", contoh_nilai=("perdu", "terna")),
-        CanonicalRow(id="r_7", label="warna daun", domain="daun"),
-        CanonicalRow(id="r_56", label="Lokasi", domain="lokasi"),
-        CanonicalRow(id="r_57", label="Gambar Daun", domain="daun"),
+        CanonicalRow(id="r_1", canonical_key="habitus", label="habitus", domain="vegetatif", contoh_nilai=("perdu", "terna")),
+        CanonicalRow(id="r_7", canonical_key="warna_daun", label="warna daun", domain="daun"),
+        CanonicalRow(id="r_56", canonical_key="lokasi", label="Lokasi", domain="lokasi"),
+        CanonicalRow(id="r_57", canonical_key="gambar_daun", label="Gambar Daun", domain="daun"),
     ]
     return CanonicalSchema(rows=rows, template_hash="test-hash", template_path=None)  # type: ignore[arg-type]
 
@@ -60,13 +60,13 @@ class TestCombineMultiValue:
 class TestCanonicalOutputBuilderSetCell:
     def test_first_write_sets_value_and_registers_variety(self):
         builder = CanonicalOutputBuilder(schema=_tiny_schema())
-        builder.set_cell("r_1", "Gendot", "perdu")
+        assert builder.set_cell("r_1", "Gendot", "perdu") is True
         assert builder.variety_names == ["Gendot"]
 
     def test_none_or_blank_value_is_ignored(self):
         builder = CanonicalOutputBuilder(schema=_tiny_schema())
-        builder.set_cell("r_1", "Gendot", None)
-        builder.set_cell("r_1", "Gendot", "   ")
+        assert builder.set_cell("r_1", "Gendot", None) is False
+        assert builder.set_cell("r_1", "Gendot", "   ") is False
         assert builder.variety_names == []
 
     def test_second_distinct_write_to_same_cell_appends(self):
@@ -80,8 +80,8 @@ class TestCanonicalOutputBuilderSetCell:
 
     def test_rewriting_the_identical_value_does_not_duplicate(self):
         builder = CanonicalOutputBuilder(schema=_tiny_schema())
-        builder.set_cell("r_1", "Gendot", "perdu")
-        builder.set_cell("r_1", "Gendot", "perdu")
+        assert builder.set_cell("r_1", "Gendot", "perdu") is True
+        assert builder.set_cell("r_1", "Gendot", "perdu") is False
         assert builder._cells[("r_1", "Gendot")] == "perdu"
 
 
@@ -133,7 +133,7 @@ class TestBuildWorkbookAndDataframe:
         wb.save(template_path)
 
         schema = CanonicalSchema(
-            rows=[CanonicalRow(id="r_1", label="habitus", domain="vegetatif")],
+            rows=[CanonicalRow(id="r_1", canonical_key="habitus", label="habitus", domain="vegetatif")],
             template_hash="h", template_path=None,  # type: ignore[arg-type]
         )
         builder = CanonicalOutputBuilder(schema=schema)
@@ -160,8 +160,8 @@ class TestBuildWorkbookAndDataframe:
 
         schema = CanonicalSchema(
             rows=[
-                CanonicalRow(id="r_1", label="habitus", domain="vegetatif"),
-                CanonicalRow(id="r_7", label="warna daun", domain="daun"),
+                CanonicalRow(id="r_1", canonical_key="habitus", label="habitus", domain="vegetatif"),
+                CanonicalRow(id="r_7", canonical_key="warna_daun", label="warna daun", domain="daun"),
             ],
             template_hash="h", template_path=None,  # type: ignore[arg-type]
         )
@@ -190,7 +190,7 @@ class TestBuildWorkbookAndDataframe:
         wb.save(template_path)
 
         schema = CanonicalSchema(
-            rows=[CanonicalRow(id="r_1", label="Gambar Daun", domain="daun")],
+            rows=[CanonicalRow(id="r_1", canonical_key="gambar_daun", label="Gambar Daun", domain="daun")],
             template_hash="h", template_path=None,  # type: ignore[arg-type]
         )
         builder = CanonicalOutputBuilder(schema=schema, variety_names=["Gendot"])

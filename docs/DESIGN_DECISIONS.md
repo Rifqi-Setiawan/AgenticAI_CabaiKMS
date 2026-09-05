@@ -27,6 +27,29 @@ This mapping is recorded by **label text**, not row number, in
 `src/schema/row_domains.yaml`, so it survives the user inserting new rows
 later.
 
+## (a.1) Stable canonical identity and template position are separate
+
+**[FINAL, Phase 2]** `CanonicalRow.id` (`r_N`) is only the positional row
+identifier for the currently loaded template. Existing `SchemaMapping`,
+retrieval, review, and builder APIs continue to use it for compatibility,
+but it is not a durable research identity.
+
+`CanonicalRow.canonical_key` is the durable semantic identity, explicitly
+committed in `src/schema/row_keys.yaml`. Keys are unique lowercase snake_case,
+validated with exact template-label coverage, and remain unchanged when rows
+are reordered. Missing, duplicate, or invalid key metadata is a configuration
+error; runtime loading never invents fallback keys.
+
+`schema_version` identifies the intended canonical specification.
+`template_hash` independently fingerprints the exact ordered template labels,
+so row reordering may change the latter without changing canonical keys.
+
+Accepted non-empty schema-matching writes produce one structured cell
+provenance record after the output builder confirms a mutation. Review,
+no-write, blank, and duplicate/no-op attempts produce none. Exact source cell
+coordinates remain empty until a future Source IR/structure-understanding
+phase exposes them.
+
 ## (b) Domain = derived label, not a predicted field
 
 **[FINAL]** "Domain" is a category tag attached to each canonical row

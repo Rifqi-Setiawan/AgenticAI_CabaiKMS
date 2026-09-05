@@ -1,0 +1,63 @@
+schema_version: cabai-kms-canonical-v1
+
+rows:
+  - {label: habitus, canonical_key: habitus}
+  - {label: tinggi tanaman, canonical_key: tinggi_tanaman}
+  - {label: umur, canonical_key: umur}
+  - {label: adaptasi ekologi, canonical_key: adaptasi_ekologi}
+  - {label: batang, canonical_key: batang}
+  - {label: tekstur daun, canonical_key: tekstur_daun}
+  - {label: warna daun, canonical_key: warna_daun}
+  - {label: panjang daun, canonical_key: panjang_daun}
+  - {label: lebar daun, canonical_key: lebar_daun}
+  - {label: luas daun, canonical_key: luas_daun}
+  - {label: panjang tangkai daun, canonical_key: panjang_tangkai_daun}
+  - {label: warna pangkal tangkai daun bag atas, canonical_key: warna_pangkal_tangkai_daun_bag_atas}
+  - {label: warna pangkal tangkai daun bag bawah, canonical_key: warna_pangkal_tangkai_daun_bag_bawah}
+  - {label: bentuk ujung daun, canonical_key: bentuk_ujung_daun}
+  - {label: bentuk pangkal daun, canonical_key: bentuk_pangkal_daun}
+  - {label: bentuk daun, canonical_key: bentuk_daun}
+  - {label: tepi daun, canonical_key: tepi_daun}
+  - {label: kedudukan daun, canonical_key: kedudukan_daun}
+  - {label: warna mahkota, canonical_key: warna_mahkota}
+  - {label: panjang mahkota, canonical_key: panjang_mahkota}
+  - {label: lebar mahkota bunga, canonical_key: lebar_mahkota_bunga}
+  - {label: jumlah mahkota bunga, canonical_key: jumlah_mahkota_bunga}
+  - {label: bentuk bunga, canonical_key: bentuk_bunga}
+  - {label: warna tangkai putik, canonical_key: warna_tangkai_putik}
+  - {label: panjang putik, canonical_key: panjang_putik}
+  - {label: warna kepala sari, canonical_key: warna_kepala_sari}
+  - {label: warna tangkai sari, canonical_key: warna_tangkai_sari}
+  - {label: panjang benangsari, canonical_key: panjang_benangsari}
+  - {label: warna gagang bunga, canonical_key: warna_gagang_bunga}
+  - {label: panjang gagang bunga, canonical_key: panjang_gagang_bunga}
+  - {label: jumlah gagang bunga/ruas, canonical_key: jumlah_gagang_bunga_ruas}
+  - {label: posisi bunga, canonical_key: posisi_bunga}
+  - {label: bentuk kelopak bunga, canonical_key: bentuk_kelopak_bunga}
+  - {label: panjang kelopak bunga, canonical_key: panjang_kelopak_bunga}
+  - {label: warna kelopak bunga, canonical_key: warna_kelopak_bunga}
+  - {label: kedudukan kelopak bunga, canonical_key: kedudukan_kelopak_bunga}
+  - {label: panjang buah muda, canonical_key: panjang_buah_muda}
+  - {label: keliling buah muda, canonical_key: keliling_buah_muda}
+  - {label: panjang tangkai buah muda, canonical_key: panjang_tangkai_buah_muda}
+  - {label: panjang kelopak buah muda, canonical_key: panjang_kelopak_buah_muda}
+  - {label: keliling kelopak buah muda, canonical_key: keliling_kelopak_buah_muda}
+  - {label: bentuk kelopak buah muda, canonical_key: bentuk_kelopak_buah_muda}
+  - {label: bentuk buah, canonical_key: bentuk_buah}
+  - {label: "warna buah  muda", canonical_key: warna_buah_muda}
+  - {label: "warna buah  masak", canonical_key: warna_buah_masak}
+  - {label: posisi buah muda, canonical_key: posisi_buah_muda}
+  - {label: posisi buah masak, canonical_key: posisi_buah_masak}
+  - {label: panjang tangkai buah masak, canonical_key: panjang_tangkai_buah_masak}
+  - {label: panjang buah masak, canonical_key: panjang_buah_masak}
+  - {label: keliling buah masak, canonical_key: keliling_buah_masak}
+  - {label: panjang kelopak buah masak, canonical_key: panjang_kelopak_buah_masak}
+  - {label: keliling kelopak buah masak, canonical_key: keliling_kelopak_buah_masak}
+  - {label: bentuk ujung buah, canonical_key: bentuk_ujung_buah}
+  - {label: warna biji, canonical_key: warna_biji}
+  - {label: jumlah biji/buah masak, canonical_key: jumlah_biji_buah_masak}
+  - {label: Lokasi, canonical_key: lokasi}
+  - {label: Gambar Daun, canonical_key: gambar_daun}
+  - {label: Gambar Batang, canonical_key: gambar_batang}
+  - {label: Gambar Buah, canonical_key: gambar_buah}
+  - {label: Gambar Bunga, canonical_key: gambar_bunga}

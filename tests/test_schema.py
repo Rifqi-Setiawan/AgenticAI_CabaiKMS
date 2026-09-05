@@ -4,7 +4,11 @@ import openpyxl
 import pytest
 from pydantic import ValidationError
 
-from src.schema.canonical import DEFAULT_TEMPLATE_PATH, CanonicalSchema
+from src.schema.canonical import (
+    DEFAULT_TEMPLATE_PATH,
+    CanonicalMetadataError,
+    CanonicalSchema,
+)
 from src.schema.contracts import (
     ImageMetadata,
     SchemaMapping,
@@ -47,6 +51,12 @@ class TestCanonicalSchema:
     def test_row_ids_are_sequential_and_unique(self, schema: CanonicalSchema):
         expected = {f"r_{i}" for i in range(1, len(schema.rows) + 1)}
         assert schema.row_ids == expected
+
+    def test_stable_keys_and_schema_version_cover_every_loaded_row(self, schema: CanonicalSchema):
+        assert schema.schema_version == "cabai-kms-canonical-v1"
+        assert len(schema.row_keys) == len(schema.rows)
+        assert schema.row_by_key("tinggi_tanaman").label == "tinggi tanaman"
+        assert schema.row_by_label("tinggi tanaman").canonical_key == "tinggi_tanaman"
 
     def test_no_row_lacks_a_domain(self, schema: CanonicalSchema):
         # Fase 0 fully mapped every current row — this guards against a
@@ -182,6 +192,100 @@ class TestContracts:
         )
         assert meta.filename == "IMG_0001.jpg"
         assert not hasattr(meta, "relative_path")
+
+
+def _write_tiny_template(path, labels):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Sheet1"
+    ws.append(["Nomor", "Karakter"])
+    for number, label in enumerate(labels, start=1):
+        ws.append([number, label])
+    wb.save(path)
+    wb.close()
+
+
+def _write_yaml(path, text):
+    path.write_text(text, encoding="utf-8")
+
+
+def _load_tiny_schema(tmp_path, labels, keys_yaml):
+    template = tmp_path / "template.xlsx"
+    domains = tmp_path / "domains.yaml"
+    aliases = tmp_path / "aliases.yaml"
+    keys = tmp_path / "keys.yaml"
+    _write_tiny_template(template, labels)
+    _write_yaml(
+        domains,
+        "rows:\n" + "".join(f"  - label: {label}\n    domain: test\n" for label in labels),
+    )
+    _write_yaml(aliases, "rows: []\n")
+    _write_yaml(keys, keys_yaml)
+    return CanonicalSchema.from_template(
+        template,
+        row_domains_path=domains,
+        row_aliases_path=aliases,
+        row_keys_path=keys,
+    )
+
+
+class TestCanonicalKeyMetadata:
+    def test_canonical_key_survives_template_reordering(self, tmp_path):
+        keys = """schema_version: test-v1
+rows:
+  - {label: habitus, canonical_key: habitus}
+  - {label: tinggi tanaman, canonical_key: tinggi_tanaman}
+"""
+        first = _load_tiny_schema(tmp_path / "first", ["habitus", "tinggi tanaman"], keys)
+        second = _load_tiny_schema(tmp_path / "second", ["tinggi tanaman", "habitus"], keys)
+
+        assert first.row_by_key("tinggi_tanaman").id == "r_2"
+        assert second.row_by_key("tinggi_tanaman").id == "r_1"
+        assert first.row_by_label("tinggi tanaman").canonical_key == "tinggi_tanaman"
+        assert second.row_by_label("tinggi tanaman").canonical_key == "tinggi_tanaman"
+
+    @pytest.mark.parametrize(
+        "keys_yaml, match",
+        [
+            (
+                "schema_version: test-v1\nrows:\n  - {label: habitus, canonical_key: habitus}\n",
+                "missing labels",
+            ),
+            (
+                "schema_version: test-v1\nrows:\n"
+                "  - {label: habitus, canonical_key: same}\n"
+                "  - {label: tinggi tanaman, canonical_key: same}\n",
+                "duplicate canonical_key",
+            ),
+            (
+                "schema_version: test-v1\nrows:\n"
+                "  - {label: habitus, canonical_key: Habitus!}\n"
+                "  - {label: tinggi tanaman, canonical_key: tinggi_tanaman}\n",
+                "invalid canonical_key",
+            ),
+            (
+                "schema_version: test-v1\nrows:\n"
+                "  - {label: habitus, canonical_key: habitus}\n"
+                "  - {label: habitus, canonical_key: habitus_lain}\n",
+                "duplicate canonical metadata label",
+            ),
+        ],
+    )
+    def test_invalid_or_incomplete_metadata_fails_closed(self, tmp_path, keys_yaml, match):
+        with pytest.raises(CanonicalMetadataError, match=match):
+            _load_tiny_schema(tmp_path, ["habitus", "tinggi tanaman"], keys_yaml)
+
+    def test_successful_metadata_has_exact_full_coverage(self, tmp_path):
+        schema = _load_tiny_schema(
+            tmp_path,
+            ["habitus", "tinggi tanaman"],
+            "schema_version: test-v1\nrows:\n"
+            "  - {label: habitus, canonical_key: habitus}\n"
+            "  - {label: tinggi tanaman, canonical_key: tinggi_tanaman}\n",
+        )
+        assert schema.schema_version == "test-v1"
+        assert schema.row_keys == {"habitus", "tinggi_tanaman"}
 
 
 class TestGlobalState:

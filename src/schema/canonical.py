@@ -11,6 +11,7 @@ used as a source of `contoh_nilai` (example values) for prompting.
 from __future__ import annotations
 
 import hashlib
+import re
 import warnings
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -23,9 +24,15 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_TEMPLATE_PATH = PROJECT_ROOT / "data" / "canonical" / "template_kanonik.xlsx"
 DEFAULT_ROW_DOMAINS_PATH = Path(__file__).resolve().parent / "row_domains.yaml"
 DEFAULT_ROW_ALIASES_PATH = Path(__file__).resolve().parent / "row_aliases.yaml"
+DEFAULT_ROW_KEYS_PATH = Path(__file__).resolve().parent / "row_keys.yaml"
 
 UNASSIGNED_DOMAIN = "unassigned"
 SEPARATOR = " ⊕ "  # "⊕", explicit separator for rich-text row serialization
+CANONICAL_KEY_RE = re.compile(r"^[a-z][a-z0-9_]*$")
+
+
+class CanonicalMetadataError(ValueError):
+    """Canonical identity metadata is missing, ambiguous, or invalid."""
 
 
 def _load_label_keyed_yaml(path: Path, list_key: str, value_key: str) -> dict[str, Any]:
@@ -46,11 +53,18 @@ def _load_label_keyed_yaml(path: Path, list_key: str, value_key: str) -> dict[st
 
 @dataclass(frozen=True)
 class CanonicalRow:
-    id: str  # "r_1".."r_N", position in the template as of this load
-    label: str  # trimmed "Karakter" text — the stable matching key
+    id: str  # positional/template identifier; changes when rows are reordered
+    canonical_key: str  # durable semantic identity from row_keys.yaml
+    label: str  # trimmed human-readable display/matching label
     domain: str
     contoh_nilai: tuple[str, ...] = ()
     alt_labels: tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        if not CANONICAL_KEY_RE.fullmatch(self.canonical_key):
+            raise CanonicalMetadataError(
+                f"invalid canonical_key {self.canonical_key!r} for row {self.id!r}"
+            )
 
     def serialize(self) -> str:
         """repr(r) = label ⊕ domain ⊕ contoh_nilai ⊕ altLabels."""
@@ -64,8 +78,15 @@ class CanonicalSchema:
     rows: list[CanonicalRow]
     template_hash: str
     template_path: Path
+    # Synthetic/manual schemas may omit this; from_template() never does.
+    schema_version: str = "unspecified"
     varietas: list[str] = field(default_factory=list)  # V, starts empty
     cells: dict[tuple[str, str], Any] = field(default_factory=dict)  # D, starts empty
+
+    def __post_init__(self) -> None:
+        keys = [row.canonical_key for row in self.rows]
+        if len(keys) != len(set(keys)):
+            raise CanonicalMetadataError("CanonicalSchema rows contain duplicate canonical keys")
 
     # -- R: lookups -----------------------------------------------------
 
@@ -76,9 +97,16 @@ class CanonicalSchema:
         label = label.strip()
         return next((r for r in self.rows if r.label == label), None)
 
+    def row_by_key(self, canonical_key: str) -> CanonicalRow | None:
+        return next((r for r in self.rows if r.canonical_key == canonical_key), None)
+
     @property
     def row_ids(self) -> frozenset[str]:
         return frozenset(r.id for r in self.rows)
+
+    @property
+    def row_keys(self) -> frozenset[str]:
+        return frozenset(r.canonical_key for r in self.rows)
 
     @property
     def domains(self) -> frozenset[str]:
@@ -118,9 +146,11 @@ class CanonicalSchema:
         template_path: Path | str = DEFAULT_TEMPLATE_PATH,
         row_domains_path: Path | str = DEFAULT_ROW_DOMAINS_PATH,
         row_aliases_path: Path | str = DEFAULT_ROW_ALIASES_PATH,
+        row_keys_path: Path | str = DEFAULT_ROW_KEYS_PATH,
     ) -> CanonicalSchema:
         template_path = Path(template_path)
         labels, examples_by_label, template_hash = _read_template_labels(template_path)
+        schema_version, keys = _load_row_keys(Path(row_keys_path), labels)
 
         domains = _load_label_keyed_yaml(Path(row_domains_path), "rows", "domain")
         aliases = _load_label_keyed_yaml(Path(row_aliases_path), "rows", "alt_labels")
@@ -139,6 +169,7 @@ class CanonicalSchema:
             rows.append(
                 CanonicalRow(
                     id=f"r_{i}",
+                    canonical_key=keys[label],
                     label=label,
                     domain=domain,
                     contoh_nilai=tuple(examples_by_label.get(label, ())),
@@ -146,7 +177,64 @@ class CanonicalSchema:
                 )
             )
 
-        return cls(rows=rows, template_hash=template_hash, template_path=template_path)
+        return cls(
+            rows=rows,
+            schema_version=schema_version,
+            template_hash=template_hash,
+            template_path=template_path,
+        )
+
+
+def _load_row_keys(path: Path, template_labels: list[str]) -> tuple[str, dict[str, str]]:
+    """Load explicit stable identities and require exact template coverage."""
+    if not path.exists():
+        raise CanonicalMetadataError(f"canonical key metadata file not found: {path}")
+    with path.open(encoding="utf-8") as f:
+        data = yaml.safe_load(f) or {}
+
+    schema_version = data.get("schema_version")
+    if not isinstance(schema_version, str) or not schema_version.strip():
+        raise CanonicalMetadataError("row_keys.yaml must define a non-empty schema_version")
+    entries = data.get("rows")
+    if not isinstance(entries, list):
+        raise CanonicalMetadataError("row_keys.yaml must define rows as a list")
+
+    keys_by_label: dict[str, str] = {}
+    labels_seen: set[str] = set()
+    keys_seen: set[str] = set()
+    for index, entry in enumerate(entries, start=1):
+        if not isinstance(entry, dict):
+            raise CanonicalMetadataError(f"row_keys.yaml rows[{index}] must be a mapping")
+        label = str(entry.get("label", "")).strip()
+        key = str(entry.get("canonical_key", "")).strip()
+        if not label:
+            raise CanonicalMetadataError(f"row_keys.yaml rows[{index}] has an empty label")
+        if label in labels_seen:
+            raise CanonicalMetadataError(f"duplicate canonical metadata label: {label!r}")
+        if not CANONICAL_KEY_RE.fullmatch(key):
+            raise CanonicalMetadataError(
+                f"invalid canonical_key {key!r} for label {label!r}; "
+                "expected lowercase snake_case"
+            )
+        if key in keys_seen:
+            raise CanonicalMetadataError(f"duplicate canonical_key: {key!r}")
+        labels_seen.add(label)
+        keys_seen.add(key)
+        keys_by_label[label] = key
+
+    template_set = set(template_labels)
+    missing = template_set - labels_seen
+    extra = labels_seen - template_set
+    if missing or extra or len(template_labels) != len(template_set):
+        details = []
+        if missing:
+            details.append(f"missing labels: {sorted(missing)}")
+        if extra:
+            details.append(f"unknown labels: {sorted(extra)}")
+        if len(template_labels) != len(template_set):
+            details.append("template contains duplicate labels")
+        raise CanonicalMetadataError("canonical key metadata does not exactly cover template; " + "; ".join(details))
+    return schema_version.strip(), keys_by_label
 
 
 def _read_template_labels(
