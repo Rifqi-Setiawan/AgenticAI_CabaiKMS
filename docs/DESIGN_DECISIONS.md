@@ -47,8 +47,25 @@ so row reordering may change the latter without changing canonical keys.
 Accepted non-empty schema-matching writes produce one structured cell
 provenance record after the output builder confirms a mutation. Review,
 no-write, blank, and duplicate/no-op attempts produce none. Exact source cell
-coordinates remain empty until a future Source IR/structure-understanding
-phase exposes them.
+coordinates remain empty on the legacy pipeline path. Phase 4 now exposes
+them in a standalone Source IR, but that IR is not integrated into canonical
+writes yet.
+
+## (a.2) Observations, hypotheses, verification, and Source IR are separate
+
+**[FINAL, Phase 4]** `WorkbookProfile` contains deterministic observed workbook
+facts only. `StructureProposal` is a probabilistic structural hypothesis and is
+never trusted merely because model-reported confidence is high. Only a
+`RESOLVED` proposal that passes the deterministic geometric verifier becomes a
+`VerifiedStructure`; only that verified wrapper may be used to build Source IR.
+
+`SourceIR` is a deterministic, versioned machine-readable representation built
+from complete profile facts and verified coordinates. It preserves physical
+header coordinates, value coordinates, merged-anchor traceability, and blank
+logical positions. It performs no normalization or canonical schema mapping.
+`AMBIGUOUS` and `UNSUPPORTED` are valid abstention outcomes and produce no Source
+IR. `NEED_MORE_EVIDENCE` permits only bounded, validated, targeted range
+inspection rather than blind retries or whole-profile serialization.
 
 ## (b) Domain = derived label, not a predicted field
 

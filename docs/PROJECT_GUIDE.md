@@ -1,6 +1,6 @@
 # Panduan Lengkap CABAI-KMS Akuisisi
 
-**Audit implementasi: 3 September 2026.** Dokumen ini menjelaskan apa yang benar-benar tersedia pada kode saat audit. Nama model dan nilai default di sini adalah konfigurasi kode, bukan jaminan ketersediaan layanan eksternal. Catatan eksperimen Juli 2026 tetap disimpan sebagai riwayat.
+**Audit implementasi: 5 September 2026.** Dokumen ini menjelaskan apa yang benar-benar tersedia pada kode saat audit. Nama model dan nilai default di sini adalah konfigurasi kode, bukan jaminan ketersediaan layanan eksternal. Catatan eksperimen Juli 2026 tetap disimpan sebagai riwayat.
 
 ## Daftar isi
 
@@ -32,6 +32,10 @@ Ini adalah **prototipe penelitian**, bukan sistem produksi, API backend, atau pl
 |---|---|
 | Skema kanonik dan domain | Aktif; dibaca dari Excel dan YAML, jumlah baris dinamis |
 | Parsing spreadsheet | Aktif untuk dua bentuk `.xlsx` dengan batasan struktur pada §5 |
+| Workbook Structure Profiler | Tersedia secara standalone; deterministik, faktual, dan sparse-safe |
+| Structure Understanding Agent | Tersedia secara standalone; evidence ringkas, output Pydantic, dan retry evidence terarah yang dibatasi; belum dipakai pipeline UI |
+| Structure Verifier | Deterministik dan wajib lulus sebelum struktur boleh menjadi Source IR |
+| Source IR | Representasi deterministik dari struktur terverifikasi dengan koordinat sumber eksak; belum terhubung ke Schema Matching/UI |
 | Anchor varietas | Aktif, embedding header, ambang similarity `0.7` |
 | Retrieval | Aktif, indeks baris kanonik ChromaDB; default top-k `8` |
 | Reranking | Aktif, Groq dengan fallback Ollama; output Pydantic |
@@ -47,6 +51,21 @@ Ini adalah **prototipe penelitian**, bukan sistem produksi, API backend, atau pl
 | Evaluasi | Harness ekspor untuk review manual; belum ada perhitungan Macro-F1 |
 
 **Implikasi:** status “selesai” menunjukkan eksekusi selesai, bukan seluruh data sudah benar atau telah disetujui manusia. Baca detail pemetaan dan log sebelum menggunakan hasil untuk penelitian.
+
+### Status Phase 4: pemahaman struktur standalone
+
+Alur baru `WorkbookProfile -> StructureProposal -> VerifiedStructure -> SourceIR`
+telah tersedia untuk pengujian independen. Profiler hanya mencatat observasi fisik.
+Agent menerima view evidence yang dibatasi, bukan dump seluruh profil, dan dapat
+meminta maksimal dua putaran range kecil yang divalidasi. Proposal model berstatus
+`RESOLVED` tetap tidak dipercaya sampai verifier geometrik deterministik lulus.
+`AMBIGUOUS` dan `UNSUPPORTED` adalah hasil abstain yang sah dan tidak menghasilkan
+Source IR.
+
+Source IR mempertahankan koordinat header dan nilai, termasuk posisi kosong, tanpa
+normalisasi atau schema matching. Fitur ini sengaja belum mengganti parser lama,
+belum dipanggil `run_pipeline_ui()`, dan belum dipasang ke LangGraph. Karena itu,
+dukungan spreadsheet berantakan belum boleh dianggap aktif pada UI produksi.
 
 ## 3. Arsitektur dan alur eksekusi
 
@@ -401,7 +420,7 @@ Hasil verifikasi audit terkini dicatat di [CHECKPOINTS.md](CHECKPOINTS.md), terp
 Temuan berikut adalah batas implementasi, **bukan fitur yang diperbaiki dalam audit dokumentasi ini**:
 
 1. **Review belum memblokir penulisan.** Target valid dengan confidence rendah tetap dipakai UI; diperlukan gerbang persetujuan bila hasil harus hanya berisi mapping yang disetujui.
-2. **CSV dan parsing umum belum tersedia.** Uploader menawarkan CSV, tetapi parser hanya workbook dengan tata letak tertentu. Header satu/dua baris sudah didukung, tetapi judul sebelum header dan variasi arbitrer lain belum dijamin. T03 dan T04 sudah diverifikasi; enam dummy lainnya belum diverifikasi pada perbaikan ini.
+2. **CSV dan parsing umum belum tersedia pada UI.** Uploader menawarkan CSV, tetapi pipeline masih memakai parser lama dengan tata letak tertentu. Phase 4 dapat merepresentasikan judul sebelum tabel, header bertingkat, merge, dan layout transposed secara standalone setelah verifikasi, tetapi belum diintegrasikan. T03 dan T04 sudah diverifikasi; enam dummy lainnya belum diverifikasi pada perbaikan ini.
 3. **Validasi anchor kini menghentikan runner.** Header salah/ambigu atau identitas varietas yang hilang menghasilkan error sebelum pemetaan. Error provider dan mapping NULL masih harus diperiksa terpisah; validasi input bukan jaminan semua atribut akan terpetakan.
 4. **Koreksi manual belum diterapkan ulang.** Queue belum tersambung ke editor UI, replay workbook, atau identitas run yang lengkap.
 5. **Graf masih stub.** Checkpoint/resume tidak memulihkan proses agen nyata; routing stub tidak menjadi jaminan reliability alur UI.
