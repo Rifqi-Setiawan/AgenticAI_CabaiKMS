@@ -35,7 +35,7 @@ Ini adalah **prototipe penelitian**, bukan sistem produksi, API backend, atau pl
 | Workbook Structure Profiler | Tersedia secara standalone; deterministik, faktual, dan sparse-safe |
 | Structure Understanding Agent | Tersedia secara standalone; evidence ringkas, output Pydantic, dan retry evidence terarah yang dibatasi; belum dipakai pipeline UI |
 | Structure Verifier | Deterministik dan wajib lulus sebelum struktur boleh menjadi Source IR |
-| Source IR dan shadow parity | Representasi deterministik berkoordinat eksak tersedia; mode pembanding legacy bersifat opsional, default mati, dan tidak menjadi input Schema Matching/UI |
+| Source ingestion | `legacy` tetap default; `legacy + shadow` hanya observasi; `source-ir-gated` dapat menjadi input produksi hanya setelah parity `MATCH` |
 | Anchor varietas | Aktif, embedding header, ambang similarity `0.7` |
 | Retrieval | Aktif, indeks baris kanonik ChromaDB; default top-k `8` |
 | Reranking | Aktif, Groq dengan fallback Ollama; output Pydantic |
@@ -84,6 +84,29 @@ Verifier -> Source IR -> compatibility adapter -> parity report`. Status `MATCH`
 hanya berarti keluaran logisnya setara dengan parser legacy, bukan bukti bahwa keduanya
 benar terhadap ground truth. Status berbeda, abstain, atau gagal hanya dicatat dan
 tidak mengubah hasil produksi.
+
+### Tiga status backend ingestion
+
+1. `legacy` adalah backend produksi default. Tidak ada profiling struktur, parity,
+   atau biaya model struktur kecuali shadow diminta terpisah.
+2. `legacy + shadow` diaktifkan dengan `enable_structure_shadow=True`. Parser legacy
+   tetap menjadi sumber produksi; jalur baru hanya menghasilkan laporan.
+3. `source-ir-gated` adalah opt-in eksplisit melalui `source_backend`. Pipeline
+   menyiapkan referensi legacy, membangun satu kandidat Source IR, dan mempromosikan
+   kandidat itu hanya bila laporan parity tepat `MATCH`. `DIFFERENT`, abstain,
+   kegagalan verifier/model, serta legacy-fail/new-success berhenti sebelum indexing
+   dan tidak menghasilkan output kanonik. Flag shadow yang redundan memakai laporan
+   gate yang sama dan tidak menjalankan agen struktur dua kali.
+
+Setelah promosi, pipeline memakai atribut runtime Source IR pada loop schema matching
+yang sama. Prompt retrieval/reranking tetap hanya menerima nama atribut, konteks, dan
+contoh nilai. Provenance write yang benar-benar diakui builder menyimpan
+`source_cells` sebagai sel fisik nilai dan `source_header_cells` sebagai sel fisik
+identitas header; backend legacy tetap memakai daftar koordinat kosong.
+
+Bytes XLSX sengaja diserialisasi deterministik untuk reproduksibilitas pengujian.
+Timestamp ZIP dan metadata `modified` dinormalisasi, sehingga metadata tersebut bukan
+waktu ekspor aktual.
 
 ## 3. Arsitektur dan alur eksekusi
 
@@ -253,8 +276,8 @@ Tidak ada konversi satuan otomatis, penghitungan rerata, penerjemahan warna beba
 | `SchemaMapping.target_domain` | Field turunan dari target row; `None` jika target `NULL` |
 | `ImageMetadata` | `file_id`, `filename`, `mime_type`, `size`, `created_time`; tidak ada path hierarki |
 | `VisionResult` | `classification_status` (`KNOWN/OTHER/UNCERTAIN`), `matched_variety`, `identified_part` (`DAUN/BATANG/BUAH/BUNGA`), confidence, bukti visual |
-| `CellProvenanceRecord` | Run dan fingerprint sumber, atribut/konteks, varietas, referensi kanonik posisi+stabil, nilai mentah+normal, keputusan acceptance, serta versi/hash skema untuk satu penulisan sel nyata |
-| `PipelineRunResult` | `mapping_df`, `canonical_df`, `workbook_bytes`, `vision_rows`, `provenance_records`, `agent_status`, `checkpoint_thread_id`, `error_trace`, dan laporan opsional `structure_shadow` |
+| `CellProvenanceRecord` | Run dan fingerprint sumber, atribut/konteks, varietas, sel nilai/header sumber bila tersedia, referensi kanonik posisi+stabil, nilai mentah+normal, keputusan acceptance, serta versi/hash skema untuk satu penulisan sel nyata |
+| `PipelineRunResult` | Data/output lama ditambah `source_backend`, `source_ir_version`, dan laporan opsional `structure_shadow`; Source IR lengkap tidak dimasukkan |
 
 `SchemaMapping` memvalidasi row ID terhadap skema default yang di-cache. Setelah mengubah template dalam proses Python yang sama, panggil `clear_default_schema_cache()` atau restart aplikasi.
 

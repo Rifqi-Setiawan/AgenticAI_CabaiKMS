@@ -26,8 +26,12 @@ class CellProvenanceRecord(BaseModel):
     source_attribute: str
     source_context: str | None = None
     source_attribute_display: str
-    # Exact coordinates are unavailable until Source IR/structure understanding.
+    # Physical value cells contributing to this committed canonical write.
     source_cells: list[str] = Field(default_factory=list)
+    # Physical header cells establish the source attribute identity/context.
+    source_attribute_id: str | None = None
+    source_header_cells: list[str] = Field(default_factory=list)
+    source_ir_version: str | None = None
     variety: str
     canonical_row_id: str
     canonical_key: str

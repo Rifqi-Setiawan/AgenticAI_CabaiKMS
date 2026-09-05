@@ -89,6 +89,30 @@ transposed entity positions first. `MATCH` means behavioral equivalence to the l
 parser on that workbook; it does not establish ground-truth correctness. A legacy
 failure with new-path success is recorded only as potential coverage expansion.
 
+## (a.4) Source IR production promotion requires exact parity
+
+**[FINAL, Phase 6]** The default production backend remains `legacy`. The explicit
+`source-ir-gated` backend builds one verified Source IR candidate and may use it for
+downstream schema matching only when its deterministic Phase 5 report is exactly
+`MATCH`. No confidence threshold can substitute for parity. Difference, abstention,
+verification/model failure, and legacy-reference failure stop before indexing; there
+is no silent fallback in an explicitly gated experiment.
+
+This gate changes only the source parsing representation. Retrieval inputs,
+reranking, normalization, selective acceptance, and canonical assembly remain shared,
+making downstream effects scientifically attributable to the parser migration.
+Legacy-fail/new-success remains potential coverage evidence and is not promoted.
+
+For promoted Source IR writes, `source_cells` means physical value cells contributing
+to the acknowledged canonical mutation. `source_header_cells` separately identifies
+the physical cells defining source attribute identity/context. Duplicate raw values
+retain all distinct contributing cells, while repeated references to one merged anchor
+are deduplicated in first-seen order. Legacy records retain empty coordinate lists.
+
+XLSX archive timestamps and the core `modified` value are intentionally normalized
+during pipeline serialization. Deterministic artifact bytes support reproducibility;
+the normalized metadata must not be interpreted as the actual export time.
+
 ## (b) Domain = derived label, not a predicted field
 
 **[FINAL]** "Domain" is a category tag attached to each canonical row

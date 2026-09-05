@@ -2,38 +2,33 @@
 
 from __future__ import annotations
 
-import re
 from collections.abc import Callable
 from pathlib import Path
 from typing import Literal
 
-from src.agents.schema_matching.source_parsing import (
-    ParsedAttribute,
-    load_row_oriented_columns,
-    load_transposed_rows,
+from src.ingestion.runtime_source import (
+    AnchorDetector,
+    parsed_attribute_from_runtime,
+    prepare_legacy_runtime_source,
 )
-from src.ingestion.shadow_parity import AnchorDetector, compare_shadow_parity
+from src.ingestion.shadow_parity import compare_shadow_parity
 from src.ingestion.source_ir_adapter import source_ir_to_parsed_attributes
-from src.ingestion.source_ir_builder import build_source_ir
-from src.ingestion.structure_understanding import understand_sheet_structure
+from src.ingestion.structure_candidate import (
+    build_structure_candidate,
+    sanitize_structure_error_message,
+)
 from src.ingestion.workbook_profiler import profile_workbook
 from src.schema.shadow_parity import ShadowParityReport, ShadowStatus
 from src.schema.structure import StructureStatus
 
 
 def sanitize_shadow_error_message(exc: Exception) -> str:
-    """Bound and redact common credential assignments from observable failures."""
-    message = " ".join(str(exc).split())
-    message = re.sub(
-        r"(?i)\b(api[_-]?key|token|password|secret)\s*[:=]\s*[^\s,;]+",
-        r"\1=<redacted>",
-        message,
-    )
-    return message[:500]
+    """Backward-compatible name for the shared candidate error sanitizer."""
+    return sanitize_structure_error_message(exc)
 
 
 def _error(exc: Exception) -> tuple[str, str]:
-    return type(exc).__name__, sanitize_shadow_error_message(exc)
+    return type(exc).__name__, sanitize_structure_error_message(exc)
 
 
 def run_structure_shadow(
@@ -46,43 +41,37 @@ def run_structure_shadow(
     anchor_detector: AnchorDetector | None = None,
 ) -> ShadowParityReport:
     """Run both parsers for observation only; never feed shadow output downstream."""
-    legacy_attributes: list[ParsedAttribute] | None = None
-    legacy_entities: list[str] | None = None
+    legacy_bundle = None
     legacy_error: tuple[str, str] | None = None
     try:
-        if source_format == "row-oriented":
-            legacy_attributes = load_row_oriented_columns(
-                file_path, sheet_name, header_rows=header_rows
-            )
-        else:
-            legacy_attributes, legacy_entities = load_transposed_rows(file_path, sheet_name)
+        legacy_bundle = prepare_legacy_runtime_source(
+            file_path,
+            sheet_name,
+            source_format=source_format,
+            header_rows=header_rows,
+            anchor_detector=anchor_detector,
+        )
     except Exception as exc:  # noqa: BLE001 - shadow failures are report data
         legacy_error = _error(exc)
 
-    understanding = None
-    source_ir = None
-    new_error: tuple[str, str] | None = None
-    try:
-        profile = profile_workbook(file_path)
-        sheet = next(item for item in profile.sheets if item.sheet_name == sheet_name)
-        understanding = understand_sheet_structure(sheet, llm_call=llm_call)
-        if understanding.verified_structure is not None:
-            source_ir = build_source_ir(profile, sheet_name, understanding.verified_structure)
-    except Exception as exc:  # noqa: BLE001 - isolated shadow boundary
-        new_error = _error(exc)
-
+    candidate = build_structure_candidate(
+        file_path,
+        sheet_name,
+        llm_call=llm_call,
+        profile_call=profile_workbook,
+    )
+    understanding = candidate.understanding_result
+    source_ir = candidate.source_ir
     structure_status = (
         understanding.final_proposal.status.value if understanding is not None else None
     )
-    reason_codes = (
-        understanding.final_proposal.reason_codes if understanding is not None else []
-    )
+    reason_codes = understanding.final_proposal.reason_codes if understanding else []
     verification_codes = (
         understanding.verification.issue_codes
         if understanding is not None and understanding.verification is not None
         else []
     )
-    evidence_rounds = understanding.evidence_rounds if understanding is not None else 0
+    evidence_rounds = understanding.evidence_rounds if understanding else 0
 
     if legacy_error is not None and source_ir is None:
         return ShadowParityReport(
@@ -94,8 +83,8 @@ def run_structure_shadow(
             evidence_rounds=evidence_rounds,
             legacy_error_type=legacy_error[0],
             legacy_error_message=legacy_error[1],
-            new_path_error_type=new_error[0] if new_error else None,
-            new_path_error_message=new_error[1] if new_error else None,
+            new_path_error_type=candidate.error_type,
+            new_path_error_message=candidate.error_message,
             issue_codes=["LEGACY_PATH_FAILED", "NEW_PATH_UNAVAILABLE"],
             summary="BOTH_FAILED — neither path produced comparable source attributes",
         )
@@ -120,7 +109,10 @@ def run_structure_shadow(
             ),
         )
 
-    assert legacy_attributes is not None
+    assert legacy_bundle is not None
+    legacy_attributes = [
+        parsed_attribute_from_runtime(item) for item in legacy_bundle.all_attributes
+    ]
     if source_ir is None:
         abstained = (
             understanding is not None
@@ -137,8 +129,8 @@ def run_structure_shadow(
             verification_issue_codes=verification_codes,
             evidence_rounds=evidence_rounds,
             legacy_attribute_count=len(legacy_attributes),
-            new_path_error_type=new_error[0] if new_error else None,
-            new_path_error_message=new_error[1] if new_error else None,
+            new_path_error_type=candidate.error_type,
+            new_path_error_message=candidate.error_message,
             issue_codes=[issue],
             summary=f"{status.value} — legacy output remains available and authoritative",
         )
@@ -147,7 +139,7 @@ def run_structure_shadow(
         legacy_attributes,
         source_ir,
         source_format=source_format,
-        legacy_entity_names=legacy_entities,
+        legacy_entity_names=legacy_bundle.position_to_variety,
         anchor_detector=anchor_detector,
     )
     return report.model_copy(

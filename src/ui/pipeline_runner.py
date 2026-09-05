@@ -27,28 +27,33 @@ import uuid
 import zipfile
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Literal
 
 import openpyxl
 import pandas as pd
 
 from src.agents.drive_crawler import DriveCrawlerError, list_images, normalize_folder_id
-from src.agents.schema_matching.anchor import AnchorCandidate, detect_anchor
+from src.agents.schema_matching.anchor import detect_anchor
 from src.agents.schema_matching.indexing import ensure_indexed
 from src.agents.schema_matching.normalize import normalize
 from src.agents.schema_matching.review_queue import AcceptanceStatus, decide_mapping_acceptance
 from src.agents.schema_matching.retrieval import DEFAULT_K, SourceAttributeProfile, retrieve
-from src.agents.schema_matching.source_parsing import load_row_oriented_columns, load_transposed_rows
 from src.agents.tabular_update import apply_vision_result_to_worksheet
 from src.agents.vision_classification import VisionSession
+from src.ingestion.runtime_source import (
+    group_attribute_contributions_by_variety,
+    physical_source_cells,
+    prepare_legacy_runtime_source,
+)
 from src.ingestion.shadow_pipeline import run_structure_shadow, sanitize_shadow_error_message
+from src.ingestion.source_migration import prepare_gated_runtime_source
 from src.orchestrator.graph import run_pipeline
 from src.reliability.wrappers import safe_classify_image, safe_rerank
 from src.schema.canonical import CanonicalSchema
 from src.schema.contracts import NULL_ROW
 from src.schema.provenance import CellProvenanceRecord, source_file_sha256
 from src.schema.shadow_parity import ShadowParityReport, ShadowStatus
-from src.ui.output_builder import SHEET_NAME, CanonicalOutputBuilder, combine_multi_value, values_by_variety, worksheet_to_dataframe
+from src.ui.output_builder import SHEET_NAME, CanonicalOutputBuilder, combine_multi_value, worksheet_to_dataframe
 
 MAPPING_COLUMNS = [
     "source_attribute_display",
@@ -79,6 +84,8 @@ class PipelineRunResult:
     checkpoint_thread_id: str = ""
     error_trace: list[str] = field(default_factory=list)
     structure_shadow: ShadowParityReport | None = None
+    source_backend: str = "legacy"
+    source_ir_version: str | None = None
 
 
 def _noop(_: str) -> None:
@@ -124,6 +131,7 @@ def run_pipeline_ui(
     on_progress: ProgressCallback = _noop,
     enable_structure_shadow: bool = False,
     structure_llm_call: Callable | None = None,
+    source_backend: Literal["legacy", "source-ir-gated"] = "legacy",
 ) -> PipelineRunResult:
     run_id = uuid.uuid4().hex
     resolved_sheet_name = sheet_name or _first_sheet(file_path)
@@ -132,45 +140,39 @@ def run_pipeline_ui(
     agent_status: dict[str, str] = {}
     structure_shadow: ShadowParityReport | None = None
 
-    # --- parsing + variety-column discovery ---
+    # --- backend-neutral parsing + variety-position preparation ---
     on_progress(f"Memuat berkas: {file_path.name} (format={source_format!r})")
-    if source_format == "row-oriented":
-        parsed = load_row_oriented_columns(
-            file_path, resolved_sheet_name, header_rows=header_rows,
+    if source_backend == "legacy":
+        source_bundle = prepare_legacy_runtime_source(
+            file_path,
+            resolved_sheet_name,
+            source_format=source_format,
+            header_rows=header_rows,
+            anchor_detector=detect_anchor,
         )
-        on_progress(f"Header sumber: {[p.attribute_name for p in parsed]}")
-        candidates = [AnchorCandidate(p.attribute_name, p.sample_values) for p in parsed]
-        anchor_result = detect_anchor(candidates, source_format="row-oriented")
-        on_progress(f"Deteksi anchor: status={anchor_result.status!r} kolom={anchor_result.column_name!r}")
-
-        anchor_attr = next((p for p in parsed if p.attribute_name == anchor_result.column_name), None)
-        if anchor_result.status != "found" or anchor_attr is None:
-            raise ValueError(
-                "Kolom varietas tidak ditemukan. Periksa jumlah baris header dan "
-                "nama kolom identitas (misalnya Variety atau Jenis Cabai). "
-                "Proses dihentikan agar tidak menghasilkan workbook kosong."
-            )
-        position_to_variety = [v.strip() if v is not None else None for v in anchor_attr.row_values]
-        for index, variety in enumerate(position_to_variety):
-            if not variety and any(
-                p.row_values[index] is not None and str(p.row_values[index]).strip()
-                for p in parsed
-            ):
-                raise ValueError(
-                    f"Varietas kosong pada observasi ke-{index + 1}. "
-                    "Isi kolom varietas sebelum menjalankan pipeline."
-                )
-        variety_names_seen: list[str] = []
-        for v in position_to_variety:
-            if v and v not in variety_names_seen:
-                variety_names_seen.append(v)
-        attributes = [p for p in parsed if p.attribute_name != anchor_result.column_name]
+        agent_status["source_ingestion"] = "legacy — authoritative parser"
     else:
-        on_progress("Format transposed — anchor tidak diperlukan (varietas sudah jadi header kolom).")
-        parsed, variety_names_seen = load_transposed_rows(file_path, resolved_sheet_name)
-        position_to_variety = variety_names_seen  # row_values[i] <-> variety_names_seen[i]
-        attributes = parsed
+        source_bundle = prepare_gated_runtime_source(
+            file_path,
+            resolved_sheet_name,
+            source_format=source_format,
+            header_rows=header_rows,
+            llm_call=structure_llm_call,
+            anchor_detector=detect_anchor,
+        )
+        structure_shadow = source_bundle.migration_report
+        agent_status["source_ingestion"] = (
+            "source-ir-gated — promoted after MATCH parity"
+        )
+        if structure_shadow is not None:
+            agent_status["structure_shadow"] = structure_shadow.summary
 
+    position_to_variety = source_bundle.position_to_variety
+    variety_names_seen = source_bundle.variety_names
+    attributes = source_bundle.schema_attributes
+    on_progress(f"Header sumber: {[item.attribute_name for item in source_bundle.all_attributes]}")
+    if source_bundle.anchor_attribute_name is not None:
+        on_progress(f"Deteksi anchor: status='found' kolom={source_bundle.anchor_attribute_name!r}")
     if not variety_names_seen:
         raise ValueError("Tidak ada varietas untuk keluaran. Periksa header dan isi data sumber.")
     on_progress(f"Atribut untuk schema matching: {len(attributes)}")
@@ -178,7 +180,7 @@ def run_pipeline_ui(
 
     # Observation-only migration path. Legacy values above remain the sole
     # authority for every downstream operation regardless of this outcome.
-    if enable_structure_shadow:
+    if enable_structure_shadow and source_backend == "legacy":
         on_progress("structure_shadow: membandingkan legacy parser dengan Source IR...")
         try:
             structure_shadow = run_structure_shadow(
@@ -277,8 +279,11 @@ def run_pipeline_ui(
             # AUTO_ACCEPT an absent/NULL/unknown target.
             continue
 
-        grouped = values_by_variety(attr.row_values, position_to_variety)
-        for variety_name, raw_values in grouped.items():
+        grouped = group_attribute_contributions_by_variety(
+            attr, position_to_variety
+        )
+        for variety_name, contributions in grouped.items():
+            raw_values = [item.raw_value for item in contributions]
             combined = combine_multi_value(raw_values)
             if combined is None:
                 continue
@@ -295,7 +300,14 @@ def run_pipeline_ui(
                         source_attribute=attr.attribute_name,
                         source_context=attr.structural_context,
                         source_attribute_display=attr.display_name,
-                        source_cells=[],
+                        source_cells=physical_source_cells(contributions),
+                        source_attribute_id=attr.source_attribute_id,
+                        source_header_cells=list(attr.header_cells),
+                        source_ir_version=(
+                            source_bundle.source_ir.ir_version
+                            if source_bundle.source_ir is not None
+                            else None
+                        ),
                         variety=variety_name,
                         canonical_row_id=target_row.id,
                         canonical_key=target_row.canonical_key,
@@ -406,6 +418,12 @@ def run_pipeline_ui(
         checkpoint_thread_id=thread_id,
         error_trace=list(state.get("error_trace", [])),
         structure_shadow=structure_shadow,
+        source_backend=source_backend,
+        source_ir_version=(
+            source_bundle.source_ir.ir_version
+            if source_bundle.source_ir is not None
+            else None
+        ),
     )
 
 
