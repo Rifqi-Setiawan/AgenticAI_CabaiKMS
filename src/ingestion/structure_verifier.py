@@ -8,6 +8,7 @@ from src.ingestion.structure_geometry import (
     StructureGeometryError,
     cell_lookup,
     content_bounds,
+    header_source_covers_column,
     parse_cell_coordinate,
     parse_excel_range,
     resolve_profile_cell,
@@ -108,16 +109,21 @@ def _verify_row_oriented(sheet, proposal, table, issue) -> None:
         issue("HEADER_BINDING_MISMATCH", "exactly one header binding is required per attribute column")
     lookup = cell_lookup(sheet)
     for binding in structure.header_bindings:
+        target_column = column_indices.get(binding.column_letter.replace("$", "").upper())
         if not binding.header_cells:
             issue("HEADER_BINDING_EMPTY", f"binding {binding.column_letter!r} has no header cells")
             continue
+        parsed_rows: list[int] = []
         resolved_values = []
+        resolved_sources: list[str] = []
+        coverage: list[bool] = []
         for coordinate in binding.header_cells:
             try:
                 row, column = parse_cell_coordinate(coordinate)
             except StructureGeometryError as exc:
                 issue("INVALID_HEADER_COORDINATE", str(exc))
                 continue
+            parsed_rows.append(row)
             if not table.contains(row, column):
                 issue("HEADER_COORDINATE_OUTSIDE_TABLE", f"{coordinate} is outside table")
             if row not in headers:
@@ -127,6 +133,35 @@ def _verify_row_oriented(sheet, proposal, table, issue) -> None:
                 issue("HEADER_CELL_HAS_NO_SOURCE", f"{coordinate} has no content or merged anchor")
             else:
                 resolved_values.append(resolved[1].value)
+                resolved_sources.append(resolved[0])
+                aligned = target_column is not None and header_source_covers_column(
+                    sheet,
+                    resolved[0],
+                    target_column,
+                    cells_by_coordinate=lookup,
+                )
+                coverage.append(aligned)
+                if not aligned:
+                    issue(
+                        "HEADER_SOURCE_NOT_ALIGNED",
+                        f"{resolved[0]} does not geometrically cover attribute column "
+                        f"{binding.column_letter.upper()}",
+                    )
+        if any(first >= second for first, second in zip(parsed_rows, parsed_rows[1:])):
+            issue(
+                "HEADER_PATH_ORDER_INVALID",
+                f"binding {binding.column_letter!r} header rows must be strictly increasing",
+            )
+        if len(resolved_sources) != len(set(resolved_sources)):
+            issue(
+                "DUPLICATE_HEADER_SOURCE",
+                f"binding {binding.column_letter!r} resolves multiple entries to one source cell",
+            )
+        if coverage and not coverage[-1]:
+            issue(
+                "LEAF_HEADER_NOT_ALIGNED",
+                f"leaf header for {binding.column_letter!r} does not cover its attribute column",
+            )
         if not resolved_values or str(resolved_values[-1]).strip() == "":
             issue("LEAF_HEADER_UNUSABLE", f"binding {binding.column_letter!r} has no usable leaf label")
 

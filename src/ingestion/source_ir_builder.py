@@ -36,6 +36,7 @@ def _source_value(
     return SourceValueIR(
         position_index=position_index,
         coordinate=coordinate,
+        source_coordinate=resolved[0] if resolved is not None else None,
         raw_value=cell.value if cell is not None else None,
         value_type=cell.value_type if cell is not None else "empty",
     )

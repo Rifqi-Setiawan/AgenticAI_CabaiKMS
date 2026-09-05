@@ -91,6 +91,65 @@ def test_targeted_evidence_then_resolution(tmp_path):
     assert '"is_blank"' in llm.calls[1]["messages"][1]["content"]
 
 
+def test_targeted_evidence_accumulates_with_round_labels(tmp_path):
+    first = StructureProposal(
+        status="NEED_MORE_EVIDENCE",
+        requested_ranges=["A1:B3"],
+        confidence=0.3,
+        evidence_summary="Need the left block.",
+    )
+    second = StructureProposal(
+        status="NEED_MORE_EVIDENCE",
+        requested_ranges=["D1:E3"],
+        confidence=0.5,
+        evidence_summary="Need the right edge.",
+    )
+    llm = QueueLLM(first, second, _resolved_row())
+    result = understand_sheet_structure(_sheet(tmp_path), llm_call=llm)
+    assert result.verified_structure is not None
+    third_prompt = llm.calls[2]["messages"][1]["content"]
+    assert "Targeted evidence round 1:" in third_prompt
+    assert "Targeted evidence round 2:" in third_prompt
+    assert '"normalized_range":"A1:B3"' in third_prompt
+    assert '"normalized_range":"D1:E3"' in third_prompt
+
+
+def test_duplicate_targeted_range_fails_closed_without_third_call(tmp_path):
+    need = lambda: StructureProposal(
+        status="NEED_MORE_EVIDENCE",
+        requested_ranges=["A1:B3"],
+        confidence=0.3,
+        evidence_summary="Need this range.",
+    )
+    llm = QueueLLM(need(), need())
+    result = understand_sheet_structure(_sheet(tmp_path), llm_call=llm)
+    assert result.final_proposal.status.value == "AMBIGUOUS"
+    assert "DUPLICATE_EVIDENCE_REQUEST" in result.final_proposal.reason_codes
+    assert len(llm.calls) == 2
+
+
+def test_cumulative_targeted_cell_budget_fails_closed(tmp_path):
+    first = StructureProposal(
+        status="NEED_MORE_EVIDENCE",
+        requested_ranges=["A1:T25", "A26:T50"],
+        confidence=0.2,
+        evidence_summary="Need first half.",
+    )
+    second = StructureProposal(
+        status="NEED_MORE_EVIDENCE",
+        requested_ranges=["A51:T75", "A76:T100"],
+        confidence=0.2,
+        evidence_summary="Need second half.",
+    )
+    llm = QueueLLM(first, second)
+    result = understand_sheet_structure(
+        _sheet(tmp_path, rows=100, columns=20), llm_call=llm
+    )
+    assert result.final_proposal.status.value == "AMBIGUOUS"
+    assert "EVIDENCE_BUDGET_EXCEEDED" in result.final_proposal.reason_codes
+    assert len(llm.calls) == 2
+
+
 def test_ambiguous_and_unsupported_abstain(tmp_path):
     sheet = _sheet(tmp_path)
     for status in ("AMBIGUOUS", "UNSUPPORTED"):
@@ -125,13 +184,15 @@ def test_oversized_or_outside_evidence_request_fails_closed(tmp_path):
 
 
 def test_evidence_loop_is_bounded(tmp_path):
-    need = lambda: StructureProposal(
-        status="NEED_MORE_EVIDENCE",
-        requested_ranges=["A1:B2"],
-        confidence=0.2,
-        evidence_summary="Still unclear.",
-    )
-    llm = QueueLLM(need(), need(), need())
+    def need(requested_range):
+        return StructureProposal(
+            status="NEED_MORE_EVIDENCE",
+            requested_ranges=[requested_range],
+            confidence=0.2,
+            evidence_summary="Still unclear.",
+        )
+
+    llm = QueueLLM(need("A1:B2"), need("C1:D2"), need("A3:B4"))
     result = understand_sheet_structure(_sheet(tmp_path), llm_call=llm)
     assert result.final_proposal.status.value == "AMBIGUOUS"
     assert result.evidence_rounds == MAX_EVIDENCE_ROUNDS

@@ -19,6 +19,7 @@ DetectedValueType = Literal["numeric", "text", "boolean", "temporal", "formula",
 class SourceValueIR(BaseModel):
     position_index: int
     coordinate: str
+    source_coordinate: str | None = None
     raw_value: Any = None
     value_type: SourceValueType
 

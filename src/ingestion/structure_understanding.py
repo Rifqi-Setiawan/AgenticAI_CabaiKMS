@@ -7,8 +7,10 @@ from typing import Any
 
 from src.ingestion.structure_evidence import (
     EvidenceRequestError,
+    MAX_TOTAL_TARGETED_CELLS,
     build_initial_evidence,
     render_targeted_evidence,
+    validate_requested_ranges,
 )
 from src.ingestion.structure_verifier import verify_structure
 from src.ingestion.workbook_profiler import SheetProfile
@@ -32,10 +34,10 @@ and evidence_summary; do not provide chain-of-thought."""
 LLMCall = Callable[..., StructureProposal]
 
 
-def _messages(initial_json: str, targeted_json: str | None = None) -> list[dict[str, str]]:
+def _messages(initial_json: str, targeted_rounds: list[str] | None = None) -> list[dict[str, str]]:
     user = "Initial compact worksheet evidence:\n" + initial_json
-    if targeted_json is not None:
-        user += "\nTargeted evidence requested in the previous proposal:\n" + targeted_json
+    for index, targeted_json in enumerate(targeted_rounds or [], start=1):
+        user += f"\nTargeted evidence round {index}:\n{targeted_json}"
     return [
         {"role": "system", "content": SYSTEM_PROMPT},
         {"role": "user", "content": user},
@@ -61,6 +63,9 @@ def understand_sheet_structure(
     initial = build_initial_evidence(sheet_profile).model_dump_json()
     proposal = invoke(response_model=StructureProposal, messages=_messages(initial))
     history: list[list[str]] = []
+    targeted_rounds: list[str] = []
+    seen_normalized_ranges: set[str] = set()
+    total_targeted_cells = 0
     rounds = 0
 
     while proposal.status is StructureStatus.NEED_MORE_EVIDENCE:
@@ -74,7 +79,7 @@ def understand_sheet_structure(
         requested = list(proposal.requested_ranges)
         history.append(requested)
         try:
-            targeted = render_targeted_evidence(sheet_profile, requested)
+            validated = validate_requested_ranges(sheet_profile, requested)
         except EvidenceRequestError as exc:
             proposal = _ambiguous(
                 proposal,
@@ -82,11 +87,34 @@ def understand_sheet_structure(
                 f"Requested evidence was rejected: {exc}",
             )
             break
+        normalized_ranges = [bounds.coordinate for _, bounds in validated]
+        if (
+            len(normalized_ranges) != len(set(normalized_ranges))
+            or any(item in seen_normalized_ranges for item in normalized_ranges)
+        ):
+            proposal = _ambiguous(
+                proposal,
+                "DUPLICATE_EVIDENCE_REQUEST",
+                "Requested evidence repeats an already acquired normalized range.",
+            )
+            break
+        requested_cell_count = sum(bounds.cell_count for _, bounds in validated)
+        if total_targeted_cells + requested_cell_count > MAX_TOTAL_TARGETED_CELLS:
+            proposal = _ambiguous(
+                proposal,
+                "EVIDENCE_BUDGET_EXCEEDED",
+                f"Cumulative targeted evidence would exceed {MAX_TOTAL_TARGETED_CELLS} cells.",
+            )
+            break
+        targeted = render_targeted_evidence(sheet_profile, requested)
+        seen_normalized_ranges.update(normalized_ranges)
+        total_targeted_cells += requested_cell_count
         rounds += 1
         targeted_json = "[" + ",".join(item.model_dump_json() for item in targeted) + "]"
+        targeted_rounds.append(targeted_json)
         proposal = invoke(
             response_model=StructureProposal,
-            messages=_messages(initial, targeted_json),
+            messages=_messages(initial, targeted_rounds),
         )
 
     if proposal.status is not StructureStatus.RESOLVED:

@@ -68,6 +68,63 @@ def test_invalid_header_coordinate_fails_closed(tmp_path):
     assert result.verified_orientation is None
 
 
+def test_unrelated_normal_header_does_not_cover_attribute_column(tmp_path):
+    profile, _ = _profile(tmp_path)
+    proposal = _row_proposal(
+        header_bindings=[
+            {"column_letter": "B", "header_cells": ["B3", "B4"]},
+            {"column_letter": "C", "header_cells": ["B3", "D4"]},
+            {"column_letter": "D", "header_cells": ["D3", "D4"]},
+        ]
+    )
+    result = verify_structure(profile.sheets[0], proposal)
+    assert not result.valid
+    assert "HEADER_SOURCE_NOT_ALIGNED" in result.issue_codes
+    assert "LEAF_HEADER_NOT_ALIGNED" in result.issue_codes
+
+
+def test_merged_header_that_does_not_span_target_is_rejected(tmp_path):
+    profile, _ = _profile(tmp_path)
+    proposal = _row_proposal(
+        header_bindings=[
+            {"column_letter": "B", "header_cells": ["B3", "B4"]},
+            {"column_letter": "C", "header_cells": ["B3", "C4"]},
+            {"column_letter": "D", "header_cells": ["B3", "D4"]},
+        ]
+    )
+    result = verify_structure(profile.sheets[0], proposal)
+    assert not result.valid
+    assert "HEADER_SOURCE_NOT_ALIGNED" in result.issue_codes
+
+
+def test_reversed_header_path_order_is_rejected(tmp_path):
+    profile, _ = _profile(tmp_path)
+    proposal = _row_proposal(
+        header_bindings=[
+            {"column_letter": "B", "header_cells": ["B3", "B4"]},
+            {"column_letter": "C", "header_cells": ["C4", "B3"]},
+            {"column_letter": "D", "header_cells": ["D3", "D4"]},
+        ]
+    )
+    result = verify_structure(profile.sheets[0], proposal)
+    assert not result.valid
+    assert "HEADER_PATH_ORDER_INVALID" in result.issue_codes
+
+
+def test_duplicate_merged_anchor_in_binding_is_rejected(tmp_path):
+    profile, _ = _profile(tmp_path)
+    proposal = _row_proposal(
+        header_bindings=[
+            {"column_letter": "B", "header_cells": ["B3", "B4"]},
+            {"column_letter": "C", "header_cells": ["B3", "C3", "C4"]},
+            {"column_letter": "D", "header_cells": ["D3", "D4"]},
+        ]
+    )
+    result = verify_structure(profile.sheets[0], proposal)
+    assert not result.valid
+    assert "DUPLICATE_HEADER_SOURCE" in result.issue_codes
+
+
 def test_valid_transposed_structure(tmp_path):
     path = tmp_path / "transposed.xlsx"
     wb = openpyxl.Workbook()

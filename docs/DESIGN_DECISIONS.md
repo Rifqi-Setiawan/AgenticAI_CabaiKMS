@@ -65,7 +65,14 @@ header coordinates, value coordinates, merged-anchor traceability, and blank
 logical positions. It performs no normalization or canonical schema mapping.
 `AMBIGUOUS` and `UNSUPPORTED` are valid abstention outcomes and produce no Source
 IR. `NEED_MORE_EVIDENCE` permits only bounded, validated, targeted range
-inspection rather than blind retries or whole-profile serialization.
+inspection rather than blind retries or whole-profile serialization. Targeted
+rounds accumulate prior evidence, reject repeated identical normalized ranges,
+and share a 1,500-cell global materialization budget.
+
+Phase 4B finalizes `source-ir-v1` coordinate semantics before production
+integration: `SourceValueIR.coordinate` is the logical table position, while
+`SourceValueIR.source_coordinate` is the physical content cell (including a
+merged top-left anchor). A logical blank has no physical source coordinate.
 
 ## (b) Domain = derived label, not a predicted field
 

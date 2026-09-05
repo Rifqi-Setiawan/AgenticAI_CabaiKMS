@@ -73,8 +73,10 @@ def test_messy_row_ir_preserves_hierarchy_repeated_leaves_and_blanks(tmp_path):
     assert young.source_attribute_id == "Messy!COL:C"
     assert mature.source_attribute_id == "Messy!COL:E"
     assert young.header_cells == ["C4", "C5", "C6"]
-    assert [(v.coordinate, v.raw_value, v.value_type) for v in young.values] == [
-        ("C7", 3, "integer"), ("C8", None, "empty"), ("C9", 4, "integer")
+    assert [(v.coordinate, v.source_coordinate, v.raw_value, v.value_type) for v in young.values] == [
+        ("C7", "C7", 3, "integer"),
+        ("C8", None, None, "empty"),
+        ("C9", "C9", 4, "integer"),
     ]
     assert build_source_ir(profile, "Messy", verified).model_dump(mode="json") == ir.model_dump(mode="json")
 
@@ -110,9 +112,51 @@ def test_transposed_ir_preserves_entity_and_value_coordinates(tmp_path):
     height = table.attributes[1]
     assert height.source_attribute_id == "T!ROW:5"
     assert height.header_cells == ["B5"]
-    assert [(v.coordinate, v.raw_value, v.value_type) for v in height.values] == [
-        ("C5", 80, "integer"), ("D5", None, "empty"), ("E5", 95, "integer")
+    assert [(v.coordinate, v.source_coordinate, v.raw_value, v.value_type) for v in height.values] == [
+        ("C5", "C5", 80, "integer"),
+        ("D5", None, None, "empty"),
+        ("E5", "E5", 95, "integer"),
     ]
+
+
+def test_merged_data_value_preserves_logical_and_physical_coordinates(tmp_path):
+    path = tmp_path / "merged-value.xlsx"
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Merged"
+    ws["D6"] = "Measurement"
+    ws["C7"] = 12
+    ws.merge_cells("C7:D7")
+    ws["C8"] = "row-boundary"
+    wb.save(path)
+    wb.close()
+    profile = profile_workbook(path)
+    proposal = StructureProposal(
+        status="RESOLVED",
+        orientation="row-oriented",
+        row_oriented={
+            "table_range": "D6:D8",
+            "header_rows": [6],
+            "data_start_row": 7,
+            "data_end_row": 8,
+            "attribute_columns": ["D"],
+            "header_bindings": [
+                {"column_letter": "D", "header_cells": ["D6"]}
+            ],
+        },
+        confidence=0.9,
+        evidence_summary="One measurement column.",
+    )
+    values = build_source_ir(
+        profile, "Merged", _verified(profile, proposal)
+    ).tables[0].attributes[0].values
+    assert values[0].coordinate == "D7"
+    assert values[0].source_coordinate == "C7"
+    assert values[0].raw_value == 12
+    assert values[1].coordinate == "D8"
+    assert values[1].source_coordinate is None
+    assert values[1].raw_value is None
+    assert values[1].value_type == "empty"
 
 
 def test_unverified_structure_cannot_be_used(tmp_path):

@@ -113,3 +113,26 @@ def resolve_profile_cell(
             anchor = lookup.get(merged.top_left_coordinate)
             return (merged.top_left_coordinate, anchor) if anchor is not None else None
     return None
+
+
+def header_source_covers_column(
+    sheet: SheetProfile,
+    source_coordinate: str,
+    target_column_index: int,
+    *,
+    cells_by_coordinate: dict[str, CellProfile] | None = None,
+) -> bool:
+    """Return whether a real header source geometrically spans a target column."""
+    resolved = resolve_profile_cell(
+        sheet,
+        source_coordinate,
+        cells_by_coordinate=cells_by_coordinate,
+    )
+    if resolved is None:
+        return False
+    physical_coordinate, _ = resolved
+    _, physical_column = parse_cell_coordinate(physical_coordinate)
+    for merged in sheet.merged_ranges:
+        if merged.top_left_coordinate == physical_coordinate:
+            return merged.min_column <= target_column_index <= merged.max_column
+    return physical_column == target_column_index

@@ -57,7 +57,9 @@ Ini adalah **prototipe penelitian**, bukan sistem produksi, API backend, atau pl
 Alur baru `WorkbookProfile -> StructureProposal -> VerifiedStructure -> SourceIR`
 telah tersedia untuk pengujian independen. Profiler hanya mencatat observasi fisik.
 Agent menerima view evidence yang dibatasi, bukan dump seluruh profil, dan dapat
-meminta maksimal dua putaran range kecil yang divalidasi. Proposal model berstatus
+meminta maksimal dua putaran range kecil yang divalidasi. Evidence terarah bersifat
+kumulatif, memakai anggaran global 1.500 posisi sel, dan permintaan range normalisasi
+yang sama tidak boleh diulang. Proposal model berstatus
 `RESOLVED` tetap tidak dipercaya sampai verifier geometrik deterministik lulus.
 `AMBIGUOUS` dan `UNSUPPORTED` adalah hasil abstain yang sah dan tidak menghasilkan
 Source IR.
@@ -66,6 +68,9 @@ Source IR mempertahankan koordinat header dan nilai, termasuk posisi kosong, tan
 normalisasi atau schema matching. Fitur ini sengaja belum mengganti parser lama,
 belum dipanggil `run_pipeline_ui()`, dan belum dipasang ke LangGraph. Karena itu,
 dukungan spreadsheet berantakan belum boleh dianggap aktif pada UI produksi.
+Pada setiap `SourceValueIR`, `coordinate` adalah posisi logis dalam geometri tabel,
+sedangkan `source_coordinate` adalah sel fisik yang menyimpan nilai atau anchor
+kiri-atas merge. Posisi kosong memiliki `source_coordinate = None`.
 
 ## 3. Arsitektur dan alur eksekusi
 
@@ -94,7 +99,7 @@ Fungsi `run_pipeline_ui()` di `src/ui/pipeline_runner.py` menjalankan proses sec
 2. Pada format row-oriented, mendeteksi kolom varietas dari embedding teks header saja. Pada transposed, memakai nama kolom setelah `Karakter`.
 3. Memuat `CanonicalSchema` dan memastikan indeks Chroma tersedia.
 4. Untuk setiap atribut non-anchor, membuat profil nama/konteks/contoh nilai, mengambil kandidat, lalu memanggil `safe_rerank()`.
-5. Mapping `NULL` tidak mengisi sel. Kegagalan yang tidak menghasilkan mapping dilewati. Mapping dengan target valid dinormalisasi dan ditulis, **termasuk yang confidence-nya rendah dan ditandai untuk review**.
+5. Mapping melewati gerbang acceptance deterministik. Hanya `AUTO_ACCEPT` yang boleh dinormalisasi dan ditulis; `REVIEW` dan `NO_WRITE` tidak boleh mengubah workbook kanonik. Mapping `NULL`, target tidak valid, dan kegagalan lain berhenti sebagai `NO_WRITE`.
 6. Menggabungkan nilai per varietas dengan pemisah `; `, lalu membangun workbook dari template. Sel referensi varietas lama dibersihkan pada salinan yang berada di memori, bukan file template asli.
 7. Jika URL/ID Drive diberikan, mengambil metadata foto lalu memproses maksimal lima gambar secara default. Pembatasan dilakukan setelah listing, bukan membatasi jumlah metadata yang diminta dari Drive.
 8. Membaca deskripsi varietas template sekali melalui `VisionSession`, mengunduh foto, dan memanggil `safe_classify_image()`.
@@ -244,7 +249,7 @@ Workbook keluaran mempertahankan struktur template, mengisi varietas dari sumber
 
 Preview dibentuk dari worksheet yang sudah mengalami penulisan tabular dan vision. Unduhan memakai bytes workbook tersebut. Hasil UI disimpan dalam session state; tidak otomatis disimpan sebagai file hasil permanen pada server.
 
-`provenance_records` saat ini hanya mencakup penulisan kanonik dari schema matching; penulisan vision belum memiliki provenance pada fase ini. Provenance sel dibuat hanya setelah penulisan kanonik non-kosong benar-benar mengubah builder. `REVIEW`, `NO_WRITE`, nilai kosong, dan penulisan duplikat/no-op tidak menghasilkan provenance. Koordinat sel sumber belum tersedia dari parser saat ini, sehingga `source_cells` sengaja kosong sampai fase Source IR/Structure Understanding; sistem tidak mengarang alamat sel.
+`provenance_records` saat ini hanya mencakup penulisan kanonik dari schema matching; penulisan vision belum memiliki provenance pada fase ini. Provenance sel dibuat hanya setelah penulisan kanonik non-kosong benar-benar mengubah builder. `REVIEW`, `NO_WRITE`, nilai kosong, dan penulisan duplikat/no-op tidak menghasilkan provenance. Parser pipeline lama belum menyediakan koordinat sumber sehingga `source_cells` pada jalur produksi masih kosong. Source IR standalone sudah membedakan posisi logis dan koordinat fisik, tetapi belum dipropagasikan ke provenance kanonik.
 
 ## 7. Instalasi dan konfigurasi
 
@@ -419,7 +424,7 @@ Hasil verifikasi audit terkini dicatat di [CHECKPOINTS.md](CHECKPOINTS.md), terp
 
 Temuan berikut adalah batas implementasi, **bukan fitur yang diperbaiki dalam audit dokumentasi ini**:
 
-1. **Review belum memblokir penulisan.** Target valid dengan confidence rendah tetap dipakai UI; diperlukan gerbang persetujuan bila hasil harus hanya berisi mapping yang disetujui.
+1. **Review sudah memblokir penulisan, tetapi koreksi belum interaktif.** Gerbang Phase 1 memastikan hanya `AUTO_ACCEPT` yang menulis; `REVIEW` dan `NO_WRITE` tidak mengubah workbook kanonik. Queue review belum tersambung ke editor UI dan replay hasil koreksi.
 2. **CSV dan parsing umum belum tersedia pada UI.** Uploader menawarkan CSV, tetapi pipeline masih memakai parser lama dengan tata letak tertentu. Phase 4 dapat merepresentasikan judul sebelum tabel, header bertingkat, merge, dan layout transposed secara standalone setelah verifikasi, tetapi belum diintegrasikan. T03 dan T04 sudah diverifikasi; enam dummy lainnya belum diverifikasi pada perbaikan ini.
 3. **Validasi anchor kini menghentikan runner.** Header salah/ambigu atau identitas varietas yang hilang menghasilkan error sebelum pemetaan. Error provider dan mapping NULL masih harus diperiksa terpisah; validasi input bukan jaminan semua atribut akan terpetakan.
 4. **Koreksi manual belum diterapkan ulang.** Queue belum tersambung ke editor UI, replay workbook, atau identitas run yang lengkap.
