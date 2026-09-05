@@ -160,7 +160,7 @@ project/
 
 - Loader mengambil baris dengan `Nomor` dan label karakter tidak kosong.
 - ID `r_1 ... r_N` mengikuti urutan pemuatan; ID bukan identitas stabil lintas perubahan urutan template.
-- Domain dan alias dihubungkan melalui teks label yang di-trim.
+- Domain dan alias dihubungkan melalui teks label yang di-trim. Nama sumber yang sama persis dengan label/alias terkurasi dipetakan secara deterministik tanpa bergantung pada recall embedding atau keputusan LLM; contohnya `Seeds per mature fruit` → `jumlah biji/buah masak`.
 - Domain saat ini: `vegetatif`, `daun`, `bunga`, `buah`, `biji`, `lokasi`.
 - Label `Lokasi` menampung informasi lokasi; `Gambar Daun/Batang/Buah/Bunga` untuk URL citra. Domain `Gambar Batang` adalah `vegetatif`.
 - Varietas referensi digunakan untuk contoh nilai dan pengetahuan vision, bukan otomatis menjadi kolom output.
@@ -170,10 +170,11 @@ project/
 
 Contoh: `data/samples/data_input.xlsx` dan `data_input_sintetis_1.xlsx`.
 
-- Baris 1: header kelompok atau header atribut mandiri.
-- Baris 2: nama field dalam kelompok; bila kosong, parser memakai teks asli baris 1 pada kolom tersebut.
-- Data mulai baris 3. Spreadsheet satu baris header belum didukung sebagai format umum.
-- Kolom identitas varietas dapat berpindah posisi; anchor detector memilihnya dari nama header.
+- Header satu baris: baris 1 berisi nama kolom (`Variety`, `Growth habit`, dan sebagainya); data mulai baris 2. Observasi pertama tetap disertakan.
+- Header dua baris: baris 1 berisi kelompok/atribut mandiri, baris 2 berisi subheader. Bila subheader kosong, parser memakai header mandiri dari baris 1; data mulai baris 3.
+- Mode otomatis mengenali header bertingkat melalui merged cells pada dua baris pertama. Header lengkap tanpa merge dianggap satu baris. Pilih **Jumlah baris header → 2 baris** untuk struktur bertingkat tanpa merge; pilihan 1/2 baris juga tersedia sebagai override.
+- Header kosong, nama atribut duplikat dalam kelompok yang sama, atau struktur sparse yang ambigu ditolak dengan pesan pemeriksaan input. Subheader yang sama pada kelompok berbeda diperbolehkan dan ditampilkan sebagai nama berkualifikasi, misalnya `Young Fruit / Fruit Length` dan `Mature Fruit / Fruit Length`; nama leaf dan parent tetap dikirim terpisah ke retrieval/LLM. Deteksi otomatis belum merupakan parser universal untuk seluruh variasi workbook.
+- Kolom identitas varietas dapat berpindah posisi; anchor detector memilihnya dari nama header. Referensi embedding mencakup `Variety` dalam bahasa Inggris. Jika kolom varietas tidak ditemukan, tidak memiliki nilai, atau observasi berisi data tetapi varietasnya kosong, runner berhenti sebelum indexing/LLM agar data tidak hilang diam-diam.
 - Data beberapa observasi dengan nama varietas sama digabung; bukan dihitung rata-ratanya.
 
 Contoh nyata `data_input.xlsx` berisi lokasi, koordinat, fisiologi, tanah, dan mikroklimat. Banyak atribut tersebut tidak memiliki padanan karakter morfologi di template; hasil `NULL` tidak otomatis berarti bug. Sampel sintetis merupakan bahan pengujian, bukan bukti akurasi pada data lapangan.
@@ -261,7 +262,7 @@ Nama model lain berupa konstanta kode: teks Groq `llama-3.3-70b-versatile`, teks
 6. Buka **Hasil** untuk tabel kanonik, mapping/confidence/reasoning, dan klasifikasi citra.
 7. Periksa warning dan sel hasil, kemudian unduh Excel.
 
-Input upload disalin ke file sementara dan dihapus dalam blok `finally`. Tidak ada antrean job atau kemampuan resume proses UI. Setelah run gagal, hasil sukses sebelumnya dapat masih tersimpan dalam session state; jangan menganggap tabel lama berasal dari input yang baru gagal.
+Input upload disalin ke file sementara dan dihapus dalam blok `finally`. Tidak ada antrean job atau kemampuan resume proses UI. Saat run baru dimulai, hasil sebelumnya dibersihkan dari session state agar run gagal tidak menawarkan unduhan lama.
 
 ### Memanggil runner dari Python
 
@@ -284,7 +285,7 @@ print(result.error_trace)
 # result.workbook_bytes adalah konten .xlsx untuk disimpan/diunduh.
 ```
 
-`sheet_name` dapat disuplai melalui API Python. Consensus dapat digunakan melalui `VisionSession(consensus=True)` atau parameter klasifikasi, tetapi `run_pipeline_ui()` belum mengekspos mode tersebut.
+`sheet_name` dan `header_rows=None/1/2` dapat disuplai melalui API Python (`None` berarti otomatis; header_rows hanya untuk row-oriented). Consensus dapat digunakan melalui `VisionSession(consensus=True)` atau parameter klasifikasi, tetapi `run_pipeline_ui()` belum mengekspos mode tersebut.
 
 ## 9. Review dan evaluasi
 
@@ -358,7 +359,7 @@ Seluruh suite, termasuk percobaan koneksi localhost untuk fallback:
 
 Marker `llm_fallback_live` menguji koneksi fallback nyata yang diharapkan gagal saat server Ollama tidak berjalan. Baca tes sebelum menjalankannya pada mesin dengan Ollama aktif. Sebagian besar tes agen memakai klien mock/injeksi; `test_ui.py` memakai `Streamlit AppTest`, bukan browser end-to-end dengan API produksi.
 
-Kelompok tes mencakup skema/kontrak, indexing/retrieval/anchor, reranking/normalisasi/review, Drive/vision/provider, penulisan output, retry/limiter/verifier/wrappers, graf/resume, dan halaman UI. Tes pengelompokan nilai/output ada di `test_output_builder.py`; belum ditemukan tes langsung untuk dua fungsi parser atau tes integrasi menyeluruh khusus `run_pipeline_ui()` yang memastikan semua wiring dan layanan nyata berfungsi bersama.
+Kelompok tes mencakup skema/kontrak, indexing/retrieval/anchor, reranking/normalisasi/review, Drive/vision/provider, penulisan output, retry/limiter/verifier/wrappers, graf/resume, dan halaman UI. `test_source_parsing.py` menguji header satu/dua baris serta sampel lama. `test_pipeline_runner.py` memeriksa alur parsing sampai bytes Excel dan kesamaan preview dengan workbook yang dibaca ulang, dengan provider/index/checkpoint mock; ini belum membuktikan akurasi model atau integrasi seluruh layanan nyata.
 
 Hasil verifikasi audit terkini dicatat di [CHECKPOINTS.md](CHECKPOINTS.md), terpisah dari pengujian layanan eksternal terdahulu.
 
@@ -370,7 +371,7 @@ Hasil verifikasi audit terkini dicatat di [CHECKPOINTS.md](CHECKPOINTS.md), terp
 | `ModuleNotFoundError` | Pastikan pip dan Streamlit/pytest menggunakan interpreter `.venv` yang sama |
 | Upload CSV gagal | Simpan sebagai `.xlsx` dengan struktur §5; mengganti ekstensi saja tidak cukup |
 | Header `Karakter` tidak ditemukan | Untuk transposed, tempatkan teks tersebut di kolom pertama header |
-| Tidak ada varietas/output kosong | Periksa format dan log anchor; runner belum menghentikan run secara tegas ketika anchor tidak ditemukan |
+| Kolom varietas tidak ditemukan | Periksa log header, pilihan 1/2 baris, serta nama kolom identitas; runner menghentikan run sebelum pemetaan |
 | Banyak `NULL` | Cocokkan cakupan atribut sumber dengan template; atribut mikroklimat belum tentu punya target |
 | Banyak sel kosong | Bisa karena tidak ada padanan, provider gagal, nilai kosong, atau identitas varietas hilang; lihat log dan mapping |
 | Foto tidak ditulis | Periksa `KNOWN`, kecocokan nama varietas output, label baris Gambar, dan log alasan penolakan |
@@ -378,23 +379,23 @@ Hasil verifikasi audit terkini dicatat di [CHECKPOINTS.md](CHECKPOINTS.md), terp
 | Kredensial/Drive 404 | Periksa path JSON service account, ID folder, dan sharing Viewer; jangan tempel isi private key pada log |
 | Groq/Gemini quota/auth/model error | Periksa akses akun, kuota dan konfigurasi; audit ini tidak memverifikasi ketersediaan model secara live |
 | Embedding lambat/gagal di awal | Periksa cache model, akses unduhan, dan kompatibilitas dependensi embedding |
-| Mengubah alias/domain tidak mengubah retrieval | Rebuild indeks dengan `ensure_indexed(force=True)` dan restart/bersihkan cache kontrak |
-| Hasil lama muncul setelah run gagal | Hasil sukses sebelumnya masih di session state; cek log run dan mulai sesi baru bila perlu |
+| Mengubah alias/domain tidak mengubah retrieval | Restart aplikasi; fingerprint representasi akan memicu rebuild indeks. Gunakan `ensure_indexed(force=True)` jika indeks berasal dari versi lama |
+| Hasil lama dari sebelum pembaruan | Restart aplikasi dan jalankan ulang pipeline; versi baru membersihkan hasil lama ketika run baru dimulai |
 
 ## 12. Keterbatasan dan pekerjaan lanjutan
 
 Temuan berikut adalah batas implementasi, **bukan fitur yang diperbaiki dalam audit dokumentasi ini**:
 
 1. **Review belum memblokir penulisan.** Target valid dengan confidence rendah tetap dipakai UI; diperlukan gerbang persetujuan bila hasil harus hanya berisi mapping yang disetujui.
-2. **CSV dan parsing umum belum tersedia.** Uploader menawarkan CSV, tetapi parser hanya workbook dengan tata letak tertentu. Format, sheet, header berlubang, dan input malformed perlu validasi lebih ketat.
-3. **Anchor gagal belum menghentikan runner.** Tidak ada kolom varietas dapat menghasilkan output tanpa kolom data walaupun pemetaan tetap berjalan.
+2. **CSV dan parsing umum belum tersedia.** Uploader menawarkan CSV, tetapi parser hanya workbook dengan tata letak tertentu. Header satu/dua baris sudah didukung, tetapi judul sebelum header dan variasi arbitrer lain belum dijamin. T03 dan T04 sudah diverifikasi; enam dummy lainnya belum diverifikasi pada perbaikan ini.
+3. **Validasi anchor kini menghentikan runner.** Header salah/ambigu atau identitas varietas yang hilang menghasilkan error sebelum pemetaan. Error provider dan mapping NULL masih harus diperiksa terpisah; validasi input bukan jaminan semua atribut akan terpetakan.
 4. **Koreksi manual belum diterapkan ulang.** Queue belum tersambung ke editor UI, replay workbook, atau identitas run yang lengkap.
 5. **Graf masih stub.** Checkpoint/resume tidak memulihkan proses agen nyata; routing stub tidak menjadi jaminan reliability alur UI.
 6. **Rate limiter belum dipasang pada runner.** Retry provider juga dapat mengulangi error konfigurasi/kuota yang tidak akan pulih hanya dengan retry.
 7. **Trace belum mencakup semua jalur.** Catatan normalisasi dan alasan sel vision tidak ditulis hanya sebagian tampil di log; label validasi UI tidak mewakili semua masalah data.
 8. **Vision berlandaskan varietas template.** Nama input bisa berbeda dari referensi; belum ada crosswalk spesies/varietas, dan tidak ada numeric confidence gate tambahan pada penulisan foto `KNOWN`.
 9. **Lokasi belum disusun sesuai rancangan komposit.** Pemetaan beberapa atribut ke `Lokasi` baru menggabungkan nilai, belum merakit nama/koordinat/elevasi dengan semantik khusus.
-10. **Deteksi perubahan indeks terbatas.** Hash hanya mencakup urutan/label; perubahan contoh nilai, alias, domain, atau model embedding tidak otomatis membuat indeks stale. Gunakan force reindex setelah perubahan tersebut.
+10. **Deteksi perubahan model embedding masih manual.** Fingerprint indeks sudah mencakup representasi baris, termasuk contoh nilai, alias, dan domain, sehingga perubahan data tersebut memicu rebuild otomatis. Namun, penggantian nama/versi model embedding masih perlu diikuti force reindex atau direktori indeks baru.
 11. **Belum ada evaluasi kuantitatif lengkap.** Macro-F1 per domain, gold vision, dataset holdout, dan analisis error perlu dibangun; sampel sintetis tidak menggantikan validasi lapangan.
 12. **Belum siap produksi.** Belum tersedia lockfile dependensi, autentikasi aplikasi, job queue, isolation per pengguna untuk review/checkpoint, kebijakan retensi, deployment teruji, dan monitoring layanan.
 

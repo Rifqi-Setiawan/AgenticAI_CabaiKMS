@@ -7,10 +7,9 @@
 # when the exact text differs, without hardcoding synonyms in Python.
 #
 # Matching key is `label` (trimmed "Karakter" text), same convention as
-# row_domains.yaml. This file is intentionally left with empty alt_labels
-# lists — fill them in manually as real-world label variants are observed
-# in raw samples. A missing or empty list is not an error; it just means
-# no aliases are known yet for that row.
+# row_domains.yaml. Fill aliases in manually as real-world label variants
+# are observed in raw samples. A missing or empty list is not an error; it
+# just means no aliases are known yet for that row.
 
 rows:
   - label: habitus
@@ -122,7 +121,11 @@ rows:
   - label: warna biji
     alt_labels: []
   - label: jumlah biji/buah masak
-    alt_labels: []
+    alt_labels:
+      - Seeds per mature fruit
+      - Number of seeds per mature fruit
+      - Seed count per mature fruit
+      - Seeds per fruit
   - label: Lokasi
     alt_labels: []
   - label: Gambar Daun

@@ -45,7 +45,9 @@ from src.schema.contracts import NULL_ROW
 from src.ui.output_builder import SHEET_NAME, CanonicalOutputBuilder, combine_multi_value, values_by_variety, worksheet_to_dataframe
 
 MAPPING_COLUMNS = [
+    "source_attribute_display",
     "source_attribute",
+    "source_context",
     "predicted_row",
     "predicted_label",
     "target_domain",
@@ -77,6 +79,7 @@ def run_pipeline_ui(
     *,
     source_format: str = "row-oriented",
     sheet_name: str | None = None,
+    header_rows: int | None = None,
     drive_folder_id: str | None = None,
     k: int = DEFAULT_K,
     max_images: int = 5,
@@ -88,16 +91,34 @@ def run_pipeline_ui(
     # --- parsing + variety-column discovery ---
     on_progress(f"Memuat berkas: {file_path.name} (format={source_format!r})")
     if source_format == "row-oriented":
-        parsed = load_row_oriented_columns(file_path, sheet_name or _first_sheet(file_path))
+        parsed = load_row_oriented_columns(
+            file_path, sheet_name or _first_sheet(file_path), header_rows=header_rows,
+        )
+        on_progress(f"Header sumber: {[p.attribute_name for p in parsed]}")
         candidates = [AnchorCandidate(p.attribute_name, p.sample_values) for p in parsed]
         anchor_result = detect_anchor(candidates, source_format="row-oriented")
         on_progress(f"Deteksi anchor: status={anchor_result.status!r} kolom={anchor_result.column_name!r}")
 
         anchor_attr = next((p for p in parsed if p.attribute_name == anchor_result.column_name), None)
-        position_to_variety = anchor_attr.row_values if anchor_attr is not None else []
+        if anchor_result.status != "found" or anchor_attr is None:
+            raise ValueError(
+                "Kolom varietas tidak ditemukan. Periksa jumlah baris header dan "
+                "nama kolom identitas (misalnya Variety atau Jenis Cabai). "
+                "Proses dihentikan agar tidak menghasilkan workbook kosong."
+            )
+        position_to_variety = [v.strip() if v is not None else None for v in anchor_attr.row_values]
+        for index, variety in enumerate(position_to_variety):
+            if not variety and any(
+                p.row_values[index] is not None and str(p.row_values[index]).strip()
+                for p in parsed
+            ):
+                raise ValueError(
+                    f"Varietas kosong pada observasi ke-{index + 1}. "
+                    "Isi kolom varietas sebelum menjalankan pipeline."
+                )
         variety_names_seen: list[str] = []
         for v in position_to_variety:
-            if v is not None and v not in variety_names_seen:
+            if v and v not in variety_names_seen:
                 variety_names_seen.append(v)
         attributes = [p for p in parsed if p.attribute_name != anchor_result.column_name]
     else:
@@ -106,6 +127,8 @@ def run_pipeline_ui(
         position_to_variety = variety_names_seen  # row_values[i] <-> variety_names_seen[i]
         attributes = parsed
 
+    if not variety_names_seen:
+        raise ValueError("Tidak ada varietas untuk keluaran. Periksa header dan isi data sumber.")
     on_progress(f"Atribut untuk schema matching: {len(attributes)}")
     on_progress(f"Varietas terdeteksi dari sumber: {variety_names_seen}")
 
@@ -151,7 +174,9 @@ def run_pipeline_ui(
         target_row = schema.row_by_id(mapping.target_canonical_row) if mapping.target_canonical_row != NULL_ROW else None
         mapping_rows.append(
             {
+                "source_attribute_display": attr.display_name,
                 "source_attribute": attr.attribute_name,
+                "source_context": attr.structural_context,
                 "predicted_row": mapping.target_canonical_row,
                 "predicted_label": target_row.label if target_row else None,
                 "target_domain": mapping.target_domain,

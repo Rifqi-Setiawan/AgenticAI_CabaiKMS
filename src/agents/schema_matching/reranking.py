@@ -18,7 +18,7 @@ from typing import Callable
 
 from src.agents.schema_matching.retrieval import RetrievalHit, SourceAttributeProfile
 from src.llm.providers import call_with_fallback
-from src.schema.canonical import CanonicalSchema
+from src.schema.canonical import CanonicalRow, CanonicalSchema
 from src.schema.contracts import NULL_ROW, SchemaMapping
 
 LLMCall = Callable[..., SchemaMapping]
@@ -32,6 +32,27 @@ SYSTEM_PROMPT = (
     f'yang cocok secara meyakinkan, keluarkan target_canonical_row="{NULL_ROW}" '
     "daripada menebak."
 )
+
+
+def _normalized_label(value: str) -> str:
+    return " ".join(value.split()).casefold()
+
+
+def _exact_schema_name_match(
+    profile: SourceAttributeProfile, schema: CanonicalSchema,
+) -> CanonicalRow | None:
+    """Resolve an exact canonical label or curated alias deterministically.
+
+    Curated aliases are explicit equivalences maintained in
+    row_aliases.yaml. They should not depend on ANN recall or on an LLM
+    choosing the right row after retrieval.
+    """
+    source_name = _normalized_label(profile.attribute_name)
+    for row in schema.rows:
+        names = (row.label, *row.alt_labels)
+        if any(source_name == _normalized_label(name) for name in names):
+            return row
+    return None
 
 
 def _format_candidates(candidates: list[RetrievalHit], schema: CanonicalSchema) -> str:
@@ -83,6 +104,21 @@ def rerank(
     pydantic.ValidationError if the model — real or mocked — produces a
     target_canonical_row outside {r_1..r_N, NULL})."""
     schema = schema or CanonicalSchema.from_template()
+    exact_row = _exact_schema_name_match(profile, schema)
+    if exact_row is not None:
+        return SchemaMapping(
+            source_attribute=profile.attribute_name,
+            source_context=profile.structural_context,
+            source_format=source_format,
+            target_canonical_row=exact_row.id,
+            confidence=1.0,
+            reasoning=(
+                f"Nama atribut cocok persis dengan label atau alias terkurasi "
+                f"untuk '{exact_row.label}'."
+            ),
+            normalization_required=True,
+        )
+
     messages = build_messages(profile, candidates, schema, source_format)
     mapping = llm_call(response_model=SchemaMapping, messages=messages)
     if not isinstance(mapping, SchemaMapping):

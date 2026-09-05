@@ -36,6 +36,25 @@ def _mock_llm(raw: dict):
 
 
 class TestRerank:
+    def test_exact_curated_alias_maps_without_calling_llm(self, schema):
+        profile = SourceAttributeProfile(
+            attribute_name="Seeds per mature fruit",
+            structural_context="Mature Fruit",
+            sample_values=["35", "42", "50"],
+        )
+
+        def must_not_call_llm(**kwargs):
+            pytest.fail("Exact curated aliases must not depend on an LLM call")
+
+        mapping = rerank(
+            profile, [], source_format="row-oriented", schema=schema, llm_call=must_not_call_llm
+        )
+
+        target = schema.row_by_id(mapping.target_canonical_row)
+        assert target.label == "jumlah biji/buah masak"
+        assert mapping.source_context == "Mature Fruit"
+        assert mapping.confidence == 1.0
+
     def test_valid_llm_output_becomes_a_validated_schema_mapping(self, schema):
         profile = SourceAttributeProfile(
             attribute_name="Tinggi Tanaman (cm)", sample_values=["60 - 89 cm"]

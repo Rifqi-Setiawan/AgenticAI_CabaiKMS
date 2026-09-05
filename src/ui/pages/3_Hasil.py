@@ -46,12 +46,17 @@ if result.mapping_df.empty:
     st.write("(tidak ada atribut untuk dipetakan)")
 else:
     st.dataframe(
-        result.mapping_df[["source_attribute", "predicted_row", "predicted_label", "target_domain", "confidence"]],
+        result.mapping_df[["source_attribute_display", "predicted_row", "predicted_label", "target_domain", "confidence"]]
+        .rename(columns={"source_attribute_display": "source_attribute"}),
         width="stretch",
     )
-    chosen = st.selectbox("Lihat reasoning lengkap untuk atribut:", result.mapping_df["source_attribute"])
-    row = result.mapping_df.loc[result.mapping_df["source_attribute"] == chosen].iloc[0]
+    chosen = st.selectbox(
+        "Lihat reasoning lengkap untuk atribut:", result.mapping_df["source_attribute_display"]
+    )
+    row = result.mapping_df.loc[result.mapping_df["source_attribute_display"] == chosen].iloc[0]
     with st.expander(f"Reasoning: {chosen}", expanded=True):
+        if row["source_context"]:
+            st.write(f"**Konteks header:** {row['source_context']}")
         st.write(f"**Target baris kanonik:** {row['predicted_row']} ({row['predicted_label']})")
         st.write(f"**Domain:** {row['target_domain']}")
         st.write(f"**Confidence:** {row['confidence']:.2f}")

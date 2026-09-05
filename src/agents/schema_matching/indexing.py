@@ -5,14 +5,14 @@ Each row's `repr()` (CanonicalRow.serialize() from Fase 1: label ⊕ domain ⊕
 contoh_nilai ⊕ altLabels) is embedded with a multilingual sentence-transformer
 and stored with its row_id + domain as metadata. Indexing is idempotent: if
 the collection already holds a vector for every current row AND the
-template hasn't drifted since, ensure_indexed() is a no-op. If the template
-*has* changed (row count, labels, or reordering — see
-`CanonicalSchema.template_hash`), the collection is rebuilt automatically,
-which is the "Fase 3a" auto re-index promised in canonical.py's docstring.
+embedded representations have not drifted, ensure_indexed() is a no-op.
+Changes to row labels, domains, examples, aliases, count, or ordering rebuild
+the collection automatically.
 """
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 from typing import Any
 
@@ -62,12 +62,19 @@ def get_collection(
     return client.get_or_create_collection(COLLECTION_NAME, metadata={"hnsw:space": "cosine"})
 
 
+def _representation_hash(schema: CanonicalSchema) -> str:
+    """Fingerprint everything embedded, including domains and aliases."""
+    source = "\n".join(f"{row.id}:{row.serialize()}" for row in schema.rows)
+    return hashlib.sha256(source.encode("utf-8")).hexdigest()
+
+
 def _collection_metadata(schema: CanonicalSchema) -> dict[str, Any]:
     # NOTE: "hnsw:space" is intentionally excluded — chromadb bakes the
     # distance function in at collection creation and rejects any modify()
     # call that even mentions the key again, matching value or not.
     return {
         "template_hash": schema.template_hash,
+        "representation_hash": _representation_hash(schema),
         "n_rows": len(schema.rows),
     }
 
@@ -76,6 +83,8 @@ def _is_up_to_date(collection: chromadb.api.models.Collection.Collection, schema
     if collection.count() != len(schema.rows):
         return False
     if collection.metadata.get("template_hash") != schema.template_hash:
+        return False
+    if collection.metadata.get("representation_hash") != _representation_hash(schema):
         return False
     existing_ids = set(collection.get(include=[])["ids"])
     return existing_ids == schema.row_ids

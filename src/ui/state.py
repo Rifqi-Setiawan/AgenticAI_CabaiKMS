@@ -27,6 +27,10 @@ def set_result(result: Any) -> None:
     st.session_state[_RESULT_KEY] = result
 
 
+def clear_result() -> None:
+    st.session_state.pop(_RESULT_KEY, None)
+
+
 def get_log() -> list[str]:
     return st.session_state.setdefault(_LOG_KEY, [])
 

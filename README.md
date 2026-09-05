@@ -49,3 +49,6 @@ Perintah ini mengecualikan tes embedding dan koneksi fallback live; keberhasilan
 | [Konvensi kontribusi](CLAUDE.md) | Ringkasan aturan proyek untuk kontributor/asisten |
 
 Jangan hapus template, sampel, label review, atau kredensial hanya karena tidak diimpor langsung oleh Python. File tersebut merupakan aset atau konfigurasi proyek.
+
+
+.\.venv\Scripts\python.exe -m streamlit run src/ui/app.py

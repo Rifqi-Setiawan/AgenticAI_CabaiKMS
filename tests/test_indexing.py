@@ -94,3 +94,9 @@ class TestEnsureIndexed:
         # stale ids from the pre-drift (60-row) template must be gone, not
         # left behind as orphans
         assert "r_60" not in stored_ids
+
+    def test_representation_hash_changes_when_alias_changes(self, schema):
+        row = dataclasses.replace(schema.rows[0], alt_labels=("growth habit",))
+        changed = dataclasses.replace(schema, rows=[row, *schema.rows[1:]])
+
+        assert indexing._representation_hash(changed) != indexing._representation_hash(schema)

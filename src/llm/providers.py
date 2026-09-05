@@ -22,7 +22,7 @@ load_dotenv()
 
 T = TypeVar("T", bound=BaseModel)
 
-GROQ_MODEL = "llama-3.3-70b-versatile"
+GROQ_MODEL = "openai/gpt-oss-120b"
 OLLAMA_MODEL = "llama3.1:8b"
 OLLAMA_DEFAULT_BASE_URL = "http://localhost:11434/v1"
 

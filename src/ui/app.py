@@ -52,6 +52,15 @@ with col2:
         help="Jika kosong, tahap vision_classification akan dilewati.",
     )
 
+header_rows = None
+if source_format == "row-oriented":
+    header_choice = st.selectbox(
+        "Jumlah baris header", ["Otomatis", "1 baris", "2 baris"],
+        help=("Otomatis: header datar satu baris atau header bertingkat dengan merged cells. "
+              "Pilih 2 baris secara manual untuk header bertingkat tanpa merged cells."),
+    )
+    header_rows = {"Otomatis": None, "1 baris": 1, "2 baris": 2}[header_choice]
+
 run_clicked = st.button("▶️ Jalankan Pipeline", type="primary", disabled=state.is_running())
 
 if run_clicked:
@@ -60,8 +69,10 @@ if run_clicked:
     else:
         state.set_running(True)
         state.clear_log()
+        state.clear_result()  # never offer an old/empty workbook after a failed new run
         state.set_last_inputs(
-            filename=uploaded_file.name, source_format=source_format, drive_url=drive_url
+            filename=uploaded_file.name, source_format=source_format, drive_url=drive_url,
+            header_rows=header_rows,
         )
 
         suffix = Path(uploaded_file.name).suffix or ".xlsx"
@@ -80,6 +91,7 @@ if run_clicked:
                 result = run_pipeline_ui(
                     tmp_path,
                     source_format=source_format,
+                    header_rows=header_rows,
                     drive_folder_id=drive_url,
                     on_progress=_on_progress,
                 )

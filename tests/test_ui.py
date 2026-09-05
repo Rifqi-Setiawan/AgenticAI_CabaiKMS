@@ -21,7 +21,9 @@ def _fixture_result(with_issues: bool = False) -> PipelineRunResult:
     mapping_df = pd.DataFrame(
         [
             {
+                "source_attribute_display": "Warna Daun",
                 "source_attribute": "Warna Daun",
+                "source_context": None,
                 "predicted_row": "r_7",
                 "predicted_label": "warna daun",
                 "target_domain": "daun",
@@ -30,7 +32,9 @@ def _fixture_result(with_issues: bool = False) -> PipelineRunResult:
                 "reasoning": "cocok jelas dengan label 'warna daun'",
             },
             {
+                "source_attribute_display": "Panjang Daun",
                 "source_attribute": "Panjang Daun",
+                "source_context": None,
                 "predicted_row": "r_8",
                 "predicted_label": "panjang daun",
                 "target_domain": "daun",
@@ -70,6 +74,14 @@ def _fixture_result(with_issues: bool = False) -> PipelineRunResult:
 
 
 class TestPage1Input:
+    def test_header_selection_only_for_row_oriented(self):
+        at = AppTest.from_file(APP_PATH, default_timeout=APP_TEST_TIMEOUT).run()
+        assert at.selectbox[0].options == ["Otomatis", "1 baris", "2 baris"]
+        at.selectbox[0].select("2 baris").run()
+        assert not at.exception
+        at.radio[0].set_value("transposed").run()
+        assert not at.selectbox
+
     def test_renders_without_exception(self):
         at = AppTest.from_file(APP_PATH, default_timeout=APP_TEST_TIMEOUT)
         at.run()

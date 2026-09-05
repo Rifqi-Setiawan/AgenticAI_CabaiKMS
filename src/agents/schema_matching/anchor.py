@@ -41,6 +41,7 @@ from typing import Literal
 from src.agents.schema_matching.indexing import EMBEDDING_MODEL_NAME, encode
 
 ANCHOR_CONCEPT_PHRASES = [
+    "variety",  # explicit English identity header, as in flat observation tables
     "varietas cabai",
     "aksesi cabai",
     "jenis cabai",

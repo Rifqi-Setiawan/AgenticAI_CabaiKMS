@@ -36,28 +36,93 @@ class ParsedAttribute:
     def sample_values(self) -> list[str]:
         return [v for v in self.row_values if v is not None]
 
+    @property
+    def display_name(self) -> str:
+        """Unambiguous human label without changing the LLM-facing name.
 
-def load_row_oriented_columns(path: Path, sheet_name: str) -> list[ParsedAttribute]:
-    """Parse a two-row hierarchical header, row-oriented sheet (see
-    docs/PROFILING.md §2.2): row 1 = an optional section header, forward-
-    filled across the columns it merges over; row 2 = the real field name;
-    data starts row 3. A column with no row-2 sub-header uses its own row-1
-    text as the attribute name instead (e.g. "No", "Jenis Cabai").
+        A multilevel sheet may legitimately contain the same leaf header in
+        different sections, for example Young Fruit / Fruit Length and
+        Mature Fruit / Fruit Length.
+        """
+        if self.structural_context:
+            return f"{self.structural_context} / {self.attribute_name}"
+        return self.attribute_name
 
-    `row_values[i]` is the value from the i-th data row (row 3+i) — the
-    SAME row index across every returned attribute, including whichever one
-    is later identified as the anchor column, so a caller can zip an
-    attribute's row_values against the anchor's row_values to know which
-    varietas each value belongs to."""
+
+def load_row_oriented_columns(
+    path: Path, sheet_name: str, *, header_rows: int | None = None,
+) -> list[ParsedAttribute]:
+    """Read flat one-row or hierarchical two-row headers without losing
+    the first observation. Auto mode recognizes merged headers in rows 1–2;
+    otherwise a complete first row is a flat header. Ambiguous sparse
+    headers require an explicit header_rows=1 or 2 rather than guessing.
+    Unmerged two-row headers can always be selected explicitly.
+
+    Every returned attribute has the same observation positions, including
+    empty values. Two-row parsing retains the existing forward-filled
+    section context and standalone row-1 header behavior.
+    """
+    if header_rows not in (None, 1, 2):
+        raise ValueError("Jumlah baris header harus 1, 2, atau otomatis (None).")
     wb = openpyxl.load_workbook(path, data_only=True)
-    ws = wb[sheet_name]
-    rows = list(ws.iter_rows(values_only=True))
+    try:
+        ws = wb[sheet_name]
+        rows = list(ws.iter_rows(values_only=True))
+        merged_headers = [
+            r for r in ws.merged_cells.ranges
+            if r.min_row == 1 and r.max_row <= 2
+        ]
+    finally:
+        wb.close()
+
+    def present(value: object) -> bool:
+        return value is not None and str(value).strip() != ""
+
+    if not rows or not any(present(v) for v in rows[0]):
+        raise ValueError("Header kosong. Tempatkan nama kolom pada baris pertama sheet.")
+    if header_rows is None:
+        # A horizontal merge alone may be a title, not a hierarchy. Require
+        # subheaders beneath it, or a standalone header merged vertically.
+        hierarchical = len(rows) > 1 and any(
+            r.max_row == 2 or (
+                r.max_col > r.min_col
+                and any(present(v) for v in rows[1][r.min_col - 1:r.max_col])
+            ) for r in merged_headers
+        )
+        header_rows = 2 if hierarchical else 1
+        if not hierarchical and len(rows) > 1 and any(
+            not present(header) and present(value)
+            for header, value in zip(rows[0], rows[1])
+        ):
+            raise ValueError(
+                "Struktur header ambigu. Pilih jumlah baris header 1 atau 2 "
+                "sesuai file, dan pastikan setiap kolom data memiliki nama."
+            )
+    if len(rows) <= header_rows or not any(
+        present(v) for row in rows[header_rows:] for v in row
+    ):
+        raise ValueError("Tidak ada baris data setelah header.")
+
+    if header_rows == 1:
+        attributes = []
+        for col_idx, header in enumerate(rows[0]):
+            if not present(header):
+                if any(present(row[col_idx]) for row in rows[1:]):
+                    raise ValueError(f"Kolom {col_idx + 1} berisi data tetapi header kosong.")
+                continue
+            attributes.append(ParsedAttribute(
+                str(header).strip(), None,
+                [str(row[col_idx]) if present(row[col_idx]) else None for row in rows[1:]],
+            ))
+        _validate_attribute_names(attributes)
+        return attributes
+
     section_row, field_row, data_rows = rows[0], rows[1], rows[2:]
 
     sections: list[str | None] = []
     current: str | None = None
     for cell in section_row:
-        if cell is not None:
+        if present(cell):
             current = str(cell).strip()
         sections.append(current)
 
@@ -68,9 +133,9 @@ def load_row_oriented_columns(path: Path, sheet_name: str) -> list[ParsedAttribu
         raw_section = section_row[col_idx] if col_idx < len(section_row) else None
         field = field_row[col_idx] if col_idx < len(field_row) else None
 
-        if field is not None:
+        if present(field):
             attribute_name, structural_context = str(field).strip(), filled_section
-        elif raw_section is not None:
+        elif present(raw_section):
             # Only a column that genuinely HAS its own row-1 text (not one
             # merely inheriting a forward-filled value from an earlier
             # column) counts as a standalone, header-only attribute — this
@@ -86,7 +151,24 @@ def load_row_oriented_columns(path: Path, sheet_name: str) -> list[ParsedAttribu
             for row in data_rows
         ]
         attributes.append(ParsedAttribute(attribute_name, structural_context, row_values))
+    _validate_attribute_names(attributes)
     return attributes
+
+
+def _validate_attribute_names(attributes: list[ParsedAttribute]) -> None:
+    # A repeated leaf header is valid under a different parent section.
+    # Only the full structural identity must be unique. Flat headers all
+    # have context=None, so their previous duplicate protection remains.
+    identities = [
+        ((a.structural_context or "").strip().casefold(), a.attribute_name.strip().casefold())
+        for a in attributes
+    ]
+    duplicates = sorted({identity for identity in identities if identities.count(identity) > 1})
+    if duplicates:
+        labels = [f"{context} / {name}" if context else name for context, name in duplicates]
+        raise ValueError(
+            "Nama atribut duplikat dalam kelompok yang sama: " + ", ".join(labels)
+        )
 
 
 def load_transposed_rows(path: Path, sheet_name: str) -> tuple[list[ParsedAttribute], list[str]]:

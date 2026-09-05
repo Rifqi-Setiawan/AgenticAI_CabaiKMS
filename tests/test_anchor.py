@@ -85,6 +85,14 @@ ROW_ORIENTED_CANDIDATES_SINTETIS_1 = [
 
 
 class TestDetectAnchor:
+    def test_english_variety_header_in_flat_table(self):
+        result = detect_anchor([
+            AnchorCandidate("Sample_ID"), AnchorCandidate("Variety"),
+            AnchorCandidate("Growth habit"), AnchorCandidate("Plant Height (cm)"),
+        ], source_format="row-oriented")
+        assert result.status == "found"
+        assert result.column_name == "Variety"
+
     def test_row_oriented_finds_the_real_anchor_column(self):
         result = detect_anchor(
             ROW_ORIENTED_CANDIDATES_WITH_ANCHOR, source_format="row-oriented"

@@ -196,6 +196,25 @@ class TestSafeClassifyImageClassification:
 
 
 class TestSafeRerank:
+    def test_exact_seed_alias_maps_without_manual_review_or_llm(self, schema):
+        profile = SourceAttributeProfile(
+            attribute_name="Seeds per mature fruit",
+            structural_context="Mature Fruit",
+            sample_values=["35", "42"],
+        )
+        state = {"error_trace": []}
+
+        def must_not_call_llm(**kwargs):
+            pytest.fail("Exact curated aliases must bypass the LLM")
+
+        mapping, patch = safe_rerank(
+            profile, [], state, source_format="row-oriented", schema=schema,
+            llm_call=must_not_call_llm, **FAST,
+        )
+
+        assert schema.row_by_id(mapping.target_canonical_row).label == "jumlah biji/buah masak"
+        assert patch == {}
+
     def test_persistent_llm_call_error_does_not_crash_the_caller(self, schema):
         """Regression test for a real bug: a rate limit that persists
         across every retry attempt used to propagate LLMCallError straight
