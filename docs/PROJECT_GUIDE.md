@@ -35,7 +35,7 @@ Ini adalah **prototipe penelitian**, bukan sistem produksi, API backend, atau pl
 | Workbook Structure Profiler | Tersedia secara standalone; deterministik, faktual, dan sparse-safe |
 | Structure Understanding Agent | Tersedia secara standalone; evidence ringkas, output Pydantic, dan retry evidence terarah yang dibatasi; belum dipakai pipeline UI |
 | Structure Verifier | Deterministik dan wajib lulus sebelum struktur boleh menjadi Source IR |
-| Source IR | Representasi deterministik dari struktur terverifikasi dengan koordinat sumber eksak; belum terhubung ke Schema Matching/UI |
+| Source IR dan shadow parity | Representasi deterministik berkoordinat eksak tersedia; mode pembanding legacy bersifat opsional, default mati, dan tidak menjadi input Schema Matching/UI |
 | Anchor varietas | Aktif, embedding header, ambang similarity `0.7` |
 | Retrieval | Aktif, indeks baris kanonik ChromaDB; default top-k `8` |
 | Reranking | Aktif, Groq dengan fallback Ollama; output Pydantic |
@@ -65,12 +65,25 @@ yang sama tidak boleh diulang. Proposal model berstatus
 Source IR.
 
 Source IR mempertahankan koordinat header dan nilai, termasuk posisi kosong, tanpa
-normalisasi atau schema matching. Fitur ini sengaja belum mengganti parser lama,
-belum dipanggil `run_pipeline_ui()`, dan belum dipasang ke LangGraph. Karena itu,
-dukungan spreadsheet berantakan belum boleh dianggap aktif pada UI produksi.
+normalisasi atau schema matching. Fitur ini sengaja belum mengganti parser lama dan
+belum dipasang ke LangGraph. `run_pipeline_ui()` dapat menjalankannya hanya sebagai
+shadow comparison melalui `enable_structure_shadow=True`; default tetap `False`.
+Hasil shadow tidak pernah mengganti atribut, posisi varietas, mapping, atau workbook
+dari parser legacy. Karena itu, dukungan spreadsheet berantakan belum boleh dianggap
+aktif pada UI produksi.
 Pada setiap `SourceValueIR`, `coordinate` adalah posisi logis dalam geometri tabel,
 sedangkan `source_coordinate` adalah sel fisik yang menyimpan nilai atau anchor
 kiri-atas merge. Posisi kosong memiliki `source_coordinate = None`.
+
+### Jalur produksi dan shadow
+
+Jalur produksi tetap `legacy parser -> anchor/entity -> retrieval -> reranking ->
+acceptance -> normalization -> canonical output`. Bila flag shadow diaktifkan, satu
+jalur observasi terisolasi menjalankan `WorkbookProfile -> Structure Understanding ->
+Verifier -> Source IR -> compatibility adapter -> parity report`. Status `MATCH`
+hanya berarti keluaran logisnya setara dengan parser legacy, bukan bukti bahwa keduanya
+benar terhadap ground truth. Status berbeda, abstain, atau gagal hanya dicatat dan
+tidak mengubah hasil produksi.
 
 ## 3. Arsitektur dan alur eksekusi
 
@@ -241,7 +254,7 @@ Tidak ada konversi satuan otomatis, penghitungan rerata, penerjemahan warna beba
 | `ImageMetadata` | `file_id`, `filename`, `mime_type`, `size`, `created_time`; tidak ada path hierarki |
 | `VisionResult` | `classification_status` (`KNOWN/OTHER/UNCERTAIN`), `matched_variety`, `identified_part` (`DAUN/BATANG/BUAH/BUNGA`), confidence, bukti visual |
 | `CellProvenanceRecord` | Run dan fingerprint sumber, atribut/konteks, varietas, referensi kanonik posisi+stabil, nilai mentah+normal, keputusan acceptance, serta versi/hash skema untuk satu penulisan sel nyata |
-| `PipelineRunResult` | `mapping_df`, `canonical_df`, `workbook_bytes`, `vision_rows`, `provenance_records`, `agent_status`, `checkpoint_thread_id`, `error_trace` |
+| `PipelineRunResult` | `mapping_df`, `canonical_df`, `workbook_bytes`, `vision_rows`, `provenance_records`, `agent_status`, `checkpoint_thread_id`, `error_trace`, dan laporan opsional `structure_shadow` |
 
 `SchemaMapping` memvalidasi row ID terhadap skema default yang di-cache. Setelah mengubah template dalam proses Python yang sama, panggil `clear_default_schema_cache()` atau restart aplikasi.
 

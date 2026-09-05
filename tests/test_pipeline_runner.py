@@ -8,6 +8,7 @@ from pandas.testing import assert_frame_equal
 from src.agents.schema_matching.anchor import AnchorResult
 from src.schema.canonical import CanonicalSchema
 from src.schema.contracts import SchemaMapping
+from src.schema.structure import StructureProposal
 from src.ui import pipeline_runner as runner
 from src.ui.output_builder import worksheet_to_dataframe
 from tests.test_source_parsing import flat_observations  # shared temporary workbook fixture
@@ -333,3 +334,79 @@ def test_acceptance_accounting_separates_review_and_no_write(tmp_path, monkeypat
     )
     assert len(result.provenance_records) == 1
     assert result.provenance_records[0].source_attribute == "Accepted"
+
+
+def _shadow_flat_proposal():
+    return StructureProposal(
+        status="RESOLVED", orientation="row-oriented",
+        row_oriented={
+            "table_range": "A1:D4", "header_rows": [1],
+            "data_start_row": 2, "data_end_row": 4,
+            "attribute_columns": ["A", "B", "C", "D"],
+            "header_bindings": [
+                {"column_letter": column, "header_cells": [f"{column}1"]}
+                for column in "ABCD"
+            ],
+        }, confidence=0.9, evidence_summary="Flat observation table.",
+    )
+
+
+def test_structure_shadow_is_disabled_by_default(flat_observations, monkeypatch):
+    _isolate_pipeline(monkeypatch)
+    monkeypatch.setattr(runner, "safe_rerank", lambda *args, **kwargs: (None, {}))
+    monkeypatch.setattr(
+        runner,
+        "run_structure_shadow",
+        lambda *args, **kwargs: pytest.fail("shadow must not run by default"),
+    )
+    result = runner.run_pipeline_ui(flat_observations)
+    assert result.structure_shadow is None
+    assert "structure_shadow" not in result.agent_status
+
+
+def test_shadow_mode_cannot_change_primary_pipeline_outputs(flat_observations, monkeypatch):
+    _isolate_pipeline(monkeypatch)
+    schema = CanonicalSchema.from_template()
+    height = schema.row_by_label("tinggi tanaman").id
+
+    def mapping(profile, candidates, state, *, source_format, **kwargs):
+        target = height if profile.attribute_name == "Plant Height (cm)" else "NULL"
+        return _mapping(schema, profile.attribute_name, target), {}
+
+    monkeypatch.setattr(runner, "safe_rerank", mapping)
+    baseline = runner.run_pipeline_ui(flat_observations)
+    shadowed = runner.run_pipeline_ui(
+        flat_observations,
+        enable_structure_shadow=True,
+        structure_llm_call=lambda **kwargs: _shadow_flat_proposal(),
+    )
+    assert shadowed.structure_shadow is not None
+    assert shadowed.structure_shadow.status.value == "MATCH"
+    assert baseline.workbook_bytes == shadowed.workbook_bytes
+    assert_frame_equal(baseline.canonical_df, shadowed.canonical_df)
+    assert_frame_equal(baseline.mapping_df, shadowed.mapping_df)
+    assert baseline.vision_rows == shadowed.vision_rows
+    assert baseline.agent_status["vision_classification"] == shadowed.agent_status["vision_classification"]
+    assert len(baseline.provenance_records) == len(shadowed.provenance_records)
+    for first, second in zip(baseline.provenance_records, shadowed.provenance_records):
+        assert first.model_dump(exclude={"run_id"}) == second.model_dump(exclude={"run_id"})
+
+
+def test_shadow_exception_cannot_abort_primary_pipeline(flat_observations, monkeypatch):
+    _isolate_pipeline(monkeypatch)
+    monkeypatch.setattr(runner, "safe_rerank", lambda *args, **kwargs: (None, {}))
+
+    def fail(**kwargs):
+        raise RuntimeError("token=supersecret injected shadow failure")
+
+    result = runner.run_pipeline_ui(
+        flat_observations,
+        enable_structure_shadow=True,
+        structure_llm_call=fail,
+    )
+    assert result.canonical_df is not None
+    assert result.workbook_bytes
+    assert result.structure_shadow is not None
+    assert result.structure_shadow.status.value == "NEW_PATH_FAILED"
+    assert result.structure_shadow.new_path_error_type == "RuntimeError"
+    assert "supersecret" not in result.structure_shadow.new_path_error_message

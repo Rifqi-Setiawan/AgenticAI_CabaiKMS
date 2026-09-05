@@ -22,7 +22,9 @@ Python"), not a production job queue.
 from __future__ import annotations
 
 import io
+import re
 import uuid
+import zipfile
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable
@@ -39,11 +41,13 @@ from src.agents.schema_matching.retrieval import DEFAULT_K, SourceAttributeProfi
 from src.agents.schema_matching.source_parsing import load_row_oriented_columns, load_transposed_rows
 from src.agents.tabular_update import apply_vision_result_to_worksheet
 from src.agents.vision_classification import VisionSession
+from src.ingestion.shadow_pipeline import run_structure_shadow, sanitize_shadow_error_message
 from src.orchestrator.graph import run_pipeline
 from src.reliability.wrappers import safe_classify_image, safe_rerank
 from src.schema.canonical import CanonicalSchema
 from src.schema.contracts import NULL_ROW
 from src.schema.provenance import CellProvenanceRecord, source_file_sha256
+from src.schema.shadow_parity import ShadowParityReport, ShadowStatus
 from src.ui.output_builder import SHEET_NAME, CanonicalOutputBuilder, combine_multi_value, values_by_variety, worksheet_to_dataframe
 
 MAPPING_COLUMNS = [
@@ -74,10 +78,38 @@ class PipelineRunResult:
     agent_status: dict[str, str] = field(default_factory=dict)
     checkpoint_thread_id: str = ""
     error_trace: list[str] = field(default_factory=list)
+    structure_shadow: ShadowParityReport | None = None
 
 
 def _noop(_: str) -> None:
     return None
+
+
+def _deterministic_workbook_bytes(workbook) -> bytes:
+    """Serialize equivalent workbooks identically despite OpenPyXL save timestamps."""
+    raw = io.BytesIO()
+    workbook.save(raw)
+    output = io.BytesIO()
+    with zipfile.ZipFile(io.BytesIO(raw.getvalue()), "r") as source:
+        with zipfile.ZipFile(output, "w") as target:
+            target.comment = source.comment
+            for original in source.infolist():
+                payload = source.read(original.filename)
+                if original.filename == "docProps/core.xml":
+                    payload = re.sub(
+                        rb"(<dcterms:modified[^>]*>).*?(</dcterms:modified>)",
+                        rb"\g<1>2000-01-01T00:00:00Z\g<2>",
+                        payload,
+                    )
+                stable = zipfile.ZipInfo(original.filename, (2000, 1, 1, 0, 0, 0))
+                stable.compress_type = original.compress_type
+                stable.comment = original.comment
+                stable.extra = original.extra
+                stable.internal_attr = original.internal_attr
+                stable.external_attr = original.external_attr
+                stable.create_system = original.create_system
+                target.writestr(stable, payload)
+    return output.getvalue()
 
 
 def run_pipeline_ui(
@@ -90,12 +122,15 @@ def run_pipeline_ui(
     k: int = DEFAULT_K,
     max_images: int = 5,
     on_progress: ProgressCallback = _noop,
+    enable_structure_shadow: bool = False,
+    structure_llm_call: Callable | None = None,
 ) -> PipelineRunResult:
     run_id = uuid.uuid4().hex
     resolved_sheet_name = sheet_name or _first_sheet(file_path)
     source_hash = source_file_sha256(file_path)
     state: dict = {"error_trace": []}
     agent_status: dict[str, str] = {}
+    structure_shadow: ShadowParityReport | None = None
 
     # --- parsing + variety-column discovery ---
     on_progress(f"Memuat berkas: {file_path.name} (format={source_format!r})")
@@ -140,6 +175,32 @@ def run_pipeline_ui(
         raise ValueError("Tidak ada varietas untuk keluaran. Periksa header dan isi data sumber.")
     on_progress(f"Atribut untuk schema matching: {len(attributes)}")
     on_progress(f"Varietas terdeteksi dari sumber: {variety_names_seen}")
+
+    # Observation-only migration path. Legacy values above remain the sole
+    # authority for every downstream operation regardless of this outcome.
+    if enable_structure_shadow:
+        on_progress("structure_shadow: membandingkan legacy parser dengan Source IR...")
+        try:
+            structure_shadow = run_structure_shadow(
+                file_path,
+                resolved_sheet_name,
+                source_format=source_format,
+                header_rows=header_rows,
+                llm_call=structure_llm_call,
+                anchor_detector=detect_anchor,
+            )
+        except Exception as exc:  # noqa: BLE001 - shadow must never abort primary work
+            message = sanitize_shadow_error_message(exc)
+            structure_shadow = ShadowParityReport(
+                status=ShadowStatus.NEW_PATH_FAILED,
+                source_format=source_format,
+                issue_codes=["SHADOW_RUNNER_EXCEPTION"],
+                new_path_error_type=type(exc).__name__,
+                new_path_error_message=message,
+                summary="NEW_PATH_FAILED — isolated shadow exception; legacy pipeline continued",
+            )
+        agent_status["structure_shadow"] = structure_shadow.summary
+        on_progress(f"structure_shadow: {structure_shadow.summary}")
 
     schema = CanonicalSchema.from_template()
     on_progress("Memastikan indeks ChromaDB (idempoten)...")
@@ -323,9 +384,7 @@ def run_pipeline_ui(
 
     canonical_df = worksheet_to_dataframe(worksheet, schema, builder.variety_names)
 
-    buffer = io.BytesIO()
-    workbook.save(buffer)
-    workbook_bytes = buffer.getvalue()
+    workbook_bytes = _deterministic_workbook_bytes(workbook)
 
     # --- checkpointed stub orchestrator run (Fase 2), purely so the UI's
     # checkpoint debugger has a real thread/checkpoint to open ---
@@ -346,6 +405,7 @@ def run_pipeline_ui(
         agent_status=agent_status,
         checkpoint_thread_id=thread_id,
         error_trace=list(state.get("error_trace", [])),
+        structure_shadow=structure_shadow,
     )
 
 

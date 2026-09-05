@@ -74,6 +74,21 @@ integration: `SourceValueIR.coordinate` is the logical table position, while
 `SourceValueIR.source_coordinate` is the physical content cell (including a
 merged top-left anchor). A logical blank has no physical source coordinate.
 
+## (a.3) Parser migration uses shadow parity before production cutover
+
+**[FINAL, Phase 5]** Migration follows `legacy parser -> shadow parity -> gated
+production migration`. The legacy parser remains authoritative while the profiler,
+structure agent, verifier, and Source IR execute only as an optional default-off
+shadow. A shadow failure, abstention, or disagreement cannot affect retrieval,
+reranking, acceptance, normalization, vision, or canonical output.
+
+Direct replacement would combine architectural change with correctness risk. The
+versioned deterministic parity report therefore compares orientation, full logical
+attribute identity, context, ordering, positional values, row-oriented anchor, and
+transposed entity positions first. `MATCH` means behavioral equivalence to the legacy
+parser on that workbook; it does not establish ground-truth correctness. A legacy
+failure with new-path success is recorded only as potential coverage expansion.
+
 ## (b) Domain = derived label, not a predicted field
 
 **[FINAL]** "Domain" is a category tag attached to each canonical row
