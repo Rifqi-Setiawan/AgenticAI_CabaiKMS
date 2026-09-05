@@ -216,7 +216,7 @@ Workbook keluaran mempertahankan struktur template, mengisi varietas dari sumber
 
 Preview dibentuk dari worksheet yang sudah mengalami penulisan tabular dan vision. Unduhan memakai bytes workbook tersebut. Hasil UI disimpan dalam session state; tidak otomatis disimpan sebagai file hasil permanen pada server.
 
-Provenance sel dibuat hanya setelah penulisan kanonik non-kosong benar-benar mengubah builder. `REVIEW`, `NO_WRITE`, nilai kosong, dan penulisan duplikat/no-op tidak menghasilkan provenance. Koordinat sel sumber belum tersedia dari parser saat ini, sehingga `source_cells` sengaja kosong sampai fase Source IR/Structure Understanding; sistem tidak mengarang alamat sel.
+`provenance_records` saat ini hanya mencakup penulisan kanonik dari schema matching; penulisan vision belum memiliki provenance pada fase ini. Provenance sel dibuat hanya setelah penulisan kanonik non-kosong benar-benar mengubah builder. `REVIEW`, `NO_WRITE`, nilai kosong, dan penulisan duplikat/no-op tidak menghasilkan provenance. Koordinat sel sumber belum tersedia dari parser saat ini, sehingga `source_cells` sengaja kosong sampai fase Source IR/Structure Understanding; sistem tidak mengarang alamat sel.
 
 ## 7. Instalasi dan konfigurasi
 

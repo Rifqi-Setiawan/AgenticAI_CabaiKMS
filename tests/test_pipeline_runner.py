@@ -59,13 +59,20 @@ def test_flat_input_values_reach_downloaded_workbook(flat_observations, monkeypa
         assert domba_height.source_file_name == flat_observations.name
         assert domba_height.source_file_sha256 == hashlib.sha256(flat_observations.read_bytes()).hexdigest()
         assert domba_height.source_sheet == "Observations"
+        assert domba_height.source_context is None
+        assert domba_height.source_attribute_display == "Plant Height (cm)"
         assert domba_height.source_cells == []
+        assert domba_height.variety == "Domba"
         assert domba_height.canonical_row_id == schema.row_by_label("tinggi tanaman").id
         assert domba_height.canonical_key == "tinggi_tanaman"
         assert domba_height.canonical_label == "tinggi tanaman"
+        assert domba_height.canonical_domain == "vegetatif"
         assert domba_height.raw_value == "50 - 77 cm"
         assert domba_height.normalized_value == "50--77 cm"
+        assert domba_height.normalization_required is True
+        assert domba_height.mapping_confidence == 0.99
         assert domba_height.acceptance_status == "AUTO_ACCEPT"
+        assert domba_height.acceptance_reason
         assert domba_height.canonical_write is True
         assert domba_height.schema_version == schema.schema_version
         assert domba_height.template_hash == schema.template_hash
@@ -251,6 +258,7 @@ def test_exact_alias_shortcut_still_writes_without_review(tmp_path, monkeypatch)
 
     _isolate_pipeline(monkeypatch)
     result = runner.run_pipeline_ui(source)
+    second_result = runner.run_pipeline_ui(source)
 
     row = result.mapping_df.iloc[0]
     assert row.acceptance_status == "AUTO_ACCEPT"
@@ -259,3 +267,69 @@ def test_exact_alias_shortcut_still_writes_without_review(tmp_path, monkeypatch)
     assert result.canonical_df.loc[
         result.canonical_df.Karakter == "jumlah biji/buah masak", "Domba"
     ].item() == "42"
+    assert len({record.run_id for record in result.provenance_records}) == 1
+    assert result.provenance_records[0].run_id != second_result.provenance_records[0].run_id
+
+
+def test_duplicate_noop_does_not_mark_write_or_create_provenance(tmp_path, monkeypatch):
+    source = tmp_path / "duplicate-noop.xlsx"
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.append(["Variety", "First habit", "Duplicate habit"])
+    ws.append(["Domba", "perdu", "perdu"])
+    wb.save(source)
+    wb.close()
+
+    _isolate_pipeline(monkeypatch)
+    schema = CanonicalSchema.from_template()
+    target = schema.row_by_label("habitus").id
+    monkeypatch.setattr(
+        runner,
+        "safe_rerank",
+        lambda profile, candidates, state, *, source_format, **kwargs: (
+            _mapping(schema, profile.attribute_name, target),
+            {},
+        ),
+    )
+
+    result = runner.run_pipeline_ui(source)
+    first = result.mapping_df[result.mapping_df.source_attribute == "First habit"].iloc[0]
+    duplicate = result.mapping_df[result.mapping_df.source_attribute == "Duplicate habit"].iloc[0]
+
+    assert first.canonical_write == True  # noqa: E712
+    assert duplicate.canonical_write == False  # noqa: E712
+    assert len(result.provenance_records) == 1
+    assert result.provenance_records[0].source_attribute == "First habit"
+
+
+def test_acceptance_accounting_separates_review_and_no_write(tmp_path, monkeypatch):
+    source = tmp_path / "all-acceptance-statuses.xlsx"
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.append(["Variety", "Accepted", "Needs review", "Invalid"])
+    ws.append(["Domba", "perdu", "100 cm", "unknown"])
+    wb.save(source)
+    wb.close()
+
+    _isolate_pipeline(monkeypatch)
+    schema = CanonicalSchema.from_template()
+    habitus = schema.row_by_label("habitus").id
+    height = schema.row_by_label("tinggi tanaman").id
+
+    def safe_mapping(profile, candidates, state, *, source_format, **kwargs):
+        if profile.attribute_name == "Accepted":
+            return _mapping(schema, profile.attribute_name, habitus), {}
+        if profile.attribute_name == "Needs review":
+            return _mapping(schema, profile.attribute_name, height, confidence=0.1), {
+                "error_trace": ["confidence below threshold"]
+            }
+        return None, {"error_trace": ["invalid structured mapping; manual_review"]}
+
+    monkeypatch.setattr(runner, "safe_rerank", safe_mapping)
+    result = runner.run_pipeline_ui(source)
+
+    assert result.agent_status["schema_matching"] == (
+        "selesai — 3 atribut: 1 AUTO_ACCEPT, 1 REVIEW, 1 NO_WRITE"
+    )
+    assert len(result.provenance_records) == 1
+    assert result.provenance_records[0].source_attribute == "Accepted"
