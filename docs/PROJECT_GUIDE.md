@@ -132,6 +132,7 @@ project/
 | `schema/row_domains.yaml` | Domain berdasarkan label, bukan prediksi LLM |
 | `schema/row_aliases.yaml` | Alias opsional untuk representasi retrieval; bukan file tidak terpakai |
 | `agents/schema_matching/source_parsing.py` | Dua parser dan `ParsedAttribute`, menjaga posisi nilai terhadap varietas |
+| `ingestion/workbook_profiler.py` | Profil struktur fisik workbook secara deterministik dan standalone |
 | `agents/schema_matching/anchor.py` | Deteksi kolom identitas varietas |
 | `agents/schema_matching/indexing.py` | Model embedding, persistent client, koleksi, reindex |
 | `agents/schema_matching/retrieval.py` | Profil atribut, deteksi tipe heuristik, top-k kandidat |
@@ -191,6 +192,12 @@ Contoh: `data/samples/sample_transposed_sintetis.xlsx`.
 - Template kanonik dengan `Nomor` di kolom pertama **tidak langsung cocok** sebagai input parser transposed ini.
 
 Format dipilih pengguna; aplikasi tidak otomatis menentukan orientasi. Semua parser saat ini memakai `openpyxl`, bukan parser CSV. Formula dibaca sebagai nilai tersimpan (`data_only=True`), sehingga workbook perlu sudah memiliki hasil kalkulasi dari aplikasi spreadsheet.
+
+### Deterministic Workbook Structure Profiler
+
+`src/ingestion/workbook_profiler.py` menyediakan `profile_workbook()` dengan kontrak Pydantic berversi `workbook-structure-v1`. Profiler membuka workbook dengan ekspresi formula dipertahankan dan mencatat seluruh worksheet secara berurutan: batas dimensi openpyxl versus batas konten nyata, koordinat/nilai/tipe/style sel non-kosong, merge, baris dan kolom tersembunyi, freeze panes, statistik baris/kolom, rentang kosong, serta candidate content regions.
+
+Profiler ini standalone dan belum dipakai oleh `pipeline_runner` atau parser yang ada. Ia tidak menentukan orientasi, header, metadata, kolom varietas, atau tabel sebenarnya. `candidate_region` hanya persegi panjang konten yang dipisahkan gap baris/kolom kosong secara deterministik; kandidat tersebut bukan konfirmasi bahwa suatu area adalah tabel.
 
 ### Normalisasi
 
