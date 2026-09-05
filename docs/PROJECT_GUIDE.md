@@ -199,6 +199,8 @@ Format dipilih pengguna; aplikasi tidak otomatis menentukan orientasi. Semua par
 
 Profiler ini standalone dan belum dipakai oleh `pipeline_runner` atau parser yang ada. Ia tidak menentukan orientasi, header, metadata, kolom varietas, atau tabel sebenarnya. `candidate_region` hanya persegi panjang konten yang dipisahkan gap baris/kolom kosong secara deterministik; kandidat tersebut bukan konfirmasi bahwa suatu area adalah tabel.
 
+Penemuan sel dilakukan secara sparse terhadap sel openpyxl yang benar-benar terinstansiasi. Akses private `_cells` sengaja diisolasi dalam satu helper karena API publik `iter_rows` akan memindai persegi panjang penuh dan tidak aman untuk dimensi yang membengkak akibat formatting; perubahan ini tidak menambahkan interpretasi semantik.
+
 ### Normalisasi
 
 `normalize()` merapikan token kosong, desimal koma, penulisan rentang menjadi `--`, pemisah multi-nilai menjadi `; `, dan spasi. Vocabulary matching memakai kecocokan tepat tanpa membedakan kapitalisasi terhadap contoh pada baris kanonik.

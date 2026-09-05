@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from datetime import date, datetime, time
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any, Iterator, Literal
 
 import openpyxl
 from openpyxl.cell.cell import Cell
@@ -24,6 +24,10 @@ PROFILE_VERSION = "workbook-structure-v1"
 CellValueType = Literal[
     "string", "integer", "float", "boolean", "date", "datetime", "time", "formula", "other"
 ]
+
+
+class WorkbookProfilerCompatibilityError(RuntimeError):
+    """The installed openpyxl version cannot provide safe sparse access."""
 
 
 class CellStyleProfile(BaseModel):
@@ -285,6 +289,31 @@ def _hidden_columns(worksheet: Worksheet) -> list[str]:
     return [get_column_letter(index) for index in sorted(hidden)]
 
 
+def _iter_instantiated_cells(worksheet: Worksheet) -> Iterator[Cell]:
+    """Yield real, physically instantiated cells in deterministic row-major order.
+
+    A normal openpyxl Worksheet has no public sparse-cell iterator. Public
+    ``iter_rows`` over the reported dimensions is O(max_row * max_column) and
+    can be catastrophic when a style-only cell inflates the sheet to XFD1048576.
+    Private ``_cells`` access is therefore deliberately isolated here. Sorting
+    makes discovery O(number_of_instantiated_cells log n) and avoids depending
+    on dictionary insertion order. A compatibility failure never falls back to
+    the unsafe dense scan.
+    """
+    try:
+        cell_store = worksheet._cells
+    except AttributeError as exc:
+        raise WorkbookProfilerCompatibilityError(
+            "sparse cell access is unavailable for this openpyxl Worksheet implementation"
+        ) from exc
+    if not isinstance(cell_store, dict):
+        raise WorkbookProfilerCompatibilityError(
+            "unexpected openpyxl Worksheet._cells representation; sparse profiling aborted"
+        )
+    real_cells = (cell for cell in cell_store.values() if isinstance(cell, Cell))
+    yield from sorted(real_cells, key=lambda cell: (cell.row, cell.column))
+
+
 def profile_sheet(worksheet: Worksheet) -> SheetProfile:
     """Profile one already-open worksheet without semantic interpretation."""
     merged_ranges: list[MergedRangeProfile] = []
@@ -311,29 +340,23 @@ def profile_sheet(worksheet: Worksheet) -> SheetProfile:
         merged_anchor[top_left.coordinate] = range_text
 
     cells: list[CellProfile] = []
-    for row in worksheet.iter_rows(
-        min_row=1,
-        max_row=worksheet.max_row,
-        min_col=1,
-        max_col=worksheet.max_column,
-    ):
-        for cell in row:
-            if not _has_content(cell.value):
-                continue
-            value_type = _value_type(cell)
-            cells.append(
-                CellProfile(
-                    coordinate=cell.coordinate,
-                    row=cell.row,
-                    column=cell.column,
-                    column_letter=get_column_letter(cell.column),
-                    value=_serializable_value(cell.value, value_type),
-                    value_type=value_type,
-                    is_formula=value_type == "formula",
-                    style=_style_profile(cell),
-                    merged_range=merged_anchor.get(cell.coordinate),
-                )
+    for cell in _iter_instantiated_cells(worksheet):
+        if not _has_content(cell.value):
+            continue
+        value_type = _value_type(cell)
+        cells.append(
+            CellProfile(
+                coordinate=cell.coordinate,
+                row=cell.row,
+                column=cell.column,
+                column_letter=get_column_letter(cell.column),
+                value=_serializable_value(cell.value, value_type),
+                value_type=value_type,
+                is_formula=value_type == "formula",
+                style=_style_profile(cell),
+                merged_range=merged_anchor.get(cell.coordinate),
             )
+        )
 
     content_rows = {cell.row for cell in cells}
     content_columns = {cell.column for cell in cells}

@@ -5,7 +5,13 @@ from datetime import date, datetime, time
 import openpyxl
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 
-from src.ingestion.workbook_profiler import PROFILE_VERSION, profile_workbook
+from src.ingestion.workbook_profiler import (
+    PROFILE_VERSION,
+    WorkbookProfilerCompatibilityError,
+    _iter_instantiated_cells,
+    profile_sheet,
+    profile_workbook,
+)
 from src.schema.provenance import source_file_sha256
 
 
@@ -185,6 +191,63 @@ def test_styled_empty_cell_affects_openpyxl_dimensions_not_content_bounds(tmp_pa
     assert result.content_range == "A1:A1"
     assert result.non_empty_cell_count == 1
     assert [cell.coordinate for cell in result.cells] == ["A1"]
+
+
+def test_extreme_style_only_dimension_is_profiled_sparsely():
+    workbook = openpyxl.Workbook()
+    sheet = workbook.active
+    sheet["A1"] = "Real Data"
+    sheet["XFD1048576"].font = Font(bold=True)
+
+    result = profile_sheet(sheet)
+
+    assert result.openpyxl_max_row == 1_048_576
+    assert result.openpyxl_max_column == 16_384
+    assert result.content_range == "A1:A1"
+    assert result.non_empty_cell_count == 1
+    assert [cell.coordinate for cell in result.cells] == ["A1"]
+    workbook.close()
+
+
+def test_profile_sheet_does_not_use_dense_iter_rows(monkeypatch):
+    workbook = openpyxl.Workbook()
+    sheet = workbook.active
+    sheet["A1"] = "Data"
+    sheet["Z100"].font = Font(italic=True)
+
+    def fail_dense_iteration(*args, **kwargs):
+        raise AssertionError("profile_sheet must not call worksheet.iter_rows")
+
+    monkeypatch.setattr(sheet, "iter_rows", fail_dense_iteration)
+    result = profile_sheet(sheet)
+
+    assert [cell.coordinate for cell in result.cells] == ["A1"]
+    workbook.close()
+
+
+def test_sparse_cell_order_is_row_major_not_creation_order():
+    workbook = openpyxl.Workbook()
+    sheet = workbook.active
+    sheet["D10"] = "created first"
+    sheet["A1"] = "created second"
+    sheet["C4"] = "created third"
+
+    result = profile_sheet(sheet)
+
+    assert [cell.coordinate for cell in result.cells] == ["A1", "C4", "D10"]
+    workbook.close()
+
+
+def test_sparse_iterator_fails_closed_when_private_store_is_unavailable():
+    class UnsupportedWorksheet:
+        pass
+
+    try:
+        list(_iter_instantiated_cells(UnsupportedWorksheet()))  # type: ignore[arg-type]
+    except WorkbookProfilerCompatibilityError as exc:
+        assert "sparse cell access is unavailable" in str(exc)
+    else:
+        raise AssertionError("missing sparse storage must fail closed")
 
 
 def test_empty_sheet_is_safe(tmp_path):
