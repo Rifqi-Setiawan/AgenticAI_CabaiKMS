@@ -1,6 +1,6 @@
 # Panduan Lengkap CABAI-KMS Akuisisi
 
-**Audit implementasi: 5 September 2026.** Dokumen ini menjelaskan apa yang benar-benar tersedia pada kode saat audit. Nama model dan nilai default di sini adalah konfigurasi kode, bukan jaminan ketersediaan layanan eksternal. Catatan eksperimen Juli 2026 tetap disimpan sebagai riwayat.
+**Audit implementasi: 6 September 2026.** Dokumen ini menjelaskan apa yang benar-benar tersedia pada kode saat audit. Nama model dan nilai default di sini adalah konfigurasi kode, bukan jaminan ketersediaan layanan eksternal. Catatan eksperimen Juli 2026 tetap disimpan sebagai riwayat.
 
 ## Daftar isi
 
@@ -32,12 +32,12 @@ Ini adalah **prototipe penelitian**, bukan sistem produksi, API backend, atau pl
 |---|---|
 | Skema kanonik dan domain | Aktif; dibaca dari Excel dan YAML, jumlah baris dinamis |
 | Parsing spreadsheet | Aktif untuk dua bentuk `.xlsx` dengan batasan struktur pada §5 |
-| Workbook Structure Profiler | Tersedia secara standalone; deterministik, faktual, dan sparse-safe |
-| Structure Understanding Agent | Tersedia secara standalone; evidence ringkas, output Pydantic, dan retry evidence terarah yang dibatasi; belum dipakai pipeline UI |
+| Workbook Structure Profiler | Deterministik, faktual, dan sparse-safe; dipakai oleh `source-ir-gated` atau shadow eksplisit, bukan backend `legacy` biasa |
+| Structure Understanding Agent | Dipakai oleh `source-ir-gated` atau shadow eksplisit; evidence ringkas, output Pydantic, dan retry evidence terarah yang dibatasi |
 | Structure Verifier | Deterministik dan wajib lulus sebelum struktur boleh menjadi Source IR |
 | Source ingestion | `legacy` tetap default; `legacy + shadow` hanya observasi; `source-ir-gated` dapat menjadi input produksi hanya setelah parity `MATCH` |
 | Anchor varietas | Aktif, embedding header, ambang similarity `0.7` |
-| Retrieval | Aktif, indeks baris kanonik ChromaDB; default top-k `8` |
+| Retrieval | Chroma HNSW cosine tetap default; exact exhaustive cosine tersedia sebagai opt-in; default top-k `8` |
 | Reranking | Aktif, Groq dengan fallback Ollama; output Pydantic |
 | Normalisasi | Aktif, deterministik; bukan ekstraksi/penalaran bebas oleh LLM |
 | Google Drive | Aktif, service account read-only, daftar foto anak langsung folder |
@@ -52,7 +52,7 @@ Ini adalah **prototipe penelitian**, bukan sistem produksi, API backend, atau pl
 
 **Implikasi:** status “selesai” menunjukkan eksekusi selesai, bukan seluruh data sudah benar atau telah disetujui manusia. Baca detail pemetaan dan log sebelum menggunakan hasil untuk penelitian.
 
-### Status Phase 4: pemahaman struktur standalone
+### Status Phase 4–6: pemahaman struktur dan migrasi tergate
 
 Alur baru `WorkbookProfile -> StructureProposal -> VerifiedStructure -> SourceIR`
 telah tersedia untuk pengujian independen. Profiler hanya mencatat observasi fisik.
@@ -65,12 +65,13 @@ yang sama tidak boleh diulang. Proposal model berstatus
 Source IR.
 
 Source IR mempertahankan koordinat header dan nilai, termasuk posisi kosong, tanpa
-normalisasi atau schema matching. Fitur ini sengaja belum mengganti parser lama dan
-belum dipasang ke LangGraph. `run_pipeline_ui()` dapat menjalankannya hanya sebagai
-shadow comparison melalui `enable_structure_shadow=True`; default tetap `False`.
-Hasil shadow tidak pernah mengganti atribut, posisi varietas, mapping, atau workbook
-dari parser legacy. Karena itu, dukungan spreadsheet berantakan belum boleh dianggap
-aktif pada UI produksi.
+normalisasi atau schema matching. Fitur ini belum dipasang ke LangGraph. Pada backend
+`legacy`, profiler/agent/verifier/Source IR tidak berjalan kecuali shadow diaktifkan
+dengan `enable_structure_shadow=True`; hasil shadow tidak pernah mengganti keluaran
+legacy. Pada backend `source-ir-gated`, seluruh jalur tersebut dipakai dan Source IR
+menjadi input downstream hanya setelah parity tepat `MATCH`. Karena gate masih
+membutuhkan referensi legacy yang sukses dan setara, ini belum memperluas cakupan
+format produksi di luar kemampuan parser legacy.
 Pada setiap `SourceValueIR`, `coordinate` adalah posisi logis dalam geometri tabel,
 sedangkan `source_coordinate` adalah sel fisik yang menyimpan nilai atau anchor
 kiri-atas merge. Posisi kosong memiliki `source_coordinate = None`.
@@ -116,7 +117,7 @@ Lima lapisan utama adalah data/skema, ingestion, agen, orkestrasi/reliability, s
 Input .xlsx
   -> parser sesuai format pilihan pengguna
   -> identitas varietas (anchor / header transposed)
-  -> indeks dan retrieval kandidat baris kanonik
+  -> retrieval kandidat baris kanonik (Chroma default atau exact opt-in)
   -> safe_rerank -> SchemaMapping -> normalisasi -> akumulasi nilai
   -> workbook berdasarkan salinan template
   -> [opsional] Drive -> download -> Gemini -> URL foto pada sel Gambar
@@ -257,7 +258,7 @@ Format dipilih pengguna; aplikasi tidak otomatis menentukan orientasi. Semua par
 
 `src/ingestion/workbook_profiler.py` menyediakan `profile_workbook()` dengan kontrak Pydantic berversi `workbook-structure-v1`. Profiler membuka workbook dengan ekspresi formula dipertahankan dan mencatat seluruh worksheet secara berurutan: batas dimensi openpyxl versus batas konten nyata, koordinat/nilai/tipe/style sel non-kosong, merge, baris dan kolom tersembunyi, freeze panes, statistik baris/kolom, rentang kosong, serta candidate content regions.
 
-Profiler ini standalone dan belum dipakai oleh `pipeline_runner` atau parser yang ada. Ia tidak menentukan orientasi, header, metadata, kolom varietas, atau tabel sebenarnya. `candidate_region` hanya persegi panjang konten yang dipisahkan gap baris/kolom kosong secara deterministik; kandidat tersebut bukan konfirmasi bahwa suatu area adalah tabel.
+Profiler tidak menentukan orientasi, header, metadata, kolom varietas, atau tabel sebenarnya. `candidate_region` hanya persegi panjang konten yang dipisahkan gap baris/kolom kosong secara deterministik; kandidat tersebut bukan konfirmasi bahwa suatu area adalah tabel. `pipeline_runner` memakainya pada backend `source-ir-gated` dan ketika shadow legacy diminta; backend `legacy` tanpa shadow tidak memakainya.
 
 Penemuan sel dilakukan secara sparse terhadap sel openpyxl yang benar-benar terinstansiasi. Akses private `_cells` sengaja diisolasi dalam satu helper karena API publik `iter_rows` akan memindai persegi panjang penuh dan tidak aman untuk dimensi yang membengkak akibat formatting; perubahan ini tidak menambahkan interpretasi semantik.
 
@@ -285,7 +286,7 @@ Workbook keluaran mempertahankan struktur template, mengisi varietas dari sumber
 
 Preview dibentuk dari worksheet yang sudah mengalami penulisan tabular dan vision. Unduhan memakai bytes workbook tersebut. Hasil UI disimpan dalam session state; tidak otomatis disimpan sebagai file hasil permanen pada server.
 
-`provenance_records` saat ini hanya mencakup penulisan kanonik dari schema matching; penulisan vision belum memiliki provenance pada fase ini. Provenance sel dibuat hanya setelah penulisan kanonik non-kosong benar-benar mengubah builder. `REVIEW`, `NO_WRITE`, nilai kosong, dan penulisan duplikat/no-op tidak menghasilkan provenance. Parser pipeline lama belum menyediakan koordinat sumber sehingga `source_cells` pada jalur produksi masih kosong. Source IR standalone sudah membedakan posisi logis dan koordinat fisik, tetapi belum dipropagasikan ke provenance kanonik.
+`provenance_records` saat ini hanya mencakup penulisan kanonik dari schema matching; penulisan vision belum memiliki provenance pada fase ini. Provenance sel dibuat hanya setelah penulisan kanonik non-kosong benar-benar mengubah builder. `REVIEW`, `NO_WRITE`, nilai kosong, dan penulisan duplikat/no-op tidak menghasilkan provenance. Backend `legacy` belum menyediakan koordinat sumber sehingga `source_cells` kosong. Backend `source-ir-gated` yang lulus `MATCH` mempropagasikan koordinat fisik nilai dan header Source IR ke provenance kanonik.
 
 ## 7. Instalasi dan konfigurasi
 
@@ -320,6 +321,23 @@ Jika environment sudah tersedia, gunakan terlebih dahulu; jangan membuat ulang a
 
 `CHROMA_PERSIST_DIR` dari contoh konfigurasi lama **tidak dibaca kode** dan telah dihapus dari `.env.example`. Default sebenarnya adalah `data/.chroma/`, ditentukan di `indexing.py`. API indexing/retrieval menerima parameter lokasi penyimpanan; UI tidak menyediakan pengaturan lokasi tersebut.
 
+### Backend retrieval Phase 7A
+
+`retrieval_backend="chroma"` adalah default kompatibel: canonical row disimpan pada
+Chroma PersistentClient dengan HNSW approximate cosine. Opt-in
+`retrieval_backend="exact"` menghitung cosine secara exhaustive terhadap seluruh
+canonical row di memori dan sama sekali tidak membuka atau memperbarui Chroma.
+Keduanya memakai model embedding, `CanonicalRow.serialize()`, query
+`SourceAttributeProfile`, serta kontrak `RetrievalHit.distance` yang sama.
+
+Exact index menormalisasi matriks dan query secara defensif, menolak zero vector,
+serta memecahkan skor sama/nyaris sama dengan `canonical_key` agar ranking
+deterministik. Canonical embeddings dibangun dalam satu batch dan disimpan pada cache
+process-local berdasarkan nama model dan fingerprint SHA-256 representasi. Cache
+tersebut bukan persistence database; restart process akan membangunnya lagi. Exact
+search menghapus approximation ANN, tetapi **tidak** menghapus error semantik model
+embedding dan tidak berarti kandidat otomatis benar.
+
 Nama model lain berupa konstanta kode: teks Groq `llama-3.3-70b-versatile`, teks Ollama `llama3.1:8b`, voter kedua OpenRouter `qwen/qwen2.5-vl-72b-instruct`, fallback vision Ollama `qwen2.5-vl:7b`. Embedding menggunakan `paraphrase-multilingual-MiniLM-L12-v2`.
 
 `.env` dimuat ketika modul provider/crawler diimpor. Restart aplikasi setelah mengganti konfigurasi. Lihat [DRIVE_SETUP.md](DRIVE_SETUP.md) untuk pengaturan akun dan akses folder.
@@ -353,6 +371,7 @@ result = run_pipeline_ui(
     k=8,
     max_images=5,
     on_progress=print,
+    retrieval_backend="exact",  # opsional; default tetap "chroma"
 )
 print(result.canonical_df)
 print(result.error_trace)
@@ -461,7 +480,7 @@ Hasil verifikasi audit terkini dicatat di [CHECKPOINTS.md](CHECKPOINTS.md), terp
 Temuan berikut adalah batas implementasi, **bukan fitur yang diperbaiki dalam audit dokumentasi ini**:
 
 1. **Review sudah memblokir penulisan, tetapi koreksi belum interaktif.** Gerbang Phase 1 memastikan hanya `AUTO_ACCEPT` yang menulis; `REVIEW` dan `NO_WRITE` tidak mengubah workbook kanonik. Queue review belum tersambung ke editor UI dan replay hasil koreksi.
-2. **CSV dan parsing umum belum tersedia pada UI.** Uploader menawarkan CSV, tetapi pipeline masih memakai parser lama dengan tata letak tertentu. Phase 4 dapat merepresentasikan judul sebelum tabel, header bertingkat, merge, dan layout transposed secara standalone setelah verifikasi, tetapi belum diintegrasikan. T03 dan T04 sudah diverifikasi; enam dummy lainnya belum diverifikasi pada perbaikan ini.
+2. **CSV dan perluasan cakupan parsing belum tersedia pada UI.** Uploader menawarkan CSV, tetapi runner masih membutuhkan `.xlsx`. Phase 4 dapat merepresentasikan judul sebelum tabel, header bertingkat, merge, dan layout transposed setelah verifikasi; jalur itu sudah terintegrasi untuk shadow dan `source-ir-gated`, tetapi gate produksi saat ini hanya mempromosikan hasil yang tepat setara dengan referensi legacy. T03 dan T04 sudah diverifikasi; enam dummy lainnya belum diverifikasi pada perbaikan ini.
 3. **Validasi anchor kini menghentikan runner.** Header salah/ambigu atau identitas varietas yang hilang menghasilkan error sebelum pemetaan. Error provider dan mapping NULL masih harus diperiksa terpisah; validasi input bukan jaminan semua atribut akan terpetakan.
 4. **Koreksi manual belum diterapkan ulang.** Queue belum tersambung ke editor UI, replay workbook, atau identitas run yang lengkap.
 5. **Graf masih stub.** Checkpoint/resume tidak memulihkan proses agen nyata; routing stub tidak menjadi jaminan reliability alur UI.

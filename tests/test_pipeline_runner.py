@@ -1,5 +1,6 @@
 import io
 import hashlib
+from pathlib import Path
 
 import openpyxl
 import pytest
@@ -174,6 +175,55 @@ def _mapping(schema, attribute, row_id, confidence=0.99):
         reasoning="pipeline safety-gate fixture",
         normalization_required=True,
     )
+
+
+def test_exact_retrieval_pipeline_is_offline_and_does_not_touch_chroma(
+    flat_observations, monkeypatch,
+):
+    canonical_count = len(CanonicalSchema.from_template().rows)
+    monkeypatch.setattr(
+        runner,
+        "detect_anchor",
+        lambda *a, **kw: AnchorResult("found", "Variety", 1.0, "test"),
+    )
+    monkeypatch.setattr(
+        runner,
+        "ensure_indexed",
+        lambda *a, **kw: pytest.fail("exact pipeline must not access Chroma"),
+    )
+    monkeypatch.setattr(runner, "run_pipeline", lambda *a, **kw: {})
+    monkeypatch.setattr(runner, "safe_rerank", lambda *a, **kw: (None, {}))
+    encode_calls = []
+
+    def fake_encode(texts, model_name=None):
+        encode_calls.append(tuple(texts))
+        return [[1.0, 0.0] for _ in texts]
+
+    result = runner.run_pipeline_ui(
+        flat_observations,
+        source_backend="legacy",
+        retrieval_backend="exact",
+        embedding_encode_call=fake_encode,
+    )
+    assert result.source_backend == "legacy"
+    assert result.retrieval_backend == "exact"
+    assert result.agent_status["retrieval"].startswith("exact — exhaustive cosine")
+    assert sum(len(call) == canonical_count for call in encode_calls) == 1
+    assert sum(len(call) == 1 for call in encode_calls) == 3
+
+
+@pytest.mark.parametrize("source_backend", ["legacy-ish", ""])
+def test_unknown_source_backend_fails_before_file_access(source_backend):
+    with pytest.raises(ValueError, match="unknown source backend"):
+        runner.run_pipeline_ui(Path("does-not-exist.xlsx"), source_backend=source_backend)
+
+
+@pytest.mark.parametrize("retrieval_backend", ["excat", "faiss", ""])
+def test_unknown_pipeline_retrieval_backend_fails_before_file_access(retrieval_backend):
+    with pytest.raises(ValueError, match="unknown retrieval backend"):
+        runner.run_pipeline_ui(
+            Path("does-not-exist.xlsx"), retrieval_backend=retrieval_backend
+        )
 
 
 def test_review_mapping_never_normalizes_or_writes_but_later_attributes_do(

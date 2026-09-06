@@ -34,10 +34,17 @@ import pandas as pd
 
 from src.agents.drive_crawler import DriveCrawlerError, list_images, normalize_folder_id
 from src.agents.schema_matching.anchor import detect_anchor
+from src.agents.schema_matching.exact_retrieval import build_exact_index
 from src.agents.schema_matching.indexing import ensure_indexed
 from src.agents.schema_matching.normalize import normalize
 from src.agents.schema_matching.review_queue import AcceptanceStatus, decide_mapping_acceptance
-from src.agents.schema_matching.retrieval import DEFAULT_K, SourceAttributeProfile, retrieve
+from src.agents.schema_matching.retrieval import (
+    DEFAULT_K,
+    RetrievalBackend,
+    SourceAttributeProfile,
+    retrieve,
+    validate_retrieval_backend,
+)
 from src.agents.tabular_update import apply_vision_result_to_worksheet
 from src.agents.vision_classification import VisionSession
 from src.ingestion.runtime_source import (
@@ -86,6 +93,7 @@ class PipelineRunResult:
     structure_shadow: ShadowParityReport | None = None
     source_backend: str = "legacy"
     source_ir_version: str | None = None
+    retrieval_backend: str = "chroma"
 
 
 def _noop(_: str) -> None:
@@ -132,7 +140,16 @@ def run_pipeline_ui(
     enable_structure_shadow: bool = False,
     structure_llm_call: Callable | None = None,
     source_backend: Literal["legacy", "source-ir-gated"] = "legacy",
+    retrieval_backend: RetrievalBackend = "chroma",
+    embedding_encode_call: Callable[..., object] | None = None,
 ) -> PipelineRunResult:
+    if source_backend not in {"legacy", "source-ir-gated"}:
+        raise ValueError(
+            f"unknown source backend {source_backend!r}; expected one of: "
+            "legacy, source-ir-gated"
+        )
+    validate_retrieval_backend(retrieval_backend)
+
     run_id = uuid.uuid4().hex
     resolved_sheet_name = sheet_name or _first_sheet(file_path)
     source_hash = source_file_sha256(file_path)
@@ -178,8 +195,9 @@ def run_pipeline_ui(
     on_progress(f"Atribut untuk schema matching: {len(attributes)}")
     on_progress(f"Varietas terdeteksi dari sumber: {variety_names_seen}")
 
-    # Observation-only migration path. Legacy values above remain the sole
-    # authority for every downstream operation regardless of this outcome.
+    # Optional observation-only shadow for the legacy backend. Its output
+    # cannot affect downstream work. In source-ir-gated mode above, verified
+    # Source IR is authoritative only after exact MATCH parity.
     if enable_structure_shadow and source_backend == "legacy":
         on_progress("structure_shadow: membandingkan legacy parser dengan Source IR...")
         try:
@@ -205,8 +223,20 @@ def run_pipeline_ui(
         on_progress(f"structure_shadow: {structure_shadow.summary}")
 
     schema = CanonicalSchema.from_template()
-    on_progress("Memastikan indeks ChromaDB (idempoten)...")
-    ensure_indexed(schema)
+    exact_index = None
+    if retrieval_backend == "chroma":
+        on_progress("Memastikan indeks ChromaDB (idempoten)...")
+        ensure_indexed(schema)
+        agent_status["retrieval"] = f"chroma — HNSW cosine, k={k}"
+    elif retrieval_backend == "exact":
+        on_progress("Menyiapkan indeks exact cosine dalam memori...")
+        build_kwargs = {}
+        if embedding_encode_call is not None:
+            build_kwargs["encode_call"] = embedding_encode_call
+        exact_index = build_exact_index(schema, **build_kwargs)
+        agent_status["retrieval"] = (
+            f"exact — exhaustive cosine over {len(schema.rows)} canonical rows, k={k}"
+        )
 
     builder = CanonicalOutputBuilder(schema=schema)
     for name in variety_names_seen:
@@ -226,7 +256,13 @@ def run_pipeline_ui(
             structural_context=attr.structural_context,
             sample_values=attr.sample_values,
         )
-        retrieved = retrieve(profile, k=k, schema=schema)
+        retrieval_kwargs = {
+            "backend": retrieval_backend,
+            "exact_index": exact_index,
+        }
+        if embedding_encode_call is not None:
+            retrieval_kwargs["encode_call"] = embedding_encode_call
+        retrieved = retrieve(profile, k=k, schema=schema, **retrieval_kwargs)
 
         on_progress(f"  schema_matching: '{attr.attribute_name}' — reranking...")
         mapping, patch = safe_rerank(profile, retrieved, state, source_format=source_format, schema=schema)
@@ -419,6 +455,7 @@ def run_pipeline_ui(
         error_trace=list(state.get("error_trace", [])),
         structure_shadow=structure_shadow,
         source_backend=source_backend,
+        retrieval_backend=retrieval_backend,
         source_ir_version=(
             source_bundle.source_ir.ir_version
             if source_bundle.source_ir is not None

@@ -3,6 +3,7 @@ from __future__ import annotations
 import pytest
 
 from src.agents.schema_matching import indexing
+from src.agents.schema_matching.exact_retrieval import build_exact_index, retrieve_exact
 from src.agents.schema_matching.retrieval import (
     DEFAULT_K,
     MAX_K,
@@ -27,6 +28,36 @@ def client(tmp_path_factory, schema):
     c = indexing.get_client(tmp_path_factory.mktemp("chroma"))
     indexing.ensure_indexed(schema, client=c)
     return c
+
+
+@pytest.fixture(scope="module")
+def exact_index(schema):
+    return build_exact_index(schema)
+
+
+RETRIEVAL_CASES = [
+    ("panjang daun", None, ["10,5 - 14 cm", "8-10cm", "±12 cm"], "r_8"),
+    ("warna biji", None, ["yellow", "kuning", "yellow-orange group 23 C"], "r_54"),
+    (
+        "warna daun",
+        None,
+        ["green group 137 A", "hijau tua", "green group 137 A; green group 138 B"],
+        "r_7",
+    ),
+    (
+        "Lokasi",
+        None,
+        ["Desa Contoh, Kec. Sintetis (7.1234, 110.5678, 500 mdpl)", "Kebun Percobaan A"],
+        "r_56",
+    ),
+    ("bentuk bunga", None, ["seperti bintang", "seperti bintang*", "-"], "r_23"),
+    (
+        "Ketinggian Lahan Sampling (mdpl = meter diatas permukaan laut)",
+        "Lokasi Sampling",
+        ["573", "598", "758", "719", "705"],
+        "r_56",
+    ),
+]
 
 
 class TestDetectDataType:
@@ -104,29 +135,7 @@ class TestRetrieve:
     # sample_transposed_sintetis.xlsx for where these values come from.
     @pytest.mark.parametrize(
         "attribute_name,structural_context,sample_values,expected_row_id",
-        [
-            ("panjang daun", None, ["10,5 - 14 cm", "8-10cm", "±12 cm"], "r_8"),
-            ("warna biji", None, ["yellow", "kuning", "yellow-orange group 23 C"], "r_54"),
-            (
-                "warna daun",
-                None,
-                ["green group 137 A", "hijau tua", "green group 137 A; green group 138 B"],
-                "r_7",
-            ),
-            (
-                "Lokasi",
-                None,
-                ["Desa Contoh, Kec. Sintetis (7.1234, 110.5678, 500 mdpl)", "Kebun Percobaan A"],
-                "r_56",
-            ),
-            ("bentuk bunga", None, ["seperti bintang", "seperti bintang*", "-"], "r_23"),
-            (
-                "Ketinggian Lahan Sampling (mdpl = meter diatas permukaan laut)",
-                "Lokasi Sampling",
-                ["573", "598", "758", "719", "705"],
-                "r_56",
-            ),
-        ],
+        RETRIEVAL_CASES,
     )
     def test_correct_row_appears_in_top_k(
         self, schema, client, attribute_name, structural_context, sample_values, expected_row_id
@@ -138,3 +147,39 @@ class TestRetrieve:
         )
         hits = retrieve(profile, k=8, schema=schema, client=client)
         assert expected_row_id in [h.row_id for h in hits]
+
+
+class TestExactRetrieveEmpirical:
+    @pytest.mark.parametrize(
+        "attribute_name,structural_context,sample_values,expected_row_id",
+        RETRIEVAL_CASES,
+    )
+    def test_expected_row_appears_in_exact_top_k(
+        self,
+        schema,
+        exact_index,
+        attribute_name,
+        structural_context,
+        sample_values,
+        expected_row_id,
+    ):
+        profile = SourceAttributeProfile(
+            attribute_name=attribute_name,
+            structural_context=structural_context,
+            sample_values=sample_values,
+        )
+        hits = retrieve(
+            profile, k=8, schema=schema, backend="exact", exact_index=exact_index
+        )
+        assert expected_row_id in [hit.row_id for hit in hits]
+
+    def test_representative_canonical_self_query_returns_itself_top1(
+        self, schema, exact_index
+    ):
+        for row in (schema.rows[0], schema.rows[len(schema.rows) // 2], schema.rows[-1]):
+            class RawQuery:
+                def build_query(self):
+                    return row.serialize()
+
+            hits = retrieve_exact(RawQuery(), k=1, exact_index=exact_index)
+            assert hits[0].canonical_key == row.canonical_key

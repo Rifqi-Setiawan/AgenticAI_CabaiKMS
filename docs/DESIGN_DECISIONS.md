@@ -113,6 +113,27 @@ XLSX archive timestamps and the core `modified` value are intentionally normaliz
 during pipeline serialization. Deterministic artifact bytes support reproducibility;
 the normalized metadata must not be interpreted as the actual export time.
 
+## (a.5) Exact cosine is the opt-in retrieval backend for Phase 7A
+
+**[FINAL, Phase 7A]** For the current small, dynamically loaded canonical
+vocabulary, exhaustive cosine is architecturally preferable to ANN: N is very
+small, its matrix-vector cost is negligible, every row is evaluated, ties can be
+resolved deterministically by stable `canonical_key`, and experiments are easier to
+reproduce and audit without an approximation/persistence layer.
+
+Phase 7A changes only canonical candidate search. Exact and Chroma use the same
+`paraphrase-multilingual-MiniLM-L12-v2` model, canonical serialization, source query,
+reranker, mapping contract, and acceptance logic. Exact mode defensively normalizes
+both sides, reports cosine distance (`1 - similarity`) for compatibility, embeds the
+canonical matrix once per process-local model/representation cache key, and never
+accesses Chroma. ANN/exact overlap is diagnostic only: agreement is not ground truth,
+and disagreement does not invalidate exhaustive search.
+
+Migration policy: `chroma` remains the default in Phase 7A and `exact` requires
+explicit opt-in. After retrieval audit and human/gold evaluation, a future phase may
+promote exact to default and retire Chroma if it is no longer required. Phase 7A does
+not remove Chroma or its persisted data.
+
 ## (b) Domain = derived label, not a predicted field
 
 **[FINAL]** "Domain" is a category tag attached to each canonical row

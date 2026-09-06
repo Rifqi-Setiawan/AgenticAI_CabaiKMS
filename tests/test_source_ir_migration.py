@@ -20,6 +20,7 @@ def _isolate(monkeypatch):
     monkeypatch.setattr(runner, "detect_anchor", _anchor)
     monkeypatch.setattr(runner, "ensure_indexed", lambda *args, **kwargs: None)
     monkeypatch.setattr(runner, "retrieve", lambda *args, **kwargs: [])
+    monkeypatch.setattr(runner, "build_exact_index", lambda *args, **kwargs: object())
     monkeypatch.setattr(runner, "run_pipeline", lambda *args, **kwargs: {})
 
 
@@ -84,11 +85,13 @@ def test_gated_row_match_promotes_once_and_enriches_provenance(
     gated = runner.run_pipeline_ui(
         flat_observations,
         source_backend="source-ir-gated",
+        retrieval_backend="exact",
         enable_structure_shadow=True,
         structure_llm_call=structure,
     )
     assert len(calls) == 1
     assert gated.source_backend == "source-ir-gated"
+    assert gated.retrieval_backend == "exact"
     assert gated.source_ir_version == "source-ir-v1"
     assert gated.structure_shadow.status.value == "MATCH"
     assert_frame_equal(legacy.mapping_df, gated.mapping_df)

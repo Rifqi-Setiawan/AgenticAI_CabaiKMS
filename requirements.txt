@@ -30,6 +30,7 @@ aiolimiter
 # --- Fase 3a: schema-matching retrieval index (active now) ---
 chromadb
 sentence-transformers
+numpy  # Phase 7A exact exhaustive cosine matrix operations
 torchvision  # not imported by our code — but the resolved transformers version
              # (sentence-transformers' dependency) eagerly imports
              # torchvision.transforms.v2 while loading the embedding model, even

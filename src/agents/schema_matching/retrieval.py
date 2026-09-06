@@ -100,6 +100,19 @@ class RetrievalHit:
     label: str
     domain: str
     distance: float
+    canonical_key: str | None = None
+
+
+RetrievalBackend = Literal["chroma", "exact"]
+SUPPORTED_RETRIEVAL_BACKENDS = frozenset({"chroma", "exact"})
+
+
+def validate_retrieval_backend(backend: str) -> None:
+    if backend not in SUPPORTED_RETRIEVAL_BACKENDS:
+        supported = ", ".join(sorted(SUPPORTED_RETRIEVAL_BACKENDS))
+        raise ValueError(
+            f"unknown retrieval backend {backend!r}; expected one of: {supported}"
+        )
 
 
 def retrieve(
@@ -110,16 +123,58 @@ def retrieve(
     client: object | None = None,
     persist_dir: object = DEFAULT_CHROMA_DIR,
     model_name: str = EMBEDDING_MODEL_NAME,
+    backend: RetrievalBackend = "chroma",
+    exact_index: object | None = None,
+    encode_call: object = encode,
 ) -> list[RetrievalHit]:
     """Top-k canonical row candidates for `profile`, nearest first (cosine
     distance, ascending)."""
+    validate_retrieval_backend(backend)
     if not (MIN_K <= k <= MAX_K):
         raise ValueError(f"k must be between {MIN_K} and {MAX_K}, got {k}")
 
     schema = schema or CanonicalSchema.from_template()
+    if len(schema.rows) < k:
+        raise ValueError(
+            f"canonical schema has {len(schema.rows)} rows, fewer than requested k={k}"
+        )
+
+    if backend == "exact":
+        from src.agents.schema_matching.exact_retrieval import (
+            ExactCanonicalIndex,
+            build_exact_index,
+            retrieve_exact,
+        )
+
+        if exact_index is None:
+            exact_index = build_exact_index(
+                schema, model_name=model_name, encode_call=encode_call
+            )
+        if not isinstance(exact_index, ExactCanonicalIndex):
+            raise TypeError("exact_index must be an ExactCanonicalIndex")
+        from src.agents.schema_matching.exact_retrieval import (
+            canonical_representation_fingerprint,
+        )
+
+        expected_fingerprint = canonical_representation_fingerprint(schema)
+        if exact_index.representation_fingerprint != expected_fingerprint:
+            raise ValueError("exact_index does not match the supplied canonical schema")
+        if exact_index.row_ids != tuple(row.id for row in schema.rows):
+            raise ValueError("exact_index row ids do not align with the supplied schema")
+        if exact_index.canonical_keys != tuple(row.canonical_key for row in schema.rows):
+            raise ValueError("exact_index canonical keys do not align with the supplied schema")
+        if exact_index.model_name != model_name:
+            raise ValueError(
+                "exact_index model does not match the requested embedding model"
+            )
+        return retrieve_exact(
+            profile, k=k, exact_index=exact_index, encode_call=encode_call
+        )
+
+    # Explicit branch after validation: exact mode cannot reach Chroma.
     collection = ensure_indexed(schema, client=client, persist_dir=persist_dir, model_name=model_name)
 
-    query_embedding = encode([profile.build_query()], model_name=model_name)
+    query_embedding = encode_call([profile.build_query()], model_name=model_name)
     result = collection.query(
         query_embeddings=query_embedding,
         n_results=k,
