@@ -78,11 +78,31 @@ def test_legacy_and_source_ir_runtime_adapters_preserve_expected_metadata():
     assert legacy.sample_values == ["10"]
     assert legacy.source_attribute_id is None
     assert legacy.logical_value_coordinates == []
+    assert legacy.header_path == []
     source = runtime_attribute_from_source_ir(_attribute())
     assert source.row_values == ["10", None, "12"]
     assert source.source_attribute_id == "Sheet!COL:B"
     assert source.logical_value_coordinates == ["B2", "B3", "B4"]
     assert source.physical_value_coordinates == ["B2", None, "B4"]
+    assert source.header_path == ["Height"]
+    assert source.header_cells == ["B1"]
+    assert source.detected_value_type == "numeric"
+
+
+def test_source_ir_header_path_preserves_order_and_text():
+    attribute = _attribute("Length")
+    attribute.header_path = ["Morphology", "Mature Fruit", "Length"]
+    attribute.header_cells = ["B1", "B2", "B3"]
+    runtime = runtime_attribute_from_source_ir(attribute)
+    assert runtime.header_path == ["Morphology", "Mature Fruit", "Length"]
+
+
+def test_source_ir_header_path_cell_alignment_fails_closed():
+    attribute = _attribute("Length")
+    attribute.header_path = ["Morphology", "Length"]
+    attribute.header_cells = ["B1"]
+    with pytest.raises(ValueError, match="header_path and header_cells"):
+        runtime_attribute_from_source_ir(attribute)
 
 
 def test_runtime_coordinate_alignment_fails_closed():

@@ -33,6 +33,7 @@ class RuntimeSourceAttribute:
     structural_context: str | None
     row_values: list[str | None]
     source_attribute_id: str | None = None
+    header_path: list[str] = field(default_factory=list)
     header_cells: list[str] = field(default_factory=list)
     logical_value_coordinates: list[str | None] = field(default_factory=list)
     physical_value_coordinates: list[str | None] = field(default_factory=list)
@@ -50,6 +51,10 @@ class RuntimeSourceAttribute:
         ):
             raise ValueError(
                 "Source IR runtime values and logical/physical coordinates must be positionally aligned"
+            )
+        if self.source_attribute_id is not None and len(self.header_path) != len(self.header_cells):
+            raise ValueError(
+                "Source IR runtime header_path and header_cells must be positionally aligned"
             )
 
     @property
@@ -102,6 +107,7 @@ def runtime_attribute_from_source_ir(attribute: SourceAttributeIR) -> RuntimeSou
             for value in attribute.values
         ],
         source_attribute_id=attribute.source_attribute_id,
+        header_path=[str(item) for item in attribute.header_path],
         header_cells=list(attribute.header_cells),
         logical_value_coordinates=[value.coordinate for value in attribute.values],
         physical_value_coordinates=[value.source_coordinate for value in attribute.values],

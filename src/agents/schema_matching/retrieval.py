@@ -78,9 +78,13 @@ class SourceAttributeProfile:
     structural_context: str | None = None
     sample_values: list[str] = field(default_factory=list)
     data_type: DataType | None = None
+    header_path: list[str] = field(default_factory=list)
+    source_value_type: str | None = None
+    source_attribute_id: str | None = None
 
     def __post_init__(self) -> None:
         self.sample_values = [str(v) for v in self.sample_values][:MAX_SAMPLE_VALUES]
+        self.header_path = [str(item) for item in self.header_path]
         if self.data_type is None:
             self.data_type = detect_data_type(self.sample_values)
 
@@ -91,6 +95,10 @@ class SourceAttributeProfile:
         if self.sample_values:
             parts.append(", ".join(self.sample_values))
         parts.append(f"tipe data: {self.data_type}")
+        if self.header_path:
+            parts.append(f"hierarki header: {' > '.join(self.header_path)}")
+        if self.source_value_type is not None:
+            parts.append(f"tipe sumber terverifikasi: {self.source_value_type}")
         return SEPARATOR.join(parts)
 
 
@@ -126,6 +134,7 @@ def retrieve(
     backend: RetrievalBackend = "chroma",
     exact_index: object | None = None,
     encode_call: object = encode,
+    collection: object | None = None,
 ) -> list[RetrievalHit]:
     """Top-k canonical row candidates for `profile`, nearest first (cosine
     distance, ascending)."""
@@ -172,7 +181,10 @@ def retrieve(
         )
 
     # Explicit branch after validation: exact mode cannot reach Chroma.
-    collection = ensure_indexed(schema, client=client, persist_dir=persist_dir, model_name=model_name)
+    if collection is None:
+        collection = ensure_indexed(
+            schema, client=client, persist_dir=persist_dir, model_name=model_name
+        )
 
     query_embedding = encode_call([profile.build_query()], model_name=model_name)
     result = collection.query(

@@ -47,9 +47,11 @@ so row reordering may change the latter without changing canonical keys.
 Accepted non-empty schema-matching writes produce one structured cell
 provenance record after the output builder confirms a mutation. Review,
 no-write, blank, and duplicate/no-op attempts produce none. Exact source cell
-coordinates remain empty on the legacy pipeline path. Phase 4 now exposes
-them in a standalone Source IR, but that IR is not integrated into canonical
-writes yet.
+coordinates remain empty on the legacy pipeline path. In the current Phase 6+
+architecture, a verified Source IR that passes exact parity under
+`source-ir-gated` supplies physical value/header coordinates to acknowledged
+canonical-write provenance. Historical Phase 4 standalone availability did not
+yet provide that integration.
 
 ## (a.2) Observations, hypotheses, verification, and Source IR are separate
 
@@ -133,6 +135,28 @@ Migration policy: `chroma` remains the default in Phase 7A and `exact` requires
 explicit opt-in. After retrieval audit and human/gold evaluation, a future phase may
 promote exact to default and retire Chroma if it is no longer required. Phase 7A does
 not remove Chroma or its persisted data.
+
+## (a.6) Deterministic equivalence precedes probabilistic mapping
+
+**[FINAL, Phase 7B]** Explicit canonical labels and curated aliases are equivalence
+metadata. When a normalized source leaf name has exactly one canonical owner, it is
+resolved before any embedding retrieval or LLM reranking:
+
+`unique label/alias equivalence > embedding retrieval > LLM reranking`.
+
+This precedence applies only to a unique owner. Two or more rows sharing a normalized
+label/alias—including a label on one row colliding with another row's alias—produce
+an observable `AMBIGUOUS` resolution and fall through to semantic retrieval and
+reranking. Template position, domain, and vector similarity must never silently turn
+ambiguous equivalence metadata into a deterministic match. Direct reranker callers
+use the same fail-closed resolver.
+
+Verified Source IR header hierarchy and detected source value type are semantic
+evidence and may enrich the source query and reranker prompt. Physical cell
+coordinates and `source_attribute_id` are provenance/traceability evidence; they are
+not embedded merely because Source IR makes them available. Legacy profiles with no
+richer evidence retain their prior query and prompt bytes. Chroma/exact preparation
+is lazy, so an all-exact-name workbook initializes neither vector backend.
 
 ## (b) Domain = derived label, not a predicted field
 

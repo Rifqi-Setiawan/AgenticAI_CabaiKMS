@@ -8,6 +8,8 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
+MappingMethod = Literal["exact_name", "retrieve_rerank"]
+
 
 def source_file_sha256(path: Path | str) -> str:
     """Fingerprint the exact source workbook bytes with SHA-256."""
@@ -46,4 +48,4 @@ class CellProvenanceRecord(BaseModel):
     canonical_write: Literal[True] = True
     schema_version: str
     template_hash: str
-    mapping_method: str | None = None
+    mapping_method: MappingMethod | None = None

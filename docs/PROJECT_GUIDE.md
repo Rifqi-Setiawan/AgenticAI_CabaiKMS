@@ -37,7 +37,8 @@ Ini adalah **prototipe penelitian**, bukan sistem produksi, API backend, atau pl
 | Structure Verifier | Deterministik dan wajib lulus sebelum struktur boleh menjadi Source IR |
 | Source ingestion | `legacy` tetap default; `legacy + shadow` hanya observasi; `source-ir-gated` dapat menjadi input produksi hanya setelah parity `MATCH` |
 | Anchor varietas | Aktif, embedding header, ambang similarity `0.7` |
-| Retrieval | Chroma HNSW cosine tetap default; exact exhaustive cosine tersedia sebagai opt-in; default top-k `8` |
+| Exact-name resolution | Label/alias eksplisit yang unik diselesaikan sebelum retrieval; konflik nama bersifat `AMBIGUOUS` dan jatuh ke jalur semantik |
+| Retrieval | Chroma HNSW cosine tetap default; exact exhaustive cosine tersedia sebagai opt-in; diinisialisasi lazy hanya bila diperlukan; default top-k `8` |
 | Reranking | Aktif, Groq dengan fallback Ollama; output Pydantic |
 | Normalisasi | Aktif, deterministik; bukan ekstraksi/penalaran bebas oleh LLM |
 | Google Drive | Aktif, service account read-only, daftar foto anak langsung folder |
@@ -78,8 +79,10 @@ kiri-atas merge. Posisi kosong memiliki `source_coordinate = None`.
 
 ### Jalur produksi dan shadow
 
-Jalur produksi tetap `legacy parser -> anchor/entity -> retrieval -> reranking ->
-acceptance -> normalization -> canonical output`. Bila flag shadow diaktifkan, satu
+Jalur produksi adalah `parser -> anchor/entity -> exact-name resolution`, lalu match
+unik langsung menuju acceptance sedangkan no-match/ambiguity melalui
+`retrieval -> reranking -> acceptance`; setelah itu keduanya memakai normalization dan
+canonical output yang sama. Bila flag shadow diaktifkan, satu
 jalur observasi terisolasi menjalankan `WorkbookProfile -> Structure Understanding ->
 Verifier -> Source IR -> compatibility adapter -> parity report`. Status `MATCH`
 hanya berarti keluaran logisnya setara dengan parser legacy, bukan bukti bahwa keduanya
@@ -100,8 +103,10 @@ tidak mengubah hasil produksi.
    gate yang sama dan tidak menjalankan agen struktur dua kali.
 
 Setelah promosi, pipeline memakai atribut runtime Source IR pada loop schema matching
-yang sama. Prompt retrieval/reranking tetap hanya menerima nama atribut, konteks, dan
-contoh nilai. Provenance write yang benar-benar diakui builder menyimpan
+yang sama. Selain nama atribut, konteks, contoh nilai, dan tipe heuristik lama, profil
+Source IR dapat membawa hierarki header terverifikasi dan tipe nilai sumber ke query
+retrieval/reranking. ID atribut dan koordinat fisik tidak di-embed. Provenance write
+yang benar-benar diakui builder menyimpan
 `source_cells` sebagai sel fisik nilai dan `source_header_cells` sebagai sel fisik
 identitas header; backend legacy tetap memakai daftar koordinat kosong.
 
@@ -117,8 +122,9 @@ Lima lapisan utama adalah data/skema, ingestion, agen, orkestrasi/reliability, s
 Input .xlsx
   -> parser sesuai format pilihan pengguna
   -> identitas varietas (anchor / header transposed)
-  -> retrieval kandidat baris kanonik (Chroma default atau exact opt-in)
-  -> safe_rerank -> SchemaMapping -> normalisasi -> akumulasi nilai
+  -> exact label/alias unik? -> SchemaMapping deterministik
+       atau: retrieval kandidat (Chroma default / exact opt-in) -> safe_rerank
+  -> selective acceptance -> normalisasi -> akumulasi nilai
   -> workbook berdasarkan salinan template
   -> [opsional] Drive -> download -> Gemini -> URL foto pada sel Gambar
   -> tabel preview + bytes Excel + log/status
@@ -273,11 +279,13 @@ Tidak ada konversi satuan otomatis, penghitungan rerata, penerjemahan warna beba
 | Struktur | Field penting dan arti |
 |---|---|
 | `ParsedAttribute` | `attribute_name`, `structural_context`, `row_values`; `sample_values` menyaring nilai `None` |
+| `RuntimeSourceAttribute` | Bentuk backend-neutral; Source IR menambahkan `header_path`, tipe nilai terdeteksi, ID atribut, serta koordinat logis/fisik yang tervalidasi alignment-nya; legacy membiarkan evidence tambahan kosong |
+| `SourceAttributeProfile` | Query semantik lama tetap identik untuk legacy; Source IR dapat menambahkan hierarki header dan tipe sumber terverifikasi, sementara ID/koordinat hanya untuk traceability |
 | `SchemaMapping` | Atribut/konteks/format sumber, `target_canonical_row`, confidence `[0,1]`, reasoning, `normalization_required` |
 | `SchemaMapping.target_domain` | Field turunan dari target row; `None` jika target `NULL` |
 | `ImageMetadata` | `file_id`, `filename`, `mime_type`, `size`, `created_time`; tidak ada path hierarki |
 | `VisionResult` | `classification_status` (`KNOWN/OTHER/UNCERTAIN`), `matched_variety`, `identified_part` (`DAUN/BATANG/BUAH/BUNGA`), confidence, bukti visual |
-| `CellProvenanceRecord` | Run dan fingerprint sumber, atribut/konteks, varietas, sel nilai/header sumber bila tersedia, referensi kanonik posisi+stabil, nilai mentah+normal, keputusan acceptance, serta versi/hash skema untuk satu penulisan sel nyata |
+| `CellProvenanceRecord` | Run dan fingerprint sumber, atribut/konteks, varietas, sel nilai/header sumber bila tersedia, referensi kanonik posisi+stabil, nilai mentah+normal, metode mapping, keputusan acceptance, serta versi/hash skema untuk satu penulisan sel nyata |
 | `PipelineRunResult` | Data/output lama ditambah `source_backend`, `source_ir_version`, dan laporan opsional `structure_shadow`; Source IR lengkap tidak dimasukkan |
 
 `SchemaMapping` memvalidasi row ID terhadap skema default yang di-cache. Setelah mengubah template dalam proses Python yang sama, panggil `clear_default_schema_cache()` atau restart aplikasi.
@@ -337,6 +345,22 @@ process-local berdasarkan nama model dan fingerprint SHA-256 representasi. Cache
 tersebut bukan persistence database; restart process akan membangunnya lagi. Exact
 search menghapus approximation ANN, tetapi **tidak** menghapus error semantik model
 embedding dan tidak berarti kandidat otomatis benar.
+
+### Exact-name dan profil struktur Phase 7B
+
+Sebelum backend vector disiapkan, leaf `attribute_name` dibandingkan secara exact
+setelah whitespace dinormalisasi dan huruf di-casefold terhadap label kanonik dan
+alias terkurasi. Satu pemilik nama menghasilkan metode `exact_name` dengan confidence
+`1.0` dan melewati embedding, retrieval, serta LLM. Nol pemilik atau dua pemilik lebih
+memakai metode percobaan `retrieve_rerank`; khusus konflik, status `AMBIGUOUS` dan
+candidate canonical keys dicatat pada tabel mapping. Label tidak mengalahkan alias
+milik row lain, dan urutan template tidak pernah memecahkan konflik.
+
+Persiapan Chroma maupun exact index bersifat lazy sampai atribut pertama yang benar-
+benar memerlukan retrieval. Workbook yang semua atributnya match exact tidak membuka
+Chroma dan tidak memuat model embedding. `mapping_method` (`exact_name` atau
+`retrieve_rerank`) dicatat pada mapping dan pada provenance hanya untuk write yang
+diakui. Selective acceptance tetap menjadi satu-satunya gerbang penulisan.
 
 Nama model lain berupa konstanta kode: teks Groq `llama-3.3-70b-versatile`, teks Ollama `llama3.1:8b`, voter kedua OpenRouter `qwen/qwen2.5-vl-72b-instruct`, fallback vision Ollama `qwen2.5-vl:7b`. Embedding menggunakan `paraphrase-multilingual-MiniLM-L12-v2`.
 

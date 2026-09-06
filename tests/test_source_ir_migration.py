@@ -69,8 +69,10 @@ def test_gated_row_match_promotes_once_and_enriches_provenance(
     _isolate(monkeypatch)
     schema = CanonicalSchema.from_template()
     height = schema.row_by_label("tinggi tanaman").id
+    seen_profiles = []
 
     def mapping(profile, candidates, state, *, source_format, **kwargs):
+        seen_profiles.append(profile)
         target = height if profile.attribute_name == "Plant Height (cm)" else "NULL"
         return _mapping(schema, profile.attribute_name, target), {}
 
@@ -109,6 +111,15 @@ def test_gated_row_match_promotes_once_and_enriches_provenance(
     assert gated.canonical_df.loc[
         gated.canonical_df.Karakter == "tinggi tanaman", "Kopay"
     ].item() == ""
+    gated_height_profile = next(
+        profile
+        for profile in reversed(seen_profiles)
+        if profile.attribute_name == "Plant Height (cm)" and profile.header_path
+    )
+    assert gated_height_profile.header_path == ["Plant Height (cm)"]
+    assert gated_height_profile.source_value_type is not None
+    assert gated_height_profile.source_attribute_id == "Observations!COL:D"
+    assert "Observations!COL:D" not in gated_height_profile.build_query()
 
 
 def test_gated_transposed_match_promotes_entity_alignment(tmp_path, monkeypatch):

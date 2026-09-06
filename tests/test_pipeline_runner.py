@@ -7,6 +7,7 @@ import pytest
 from pandas.testing import assert_frame_equal
 
 from src.agents.schema_matching.anchor import AnchorResult
+from src.agents.schema_matching.exact_match import ExactNameResolution, ExactNameStatus
 from src.schema.canonical import CanonicalSchema
 from src.schema.contracts import SchemaMapping
 from src.schema.structure import StructureProposal
@@ -78,7 +79,8 @@ def test_flat_input_values_reach_downloaded_workbook(flat_observations, monkeypa
         assert domba_height.canonical_write is True
         assert domba_height.schema_version == schema.schema_version
         assert domba_height.template_hash == schema.template_hash
-        assert domba_height.mapping_method is None
+        assert domba_height.mapping_method == "retrieve_rerank"
+        assert set(result.mapping_df.mapping_method) == {"retrieve_rerank"}
     finally:
         wb.close()
 
@@ -259,6 +261,7 @@ def test_review_mapping_never_normalizes_or_writes_but_later_attributes_do(
     later = result.mapping_df[result.mapping_df.source_attribute == "Plant Height (cm)"].iloc[0]
     assert review.acceptance_status == "REVIEW"
     assert review.canonical_write == False  # noqa: E712 - numpy bool comparison is intentional
+    assert review.mapping_method == "retrieve_rerank"
     assert "confidence" in review.acceptance_reason
     assert not any("terna" in str(value) or "perdu" in str(value) for value in normalized_raw_values)
     assert result.canonical_df.loc[result.canonical_df.Karakter == "habitus", "Domba"].item() == ""
@@ -320,6 +323,120 @@ def test_exact_alias_shortcut_still_writes_without_review(tmp_path, monkeypatch)
     ].item() == "42"
     assert len({record.run_id for record in result.provenance_records}) == 1
     assert result.provenance_records[0].run_id != second_result.provenance_records[0].run_id
+    assert row.mapping_method == "exact_name"
+    assert result.provenance_records[0].mapping_method == "exact_name"
+    assert result.agent_status["retrieval"].startswith("chroma — tidak diinisialisasi")
+
+
+@pytest.mark.parametrize("retrieval_backend", ["chroma", "exact"])
+def test_all_exact_name_workbook_never_initializes_retrieval_or_llm(
+    tmp_path, monkeypatch, retrieval_backend,
+):
+    source = tmp_path / f"all-exact-{retrieval_backend}.xlsx"
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.append(["Variety", "Seeds per mature fruit"])
+    ws.append(["Domba", "42"])
+    wb.save(source)
+    wb.close()
+
+    monkeypatch.setattr(
+        runner, "detect_anchor",
+        lambda *a, **kw: AnchorResult("found", "Variety", 1.0, "test"),
+    )
+    monkeypatch.setattr(runner, "run_pipeline", lambda *a, **kw: {})
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("all-exact workbook must skip retrieval initialization and reranking")
+
+    monkeypatch.setattr(runner, "ensure_indexed", forbidden)
+    monkeypatch.setattr(runner, "build_exact_index", forbidden)
+    monkeypatch.setattr(runner, "retrieve", forbidden)
+    monkeypatch.setattr(runner, "safe_rerank", forbidden)
+    result = runner.run_pipeline_ui(source, retrieval_backend=retrieval_backend)
+    assert result.mapping_df.iloc[0].mapping_method == "exact_name"
+    assert result.provenance_records[0].mapping_method == "exact_name"
+
+
+def test_first_unresolved_attribute_initializes_chroma_once(tmp_path, monkeypatch):
+    source = tmp_path / "lazy-retrieval.xlsx"
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.append(["Variety", "Seeds per mature fruit", "Unknown B", "Unknown C"])
+    ws.append(["Domba", "42", "x", "y"])
+    wb.save(source)
+    wb.close()
+    monkeypatch.setattr(
+        runner, "detect_anchor",
+        lambda *a, **kw: AnchorResult("found", "Variety", 1.0, "test"),
+    )
+    monkeypatch.setattr(runner, "run_pipeline", lambda *a, **kw: {})
+    prepared = object()
+    ensure_calls = []
+    retrieve_calls = []
+    rerank_calls = []
+
+    def ensure(*args, **kwargs):
+        ensure_calls.append(1)
+        return prepared
+
+    def retrieve(profile, **kwargs):
+        retrieve_calls.append((profile.attribute_name, kwargs.get("collection")))
+        return []
+
+    def rerank(profile, *args, **kwargs):
+        rerank_calls.append(profile.attribute_name)
+        return None, {}
+
+    monkeypatch.setattr(runner, "ensure_indexed", ensure)
+    monkeypatch.setattr(runner, "retrieve", retrieve)
+    monkeypatch.setattr(runner, "safe_rerank", rerank)
+    result = runner.run_pipeline_ui(source)
+    assert ensure_calls == [1]
+    assert retrieve_calls == [("Unknown B", prepared), ("Unknown C", prepared)]
+    assert rerank_calls == ["Unknown B", "Unknown C"]
+    assert result.mapping_df.mapping_method.tolist() == [
+        "exact_name", "retrieve_rerank", "retrieve_rerank"
+    ]
+
+
+def test_ambiguous_exact_name_is_observable_and_falls_through(tmp_path, monkeypatch):
+    source = tmp_path / "ambiguous-name.xlsx"
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.append(["Variety", "Length"])
+    ws.append(["Domba", "10"])
+    wb.save(source)
+    wb.close()
+    monkeypatch.setattr(
+        runner, "detect_anchor",
+        lambda *a, **kw: AnchorResult("found", "Variety", 1.0, "test"),
+    )
+    monkeypatch.setattr(runner, "run_pipeline", lambda *a, **kw: {})
+    monkeypatch.setattr(runner, "ensure_indexed", lambda *a, **kw: object())
+    calls = []
+    monkeypatch.setattr(
+        runner,
+        "resolve_exact_name",
+        lambda *a, **kw: ExactNameResolution(
+            status=ExactNameStatus.AMBIGUOUS,
+            normalized_source_name="length",
+            candidate_row_ids=("r_8", "r_31"),
+            candidate_canonical_keys=("panjang_daun", "panjang_buah_masak"),
+        ),
+    )
+    monkeypatch.setattr(
+        runner, "retrieve", lambda *a, **kw: calls.append("retrieve") or []
+    )
+    monkeypatch.setattr(
+        runner, "safe_rerank", lambda *a, **kw: calls.append("rerank") or (None, {})
+    )
+    result = runner.run_pipeline_ui(source)
+    assert calls == ["retrieve", "rerank"]
+    row = result.mapping_df.iloc[0]
+    assert row.exact_name_status == "AMBIGUOUS"
+    assert row.exact_name_candidates == ["panjang_daun", "panjang_buah_masak"]
+    assert row.mapping_method == "retrieve_rerank"
 
 
 def test_duplicate_noop_does_not_mark_write_or_create_provenance(tmp_path, monkeypatch):
@@ -380,7 +497,8 @@ def test_acceptance_accounting_separates_review_and_no_write(tmp_path, monkeypat
     result = runner.run_pipeline_ui(source)
 
     assert result.agent_status["schema_matching"] == (
-        "selesai — 3 atribut: 1 AUTO_ACCEPT, 1 REVIEW, 1 NO_WRITE"
+        "selesai — 3 atribut: 1 AUTO_ACCEPT, 1 REVIEW, 1 NO_WRITE; methods: "
+        "0 exact_name, 3 retrieve_rerank"
     )
     assert len(result.provenance_records) == 1
     assert result.provenance_records[0].source_attribute == "Accepted"

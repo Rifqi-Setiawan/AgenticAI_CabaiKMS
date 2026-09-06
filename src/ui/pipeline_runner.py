@@ -34,6 +34,11 @@ import pandas as pd
 
 from src.agents.drive_crawler import DriveCrawlerError, list_images, normalize_folder_id
 from src.agents.schema_matching.anchor import detect_anchor
+from src.agents.schema_matching.exact_match import (
+    ExactNameStatus,
+    mapping_from_exact_resolution,
+    resolve_exact_name,
+)
 from src.agents.schema_matching.exact_retrieval import build_exact_index
 from src.agents.schema_matching.indexing import ensure_indexed
 from src.agents.schema_matching.normalize import normalize
@@ -58,7 +63,7 @@ from src.orchestrator.graph import run_pipeline
 from src.reliability.wrappers import safe_classify_image, safe_rerank
 from src.schema.canonical import CanonicalSchema
 from src.schema.contracts import NULL_ROW
-from src.schema.provenance import CellProvenanceRecord, source_file_sha256
+from src.schema.provenance import CellProvenanceRecord, MappingMethod, source_file_sha256
 from src.schema.shadow_parity import ShadowParityReport, ShadowStatus
 from src.ui.output_builder import SHEET_NAME, CanonicalOutputBuilder, combine_multi_value, worksheet_to_dataframe
 
@@ -72,6 +77,9 @@ MAPPING_COLUMNS = [
     "confidence",
     "normalization_required",
     "reasoning",
+    "mapping_method",
+    "exact_name_status",
+    "exact_name_candidates",
     "acceptance_status",
     "acceptance_reason",
     "canonical_write",
@@ -223,20 +231,8 @@ def run_pipeline_ui(
         on_progress(f"structure_shadow: {structure_shadow.summary}")
 
     schema = CanonicalSchema.from_template()
-    exact_index = None
-    if retrieval_backend == "chroma":
-        on_progress("Memastikan indeks ChromaDB (idempoten)...")
-        ensure_indexed(schema)
-        agent_status["retrieval"] = f"chroma — HNSW cosine, k={k}"
-    elif retrieval_backend == "exact":
-        on_progress("Menyiapkan indeks exact cosine dalam memori...")
-        build_kwargs = {}
-        if embedding_encode_call is not None:
-            build_kwargs["encode_call"] = embedding_encode_call
-        exact_index = build_exact_index(schema, **build_kwargs)
-        agent_status["retrieval"] = (
-            f"exact — exhaustive cosine over {len(schema.rows)} canonical rows, k={k}"
-        )
+    retrieval_resource = None
+    retrieval_initialized = False
 
     builder = CanonicalOutputBuilder(schema=schema)
     for name in variety_names_seen:
@@ -248,6 +244,8 @@ def run_pipeline_ui(
     n_auto_accept = 0
     n_review = 0
     n_no_write = 0
+    n_exact_name = 0
+    n_retrieve_rerank = 0
 
     for attr in attributes:
         on_progress(f"  schema_matching: '{attr.attribute_name}' — retrieval...")
@@ -255,17 +253,57 @@ def run_pipeline_ui(
             attribute_name=attr.attribute_name,
             structural_context=attr.structural_context,
             sample_values=attr.sample_values,
+            header_path=attr.header_path,
+            source_value_type=attr.detected_value_type,
+            source_attribute_id=attr.source_attribute_id,
         )
-        retrieval_kwargs = {
-            "backend": retrieval_backend,
-            "exact_index": exact_index,
-        }
-        if embedding_encode_call is not None:
-            retrieval_kwargs["encode_call"] = embedding_encode_call
-        retrieved = retrieve(profile, k=k, schema=schema, **retrieval_kwargs)
+        exact_resolution = resolve_exact_name(attr.attribute_name, schema)
+        mapping_method: MappingMethod
+        if exact_resolution.status is ExactNameStatus.MATCH:
+            mapping_method = "exact_name"
+            n_exact_name += 1
+            mapping = mapping_from_exact_resolution(
+                exact_resolution,
+                source_attribute=profile.attribute_name,
+                source_context=profile.structural_context,
+                source_format=source_format,
+            )
+            patch = {}
+            on_progress(
+                f"  schema_matching: '{attr.attribute_name}' — exact_name; retrieval dilewati."
+            )
+        else:
+            mapping_method = "retrieve_rerank"
+            n_retrieve_rerank += 1
+            if not retrieval_initialized:
+                if retrieval_backend == "chroma":
+                    on_progress("Memastikan indeks ChromaDB (idempoten)...")
+                    retrieval_resource = ensure_indexed(schema)
+                    agent_status["retrieval"] = f"chroma — HNSW cosine, k={k}"
+                elif retrieval_backend == "exact":
+                    on_progress("Menyiapkan indeks exact cosine dalam memori...")
+                    build_kwargs = {}
+                    if embedding_encode_call is not None:
+                        build_kwargs["encode_call"] = embedding_encode_call
+                    retrieval_resource = build_exact_index(schema, **build_kwargs)
+                    agent_status["retrieval"] = (
+                        f"exact — exhaustive cosine over {len(schema.rows)} canonical rows, k={k}"
+                    )
+                retrieval_initialized = True
 
-        on_progress(f"  schema_matching: '{attr.attribute_name}' — reranking...")
-        mapping, patch = safe_rerank(profile, retrieved, state, source_format=source_format, schema=schema)
+            retrieval_kwargs = {"backend": retrieval_backend}
+            if retrieval_backend == "chroma":
+                retrieval_kwargs["collection"] = retrieval_resource
+            elif retrieval_backend == "exact":
+                retrieval_kwargs["exact_index"] = retrieval_resource
+            if embedding_encode_call is not None:
+                retrieval_kwargs["encode_call"] = embedding_encode_call
+            retrieved = retrieve(profile, k=k, schema=schema, **retrieval_kwargs)
+
+            on_progress(f"  schema_matching: '{attr.attribute_name}' — reranking...")
+            mapping, patch = safe_rerank(
+                profile, retrieved, state, source_format=source_format, schema=schema
+            )
         state.update(patch)  # safe_* returns a patch; the caller applies it — see wrappers.py
         acceptance = decide_mapping_acceptance(mapping, reliability_patch=patch)
 
@@ -284,6 +322,9 @@ def run_pipeline_ui(
             "confidence": mapping.confidence if mapping is not None else None,
             "normalization_required": mapping.normalization_required if mapping is not None else None,
             "reasoning": mapping.reasoning if mapping is not None else None,
+            "mapping_method": mapping_method,
+            "exact_name_status": exact_resolution.status.value,
+            "exact_name_candidates": list(exact_resolution.candidate_canonical_keys),
             "acceptance_status": acceptance.status.value,
             "acceptance_reason": acceptance.reason,
             "canonical_write": False,
@@ -357,13 +398,19 @@ def run_pipeline_ui(
                         acceptance_reason=acceptance.reason,
                         schema_version=schema.schema_version,
                         template_hash=schema.template_hash,
+                        mapping_method=mapping_method,
                     )
                 )
 
     agent_status["schema_matching"] = (
         f"selesai — {len(mapping_rows)} atribut: {n_auto_accept} AUTO_ACCEPT, "
-        f"{n_review} REVIEW, {n_no_write} NO_WRITE"
+        f"{n_review} REVIEW, {n_no_write} NO_WRITE; methods: "
+        f"{n_exact_name} exact_name, {n_retrieve_rerank} retrieve_rerank"
     )
+    if not retrieval_initialized:
+        agent_status["retrieval"] = (
+            f"{retrieval_backend} — tidak diinisialisasi; semua atribut exact_name, k={k}"
+        )
 
     mapping_df = pd.DataFrame(mapping_rows, columns=MAPPING_COLUMNS)
     if not mapping_df.empty:

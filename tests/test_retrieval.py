@@ -15,9 +15,6 @@ from src.agents.schema_matching.retrieval import (
 )
 from src.schema.canonical import CanonicalSchema
 
-pytestmark = pytest.mark.indexing  # needs network on first run (HF model download)
-
-
 @pytest.fixture(scope="module")
 def schema() -> CanonicalSchema:
     return CanonicalSchema.from_template()
@@ -108,7 +105,41 @@ class TestSourceAttributeProfile:
         assert "10,5 - 14 cm" in query
         assert "numerik" in query
 
+    def test_legacy_query_is_byte_for_byte_unchanged(self):
+        profile = SourceAttributeProfile(
+            attribute_name="panjang daun",
+            structural_context="Karakter",
+            sample_values=["10,5 - 14 cm"],
+        )
+        assert profile.build_query() == (
+            "panjang daun ⊕ Karakter ⊕ 10,5 - 14 cm ⊕ tipe data: numerik"
+        )
 
+    def test_verified_header_path_and_source_type_are_embedded_in_order(self):
+        profile = SourceAttributeProfile(
+            attribute_name="Length",
+            structural_context="Morphology / Mature Fruit",
+            header_path=["Morphology", "Mature Fruit", "Length"],
+            source_value_type="numeric",
+            source_attribute_id="Sheet1!COL:D",
+        )
+        query = profile.build_query()
+        assert "hierarki header: Morphology > Mature Fruit > Length" in query
+        assert "tipe sumber terverifikasi: numeric" in query
+        assert "Sheet1!COL:D" not in query
+        assert profile.source_attribute_id == "Sheet1!COL:D"
+
+    def test_coordinates_are_not_profile_embedding_fields(self):
+        profile = SourceAttributeProfile(
+            attribute_name="Length",
+            header_path=["Morphology", "Length"],
+            source_attribute_id="Sheet1!COL:D",
+        )
+        query = profile.build_query()
+        assert all(coordinate not in query for coordinate in ("D4", "D5", "D7"))
+
+
+@pytest.mark.indexing
 class TestRetrieve:
     def test_k_out_of_range_raises(self, schema, client):
         profile = SourceAttributeProfile(attribute_name="x")
@@ -149,6 +180,7 @@ class TestRetrieve:
         assert expected_row_id in [h.row_id for h in hits]
 
 
+@pytest.mark.indexing
 class TestExactRetrieveEmpirical:
     @pytest.mark.parametrize(
         "attribute_name,structural_context,sample_values,expected_row_id",
