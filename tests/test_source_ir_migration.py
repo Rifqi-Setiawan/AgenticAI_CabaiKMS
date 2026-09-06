@@ -3,6 +3,7 @@ import pytest
 from pandas.testing import assert_frame_equal
 
 from src.agents.schema_matching.anchor import AnchorResult
+from src.agents.schema_matching.retrieval import RetrievalHit
 from src.schema.canonical import CanonicalSchema
 from src.schema.contracts import SchemaMapping
 from src.schema.structure import StructureProposal
@@ -19,15 +20,28 @@ def _anchor(candidates, **kwargs):
 def _isolate(monkeypatch):
     monkeypatch.setattr(runner, "detect_anchor", _anchor)
     monkeypatch.setattr(runner, "ensure_indexed", lambda *args, **kwargs: None)
-    monkeypatch.setattr(runner, "retrieve", lambda *args, **kwargs: [])
+    def retrieve(*args, **kwargs):
+        schema = kwargs.get("schema") or CanonicalSchema.from_template()
+        return [
+            RetrievalHit(
+                row.id,
+                row.label,
+                row.domain,
+                index / 100.0,
+                canonical_key=row.canonical_key,
+            )
+            for index, row in enumerate(schema.rows)
+        ]
+
+    monkeypatch.setattr(runner, "retrieve", retrieve)
     monkeypatch.setattr(runner, "build_exact_index", lambda *args, **kwargs: object())
     monkeypatch.setattr(runner, "run_pipeline", lambda *args, **kwargs: {})
 
 
-def _mapping(schema, attribute, target):
+def _mapping(schema, attribute, target, *, source_format="row-oriented"):
     return SchemaMapping(
         source_attribute=attribute,
-        source_format="row-oriented",
+        source_format=source_format,
         target_canonical_row=target,
         confidence=0.99,
         reasoning="migration fixture",
@@ -137,7 +151,7 @@ def test_gated_transposed_match_promotes_entity_alignment(tmp_path, monkeypatch)
     monkeypatch.setattr(
         runner, "safe_rerank",
         lambda profile, candidates, state, *, source_format, **kwargs: (
-            _mapping(schema, profile.attribute_name, habitus), {}
+            _mapping(schema, profile.attribute_name, habitus, source_format=source_format), {}
         ),
     )
     proposal = StructureProposal(

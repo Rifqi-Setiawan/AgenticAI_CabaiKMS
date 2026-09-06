@@ -158,6 +158,27 @@ not embedded merely because Source IR makes them available. Legacy profiles with
 richer evidence retain their prior query and prompt bytes. Chroma/exact preparation
 is lazy, so an all-exact-name workbook initializes neither vector backend.
 
+## (a.7) Prediction and verification are independent contracts
+
+**[FINAL, Phase 7C1]** `SchemaMapping` is the reranker's proposal;
+`MappingVerificationResult` is deterministic evidence about that proposal. LLM
+self-confidence remains observable and continues to feed the legacy Phase 1 policy,
+but it is not treated as an independent correctness estimate. The verifier uses no
+LLM, embedding call, network, or file I/O.
+
+Phase 7C1 records exact-name consistency, source metadata consistency, candidate
+membership, target rank/distance, top-1/top-2 separation, and reliability-wrapper
+signals. A globally valid canonical row is not a valid reranker decision unless it
+was actually supplied in the candidate set. Deterministic hard violations immediately
+force `NO_WRITE`; verifier PASS cannot promote a legacy REVIEW, and soft verifier
+REVIEW remains observational. No distance or margin thresholds are introduced.
+
+Migration strategy:
+
+- **C1:** collect raw evidence and enforce only hard integrity invariants.
+- **C2:** calibrate soft signals on explicit validation ground truth, evaluate
+  precision/risk versus automation coverage, then promote only validated policy.
+
 ## (b) Domain = derived label, not a predicted field
 
 **[FINAL]** "Domain" is a category tag attached to each canonical row

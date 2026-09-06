@@ -41,6 +41,10 @@ from src.agents.schema_matching.exact_match import (
 )
 from src.agents.schema_matching.exact_retrieval import build_exact_index
 from src.agents.schema_matching.indexing import ensure_indexed
+from src.agents.schema_matching.mapping_verifier import (
+    combine_mapping_acceptance,
+    verify_mapping,
+)
 from src.agents.schema_matching.normalize import normalize
 from src.agents.schema_matching.review_queue import AcceptanceStatus, decide_mapping_acceptance
 from src.agents.schema_matching.retrieval import (
@@ -63,6 +67,10 @@ from src.orchestrator.graph import run_pipeline
 from src.reliability.wrappers import safe_classify_image, safe_rerank
 from src.schema.canonical import CanonicalSchema
 from src.schema.contracts import NULL_ROW
+from src.schema.mapping_verification import (
+    MappingVerificationResult,
+    MappingVerificationStatus,
+)
 from src.schema.provenance import CellProvenanceRecord, MappingMethod, source_file_sha256
 from src.schema.shadow_parity import ShadowParityReport, ShadowStatus
 from src.ui.output_builder import SHEET_NAME, CanonicalOutputBuilder, combine_multi_value, worksheet_to_dataframe
@@ -80,6 +88,17 @@ MAPPING_COLUMNS = [
     "mapping_method",
     "exact_name_status",
     "exact_name_candidates",
+    "verifier_status",
+    "verifier_hard_issues",
+    "verifier_warnings",
+    "retrieval_target_rank",
+    "retrieval_target_distance",
+    "retrieval_top1_row",
+    "retrieval_top1_distance",
+    "retrieval_top2_row",
+    "retrieval_top2_distance",
+    "retrieval_top1_top2_margin",
+    "retrieval_target_vs_top1_gap",
     "acceptance_status",
     "acceptance_reason",
     "canonical_write",
@@ -102,6 +121,7 @@ class PipelineRunResult:
     source_backend: str = "legacy"
     source_ir_version: str | None = None
     retrieval_backend: str = "chroma"
+    mapping_verifications: list[MappingVerificationResult] = field(default_factory=list)
 
 
 def _noop(_: str) -> None:
@@ -241,11 +261,14 @@ def run_pipeline_ui(
     # --- schema matching (Fase 3, via the Fase 7 reliability wrapper) ---
     mapping_rows: list[dict] = []
     provenance_records: list[CellProvenanceRecord] = []
+    mapping_verifications: list[MappingVerificationResult] = []
     n_auto_accept = 0
     n_review = 0
     n_no_write = 0
     n_exact_name = 0
     n_retrieve_rerank = 0
+    verifier_counts = {status: 0 for status in MappingVerificationStatus}
+    n_hard_blocked = 0
 
     for attr in attributes:
         on_progress(f"  schema_matching: '{attr.attribute_name}' — retrieval...")
@@ -259,6 +282,7 @@ def run_pipeline_ui(
         )
         exact_resolution = resolve_exact_name(attr.attribute_name, schema)
         mapping_method: MappingMethod
+        retrieved = None
         if exact_resolution.status is ExactNameStatus.MATCH:
             mapping_method = "exact_name"
             n_exact_name += 1
@@ -305,7 +329,22 @@ def run_pipeline_ui(
                 profile, retrieved, state, source_format=source_format, schema=schema
             )
         state.update(patch)  # safe_* returns a patch; the caller applies it — see wrappers.py
-        acceptance = decide_mapping_acceptance(mapping, reliability_patch=patch)
+        verification = verify_mapping(
+            profile=profile,
+            mapping=mapping,
+            mapping_method=mapping_method,
+            schema=schema,
+            exact_resolution=exact_resolution,
+            candidates=retrieved,
+            source_format=source_format,
+            reliability_patch=patch,
+        )
+        mapping_verifications.append(verification)
+        verifier_counts[verification.status] += 1
+        current_acceptance = decide_mapping_acceptance(mapping, reliability_patch=patch)
+        acceptance = combine_mapping_acceptance(current_acceptance, verification)
+        if verification.status is MappingVerificationStatus.REJECT:
+            n_hard_blocked += 1
 
         target_row = (
             schema.row_by_id(mapping.target_canonical_row)
@@ -325,6 +364,49 @@ def run_pipeline_ui(
             "mapping_method": mapping_method,
             "exact_name_status": exact_resolution.status.value,
             "exact_name_candidates": list(exact_resolution.candidate_canonical_keys),
+            "verifier_status": verification.status.value,
+            "verifier_hard_issues": list(verification.hard_issue_codes),
+            "verifier_warnings": list(verification.warning_codes),
+            "retrieval_target_rank": (
+                verification.retrieval_evidence.target_rank
+                if verification.retrieval_evidence is not None
+                else None
+            ),
+            "retrieval_target_distance": (
+                verification.retrieval_evidence.target_distance
+                if verification.retrieval_evidence is not None
+                else None
+            ),
+            "retrieval_top1_row": (
+                verification.retrieval_evidence.top1_row_id
+                if verification.retrieval_evidence is not None
+                else None
+            ),
+            "retrieval_top1_distance": (
+                verification.retrieval_evidence.top1_distance
+                if verification.retrieval_evidence is not None
+                else None
+            ),
+            "retrieval_top2_row": (
+                verification.retrieval_evidence.top2_row_id
+                if verification.retrieval_evidence is not None
+                else None
+            ),
+            "retrieval_top2_distance": (
+                verification.retrieval_evidence.top2_distance
+                if verification.retrieval_evidence is not None
+                else None
+            ),
+            "retrieval_top1_top2_margin": (
+                verification.retrieval_evidence.top1_top2_margin
+                if verification.retrieval_evidence is not None
+                else None
+            ),
+            "retrieval_target_vs_top1_gap": (
+                verification.retrieval_evidence.target_vs_top1_distance_gap
+                if verification.retrieval_evidence is not None
+                else None
+            ),
             "acceptance_status": acceptance.status.value,
             "acceptance_reason": acceptance.reason,
             "canonical_write": False,
@@ -399,6 +481,8 @@ def run_pipeline_ui(
                         schema_version=schema.schema_version,
                         template_hash=schema.template_hash,
                         mapping_method=mapping_method,
+                        verifier_status=verification.status.value,
+                        verifier_hard_issues=list(verification.hard_issue_codes),
                     )
                 )
 
@@ -411,6 +495,12 @@ def run_pipeline_ui(
         agent_status["retrieval"] = (
             f"{retrieval_backend} — tidak diinisialisasi; semua atribut exact_name, k={k}"
         )
+    agent_status["mapping_verifier"] = (
+        f"verifier PASS={verifier_counts[MappingVerificationStatus.PASS]}, "
+        f"REVIEW={verifier_counts[MappingVerificationStatus.REVIEW]}, "
+        f"REJECT={verifier_counts[MappingVerificationStatus.REJECT]}; "
+        f"hard-blocked={n_hard_blocked}"
+    )
 
     mapping_df = pd.DataFrame(mapping_rows, columns=MAPPING_COLUMNS)
     if not mapping_df.empty:
@@ -503,6 +593,7 @@ def run_pipeline_ui(
         structure_shadow=structure_shadow,
         source_backend=source_backend,
         retrieval_backend=retrieval_backend,
+        mapping_verifications=mapping_verifications,
         source_ir_version=(
             source_bundle.source_ir.ir_version
             if source_bundle.source_ir is not None

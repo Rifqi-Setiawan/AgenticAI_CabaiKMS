@@ -8,6 +8,7 @@ from pandas.testing import assert_frame_equal
 
 from src.agents.schema_matching.anchor import AnchorResult
 from src.agents.schema_matching.exact_match import ExactNameResolution, ExactNameStatus
+from src.agents.schema_matching.retrieval import RetrievalHit
 from src.schema.canonical import CanonicalSchema
 from src.schema.contracts import SchemaMapping
 from src.schema.structure import StructureProposal
@@ -16,13 +17,27 @@ from src.ui.output_builder import worksheet_to_dataframe
 from tests.test_source_parsing import flat_observations  # shared temporary workbook fixture
 
 
+def _all_candidates(schema=None):
+    schema = schema or CanonicalSchema.from_template()
+    return [
+        RetrievalHit(
+            row.id,
+            row.label,
+            row.domain,
+            index / 100.0,
+            canonical_key=row.canonical_key,
+        )
+        for index, row in enumerate(schema.rows)
+    ]
+
+
 def test_flat_input_values_reach_downloaded_workbook(flat_observations, monkeypatch):
     """Run real parsing/grouping/normalization/Excel serialization, no API calls."""
     schema = CanonicalSchema.from_template()
     targets = {"Growth habit": "habitus", "Plant Height (cm)": "tinggi tanaman"}
     monkeypatch.setattr(runner, "detect_anchor", lambda *a, **kw: AnchorResult("found", "Variety", 1.0, "test"))
     monkeypatch.setattr(runner, "ensure_indexed", lambda *a, **kw: None)
-    monkeypatch.setattr(runner, "retrieve", lambda *a, **kw: [])
+    monkeypatch.setattr(runner, "retrieve", lambda *a, **kw: _all_candidates(schema))
     monkeypatch.setattr(runner, "run_pipeline", lambda *a, **kw: {})  # do not touch user checkpoints
 
     def mapping(profile, candidates, state, *, source_format, **kwargs):
@@ -105,7 +120,7 @@ def test_multilevel_duplicate_leaf_names_stay_distinct_through_export(tmp_path, 
     }
     monkeypatch.setattr(runner, "detect_anchor", lambda *a, **kw: AnchorResult("found", "Variety", 1.0, "test"))
     monkeypatch.setattr(runner, "ensure_indexed", lambda *a, **kw: None)
-    monkeypatch.setattr(runner, "retrieve", lambda *a, **kw: [])
+    monkeypatch.setattr(runner, "retrieve", lambda *a, **kw: _all_candidates(schema))
     monkeypatch.setattr(runner, "run_pipeline", lambda *a, **kw: {})
 
     def mapping(profile, candidates, state, *, source_format, **kwargs):
@@ -164,7 +179,7 @@ def test_missing_variety_value_stops_instead_of_losing_observation(flat_observat
 def _isolate_pipeline(monkeypatch):
     monkeypatch.setattr(runner, "detect_anchor", lambda *a, **kw: AnchorResult("found", "Variety", 1.0, "test"))
     monkeypatch.setattr(runner, "ensure_indexed", lambda *a, **kw: None)
-    monkeypatch.setattr(runner, "retrieve", lambda *a, **kw: [])
+    monkeypatch.setattr(runner, "retrieve", lambda *a, **kw: _all_candidates())
     monkeypatch.setattr(runner, "run_pipeline", lambda *a, **kw: {})
 
 
@@ -293,7 +308,8 @@ def test_structurally_invalid_result_is_observable_and_does_not_block_next_attri
     following = result.mapping_df[result.mapping_df.source_attribute == "Growth habit"].iloc[0]
     assert invalid.acceptance_status == "NO_WRITE"
     assert invalid.canonical_write == False  # noqa: E712
-    assert "format invalid" in invalid.acceptance_reason
+    assert "MAPPING_MISSING" in invalid.acceptance_reason
+    assert "RERANK_RELIABILITY_PATCH" in invalid.verifier_warnings
     assert not any(record.source_attribute == "Sample_ID" for record in result.provenance_records)
     assert following.acceptance_status == "AUTO_ACCEPT"
     assert following.canonical_write == True  # noqa: E712
@@ -325,6 +341,11 @@ def test_exact_alias_shortcut_still_writes_without_review(tmp_path, monkeypatch)
     assert result.provenance_records[0].run_id != second_result.provenance_records[0].run_id
     assert row.mapping_method == "exact_name"
     assert result.provenance_records[0].mapping_method == "exact_name"
+    assert result.provenance_records[0].verifier_status == "PASS"
+    assert result.provenance_records[0].verifier_hard_issues == []
+    assert len(result.mapping_verifications) == 1
+    assert result.mapping_verifications[0].status.value == "PASS"
+    assert result.mapping_verifications[0].retrieval_evidence is None
     assert result.agent_status["retrieval"].startswith("chroma — tidak diinisialisasi")
 
 
@@ -437,6 +458,50 @@ def test_ambiguous_exact_name_is_observable_and_falls_through(tmp_path, monkeypa
     assert row.exact_name_status == "AMBIGUOUS"
     assert row.exact_name_candidates == ["panjang_daun", "panjang_buah_masak"]
     assert row.mapping_method == "retrieve_rerank"
+
+
+def test_out_of_candidate_target_is_hard_blocked_before_normalization(
+    tmp_path, monkeypatch,
+):
+    source = tmp_path / "out-of-candidate.xlsx"
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.append(["Variety", "Unknown attribute"])
+    ws.append(["Domba", "value"])
+    wb.save(source)
+    wb.close()
+    schema = CanonicalSchema.from_template()
+    candidates = _all_candidates(schema)[:3]
+    monkeypatch.setattr(
+        runner, "detect_anchor",
+        lambda *a, **kw: AnchorResult("found", "Variety", 1.0, "test"),
+    )
+    monkeypatch.setattr(runner, "ensure_indexed", lambda *a, **kw: object())
+    monkeypatch.setattr(runner, "retrieve", lambda *a, **kw: candidates)
+    monkeypatch.setattr(runner, "run_pipeline", lambda *a, **kw: {})
+    monkeypatch.setattr(
+        runner,
+        "safe_rerank",
+        lambda profile, *a, **kw: (
+            _mapping(schema, profile.attribute_name, "r_40", confidence=0.99),
+            {},
+        ),
+    )
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("hard verifier rejection must block canonical mutation")
+
+    monkeypatch.setattr(runner, "normalize", forbidden)
+    monkeypatch.setattr(runner.CanonicalOutputBuilder, "set_cell", forbidden)
+    result = runner.run_pipeline_ui(source)
+    row = result.mapping_df.iloc[0]
+    assert row.verifier_status == "REJECT"
+    assert row.verifier_hard_issues == ["TARGET_NOT_IN_RETRIEVED_CANDIDATES"]
+    assert row.acceptance_status == "NO_WRITE"
+    assert row.canonical_write == False  # noqa: E712
+    assert result.provenance_records == []
+    assert result.mapping_verifications[0].retrieval_evidence.target_in_candidates is False
+    assert "hard-blocked=1" in result.agent_status["mapping_verifier"]
 
 
 def test_duplicate_noop_does_not_mark_write_or_create_provenance(tmp_path, monkeypatch):

@@ -49,3 +49,5 @@ class CellProvenanceRecord(BaseModel):
     schema_version: str
     template_hash: str
     mapping_method: MappingMethod | None = None
+    verifier_status: Literal["PASS", "REVIEW", "REJECT"] | None = None
+    verifier_hard_issues: list[str] = Field(default_factory=list)

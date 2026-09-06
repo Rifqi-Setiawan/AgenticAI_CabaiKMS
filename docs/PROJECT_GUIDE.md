@@ -40,6 +40,7 @@ Ini adalah **prototipe penelitian**, bukan sistem produksi, API backend, atau pl
 | Exact-name resolution | Label/alias eksplisit yang unik diselesaikan sebelum retrieval; konflik nama bersifat `AMBIGUOUS` dan jatuh ke jalur semantik |
 | Retrieval | Chroma HNSW cosine tetap default; exact exhaustive cosine tersedia sebagai opt-in; diinisialisasi lazy hanya bila diperlukan; default top-k `8` |
 | Reranking | Aktif, Groq dengan fallback Ollama; output Pydantic |
+| Mapping Verifier | Phase 7C1 aktif; deterministik, tanpa LLM, mengumpulkan evidence dan memblokir hanya pelanggaran hard invariant |
 | Normalisasi | Aktif, deterministik; bukan ekstraksi/penalaran bebas oleh LLM |
 | Google Drive | Aktif, service account read-only, daftar foto anak langsung folder |
 | Vision | Aktif, Gemini; consensus dua model tersedia di API Python, tidak di UI |
@@ -124,7 +125,8 @@ Input .xlsx
   -> identitas varietas (anchor / header transposed)
   -> exact label/alias unik? -> SchemaMapping deterministik
        atau: retrieval kandidat (Chroma default / exact opt-in) -> safe_rerank
-  -> selective acceptance -> normalisasi -> akumulasi nilai
+  -> deterministic Mapping Verifier -> selective acceptance combiner
+  -> normalisasi -> akumulasi nilai
   -> workbook berdasarkan salinan template
   -> [opsional] Drive -> download -> Gemini -> URL foto pada sel Gambar
   -> tabel preview + bytes Excel + log/status
@@ -285,8 +287,9 @@ Tidak ada konversi satuan otomatis, penghitungan rerata, penerjemahan warna beba
 | `SchemaMapping.target_domain` | Field turunan dari target row; `None` jika target `NULL` |
 | `ImageMetadata` | `file_id`, `filename`, `mime_type`, `size`, `created_time`; tidak ada path hierarki |
 | `VisionResult` | `classification_status` (`KNOWN/OTHER/UNCERTAIN`), `matched_variety`, `identified_part` (`DAUN/BATANG/BUAH/BUNGA`), confidence, bukti visual |
-| `CellProvenanceRecord` | Run dan fingerprint sumber, atribut/konteks, varietas, sel nilai/header sumber bila tersedia, referensi kanonik posisi+stabil, nilai mentah+normal, metode mapping, keputusan acceptance, serta versi/hash skema untuk satu penulisan sel nyata |
-| `PipelineRunResult` | Data/output lama ditambah `source_backend`, `source_ir_version`, dan laporan opsional `structure_shadow`; Source IR lengkap tidak dimasukkan |
+| `MappingVerificationResult` | Evidence verifier berversi: metode, target, exact-name status, hard issues/warnings, confidence observasional, dan retrieval rank/distance/margin bila berlaku |
+| `CellProvenanceRecord` | Run dan fingerprint sumber, atribut/konteks, varietas, sel nilai/header sumber bila tersedia, referensi kanonik posisi+stabil, nilai mentah+normal, metode mapping, verifier status/hard issues, keputusan acceptance, serta versi/hash skema untuk satu penulisan sel nyata |
+| `PipelineRunResult` | Data/output lama ditambah `source_backend`, `source_ir_version`, `mapping_verifications`, dan laporan opsional `structure_shadow`; Source IR lengkap tidak dimasukkan |
 
 `SchemaMapping` memvalidasi row ID terhadap skema default yang di-cache. Setelah mengubah template dalam proses Python yang sama, panggil `clear_default_schema_cache()` atau restart aplikasi.
 
@@ -361,6 +364,24 @@ benar memerlukan retrieval. Workbook yang semua atributnya match exact tidak mem
 Chroma dan tidak memuat model embedding. `mapping_method` (`exact_name` atau
 `retrieve_rerank`) dicatat pada mapping dan pada provenance hanya untuk write yang
 diakui. Selective acceptance tetap menjadi satu-satunya gerbang penulisan.
+
+### Independent Mapping Verifier Phase 7C1
+
+Setelah proposal `SchemaMapping` dibuat, verifier deterministik yang terpisah dari LLM
+memeriksa konsistensi format/atribut/konteks, exact-name target, keunikan kandidat,
+dan—untuk metode `retrieve_rerank`—bahwa target benar-benar terdapat dalam top-k yang
+diberikan kepada reranker. Target global yang valid tetapi berada di luar candidate
+set adalah pelanggaran kontrak dan menghasilkan `NO_WRITE`.
+
+Verifier merekam rank target, distance target, top-1/top-2, margin
+`top2_distance - top1_distance`, dan gap target terhadap top-1 tanpa membulatkan nilai
+internal. Belum ada threshold distance atau margin produksi: sinyal numerik menunggu
+kalibrasi validation ground truth pada Phase 7C2. `verifier PASS` hanya berarti tidak
+ada pelanggaran deterministik yang teramati, **bukan bukti mapping benar** dan tidak
+dapat mengubah keputusan legacy `REVIEW` menjadi `AUTO_ACCEPT`. Soft verifier
+`REVIEW` masih shadow-only; hanya `REJECT` karena hard invariant yang mengalahkan
+acceptance lama. Dataset kalibrasi dapat dibangun melalui
+`eval/mapping_verifier_dataset.py`; gold hanya dimasukkan bila diberikan eksplisit.
 
 Nama model lain berupa konstanta kode: teks Groq `llama-3.3-70b-versatile`, teks Ollama `llama3.1:8b`, voter kedua OpenRouter `qwen/qwen2.5-vl-72b-instruct`, fallback vision Ollama `qwen2.5-vl:7b`. Embedding menggunakan `paraphrase-multilingual-MiniLM-L12-v2`.
 
