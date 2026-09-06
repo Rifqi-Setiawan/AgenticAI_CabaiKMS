@@ -7,8 +7,15 @@ from eval.create_mapping_annotations import HUMAN_COLUMNS, create_annotation_tab
 
 
 def _result():
-    return SimpleNamespace(mapping_verifications=[], mapping_df=pd.DataFrame([{
+    return SimpleNamespace(
+        mapping_verifications=[], source_backend="legacy", retrieval_backend="exact",
+        retrieval_k=8, schema_version="schema-v1", template_hash="template-hash",
+        mapping_verification_version="mapping-verification-v1",
+        embedding_model_name="embedding-model", evaluation_config_fingerprint="config-id",
+        mapping_df=pd.DataFrame([{
         "mapping_item_id": "stable-id", "source_file_name": "source.xlsx",
+        "mapping_identity_kind": "source_attribute_display",
+        "mapping_identity_value": "Height", "mapping_identity_issue": None,
         "source_file_sha256": "a" * 64, "source_sheet": "Sheet1",
         "source_format": "row-oriented", "source_attribute_id": "Sheet1!COL:B",
         "source_attribute_display": "Height", "source_attribute": "Height",

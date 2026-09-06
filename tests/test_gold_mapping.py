@@ -9,6 +9,7 @@ from src.schema.gold_mapping import (
     GoldMappingAnnotation,
     GoldMappingStatus,
     build_mapping_item_id,
+    build_mapping_item_identities,
     build_mapping_item_ids,
     compare_annotators,
     create_adjudication_template,
@@ -58,8 +59,26 @@ def test_mapping_item_id_is_stable_and_prediction_independent():
     first = build_mapping_item_id(**identity)
     assert first == build_mapping_item_id(**identity)
     assert first != build_mapping_item_id(**{**identity, "source_file_sha256": "b" * 64})
-    with pytest.raises(ValueError, match="not unique"):
-        build_mapping_item_ids(source_file_sha256="a" * 64, source_sheet="Sheet1", source_format="row-oriented", source_items=[(None, "Height"), (None, "Height")])
+    assert build_mapping_item_ids(
+        source_file_sha256="a" * 64, source_sheet="Sheet1", source_format="row-oriented",
+        source_items=[(None, "Height"), (None, "Height")],
+    ) == [None, None]
+
+
+def test_identity_selection_is_per_display_group_and_cross_backend_stable():
+    common = dict(source_file_sha256="a" * 64, source_sheet="Sheet1", source_format="row-oriented")
+    before = build_mapping_item_identities(**common, source_items=[(None, "A"), (None, "B")])
+    after = build_mapping_item_identities(**common, source_items=[
+        (None, "A"), (None, "B"), ("col:C1", "C"), ("col:C2", "C"),
+    ])
+    assert [item.mapping_item_id for item in before] == [item.mapping_item_id for item in after[:2]]
+    assert [item.identity_kind.value for item in after] == [
+        "source_attribute_display", "source_attribute_display",
+        "source_attribute_id", "source_attribute_id",
+    ]
+    legacy = build_mapping_item_identities(**common, source_items=[(None, "A")])[0]
+    source_ir = build_mapping_item_identities(**common, source_items=[("Sheet1!COL:D", "A")])[0]
+    assert legacy.mapping_item_id == source_ir.mapping_item_id
 
 
 def test_annotator_comparison_kappa_and_adjudication_template(schema):

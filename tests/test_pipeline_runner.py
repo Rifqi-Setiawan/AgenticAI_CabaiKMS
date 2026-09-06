@@ -12,8 +12,10 @@ from src.agents.schema_matching.retrieval import RetrievalHit
 from src.schema.canonical import CanonicalSchema
 from src.schema.contracts import SchemaMapping
 from src.schema.structure import StructureProposal
+from src.ingestion.runtime_source import RuntimeSourceAttribute, RuntimeSourceBundle
 from src.ui import pipeline_runner as runner
 from src.ui.output_builder import worksheet_to_dataframe
+from eval.create_mapping_annotations import create_annotation_table
 from tests.test_source_parsing import flat_observations  # shared temporary workbook fixture
 
 
@@ -539,6 +541,40 @@ def test_duplicate_noop_does_not_mark_write_or_create_provenance(tmp_path, monke
     assert duplicate.canonical_write == False  # noqa: E712
     assert len(result.provenance_records) == 1
     assert result.provenance_records[0].source_attribute == "First habit"
+
+
+def test_unavailable_annotation_identity_does_not_break_production(tmp_path, monkeypatch):
+    source = tmp_path / "identity-duplicates.xlsx"
+    wb = openpyxl.Workbook()
+    wb.active.append(["placeholder"])
+    wb.save(source)
+    wb.close()
+    duplicate_attributes = [
+        RuntimeSourceAttribute("Repeated", None, [value])
+        for value in ("perdu", "terna")
+    ]
+    bundle = RuntimeSourceBundle(
+        backend="legacy", source_format="row-oriented",
+        all_attributes=duplicate_attributes, schema_attributes=duplicate_attributes,
+        position_to_variety=["Domba"], variety_names=["Domba"],
+    )
+    monkeypatch.setattr(runner, "prepare_legacy_runtime_source", lambda *a, **k: bundle)
+    _isolate_pipeline(monkeypatch)
+    schema = CanonicalSchema.from_template()
+    target = schema.row_by_label("habitus").id
+    monkeypatch.setattr(
+        runner, "safe_rerank",
+        lambda profile, candidates, state, *, source_format, **kwargs: (
+            _mapping(schema, profile.attribute_name, target), {},
+        ),
+    )
+    result = runner.run_pipeline_ui(source)
+    assert result.mapping_df.mapping_item_id.isna().all()
+    assert set(result.mapping_df.mapping_identity_kind) == {"unavailable"}
+    assert set(result.mapping_df.mapping_identity_issue) == {"STABLE_MAPPING_IDENTITY_UNAVAILABLE"}
+    assert result.mapping_df.acceptance_status.eq("AUTO_ACCEPT").all()
+    with pytest.raises(ValueError, match="stable annotation identity unavailable"):
+        create_annotation_table(result)
 
 
 def test_acceptance_accounting_separates_review_and_no_write(tmp_path, monkeypatch):

@@ -202,6 +202,24 @@ Phase 7C2A records raw signals and generates interpretable analysis artifacts on
 It selects no production distance, margin, rank, or confidence rule; the Phase 7C1
 acceptance behavior and `DEFAULT_CONFIDENCE_THRESHOLD` remain unchanged.
 
+**[FINAL, Phase 7C2A-H]** Evaluation identity is fail-open for production processing
+and fail-closed for annotation/calibration. Unique displays use display identity to
+remain stable across legacy and SourceIR experiments. Only members of a repeated
+display group use stable `source_attribute_id`; unavailable coordinates produce an
+observable null ID without blocking retrieval, reranking, acceptance, normalization,
+or canonical output. No positional suffix is allowed.
+
+Human CSV/XLSX round-trips are accepted only after recomputing each identity hash and
+validating canonical keys against the active schema. First-pass A/B comparison requires
+different pseudonymous annotator IDs, one shared round, and `human_independent` source.
+Single-class perfect agreement retains raw agreement 1.0 but reports Cohen's kappa as
+undefined, rather than manufacturing kappa 1.0.
+
+Evaluation runs carry a secret-free fingerprint over source/retrieval backend, k,
+schema version and template hash, verifier version, and embedding model. One calibration
+dataset cannot silently combine fingerprints. These controls harden evidence only and
+do not modify any production mapping policy or select a threshold.
+
 ## (b) Domain = derived label, not a predicted field
 
 **[FINAL]** "Domain" is a category tag attached to each canonical row

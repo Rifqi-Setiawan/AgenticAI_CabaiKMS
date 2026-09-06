@@ -459,6 +459,14 @@ kecuali `--force` diberikan. Kolom `gold_status`, `gold_canonical_keys`,
 `annotator_id`, `annotation_round`, dan `notes` selalu kosong pada keluaran awal;
 prediksi tidak pernah dijadikan gold.
 
+Pipeline produksi memperlakukan identitas evaluasi sebagai observability tambahan.
+Jika display berulang dan backend legacy tidak menyediakan coordinate-backed
+`source_attribute_id`, mapping tetap diproses normal tetapi menghasilkan
+`mapping_item_id=None`, `mapping_identity_kind=unavailable`, dan issue
+`STABLE_MAPPING_IDENTITY_UNAVAILABLE`. Hanya pembuatan artefak anotasi yang menolak
+kondisi tersebut; gunakan `source-ir-gated` bila atribut logis berulang memerlukan
+identitas koordinat stabil.
+
 Identitas anotasi `mapping_item_id` adalah SHA-256 deterministik atas hash bytes file,
 sheet, format, dan display identity lintas-backend yang terbukti unik; coordinate-backed
 `source_attribute_id` dipakai untuk membedakan display yang berulang bila tersedia.
@@ -470,6 +478,22 @@ Dua annotator pseudonim (misalnya `annotator_A` dan `annotator_B`) bekerja indep
 agreement, raw agreement, dan Cohen's kappa untuk label resolved (`canonical_key` atau
 `NO_MATCH`). Disagreement memerlukan keputusan adjudikasi eksplisit; template
 adjudikasi mempertahankan kedua keputusan awal dan tidak diisi otomatis.
+Setiap file first-pass harus memiliki tepat satu annotator dan satu round; ID A dan B
+harus berbeda dan seluruh record harus `human_independent`. Perfect raw agreement dapat
+berpasangan dengan Cohen's kappa `None` ketika semua item hanya memiliki satu kelas,
+karena denominator kappa saat itu nol.
+
+Setelah manusia mengisi file, muat kembali melalui validator ketat—bukan langsung ke
+kalibrasi:
+
+```powershell
+.\.venv\Scripts\python.exe eval/validate_mapping_annotations.py --annotations data/outputs/annotations_A.xlsx
+.\.venv\Scripts\python.exe eval/validate_mapping_annotations.py --annotations data/outputs/annotations_A.xlsx --compare data/outputs/annotations_B.xlsx
+```
+
+Loader CSV/XLSX memverifikasi ulang hash identitas immutable, completion fields,
+encoding canonical key dengan pemisah `|`, dan keanggotaan key dalam schema aktif.
+Kolom prediksi hanya konteks dan tidak pernah menjadi gold.
 
 Manifest `schema-mapping-eval-v1` membagi data pada tingkat workbook/SHA, bukan atribut.
 SHA yang sama tidak boleh muncul pada validation dan test. Calibration/sweep hanya boleh
@@ -485,6 +509,10 @@ acceptance, baseline policy evaluation, metrik precision/coverage/review/no-writ
 silent-error/selective-risk, Wilson 95%, stratifikasi per mapping method, ringkasan
 sinyal, dan data risk-coverage. `eval/analyze_mapping_calibration.py` hanya menghasilkan
 analisis validation; tidak menulis threshold ke production.
+Setiap artefak juga membekukan source/retrieval backend, k, schema version/template
+hash, verifier version, dan embedding model dalam `evaluation_config_fingerprint`.
+Builder calibration menolak fingerprint campuran dan memvalidasi ulang fingerprint
+serta canonical gold. Belum ada threshold produksi yang dipilih.
 
 ### Harness historis (legacy)
 

@@ -40,7 +40,7 @@ from src.agents.schema_matching.exact_match import (
     resolve_exact_name,
 )
 from src.agents.schema_matching.exact_retrieval import build_exact_index
-from src.agents.schema_matching.indexing import ensure_indexed
+from src.agents.schema_matching.indexing import EMBEDDING_MODEL_NAME, ensure_indexed
 from src.agents.schema_matching.mapping_verifier import (
     combine_mapping_acceptance,
     verify_mapping,
@@ -67,8 +67,10 @@ from src.orchestrator.graph import run_pipeline
 from src.reliability.wrappers import safe_classify_image, safe_rerank
 from src.schema.canonical import CanonicalSchema
 from src.schema.contracts import NULL_ROW
-from src.schema.gold_mapping import build_mapping_item_ids
+from src.schema.evaluation_config import EvaluationRunConfig
+from src.schema.gold_mapping import build_mapping_item_identities
 from src.schema.mapping_verification import (
+    MAPPING_VERIFICATION_VERSION,
     MappingVerificationResult,
     MappingVerificationStatus,
 )
@@ -78,6 +80,9 @@ from src.ui.output_builder import SHEET_NAME, CanonicalOutputBuilder, combine_mu
 
 MAPPING_COLUMNS = [
     "mapping_item_id",
+    "mapping_identity_kind",
+    "mapping_identity_value",
+    "mapping_identity_issue",
     "source_file_name",
     "source_file_sha256",
     "source_sheet",
@@ -129,6 +134,12 @@ class PipelineRunResult:
     source_ir_version: str | None = None
     retrieval_backend: str = "chroma"
     mapping_verifications: list[MappingVerificationResult] = field(default_factory=list)
+    schema_version: str = ""
+    template_hash: str = ""
+    retrieval_k: int = DEFAULT_K
+    mapping_verification_version: str = MAPPING_VERIFICATION_VERSION
+    embedding_model_name: str | None = EMBEDDING_MODEL_NAME
+    evaluation_config_fingerprint: str = ""
 
 
 def _noop(_: str) -> None:
@@ -258,6 +269,15 @@ def run_pipeline_ui(
         on_progress(f"structure_shadow: {structure_shadow.summary}")
 
     schema = CanonicalSchema.from_template()
+    evaluation_config = EvaluationRunConfig(
+        source_backend=source_backend,
+        retrieval_backend=retrieval_backend,
+        retrieval_k=k,
+        canonical_schema_version=schema.schema_version,
+        canonical_template_hash=schema.template_hash,
+        mapping_verification_version=MAPPING_VERIFICATION_VERSION,
+        embedding_model_name=EMBEDDING_MODEL_NAME,
+    )
     retrieval_resource = None
     retrieval_initialized = False
 
@@ -277,14 +297,15 @@ def run_pipeline_ui(
     verifier_counts = {status: 0 for status in MappingVerificationStatus}
     n_hard_blocked = 0
 
-    mapping_item_ids = build_mapping_item_ids(
+    mapping_identities = build_mapping_item_identities(
         source_file_sha256=source_hash,
         source_sheet=resolved_sheet_name,
         source_format=source_format,
         source_items=[(attr.source_attribute_id, attr.display_name) for attr in attributes],
     )
 
-    for attr, mapping_item_id in zip(attributes, mapping_item_ids):
+    for attr, mapping_identity in zip(attributes, mapping_identities):
+        mapping_item_id = mapping_identity.mapping_item_id
         on_progress(f"  schema_matching: '{attr.attribute_name}' — retrieval...")
         profile = SourceAttributeProfile(
             attribute_name=attr.attribute_name,
@@ -368,6 +389,9 @@ def run_pipeline_ui(
         )
         mapping_row = {
             "mapping_item_id": mapping_item_id,
+            "mapping_identity_kind": mapping_identity.identity_kind.value,
+            "mapping_identity_value": mapping_identity.identity_value,
+            "mapping_identity_issue": mapping_identity.issue_code,
             "source_file_name": file_path.name,
             "source_file_sha256": source_hash,
             "source_sheet": resolved_sheet_name,
@@ -615,6 +639,12 @@ def run_pipeline_ui(
         source_backend=source_backend,
         retrieval_backend=retrieval_backend,
         mapping_verifications=mapping_verifications,
+        schema_version=schema.schema_version,
+        template_hash=schema.template_hash,
+        retrieval_k=k,
+        mapping_verification_version=MAPPING_VERIFICATION_VERSION,
+        embedding_model_name=EMBEDDING_MODEL_NAME,
+        evaluation_config_fingerprint=evaluation_config.fingerprint,
         source_ir_version=(
             source_bundle.source_ir.ir_version
             if source_bundle.source_ir is not None

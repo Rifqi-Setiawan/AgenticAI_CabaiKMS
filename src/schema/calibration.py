@@ -14,12 +14,15 @@ import pandas as pd
 from pydantic import BaseModel, Field
 
 from src.agents.schema_matching.review_queue import AcceptanceStatus, DEFAULT_CONFIDENCE_THRESHOLD
+from src.schema.canonical import CanonicalSchema
+from src.schema.evaluation_config import validate_evaluation_config_fingerprint
 from src.schema.evaluation_manifest import EvaluationManifest, EvaluationSplit, assert_calibration_split
 from src.schema.gold_mapping import (
     AdjudicatedGoldRecord,
     GoldAnnotationSet,
     GoldMappingAnnotation,
     GoldMappingStatus,
+    validate_gold_annotations,
 )
 
 
@@ -27,6 +30,14 @@ class CalibrationObservation(BaseModel):
     mapping_item_id: str
     source_file_sha256: str
     split: EvaluationSplit
+    source_backend: str
+    retrieval_backend: str
+    retrieval_k: int
+    canonical_schema_version: str
+    canonical_template_hash: str
+    mapping_verification_version: str
+    embedding_model_name: str | None = None
+    evaluation_config_fingerprint: str
     mapping_method: Literal["exact_name", "retrieve_rerank"]
     proposed_target_canonical_key: str | None = None
     current_acceptance_status: AcceptanceStatus
@@ -90,10 +101,29 @@ def build_calibration_dataset(
     mapping_outputs: pd.DataFrame | Sequence[dict[str, Any]],
     gold_annotations: GoldAnnotationSet | Sequence[GoldMappingAnnotation | AdjudicatedGoldRecord],
     manifest: EvaluationManifest,
+    *,
+    schema: CanonicalSchema,
 ) -> pd.DataFrame:
     """Join predictions and gold by mapping_item_id, independent of input order."""
     mappings = _as_records(mapping_outputs)
     gold = _final_annotations(gold_annotations)
+    validate_gold_annotations(gold, schema)
+    fingerprints = {str(row.get("evaluation_config_fingerprint") or "") for row in mappings}
+    if "" in fingerprints:
+        raise ValueError("mapping observations require evaluation_config_fingerprint")
+    if len(fingerprints) != 1:
+        raise ValueError("calibration dataset cannot mix evaluation configuration fingerprints")
+    for row in mappings:
+        validate_evaluation_config_fingerprint(
+            str(row["evaluation_config_fingerprint"]),
+            source_backend=row["source_backend"],
+            retrieval_backend=row["retrieval_backend"],
+            retrieval_k=int(row["retrieval_k"]),
+            canonical_schema_version=row.get("schema_version", row.get("canonical_schema_version")),
+            canonical_template_hash=row.get("template_hash", row.get("canonical_template_hash")),
+            mapping_verification_version=row["mapping_verification_version"],
+            embedding_model_name=_nullable(row.get("embedding_model_name")),
+        )
     mapping_ids = [str(row.get("mapping_item_id") or "") for row in mappings]
     if not all(mapping_ids) or len(mapping_ids) != len(set(mapping_ids)):
         raise ValueError("mapping outputs require unique, non-blank mapping_item_id values")
@@ -130,6 +160,14 @@ def build_calibration_dataset(
             mapping_item_id=item_id,
             source_file_sha256=digest,
             split=split,
+            source_backend=mapping["source_backend"],
+            retrieval_backend=mapping["retrieval_backend"],
+            retrieval_k=int(mapping["retrieval_k"]),
+            canonical_schema_version=mapping.get("schema_version", mapping.get("canonical_schema_version")),
+            canonical_template_hash=mapping.get("template_hash", mapping.get("canonical_template_hash")),
+            mapping_verification_version=mapping["mapping_verification_version"],
+            embedding_model_name=_nullable(mapping.get("embedding_model_name")),
+            evaluation_config_fingerprint=mapping["evaluation_config_fingerprint"],
             mapping_method=mapping["mapping_method"],
             proposed_target_canonical_key=predicted,
             current_acceptance_status=mapping.get("acceptance_status", mapping.get("current_acceptance_status")),

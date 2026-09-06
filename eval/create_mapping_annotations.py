@@ -18,10 +18,18 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from src.ui.pipeline_runner import PipelineRunResult, run_pipeline_ui
 
-HUMAN_COLUMNS = ["gold_status", "gold_canonical_keys", "annotator_id", "annotation_round", "notes"]
+HUMAN_COLUMNS = [
+    "gold_status", "gold_canonical_keys", "ambiguous_candidate_canonical_keys",
+    "annotator_id", "annotation_round", "notes",
+]
 ANNOTATION_COLUMNS = [
-    "annotation_version", "mapping_item_id", "source_file_name", "source_file_sha256",
+    "annotation_version", "annotation_source", "mapping_item_id",
+    "mapping_identity_kind", "mapping_identity_value", "mapping_identity_issue",
+    "source_file_name", "source_file_sha256",
     "source_sheet", "source_format", "source_attribute_id", "source_attribute_display",
+    "source_backend", "retrieval_backend", "retrieval_k", "schema_version",
+    "template_hash", "mapping_verification_version", "embedding_model_name",
+    "evaluation_config_fingerprint",
     "source_attribute", "source_context", "proposed_target_canonical_key", "predicted_row",
     "mapping_method", "confidence", "exact_name_status", "verifier_status",
     "verifier_warnings", "verifier_hard_issues", "retrieval_target_rank",
@@ -32,13 +40,35 @@ ANNOTATION_COLUMNS = [
 
 def create_annotation_table(result: PipelineRunResult) -> pd.DataFrame:
     frame = result.mapping_df.copy()
+    missing_identity = frame["mapping_item_id"].isna() | (frame["mapping_item_id"].astype(str).str.strip() == "")
+    if missing_identity.any():
+        attributes = frame.loc[missing_identity, "source_attribute_display"].astype(str).tolist()
+        raise ValueError(
+            "stable annotation identity unavailable for source attribute(s): "
+            f"{attributes}; use source-ir-gated when exact coordinates are required "
+            "for repeated logical source attributes"
+        )
+    if frame["mapping_item_id"].duplicated().any():
+        attributes = frame.loc[
+            frame["mapping_item_id"].duplicated(keep=False), "source_attribute_display"
+        ].astype(str).tolist()
+        raise ValueError(f"stable annotation identity collision for source attribute(s): {attributes}")
     frame.insert(0, "annotation_version", "schema-mapping-gold-v1")
+    frame.insert(1, "annotation_source", "human_independent")
     if "source_attribute_id" not in frame:
         source_ids = {
             verification.mapping_item_id: verification.source_attribute_id
             for verification in result.mapping_verifications
         }
         frame["source_attribute_id"] = frame["mapping_item_id"].map(source_ids)
+    frame["source_backend"] = result.source_backend
+    frame["retrieval_backend"] = result.retrieval_backend
+    frame["retrieval_k"] = result.retrieval_k
+    frame["schema_version"] = result.schema_version
+    frame["template_hash"] = result.template_hash
+    frame["mapping_verification_version"] = result.mapping_verification_version
+    frame["embedding_model_name"] = result.embedding_model_name
+    frame["evaluation_config_fingerprint"] = result.evaluation_config_fingerprint
     for column in ("verifier_warnings", "verifier_hard_issues"):
         if column in frame:
             frame[column] = frame[column].map(
