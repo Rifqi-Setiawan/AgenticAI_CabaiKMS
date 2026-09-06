@@ -306,3 +306,39 @@ def test_hard_reject_overrides_high_confidence_auto_accept(schema):
     assert verification.status is MappingVerificationStatus.REJECT
     assert final.status is AcceptanceStatus.NO_WRITE
     assert "TARGET_NOT_IN_RETRIEVED_CANDIDATES" in final.reason
+
+
+def test_unknown_retrieval_candidate_is_rejected_without_evidence(schema):
+    hits = [RetrievalHit("r_missing", "Missing", "x", 0.1, "missing")]
+    result = _verify(schema, _mapping("r_1"), candidates=hits)
+    assert result.hard_issue_codes == ["RETRIEVAL_CANDIDATE_NOT_IN_SCHEMA"]
+    assert result.retrieval_evidence is None
+
+
+def test_retrieval_candidate_key_mismatch_is_rejected(schema):
+    hits = _hits(schema)
+    hits[0].canonical_key = schema.rows[1].canonical_key
+    result = _verify(schema, _mapping("r_1"), candidates=hits)
+    assert result.hard_issue_codes == ["RETRIEVAL_CANDIDATE_KEY_MISMATCH"]
+    assert result.retrieval_evidence is None
+
+
+@pytest.mark.parametrize("distance", [float("nan"), float("inf"), float("-inf")])
+def test_non_finite_retrieval_distance_is_rejected(schema, distance):
+    hits = _hits(schema)
+    hits[1].distance = distance
+    result = _verify(schema, _mapping("r_1"), candidates=hits)
+    assert result.hard_issue_codes == ["NON_FINITE_RETRIEVAL_DISTANCE"]
+    assert result.retrieval_evidence is None
+
+
+def test_unsorted_retrieval_candidates_are_rejected_not_repaired(schema):
+    result = _verify(schema, _mapping("r_1"), candidates=_hits(schema, distances=(0.2, 0.1, 0.4)))
+    assert result.hard_issue_codes == ["RETRIEVAL_CANDIDATES_NOT_SORTED"]
+    assert result.retrieval_evidence is None
+
+
+def test_equal_distance_tie_is_valid(schema):
+    result = _verify(schema, _mapping("r_1"), candidates=_hits(schema, distances=(0.1, 0.1, 0.4)))
+    assert result.status is MappingVerificationStatus.PASS
+    assert result.retrieval_evidence.top1_top2_margin == 0.0

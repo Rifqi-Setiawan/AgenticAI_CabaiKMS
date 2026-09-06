@@ -1,4 +1,6 @@
-"""Fase 3 checkpoint — Schema Matching Agent end-to-end review harness.
+"""LEGACY REVIEW HARNESS — NOT VALID FOR CURRENT VERIFIER CALIBRATION.
+
+Fase 3 checkpoint — Schema Matching Agent end-to-end review harness.
 
 Loads one file from data/samples/, runs the real Fase 3a-3f pipeline
 (indexing -> anchor detection -> retrieval -> reranking -> normalization)

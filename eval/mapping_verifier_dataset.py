@@ -32,7 +32,11 @@ def build_mapping_verifier_dataset(
     *,
     gold_target_canonical_keys: Sequence[str | None] | None = None,
 ) -> pd.DataFrame:
-    """Build one row per verification; gold is included only when supplied."""
+    """Legacy low-level positional export; do not use for research calibration.
+
+    New calibration work must use ``src.schema.calibration.build_calibration_dataset``,
+    which joins human gold through ``mapping_item_id``.
+    """
     if gold_target_canonical_keys is not None and len(gold_target_canonical_keys) != len(
         verifications
     ):

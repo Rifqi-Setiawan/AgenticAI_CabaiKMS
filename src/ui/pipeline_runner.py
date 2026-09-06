@@ -67,6 +67,7 @@ from src.orchestrator.graph import run_pipeline
 from src.reliability.wrappers import safe_classify_image, safe_rerank
 from src.schema.canonical import CanonicalSchema
 from src.schema.contracts import NULL_ROW
+from src.schema.gold_mapping import build_mapping_item_ids
 from src.schema.mapping_verification import (
     MappingVerificationResult,
     MappingVerificationStatus,
@@ -76,10 +77,16 @@ from src.schema.shadow_parity import ShadowParityReport, ShadowStatus
 from src.ui.output_builder import SHEET_NAME, CanonicalOutputBuilder, combine_multi_value, worksheet_to_dataframe
 
 MAPPING_COLUMNS = [
+    "mapping_item_id",
+    "source_file_name",
+    "source_file_sha256",
+    "source_sheet",
+    "source_format",
     "source_attribute_display",
     "source_attribute",
     "source_context",
     "predicted_row",
+    "proposed_target_canonical_key",
     "predicted_label",
     "target_domain",
     "confidence",
@@ -270,7 +277,14 @@ def run_pipeline_ui(
     verifier_counts = {status: 0 for status in MappingVerificationStatus}
     n_hard_blocked = 0
 
-    for attr in attributes:
+    mapping_item_ids = build_mapping_item_ids(
+        source_file_sha256=source_hash,
+        source_sheet=resolved_sheet_name,
+        source_format=source_format,
+        source_items=[(attr.source_attribute_id, attr.display_name) for attr in attributes],
+    )
+
+    for attr, mapping_item_id in zip(attributes, mapping_item_ids):
         on_progress(f"  schema_matching: '{attr.attribute_name}' — retrieval...")
         profile = SourceAttributeProfile(
             attribute_name=attr.attribute_name,
@@ -338,6 +352,7 @@ def run_pipeline_ui(
             candidates=retrieved,
             source_format=source_format,
             reliability_patch=patch,
+            mapping_item_id=mapping_item_id,
         )
         mapping_verifications.append(verification)
         verifier_counts[verification.status] += 1
@@ -352,10 +367,16 @@ def run_pipeline_ui(
             else None
         )
         mapping_row = {
+            "mapping_item_id": mapping_item_id,
+            "source_file_name": file_path.name,
+            "source_file_sha256": source_hash,
+            "source_sheet": resolved_sheet_name,
+            "source_format": source_format,
             "source_attribute_display": attr.display_name,
             "source_attribute": attr.attribute_name,
             "source_context": attr.structural_context,
             "predicted_row": mapping.target_canonical_row if mapping is not None else None,
+            "proposed_target_canonical_key": target_row.canonical_key if target_row else None,
             "predicted_label": target_row.label if target_row else None,
             "target_domain": mapping.target_domain if mapping is not None else None,
             "confidence": mapping.confidence if mapping is not None else None,

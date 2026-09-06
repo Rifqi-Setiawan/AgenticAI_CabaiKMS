@@ -444,7 +444,49 @@ API `approve(item_id, resolved_by=...)` menandai persetujuan, sedangkan `revise(
 
 Kegagalan provider tanpa mapping serta masalah vision dicatat melalui trace tertentu, bukan semuanya menjadi `ReviewItem`. Jangan menyamakan jumlah queue, jumlah error trace, dan jumlah kesalahan di output.
 
-### Harness evaluasi
+### Harness evaluasi current (Phase 7C2A)
+
+Gold calibration-grade dibuat dari observasi pipeline saat ini dengan output eksplisit:
+
+```powershell
+.\.venv\Scripts\python.exe eval/create_mapping_annotations.py --file data/samples/data_input.xlsx --format row-oriented --source-backend legacy --retrieval-backend exact --output data/outputs/annotations_A.xlsx
+```
+
+Script ini memanggil `run_pipeline_ui()` sehingga observasinya mencakup exact-name,
+profil Source IR bila backend gated dipilih, retrieval backend yang dipilih, Mapping
+Verifier, dan acceptance saat ini. `--output` wajib dan file yang sudah ada ditolak
+kecuali `--force` diberikan. Kolom `gold_status`, `gold_canonical_keys`,
+`annotator_id`, `annotation_round`, dan `notes` selalu kosong pada keluaran awal;
+prediksi tidak pernah dijadikan gold.
+
+Identitas anotasi `mapping_item_id` adalah SHA-256 deterministik atas hash bytes file,
+sheet, format, dan display identity lintas-backend yang terbukti unik; coordinate-backed
+`source_attribute_id` dipakai untuk membedakan display yang berulang bila tersedia.
+ID ini tidak mengandung prediksi, confidence, target row, atau urutan DataFrame.
+Gold menggunakan `canonical_key`, bukan `r_N` yang posisional.
+
+Dua annotator pseudonim (misalnya `annotator_A` dan `annotator_B`) bekerja independen.
+`compare_annotators()` menggabungkan hanya melalui `mapping_item_id`, melaporkan exact
+agreement, raw agreement, dan Cohen's kappa untuk label resolved (`canonical_key` atau
+`NO_MATCH`). Disagreement memerlukan keputusan adjudikasi eksplisit; template
+adjudikasi mempertahankan kedua keputusan awal dan tidak diisi otomatis.
+
+Manifest `schema-mapping-eval-v1` membagi data pada tingkat workbook/SHA, bukan atribut.
+SHA yang sama tidak boleh muncul pada validation dan test. Calibration/sweep hanya boleh
+memakai validation; test disimpan untuk evaluasi akhir setelah policy dibekukan.
+`ONE_TO_ONE` dan `NO_MATCH` eligible untuk kalibrasi single-target saat ini.
+`AMBIGUOUS`, `COMPOSITE`, dan `EXCLUDE` tetap disimpan dan dihitung, tetapi tidak masuk
+perhitungan threshold. Workbook historis di `data/gold/` berstatus
+`legacy_unverified` dan tidak calibration-eligible sampai dikonfirmasi manusia dalam
+kontrak baru.
+
+`src/schema/calibration.py` menyediakan join berbasis ID, pemisahan correctness dari
+acceptance, baseline policy evaluation, metrik precision/coverage/review/no-write/
+silent-error/selective-risk, Wilson 95%, stratifikasi per mapping method, ringkasan
+sinyal, dan data risk-coverage. `eval/analyze_mapping_calibration.py` hanya menghasilkan
+analisis validation; tidak menulis threshold ke production.
+
+### Harness historis (legacy)
 
 Gunakan nama output baru agar label manual historis tidak tertimpa:
 
@@ -458,7 +500,11 @@ Ganti nama output jika file tersebut sudah ada. Argumen tersedia: `--file`, `--f
 
 Kolom laporan: `source_attribute`, `source_format`, `predicted_row`, `predicted_label`, `target_domain`, `confidence`, `normalization_required`, `reasoning`, serta kolom kosong `gold_row`, `is_correct`, `catatan`. Urutan confidence rendah lebih dahulu.
 
-**Peringatan:** menjalankan harness tanpa `--output` menulis ke `data/gold/schema_matching_review.xlsx` dan dapat menimpa anotasi. Dua workbook di `data/gold/` dipertahankan; belum diverifikasi ulang kelengkapan anotasinya. Tidak ada klaim precision/recall/F1 atau akurasi vision berdasarkan keberadaan file itu saja.
+**Peringatan:** `eval/review_schema_matching.py` adalah harness Phase 3 historis dan
+tidak valid untuk kalibrasi Mapping Verifier saat ini. Menjalankannya tanpa `--output`
+dapat menimpa `data/gold/schema_matching_review.xlsx`. Dua workbook di `data/gold/`
+adalah artefak historis yang belum diverifikasi ulang dan bukan gold calibration-grade.
+Tidak ada klaim precision/recall/F1 atau akurasi vision berdasarkan keberadaan file itu saja.
 
 ## 10. Reliability dan checkpoint
 
@@ -534,7 +580,7 @@ Temuan berikut adalah batas implementasi, **bukan fitur yang diperbaiki dalam au
 8. **Vision berlandaskan varietas template.** Nama input bisa berbeda dari referensi; belum ada crosswalk spesies/varietas, dan tidak ada numeric confidence gate tambahan pada penulisan foto `KNOWN`.
 9. **Lokasi belum disusun sesuai rancangan komposit.** Pemetaan beberapa atribut ke `Lokasi` baru menggabungkan nilai, belum merakit nama/koordinat/elevasi dengan semantik khusus.
 10. **Deteksi perubahan model embedding masih manual.** Fingerprint indeks sudah mencakup representasi baris, termasuk contoh nilai, alias, dan domain, sehingga perubahan data tersebut memicu rebuild otomatis. Namun, penggantian nama/versi model embedding masih perlu diikuti force reindex atau direktori indeks baru.
-11. **Belum ada evaluasi kuantitatif lengkap.** Macro-F1 per domain, gold vision, dataset holdout, dan analisis error perlu dibangun; sampel sintetis tidak menggantikan validasi lapangan.
+11. **Fondasi evaluasi sudah ada, anotasi nyata belum tersedia.** Phase 7C2A menyediakan kontrak gold, split holdout, dan metrik selektif, tetapi belum menghasilkan klaim performa. Macro-F1 per domain, gold vision, anotasi dua manusia, serta analisis error lapangan tetap perlu dibangun; sampel sintetis tidak menggantikan validasi lapangan.
 12. **Belum siap produksi.** Belum tersedia lockfile dependensi, autentikasi aplikasi, job queue, isolation per pengguna untuk review/checkpoint, kebijakan retensi, deployment teruji, dan monitoring layanan.
 
 Prioritas lanjutan yang masuk akal: validasi input dan pemblokiran mapping bermasalah; review/replay dan trace; integrasi graf dengan agen nyata serta limiter; terakhir reproduksibilitas dan evaluasi terukur. Perubahan semantik penelitian tetap perlu keputusan pemilik proyek.

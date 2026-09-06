@@ -179,6 +179,29 @@ Migration strategy:
 - **C2:** calibrate soft signals on explicit validation ground truth, evaluate
   precision/risk versus automation coverage, then promote only validated policy.
 
+## (a.8) Calibration uses adjudicated stable-key gold and workbook holdout
+
+**[FINAL, Phase 7C2A]** Calibration ground truth is a human decision expressed with
+stable `canonical_key`, never positional `r_N` and never the model's prediction.
+Prediction artifacts and gold are joined only with deterministic `mapping_item_id`,
+whose source identity excludes target, confidence, backend, and DataFrame order.
+
+Two independent annotators are compared exactly on status and canonical-key set.
+Disagreements require explicit adjudication, and the final record preserves both
+independent decisions. `ONE_TO_ONE` and `NO_MATCH` are eligible for the current
+single-target calibration. `AMBIGUOUS`, `COMPOSITE`, and `EXCLUDE` remain visible but
+are excluded from threshold calculations.
+
+Validation/test assignment is grouped by source workbook SHA. One workbook cannot
+contribute attributes to both splits, and identical SHA across splits is invalid.
+Calibration and policy-sweep functions reject test input; evaluation-only metrics may
+use test only after policy freeze. Historical review workbooks remain
+`legacy_unverified` until human migration confirms them under the new contract.
+
+Phase 7C2A records raw signals and generates interpretable analysis artifacts only.
+It selects no production distance, margin, rank, or confidence rule; the Phase 7C1
+acceptance behavior and `DEFAULT_CONFIDENCE_THRESHOLD` remain unchanged.
+
 ## (b) Domain = derived label, not a predicted field
 
 **[FINAL]** "Domain" is a category tag attached to each canonical row

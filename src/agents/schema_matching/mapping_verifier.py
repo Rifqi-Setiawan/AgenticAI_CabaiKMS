@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from typing import Any
 
 from src.agents.schema_matching.exact_match import (
@@ -74,12 +75,40 @@ def verify_mapping(
     candidates: list[RetrievalHit] | None,
     source_format: str,
     reliability_patch: dict[str, Any] | None = None,
+    mapping_item_id: str | None = None,
 ) -> MappingVerificationResult:
     """Collect independent evidence and enforce only deterministic invariants."""
     hard: list[str] = []
     warnings: list[str] = []
     review_signals: list[str] = []
     evidence: RetrievalEvidence | None = None
+
+    candidates_valid = True
+    if mapping_method == "retrieve_rerank" and candidates is not None:
+        candidate_ids = [hit.row_id for hit in candidates]
+        for hit in candidates:
+            row = schema.row_by_id(hit.row_id)
+            if row is None:
+                hard.append("RETRIEVAL_CANDIDATE_NOT_IN_SCHEMA")
+                candidates_valid = False
+                break
+            if hit.canonical_key is not None and hit.canonical_key != row.canonical_key:
+                hard.append("RETRIEVAL_CANDIDATE_KEY_MISMATCH")
+                candidates_valid = False
+                break
+            if not math.isfinite(hit.distance):
+                hard.append("NON_FINITE_RETRIEVAL_DISTANCE")
+                candidates_valid = False
+                break
+        if candidates_valid and any(
+            current.distance > following.distance
+            for current, following in zip(candidates, candidates[1:])
+        ):
+            hard.append("RETRIEVAL_CANDIDATES_NOT_SORTED")
+            candidates_valid = False
+        if candidates_valid and len(candidate_ids) != len(set(candidate_ids)):
+            hard.append("DUPLICATE_RETRIEVAL_CANDIDATE")
+            candidates_valid = False
 
     if mapping is None:
         hard.append("MAPPING_MISSING")
@@ -129,18 +158,14 @@ def verify_mapping(
                 hard.append("RETRIEVAL_CANDIDATES_MISSING")
             elif not candidates:
                 hard.append("RETRIEVAL_CANDIDATES_EMPTY")
-            else:
-                candidate_ids = [hit.row_id for hit in candidates]
-                if len(candidate_ids) != len(set(candidate_ids)):
-                    hard.append("DUPLICATE_RETRIEVAL_CANDIDATE")
-                else:
-                    evidence = _retrieval_evidence(
-                        candidates, mapping.target_canonical_row, schema
-                    )
-                    if not evidence.target_in_candidates:
-                        hard.append("TARGET_NOT_IN_RETRIEVED_CANDIDATES")
-                    elif evidence.target_rank != 1:
-                        warnings.append("TARGET_NOT_RETRIEVAL_TOP1")
+            elif candidates_valid:
+                evidence = _retrieval_evidence(
+                    candidates, mapping.target_canonical_row, schema
+                )
+                if not evidence.target_in_candidates:
+                    hard.append("TARGET_NOT_IN_RETRIEVED_CANDIDATES")
+                elif evidence.target_rank != 1:
+                    warnings.append("TARGET_NOT_RETRIEVAL_TOP1")
 
     if (
         exact_resolution.status is ExactNameStatus.AMBIGUOUS
@@ -169,6 +194,7 @@ def verify_mapping(
         else None
     )
     return MappingVerificationResult(
+        mapping_item_id=mapping_item_id,
         status=status,
         mapping_method=mapping_method,
         source_attribute=profile.attribute_name,

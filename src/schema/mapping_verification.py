@@ -44,6 +44,7 @@ class RetrievalEvidence(BaseModel):
 
 class MappingVerificationResult(BaseModel):
     verification_version: Literal["mapping-verification-v1"] = MAPPING_VERIFICATION_VERSION
+    mapping_item_id: str | None = None
     status: MappingVerificationStatus
     mapping_method: MappingMethod
     source_attribute: str

@@ -65,6 +65,10 @@ def test_flat_input_values_reach_downloaded_workbook(flat_observations, monkeypa
         assert_frame_equal(downloaded, result.canonical_df)
         assert "terna" not in result.mapping_df.source_attribute.tolist()
         assert result.mapping_df.source_attribute_display.tolist() == result.mapping_df.source_attribute.tolist()
+        assert result.mapping_df.mapping_item_id.is_unique
+        assert set(result.mapping_df.source_file_sha256) == {hashlib.sha256(flat_observations.read_bytes()).hexdigest()}
+        assert set(result.mapping_df.source_sheet) == {"Observations"}
+        assert all(item.mapping_item_id for item in result.mapping_verifications)
         assert len(result.provenance_records) == 5
         assert len({record.run_id for record in result.provenance_records}) == 1
         assert result.provenance_records[0].run_id == result.checkpoint_thread_id
@@ -345,6 +349,8 @@ def test_exact_alias_shortcut_still_writes_without_review(tmp_path, monkeypatch)
     assert result.provenance_records[0].verifier_hard_issues == []
     assert len(result.mapping_verifications) == 1
     assert result.mapping_verifications[0].status.value == "PASS"
+    assert row.mapping_item_id == result.mapping_verifications[0].mapping_item_id
+    assert row.mapping_item_id == second_result.mapping_df.iloc[0].mapping_item_id
     assert result.mapping_verifications[0].retrieval_evidence is None
     assert result.agent_status["retrieval"].startswith("chroma — tidak diinisialisasi")
 
