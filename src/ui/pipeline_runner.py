@@ -65,6 +65,11 @@ from src.ingestion.runtime_source import (
 from src.ingestion.shadow_pipeline import run_structure_shadow, sanitize_shadow_error_message
 from src.ingestion.source_migration import prepare_gated_runtime_source
 from src.orchestrator.graph import run_pipeline
+from src.reliability.rate_limit import (
+    RateLimiter,
+    RuntimeRateLimitConfig,
+    describe_rate_limiter,
+)
 from src.reliability.wrappers import safe_classify_image, safe_rerank
 from src.schema.canonical import CanonicalSchema
 from src.schema.contracts import NULL_ROW
@@ -177,7 +182,7 @@ def _deterministic_workbook_bytes(workbook) -> bytes:
     return output.getvalue()
 
 
-def run_pipeline_ui(
+def _run_pipeline_ui_impl(
     file_path: Path,
     *,
     source_format: str = "row-oriented",
@@ -193,6 +198,8 @@ def run_pipeline_ui(
     retrieval_backend: RetrievalBackend = "chroma",
     embedding_encode_call: Callable[..., object] | None = None,
     review_queue_path: Path | str = review_queue.DEFAULT_QUEUE_PATH,
+    text_rate_limiter: RateLimiter | None = None,
+    vision_rate_limiter: RateLimiter | None = None,
 ) -> PipelineRunResult:
     if source_backend not in {"legacy", "source-ir-gated"}:
         raise ValueError(
@@ -206,6 +213,10 @@ def run_pipeline_ui(
     source_hash = source_file_sha256(file_path)
     state: dict = {"error_trace": []}
     agent_status: dict[str, str] = {}
+    agent_status["text_rate_limit"] = describe_rate_limiter(text_rate_limiter)
+    agent_status["vision_rate_limit"] = describe_rate_limiter(vision_rate_limiter)
+    on_progress(f"text rate limit: {agent_status['text_rate_limit']}")
+    on_progress(f"vision rate limit: {agent_status['vision_rate_limit']}")
     structure_shadow: ShadowParityReport | None = None
 
     # --- backend-neutral parsing + variety-position preparation ---
@@ -367,7 +378,7 @@ def run_pipeline_ui(
             on_progress(f"  schema_matching: '{attr.attribute_name}' — reranking...")
             mapping, patch = safe_rerank(
                 profile, retrieved, state, source_format=source_format, schema=schema,
-                enqueue_review=False,
+                enqueue_review=False, rate_limiter=text_rate_limiter,
             )
         state.update(patch)  # safe_* returns a patch; the caller applies it — see wrappers.py
         verification = verify_mapping(
@@ -620,6 +631,7 @@ def run_pipeline_ui(
                     on_progress(f"  vision_classification: '{image.filename}'...")
                     result, patch = safe_classify_image(
                         image, session.knowledge_source_text, session.varieties, state,
+                        vision_rate_limiter=vision_rate_limiter,
                     )
                     state.update(patch)
                     if result is None:
@@ -702,3 +714,61 @@ def _first_sheet(path: Path) -> str:
     name = wb.sheetnames[0]
     wb.close()
     return name
+
+
+def run_pipeline_ui(
+    file_path: Path,
+    *,
+    source_format: str = "row-oriented",
+    sheet_name: str | None = None,
+    header_rows: int | None = None,
+    drive_folder_id: str | None = None,
+    k: int = DEFAULT_K,
+    max_images: int = 5,
+    on_progress: ProgressCallback = _noop,
+    enable_structure_shadow: bool = False,
+    structure_llm_call: Callable | None = None,
+    source_backend: Literal["legacy", "source-ir-gated"] = "legacy",
+    retrieval_backend: RetrievalBackend = "chroma",
+    embedding_encode_call: Callable[..., object] | None = None,
+    review_queue_path: Path | str = review_queue.DEFAULT_QUEUE_PATH,
+    text_rate_limiter: RateLimiter | None = None,
+    vision_rate_limiter: RateLimiter | None = None,
+    rate_limit_config: RuntimeRateLimitConfig | None = None,
+) -> PipelineRunResult:
+    """Run the UI pipeline with per-run text and vision limiter ownership.
+
+    Limiters supplied by a caller are borrowed and never closed here. A
+    missing limiter is created from the explicit config (or environment) and
+    is always closed by this function, including when the pipeline raises.
+    """
+    config = rate_limit_config or RuntimeRateLimitConfig.from_env()
+    owned_limiters: list[RateLimiter] = []
+    try:
+        if text_rate_limiter is None and config.text_rpm is not None:
+            text_rate_limiter = RateLimiter(config.text_rpm, 60.0)
+            owned_limiters.append(text_rate_limiter)
+        if vision_rate_limiter is None and config.vision_rpm is not None:
+            vision_rate_limiter = RateLimiter(config.vision_rpm, 60.0)
+            owned_limiters.append(vision_rate_limiter)
+        return _run_pipeline_ui_impl(
+            file_path,
+            source_format=source_format,
+            sheet_name=sheet_name,
+            header_rows=header_rows,
+            drive_folder_id=drive_folder_id,
+            k=k,
+            max_images=max_images,
+            on_progress=on_progress,
+            enable_structure_shadow=enable_structure_shadow,
+            structure_llm_call=structure_llm_call,
+            source_backend=source_backend,
+            retrieval_backend=retrieval_backend,
+            embedding_encode_call=embedding_encode_call,
+            review_queue_path=review_queue_path,
+            text_rate_limiter=text_rate_limiter,
+            vision_rate_limiter=vision_rate_limiter,
+        )
+    finally:
+        for limiter in reversed(owned_limiters):
+            limiter.close()

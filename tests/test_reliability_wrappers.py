@@ -39,6 +39,14 @@ def _mapping(target_row="r_1", confidence=0.9, attribute="x"):
 VARIETIES = [VarietyDescription("Gendot", {"habitus": "perdu"})]
 
 
+class _CountingLimiter:
+    def __init__(self):
+        self.acquisitions = 0
+
+    def acquire_sync(self):
+        self.acquisitions += 1
+
+
 @pytest.fixture(scope="module")
 def schema() -> CanonicalSchema:
     return CanonicalSchema.from_template()
@@ -88,6 +96,24 @@ class TestSafeClassifyImageDownload:
         assert result.classification_status == "KNOWN"
         assert patch == {}
 
+    def test_drive_download_does_not_consume_vision_capacity(self, monkeypatch):
+        import src.reliability.wrappers as w
+
+        limiter = _CountingLimiter()
+        downloads = []
+        monkeypatch.setattr(
+            w, "download_image_bytes",
+            lambda file_id, service=None: downloads.append(file_id) or b"image-bytes",
+        )
+        result, patch = safe_classify_image(
+            _image(), "-", VARIETIES, {"error_trace": []},
+            lvm_call=lambda **_: _vision(), vision_rate_limiter=limiter, **FAST,
+        )
+        assert downloads == ["f1"]
+        assert limiter.acquisitions == 1
+        assert result.classification_status == "KNOWN"
+        assert patch == {}
+
 
 class TestSafeClassifyImageClassification:
     def test_transient_vision_call_error_is_retried_and_recovers(self):
@@ -106,6 +132,23 @@ class TestSafeClassifyImageClassification:
         assert len(attempts) == 2
         assert result.classification_status == "KNOWN"
         assert patch == {}
+
+    def test_each_vision_retry_acquires_capacity_again(self):
+        limiter = _CountingLimiter()
+        attempts = []
+
+        def flaky_lvm(*, response_model, messages):
+            attempts.append(1)
+            if len(attempts) == 1:
+                raise VisionCallError("retry")
+            return _vision()
+
+        result, _ = safe_classify_image(
+            _image(), "-", VARIETIES, {"error_trace": []}, image_bytes=b"x",
+            lvm_call=flaky_lvm, vision_rate_limiter=limiter, **FAST,
+        )
+        assert result.classification_status == "KNOWN"
+        assert limiter.acquisitions == 2
 
     def test_contract_violation_is_revised_and_recovers(self):
         attempts = []

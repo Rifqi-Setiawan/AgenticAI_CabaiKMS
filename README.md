@@ -28,6 +28,8 @@ Isi `GROQ_API_KEY` di `.env` untuk schema matching melalui Groq. Fallback teks m
 
 Pemakaian pertama embedding dapat mengunduh model dari Hugging Face. Permintaan LLM/vision mengirim data ke provider dan dapat memakai kuota API. Detail dependensi, konfigurasi, dan batasan ada di panduan lengkap.
 
+Rate limiting pada runner UI bersifat opsional. Isi `CABAI_KMS_TEXT_RPM` dan/atau `CABAI_KMS_VISION_RPM` dengan angka positif untuk membatasi attempt provider teks dan vision secara terpisah; nilai kosong menonaktifkannya. Batas ini bekerja pada boundary attempt aplikasi—termasuk retry—bukan sebagai jaminan atas setiap request HTTP tersembunyi di dalam SDK provider.
+
 ## Pengujian lokal
 
 ```powershell

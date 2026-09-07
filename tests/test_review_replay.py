@@ -13,6 +13,7 @@ from src.ui import pipeline_runner
 from src.ui.output_builder import CanonicalOutputBuilder
 from src.ui.pipeline_runner import PipelineRunResult, _deterministic_workbook_bytes
 from src.ui.review_replay import apply_review_corrections
+from src.reliability.rate_limit import RateLimiter
 
 
 def _mapping(schema: CanonicalSchema, target_label: str = "habitus") -> SchemaMapping:
@@ -143,6 +144,10 @@ def test_replay_never_calls_model_retrieval_verifier_or_vision(tmp_path, monkeyp
     review_queue.approve(item.item_id, expected_run_id=original.run_id, queue_path=queue)
     for name in ("retrieve", "safe_rerank", "verify_mapping", "safe_classify_image"):
         monkeypatch.setattr(pipeline_runner, name, lambda *a, **k: pytest.fail(f"{name} called"))
+    monkeypatch.setattr(
+        RateLimiter, "acquire_sync",
+        lambda *a, **k: pytest.fail("rate limiter called during deterministic replay"),
+    )
     apply_review_corrections(original, queue_path=queue, schema=schema)
 
 

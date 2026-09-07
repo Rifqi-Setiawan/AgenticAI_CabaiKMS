@@ -14,12 +14,55 @@ from __future__ import annotations
 
 import asyncio
 import functools
+import math
+import os
 import threading
+from dataclasses import dataclass
+from collections.abc import Mapping
 from typing import Callable, TypeVar
 
 from aiolimiter import AsyncLimiter
 
 T = TypeVar("T")
+TEXT_RPM_ENV = "CABAI_KMS_TEXT_RPM"
+VISION_RPM_ENV = "CABAI_KMS_VISION_RPM"
+
+
+def _optional_positive_rpm(name: str, environ: Mapping[str, str]) -> float | None:
+    raw = environ.get(name)
+    if raw is None or raw.strip() == "":
+        return None
+    try:
+        value = float(raw)
+    except ValueError as exc:
+        raise ValueError(f"{name} must be a positive numeric requests-per-minute value") from exc
+    if not math.isfinite(value) or value <= 0:
+        raise ValueError(f"{name} must be a positive numeric requests-per-minute value")
+    return value
+
+
+@dataclass(frozen=True)
+class RuntimeRateLimitConfig:
+    """Optional per-provider attempt limits loaded once for a pipeline run."""
+
+    text_rpm: float | None = None
+    vision_rpm: float | None = None
+
+    @classmethod
+    def from_env(cls, environ: Mapping[str, str] | None = None) -> "RuntimeRateLimitConfig":
+        source = os.environ if environ is None else environ
+        return cls(
+            text_rpm=_optional_positive_rpm(TEXT_RPM_ENV, source),
+            vision_rpm=_optional_positive_rpm(VISION_RPM_ENV, source),
+        )
+
+
+def describe_rate_limiter(limiter: "RateLimiter | None") -> str:
+    if limiter is None:
+        return "disabled"
+    rate = f"{limiter.max_rate:g}"
+    period = f"{limiter.time_period:g}"
+    return f"enabled, {rate} requests / {period}s"
 
 
 class RateLimiter:

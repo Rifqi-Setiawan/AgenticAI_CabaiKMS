@@ -65,6 +65,8 @@ def safe_classify_image(
     max_retry_attempts: int = DEFAULT_MAX_ATTEMPTS,
     retry_base_delay: float = DEFAULT_BASE_DELAY,
     retry_max_delay: float = DEFAULT_MAX_DELAY,
+    download_rate_limiter: RateLimiter | None = None,
+    vision_rate_limiter: RateLimiter | None = None,
     rate_limiter: RateLimiter | None = None,
     **classify_kwargs: Any,
 ) -> tuple[VisionResult | None, dict[str, Any]]:
@@ -73,6 +75,13 @@ def safe_classify_image(
     exhausted its revisions) — the patch always explains why in that
     case. A successful UNCERTAIN result IS returned (the caller may still
     want it) but is also flagged in the patch for review."""
+
+    # ``rate_limiter`` remains a backwards-compatible alias for the vision
+    # provider only. Drive download has its own optional limiter so Gemini
+    # capacity is never charged for file transfer.
+    classification_limiter = (
+        vision_rate_limiter if vision_rate_limiter is not None else rate_limiter
+    )
 
     # Step 1: download — retried (transient infra), never revised (a
     # missing/inaccessible file isn't fixed by asking the model again).
@@ -86,7 +95,7 @@ def safe_classify_image(
                 max_attempts=max_retry_attempts,
                 base_delay=retry_base_delay,
                 max_delay=retry_max_delay,
-                rate_limiter=rate_limiter,
+                rate_limiter=download_rate_limiter,
             )
         except Exception as exc:
             patch = review_queue.append_error_trace(
@@ -109,7 +118,7 @@ def safe_classify_image(
             max_attempts=max_retry_attempts,
             base_delay=retry_base_delay,
             max_delay=retry_max_delay,
-            rate_limiter=rate_limiter,
+            rate_limiter=classification_limiter,
         )
 
     outcome, patch = verify_with_trace(

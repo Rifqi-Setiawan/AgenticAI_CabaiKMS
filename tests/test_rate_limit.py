@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import time
 
-from src.reliability.rate_limit import RateLimiter
+import pytest
+
+from src.reliability.rate_limit import RateLimiter, RuntimeRateLimitConfig
 
 
 class TestRateLimiter:
@@ -60,3 +62,24 @@ class TestRateLimiter:
         assert limiter.max_rate == 7
         assert limiter.time_period == 42.0
         limiter.close()
+
+
+class TestRuntimeRateLimitConfig:
+    def test_valid_text_and_vision_rpm_are_parsed_separately(self):
+        config = RuntimeRateLimitConfig.from_env({
+            "CABAI_KMS_TEXT_RPM": "12",
+            "CABAI_KMS_VISION_RPM": "3.5",
+        })
+        assert config.text_rpm == 12.0
+        assert config.vision_rpm == 3.5
+
+    def test_missing_or_blank_values_disable_limiters(self):
+        config = RuntimeRateLimitConfig.from_env({"CABAI_KMS_TEXT_RPM": "  "})
+        assert config.text_rpm is None
+        assert config.vision_rpm is None
+
+    @pytest.mark.parametrize("value", ["0", "-1", "not-a-number", "nan", "inf"])
+    @pytest.mark.parametrize("name", ["CABAI_KMS_TEXT_RPM", "CABAI_KMS_VISION_RPM"])
+    def test_invalid_values_fail_fast(self, name, value):
+        with pytest.raises(ValueError, match=name):
+            RuntimeRateLimitConfig.from_env({name: value})

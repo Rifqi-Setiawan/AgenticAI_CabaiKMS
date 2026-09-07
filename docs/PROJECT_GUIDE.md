@@ -46,7 +46,7 @@ Ini adalah **prototipe penelitian**, bukan sistem produksi, API backend, atau pl
 | Vision | Aktif, Gemini; consensus dua model tersedia di API Python, tidak di UI |
 | Penulisan Excel | Aktif, varietas dari input, URL citra untuk hasil `KNOWN` |
 | Retry dan validasi ulang | Dipakai runner UI melalui reliability wrappers |
-| Rate limiter | Implementasi dan tes tersedia, tetapi runner UI tidak memasok instance limiter |
+| Rate limiter | Terintegrasi opsional pada runner UI; limiter teks dan vision terpisah per run |
 | Manual review | Alur run aktif tersedia di halaman Hasil: approve/revise/NO_MATCH dan replay deterministik ke output terkoreksi |
 | LangGraph | Node stub dengan checkpoint/resume SQLite; agen nyata belum terpasang di node |
 | UI | Tiga halaman Streamlit: Input, Progres, Hasil |
@@ -329,8 +329,23 @@ Jika environment sudah tersedia, gunakan terlebih dahulu; jangan membuat ulang a
 | `OPENROUTER_API_KEY` | Voter kedua consensus | Opsional; bukan fallback langsung Gemini |
 | `GOOGLE_DRIVE_CREDENTIALS_PATH` | JSON service account Drive | Wajib untuk akses Drive; bukan OAuth client JSON |
 | `GOOGLE_DRIVE_FOLDER_ID` | Folder default bagi `list_images()` | Boleh ID/URL; UI tetap perlu input folder secara eksplisit |
+| `CABAI_KMS_TEXT_RPM` | Batas attempt provider schema-matching per menit | Kosong/tidak ada: disabled; wajib angka positif bila diisi |
+| `CABAI_KMS_VISION_RPM` | Batas attempt provider klasifikasi vision per menit | Kosong/tidak ada: disabled; wajib angka positif bila diisi |
 
 `CHROMA_PERSIST_DIR` dari contoh konfigurasi lama **tidak dibaca kode** dan telah dihapus dari `.env.example`. Default sebenarnya adalah `data/.chroma/`, ditentukan di `indexing.py`. API indexing/retrieval menerima parameter lokasi penyimpanan; UI tidak menyediakan pengaturan lokasi tersebut.
+
+Runner membaca konfigurasi RPM sekali per run. Limiter teks dipakai ulang untuk semua
+attempt reranker dan limiter vision dipakai ulang untuk semua attempt klasifikasi;
+exact-name tidak memperoleh kapasitas teks dan run tanpa folder Drive tidak memperoleh
+kapasitas vision. Download berkas dari Drive tetap memakai retry tetapi tidak dihitung
+sebagai request Gemini. Setiap retry provider memperoleh kapasitas lagi. Limiter yang
+dibuat runner selalu ditutup setelah sukses maupun gagal, sedangkan limiter yang
+diinjeksi caller tetap dimiliki caller.
+
+Scope limiter berada pada boundary attempt provider yang terlihat oleh aplikasi.
+Implementasi ini tidak mengamati atau menjamin pembatasan setiap HTTP request internal
+yang mungkin dibuat oleh instructor atau SDK provider. Limiter juga process-local,
+bukan kuota global lintas worker atau pengguna.
 
 ### Backend retrieval Phase 7A
 
@@ -626,7 +641,7 @@ Temuan berikut adalah batas implementasi, **bukan fitur yang diperbaiki dalam au
 3. **Validasi anchor kini menghentikan runner.** Header salah/ambigu atau identitas varietas yang hilang menghasilkan error sebelum pemetaan. Error provider dan mapping NULL masih harus diperiksa terpisah; validasi input bukan jaminan semua atribut akan terpetakan.
 4. **Koreksi manual memiliki audit event lokal.** Identitas run/source/schema dan provenance replay sudah tersedia, tetapi queue JSONL belum memiliki locking multi-proses, autentikasi reviewer, atau penyimpanan snapshot run lintas restart.
 5. **Graf masih stub.** Checkpoint/resume tidak memulihkan proses agen nyata; routing stub tidak menjadi jaminan reliability alur UI.
-6. **Rate limiter belum dipasang pada runner.** Retry provider juga dapat mengulangi error konfigurasi/kuota yang tidak akan pulih hanya dengan retry.
+6. **Rate limiter runner bersifat opsional dan process-local.** Ia membatasi attempt provider yang terlihat aplikasi, bukan seluruh request internal SDK atau kuota global lintas worker. Retry provider juga dapat mengulangi error konfigurasi/kuota yang tidak akan pulih hanya dengan retry.
 7. **Trace belum mencakup semua jalur.** Catatan normalisasi dan alasan sel vision tidak ditulis hanya sebagian tampil di log; label validasi UI tidak mewakili semua masalah data.
 8. **Vision berlandaskan varietas template.** Nama input bisa berbeda dari referensi; belum ada crosswalk spesies/varietas, dan tidak ada numeric confidence gate tambahan pada penulisan foto `KNOWN`.
 9. **Lokasi belum disusun sesuai rancangan komposit.** Pemetaan beberapa atribut ke `Lokasi` baru menggabungkan nilai, belum merakit nama/koordinat/elevasi dengan semantik khusus.
