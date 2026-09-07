@@ -429,6 +429,32 @@ def create_adjudication_template(
 ) -> pd.DataFrame:
     agreement, _ = compare_annotators(annotations_a, annotations_b)
     disagreements = agreement.loc[~agreement["agrees"]].copy()
+    by_a = {item.mapping_item_id: item for item in annotations_a}
+    by_b = {item.mapping_item_id: item for item in annotations_b}
+    identity_columns = [
+        "mapping_identity_kind", "mapping_identity_value", "source_file_name",
+        "source_file_sha256", "source_sheet", "source_format", "source_attribute_id",
+        "source_attribute_display", "source_attribute", "source_context",
+    ]
+    for column in reversed(identity_columns):
+        disagreements.insert(
+            1, column,
+            disagreements["mapping_item_id"].map(
+                lambda item_id: getattr(by_a[item_id], column)
+            ),
+        )
+    disagreements.insert(
+        len(identity_columns) + 1, "annotator_A_id",
+        disagreements["mapping_item_id"].map(lambda item_id: by_a[item_id].annotator_id),
+    )
+    disagreements.insert(
+        len(identity_columns) + 4, "annotator_B_id",
+        disagreements["mapping_item_id"].map(lambda item_id: by_b[item_id].annotator_id),
+    )
+    for column in ("mapping_identity_kind",):
+        disagreements[column] = disagreements[column].map(
+            lambda value: value.value if isinstance(value, Enum) else value
+        )
     for column in ("adjudicated_status", "adjudicated_canonical_keys", "adjudicator_id", "adjudication_notes"):
         disagreements[column] = ""
     if output_path is not None:
@@ -436,8 +462,80 @@ def create_adjudication_template(
         if path.exists():
             raise FileExistsError(f"refusing to overwrite adjudication artifact: {path}")
         path.parent.mkdir(parents=True, exist_ok=True)
-        disagreements.to_excel(path, index=False)
+        if path.suffix.casefold() == ".xlsx":
+            disagreements.to_excel(path, index=False)
+        elif path.suffix.casefold() == ".csv":
+            disagreements.to_csv(path, index=False, lineterminator="\n")
+        else:
+            raise ValueError("adjudication output must be .xlsx or .csv")
     return disagreements
+
+
+def load_adjudication_resolutions(
+    path: Path | str,
+    annotations_a: Sequence[GoldMappingAnnotation],
+    annotations_b: Sequence[GoldMappingAnnotation],
+    *,
+    schema: CanonicalSchema,
+) -> list[GoldMappingAnnotation]:
+    """Load human adjudications while deriving immutable identity only from first-pass gold."""
+    agreement, _ = compare_annotators(annotations_a, annotations_b)
+    disagreement_ids = set(agreement.loc[~agreement["agrees"], "mapping_item_id"])
+    adjudication_path = Path(path)
+    if adjudication_path.suffix.casefold() == ".xlsx":
+        frame = pd.read_excel(adjudication_path, dtype=object)
+    elif adjudication_path.suffix.casefold() == ".csv":
+        frame = pd.read_csv(adjudication_path, dtype=object, keep_default_na=False)
+    else:
+        raise ValueError("adjudication input must be .xlsx or .csv")
+    required = {
+        "mapping_item_id", "mapping_identity_kind", "mapping_identity_value",
+        "source_file_sha256", "source_sheet", "source_format", "adjudicated_status",
+        "adjudicated_canonical_keys", "adjudicator_id", "adjudication_notes",
+    }
+    missing = sorted(required - set(frame.columns))
+    if missing:
+        raise ValueError(f"adjudication artifact missing required column(s): {missing}")
+    item_ids = [_cell_text(value) for value in frame["mapping_item_id"]]
+    if len(item_ids) != len(set(item_ids)) or set(item_ids) != disagreement_ids:
+        raise ValueError("adjudication item set must exactly match annotator disagreements")
+    by_a = {item.mapping_item_id: item for item in annotations_a}
+    resolutions: list[GoldMappingAnnotation] = []
+    for index, row in frame.iterrows():
+        row_number = index + 2
+        item_id = _cell_text(row["mapping_item_id"])
+        base = by_a[item_id]
+        immutable = {
+            "mapping_identity_kind": base.mapping_identity_kind.value,
+            "mapping_identity_value": base.mapping_identity_value,
+            "source_file_sha256": base.source_file_sha256,
+            "source_sheet": base.source_sheet,
+            "source_format": base.source_format,
+        }
+        tampered = [
+            column for column, expected in immutable.items()
+            if _cell_text(row[column]) != _cell_text(expected)
+        ]
+        if tampered:
+            raise ValueError(
+                f"adjudication immutable field mismatch at row {row_number}: {tampered}"
+            )
+        status = _cell_text(row["adjudicated_status"])
+        adjudicator = _cell_text(row["adjudicator_id"])
+        if not status or not adjudicator:
+            raise ValueError(f"adjudication row {row_number} is incomplete")
+        payload = base.model_dump()
+        payload.update({
+            "gold_status": GoldMappingStatus(status),
+            "gold_canonical_keys": _pipe_keys(row["adjudicated_canonical_keys"]),
+            "ambiguous_candidate_canonical_keys": [],
+            "annotator_id": adjudicator,
+            "notes": _cell_text(row["adjudication_notes"]) or None,
+            "annotation_source": "adjudicated",
+            "calibration_eligible": True,
+        })
+        resolutions.append(GoldMappingAnnotation(**payload))
+    return validate_gold_annotations(resolutions, schema)
 
 
 class AdjudicatedGoldRecord(BaseModel):

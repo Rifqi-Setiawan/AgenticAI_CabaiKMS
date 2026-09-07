@@ -13,6 +13,7 @@ from src.schema.gold_mapping import (
     build_mapping_item_ids,
     compare_annotators,
     create_adjudication_template,
+    load_adjudication_resolutions,
     merge_adjudicated_gold,
     validate_gold_annotations,
 )
@@ -168,6 +169,10 @@ def test_annotator_comparison_kappa_and_adjudication_template(schema):
     assert table.set_index("mapping_item_id").loc[a2.mapping_item_id, "disagreement_type"] == "STATUS"
     template = create_adjudication_template([a1, a2], [b1, b2])
     assert template.mapping_item_id.tolist() == [a2.mapping_item_id]
+    assert template.loc[template.index[0], "source_file_sha256"] == a2.source_file_sha256
+    assert template.loc[template.index[0], "mapping_identity_value"] == a2.mapping_identity_value
+    assert template.loc[template.index[0], "annotator_A_id"] == "annotator_A"
+    assert template.loc[template.index[0], "annotator_B_id"] == "annotator_B"
     assert template.loc[template.index[0], "adjudicated_status"] == ""
     with pytest.raises(ValueError, match="explicit adjudicated"):
         merge_adjudicated_gold([a1, a2], [b1, b2])
@@ -177,3 +182,25 @@ def test_annotator_comparison_kappa_and_adjudication_template(schema):
     assert merged[0].agreement is True
     assert merged[1].adjudicated is True
     assert merged[1].annotation_a.annotator_id == "annotator_A"
+
+
+def test_adjudication_loader_preserves_identity_and_rejects_tampering(schema, tmp_path):
+    left = _annotation(schema, item="disagreement", status=GoldMappingStatus.NO_MATCH, keys=[])
+    right = _annotation(schema, item="disagreement", annotator="annotator_B")
+    path = tmp_path / "adjudication.xlsx"
+    template = create_adjudication_template([left], [right])
+    template.loc[0, "adjudicated_status"] = "NO_MATCH"
+    template.loc[0, "adjudicator_id"] = "adjudicator_1"
+    template.loc[0, "adjudication_notes"] = "Source meaning is outside the schema."
+    template.to_excel(path, index=False)
+
+    resolutions = load_adjudication_resolutions(path, [left], [right], schema=schema)
+    assert len(resolutions) == 1
+    assert resolutions[0].annotation_source == "adjudicated"
+    assert resolutions[0].mapping_item_id == left.mapping_item_id
+    assert resolutions[0].mapping_identity_value == left.mapping_identity_value
+
+    template.loc[0, "source_sheet"] = "Tampered"
+    template.to_excel(path, index=False)
+    with pytest.raises(ValueError, match="immutable field mismatch"):
+        load_adjudication_resolutions(path, [left], [right], schema=schema)
