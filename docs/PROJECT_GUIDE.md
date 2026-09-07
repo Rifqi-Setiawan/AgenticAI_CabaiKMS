@@ -451,7 +451,8 @@ Setelah semua item run aktif diselesaikan, **Terapkan Koreksi** memuat salinan b
 dari bytes output asli dan menerapkan nilai sumber yang sudah ditangkap saat pipeline
 pertama berjalan. Replay menjalankan normalisasi/output deterministik saja: retrieval,
 embedding, reranker/LLM, verifier, dan vision tidak dipanggil ulang. Output asli tetap
-tersedia bila replay gagal. Provenance write hasil review menggunakan
+tersedia bila replay gagal, dan halaman Hasil menyediakan kontrol unduh terpisah untuk
+workbook terkoreksi yang berhasil dibuat. Provenance write hasil review menggunakan
 `mapping_method=human_review`, mempertahankan usulan/confidence/verifier awal, target
 akhir, reviewer, dan status resolusi.
 

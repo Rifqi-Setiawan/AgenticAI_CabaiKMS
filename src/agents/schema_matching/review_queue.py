@@ -284,7 +284,7 @@ def approve(
     """A human confirms the original mapping was correct after all."""
     queue_path = Path(queue_path)
     item = _get_pending_or_raise(item_id, queue_path, expected_run_id)
-    if item.run_id is not None and not item.proposed_canonical_key:
+    if item.run_id is not None and not (item.proposed_canonical_key or "").strip():
         raise ValueError(
             "a run-bound review item without a proposed canonical target cannot be "
             "approved; revise it to a valid canonical key or mark it NO_MATCH"

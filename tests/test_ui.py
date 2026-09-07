@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import io
+
+import openpyxl
 import pandas as pd
 import pytest
 from streamlit.testing.v1 import AppTest
@@ -297,6 +300,12 @@ class TestPage3Hasil:
 
         assert not at.exception
         corrected = at.session_state["cabai_kms_corrected_pipeline_result"]
+        workbook = openpyxl.load_workbook(io.BytesIO(corrected.workbook_bytes), data_only=True)
+        try:
+            assert "Sheet1" in workbook.sheetnames
+            assert workbook["Sheet1"]["C1"].value == "Domba"
+        finally:
+            workbook.close()
         habitus = corrected.canonical_df.loc[
             corrected.canonical_df["Karakter"] == "habitus", "Domba"
         ].item()

@@ -194,10 +194,14 @@ class TestHumanReviewApi:
         assert resolved.final_canonical_key is None
         assert rq.list_pending(queue_path=queue_path, run_id="run-1") == []
 
-    def test_run_bound_null_proposal_cannot_be_approved_or_append_event(self, queue_path):
+    @pytest.mark.parametrize("proposed_key", [None, "", "   "])
+    def test_run_bound_null_proposal_cannot_be_approved_or_append_event(
+        self, queue_path, proposed_key,
+    ):
         item = rq.enqueue(
             _mapping(NULL_ROW, 0.2), reason="review", queue_path=queue_path,
-            run_id="run-1", mapping_item_id="m-1", proposed_canonical_key=None,
+            run_id="run-1", mapping_item_id="m-1",
+            proposed_canonical_key=proposed_key,
         )
         before = queue_path.read_text(encoding="utf-8").splitlines()
         with pytest.raises(ValueError, match="cannot be approved"):
