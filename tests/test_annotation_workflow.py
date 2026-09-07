@@ -13,11 +13,11 @@ from src.schema.gold_mapping import (
 )
 
 
-def _annotation_frame(schema):
+def _annotation_frame(schema, *, display="Height"):
     identity = dict(
         source_file_sha256="a" * 64, source_sheet="Sheet1",
         source_format="row-oriented", identity_kind="source_attribute_display",
-        identity_value="Height",
+        identity_value=display,
     )
     config = EvaluationRunConfig(
         source_backend="legacy", retrieval_backend="exact", retrieval_k=8,
@@ -38,7 +38,7 @@ def _annotation_frame(schema):
             "mapping_identity_issue": None, "source_file_name": "source.xlsx",
             "source_file_sha256": identity["source_file_sha256"],
             "source_sheet": identity["source_sheet"], "source_format": identity["source_format"],
-            "source_attribute_display": "Height", "source_attribute": "Height",
+            "source_attribute_display": display, "source_attribute": display,
             "source_context": None, "proposed_target_canonical_key": schema.rows[0].canonical_key,
             "predicted_row": schema.rows[0].id, "mapping_method": "retrieve_rerank",
             "confidence": 0.9, "exact_name_status": "NO_MATCH", "verifier_status": "PASS",
@@ -55,12 +55,19 @@ def _annotation_frame(schema):
     return frame
 
 
+def _write_annotation(frame, path):
+    if path.suffix == ".xlsx":
+        frame.to_excel(path, index=False)
+    else:
+        frame.to_csv(path, index=False)
+
+
 @pytest.mark.parametrize("suffix", [".xlsx", ".csv"])
 def test_annotation_round_trip_xlsx_and_csv(tmp_path, suffix):
     schema = CanonicalSchema.from_template()
     frame = _annotation_frame(schema)
     path = tmp_path / f"annotations{suffix}"
-    frame.to_excel(path, index=False) if suffix == ".xlsx" else frame.to_csv(path, index=False)
+    _write_annotation(frame, path)
     loaded = load_gold_annotations(path, schema=schema)
     item = loaded.annotations[0]
     assert item.gold_canonical_keys == [schema.rows[0].canonical_key]
@@ -69,33 +76,102 @@ def test_annotation_round_trip_xlsx_and_csv(tmp_path, suffix):
     assert item.annotator_id == "annotator_A"
 
 
+@pytest.mark.parametrize("suffix", [".xlsx", ".csv"])
 @pytest.mark.parametrize("column,value", [("source_sheet", "Tampered"), ("mapping_identity_value", "Width")])
-def test_annotation_loader_rejects_identity_tampering(tmp_path, column, value):
+def test_annotation_loader_rejects_identity_tampering(tmp_path, suffix, column, value):
     schema = CanonicalSchema.from_template()
     frame = _annotation_frame(schema)
     frame.loc[0, column] = value
-    path = tmp_path / "tampered.csv"
-    frame.to_csv(path, index=False)
+    path = tmp_path / f"tampered{suffix}"
+    _write_annotation(frame, path)
     with pytest.raises(ValueError, match="identity verification failed"):
         load_gold_annotations(path, schema=schema)
 
 
-def test_loader_rejects_unknown_key_and_blank_completion(tmp_path):
+@pytest.mark.parametrize("suffix", [".xlsx", ".csv"])
+def test_loader_rejects_unknown_key_and_blank_completion(tmp_path, suffix):
     schema = CanonicalSchema.from_template()
     frame = _annotation_frame(schema)
-    path = tmp_path / "bad.csv"
+    path = tmp_path / f"bad{suffix}"
     frame.loc[0, "gold_canonical_keys"] = "totally_fake_canonical_key"
-    frame.to_csv(path, index=False)
+    _write_annotation(frame, path)
     with pytest.raises(ValueError, match="unknown canonical key"):
         load_gold_annotations(path, schema=schema)
     frame.loc[0, "gold_canonical_keys"] = ""
     frame.loc[0, "gold_status"] = ""
-    frame.to_csv(path, index=False)
+    _write_annotation(frame, path)
     with pytest.raises(ValueError, match="incomplete"):
         load_gold_annotations(path, schema=schema)
 
 
-def test_independence_and_degenerate_kappa(tmp_path):
+@pytest.mark.parametrize("suffix", [".xlsx", ".csv"])
+def test_loader_rejects_missing_required_column_and_invalid_identity(tmp_path, suffix):
+    schema = CanonicalSchema.from_template()
+    frame = _annotation_frame(schema)
+    path = tmp_path / f"missing{suffix}"
+    _write_annotation(frame.drop(columns=["source_sheet"]), path)
+    with pytest.raises(ValueError, match="missing required column"):
+        load_gold_annotations(path, schema=schema)
+
+    path = tmp_path / f"unavailable{suffix}"
+    frame.loc[0, "mapping_identity_kind"] = "unavailable"
+    frame.loc[0, "mapping_identity_value"] = ""
+    _write_annotation(frame, path)
+    with pytest.raises(ValueError, match="identity verification failed"):
+        load_gold_annotations(path, schema=schema)
+
+
+def test_loader_rejects_unsupported_suffix(tmp_path):
+    schema = CanonicalSchema.from_template()
+    path = tmp_path / "annotations.json"
+    path.write_text("[]", encoding="utf-8")
+    with pytest.raises(ValueError, match="must be .xlsx or .csv"):
+        load_gold_annotations(path, schema=schema)
+
+
+@pytest.mark.parametrize("suffix", [".xlsx", ".csv"])
+def test_legacy_loader_allows_missing_identity_columns_only_as_ineligible(tmp_path, suffix):
+    schema = CanonicalSchema.from_template()
+    frame = _annotation_frame(schema).drop(
+        columns=["mapping_identity_kind", "mapping_identity_value"]
+    )
+    frame.loc[0, "annotation_source"] = "legacy_unverified"
+    path = tmp_path / f"legacy{suffix}"
+    _write_annotation(frame, path)
+    item = load_gold_annotations(path, schema=schema).annotations[0]
+    assert item.mapping_identity_kind is None
+    assert item.mapping_identity_value is None
+    assert item.calibration_eligible is False
+
+
+def test_independent_annotator_contract_and_item_id_alignment(tmp_path):
+    schema = CanonicalSchema.from_template()
+    first = _annotation_frame(schema, display="Height")
+    second = _annotation_frame(schema, display="Width")
+    second.loc[0, "gold_status"] = "NO_MATCH"
+    second.loc[0, "gold_canonical_keys"] = ""
+    frame = pd.concat([first, second], ignore_index=True)
+    path = tmp_path / "a.csv"
+    frame.to_csv(path, index=False)
+    annotations_a = load_gold_annotations(path, schema=schema)
+    with pytest.raises(ValueError, match="different IDs"):
+        compare_annotators(annotations_a, annotations_a)
+
+    mixed = annotations_a.model_copy(deep=True)
+    mixed.annotations[1].annotator_id = "annotator_C"
+    with pytest.raises(ValueError, match="exactly one annotator_id"):
+        compare_annotators(mixed, annotations_a)
+
+    annotations_b = annotations_a.model_copy(deep=True)
+    for item in annotations_b.annotations:
+        item.annotator_id = "annotator_B"
+    annotations_b.annotations.reverse()
+    table, metrics = compare_annotators(annotations_a, annotations_b)
+    assert table.agrees.tolist() == [True, True]
+    assert metrics.raw_agreement == 1.0
+
+
+def test_single_class_kappa_is_explicitly_undefined(tmp_path):
     schema = CanonicalSchema.from_template()
     frame = _annotation_frame(schema)
     frame.loc[0, "gold_status"] = "NO_MATCH"
@@ -103,12 +179,9 @@ def test_independence_and_degenerate_kappa(tmp_path):
     path = tmp_path / "a.csv"
     frame.to_csv(path, index=False)
     annotations_a = load_gold_annotations(path, schema=schema)
-    with pytest.raises(ValueError, match="different IDs"):
-        compare_annotators(annotations_a, annotations_a)
     annotations_b = annotations_a.model_copy(deep=True)
     annotations_b.annotations[0].annotator_id = "annotator_B"
     _, metrics = compare_annotators(annotations_a, annotations_b)
-    assert metrics.raw_agreement == 1.0
     assert metrics.cohens_kappa is None
     assert metrics.kappa_defined is False
     assert metrics.kappa_undefined_reason == "SINGLE_CLASS_DEGENERATE"

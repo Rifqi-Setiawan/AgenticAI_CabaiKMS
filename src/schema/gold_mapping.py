@@ -178,6 +178,34 @@ class GoldMappingAnnotation(BaseModel):
 
     @model_validator(mode="after")
     def _validate_status_cardinality(self) -> "GoldMappingAnnotation":
+        kind = self.mapping_identity_kind
+        value = self.mapping_identity_value.strip() if self.mapping_identity_value else None
+        if self.annotation_source in {"human_independent", "adjudicated"}:
+            if kind is None or value is None:
+                raise ValueError(
+                    "finalized human annotation requires mapping_identity_kind and "
+                    "mapping_identity_value"
+                )
+            if kind is MappingIdentityKind.UNAVAILABLE:
+                raise ValueError(
+                    "finalized human annotation requires an available stable mapping identity"
+                )
+        elif (kind is None) != (value is None):
+            raise ValueError("mapping identity kind and value must be provided together")
+
+        if kind is not None and value is not None:
+            if kind is MappingIdentityKind.UNAVAILABLE:
+                raise ValueError("unavailable mapping identity cannot contain an identity value")
+            validate_mapping_item_identity(
+                mapping_item_id=self.mapping_item_id,
+                source_file_sha256=self.source_file_sha256,
+                source_sheet=self.source_sheet,
+                source_format=self.source_format,
+                identity_kind=kind,
+                identity_value=value,
+            )
+            self.mapping_identity_value = value
+
         keys = self.gold_canonical_keys
         if len(keys) != len(set(keys)):
             raise ValueError("gold_canonical_keys must not contain duplicates")
@@ -255,8 +283,7 @@ def load_gold_annotations(
     else:
         raise ValueError("annotation input must be .xlsx or .csv")
     required_columns = {
-        "annotation_version", "mapping_item_id", "mapping_identity_kind",
-        "mapping_identity_value", "source_file_name", "source_file_sha256",
+        "annotation_version", "mapping_item_id", "source_file_name", "source_file_sha256",
         "source_sheet", "source_format", "source_attribute_display",
         "source_attribute", "gold_status", "gold_canonical_keys",
         "annotator_id", "annotation_round",
@@ -281,43 +308,32 @@ def load_gold_annotations(
         except ValueError as exc:
             raise ValueError(f"annotation row {row_number} has invalid annotation_round") from exc
         item_id = _cell_text(row["mapping_item_id"])
-        kind = _cell_text(row["mapping_identity_kind"])
-        identity_value = _cell_text(row["mapping_identity_value"])
-        if not item_id or not identity_value or kind == MappingIdentityKind.UNAVAILABLE.value:
-            raise ValueError(f"stable annotation identity unavailable at row {row_number}")
-        identity_fields = {
-            "mapping_item_id": item_id,
-            "source_file_sha256": _cell_text(row["source_file_sha256"]),
-            "source_sheet": _cell_text(row["source_sheet"]),
-            "source_format": _cell_text(row["source_format"]),
-            "identity_kind": kind,
-            "identity_value": identity_value,
-        }
+        kind = _cell_text(row.get("mapping_identity_kind"))
+        identity_value = _cell_text(row.get("mapping_identity_value"))
         try:
-            validate_mapping_item_identity(**identity_fields)
+            record = GoldMappingAnnotation(
+                annotation_version=_cell_text(row["annotation_version"]),
+                mapping_item_id=item_id,
+                mapping_identity_kind=MappingIdentityKind(kind) if kind else None,
+                mapping_identity_value=identity_value or None,
+                source_file_name=_cell_text(row["source_file_name"]),
+                source_file_sha256=_cell_text(row["source_file_sha256"]),
+                source_sheet=_cell_text(row["source_sheet"]),
+                source_format=_cell_text(row["source_format"]),
+                source_attribute_id=_cell_text(row.get("source_attribute_id")) or None,
+                source_attribute_display=_cell_text(row["source_attribute_display"]),
+                source_attribute=_cell_text(row["source_attribute"]),
+                source_context=_cell_text(row.get("source_context")) or None,
+                gold_status=GoldMappingStatus(status_text),
+                gold_canonical_keys=_pipe_keys(row["gold_canonical_keys"]),
+                ambiguous_candidate_canonical_keys=_pipe_keys(row.get("ambiguous_candidate_canonical_keys")),
+                annotator_id=annotator_id,
+                annotation_round=annotation_round,
+                notes=_cell_text(row.get("notes")) or None,
+                annotation_source=_cell_text(row.get("annotation_source")) or "human_independent",
+            )
         except (ValueError, TypeError) as exc:
             raise ValueError(f"annotation identity verification failed at row {row_number}: {exc}") from exc
-        record = GoldMappingAnnotation(
-            annotation_version=_cell_text(row["annotation_version"]),
-            mapping_item_id=item_id,
-            mapping_identity_kind=MappingIdentityKind(kind),
-            mapping_identity_value=identity_value,
-            source_file_name=_cell_text(row["source_file_name"]),
-            source_file_sha256=identity_fields["source_file_sha256"],
-            source_sheet=identity_fields["source_sheet"],
-            source_format=identity_fields["source_format"],
-            source_attribute_id=_cell_text(row.get("source_attribute_id")) or None,
-            source_attribute_display=_cell_text(row["source_attribute_display"]),
-            source_attribute=_cell_text(row["source_attribute"]),
-            source_context=_cell_text(row.get("source_context")) or None,
-            gold_status=GoldMappingStatus(status_text),
-            gold_canonical_keys=_pipe_keys(row["gold_canonical_keys"]),
-            ambiguous_candidate_canonical_keys=_pipe_keys(row.get("ambiguous_candidate_canonical_keys")),
-            annotator_id=annotator_id,
-            annotation_round=annotation_round,
-            notes=_cell_text(row.get("notes")) or None,
-            annotation_source=_cell_text(row.get("annotation_source")) or "human_independent",
-        )
         records.append(record)
     validated = validate_gold_annotations(records, schema)
     return GoldAnnotationSet(annotations=validated)
