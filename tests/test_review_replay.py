@@ -8,7 +8,7 @@ import pytest
 
 from src.agents.schema_matching import review_queue
 from src.schema.canonical import CanonicalSchema
-from src.schema.contracts import SchemaMapping
+from src.schema.contracts import NULL_ROW, SchemaMapping
 from src.ui import pipeline_runner
 from src.ui.output_builder import CanonicalOutputBuilder
 from src.ui.pipeline_runner import PipelineRunResult, _deterministic_workbook_bytes
@@ -25,13 +25,23 @@ def _mapping(schema: CanonicalSchema, target_label: str = "habitus") -> SchemaMa
     )
 
 
-def _fixture(tmp_path, *, existing_value: str | None = None):
+def _fixture(
+    tmp_path, *, existing_value: str | None = None, null_proposal: bool = False,
+):
     schema = CanonicalSchema.from_template()
     queue = tmp_path / "review.jsonl"
     run_id = "run-current"
     source_hash = "a" * 64
-    proposed = schema.row_by_label("habitus")
-    mapping = _mapping(schema)
+    proposed = None if null_proposal else schema.row_by_label("habitus")
+    mapping = (
+        SchemaMapping(
+            source_attribute="Growth habit", source_context="Vegetative",
+            source_format="row-oriented", target_canonical_row=NULL_ROW,
+            confidence=0.2, reasoning="no model proposal",
+            normalization_required=True,
+        )
+        if null_proposal else _mapping(schema)
+    )
     item = review_queue.enqueue(
         mapping, reason="manual review required", queue_path=queue,
         run_id=run_id, mapping_item_id="mapping-1", source_file_name="source.xlsx",
@@ -40,12 +50,12 @@ def _fixture(tmp_path, *, existing_value: str | None = None):
         mapping_identity_kind="source_attribute_display",
         mapping_identity_value="Vegetative / Growth habit",
         schema_version=schema.schema_version, template_hash=schema.template_hash,
-        proposed_canonical_key=proposed.canonical_key,
+        proposed_canonical_key=proposed.canonical_key if proposed else None,
         mapping_method="retrieve_rerank", verifier_status="REVIEW",
         verifier_warnings=["LOW_CONFIDENCE"], raw_values_by_variety={"Domba": ["terna"]},
     )
     builder = CanonicalOutputBuilder(schema=schema, variety_names=["Domba"])
-    if existing_value is not None:
+    if existing_value is not None and proposed is not None:
         builder.set_cell(proposed.id, "Domba", existing_value)
     workbook = builder.build_workbook()
     original_bytes = _deterministic_workbook_bytes(workbook)
@@ -54,7 +64,8 @@ def _fixture(tmp_path, *, existing_value: str | None = None):
         "review_item_id": item.item_id, "mapping_item_id": "mapping-1",
         "source_file_sha256": source_hash, "source_sheet": "Observations",
         "source_format": "row-oriented", "canonical_write": False,
-        "predicted_row": proposed.id, "proposed_target_canonical_key": proposed.canonical_key,
+        "predicted_row": proposed.id if proposed else NULL_ROW,
+        "proposed_target_canonical_key": proposed.canonical_key if proposed else None,
     }])
     result = PipelineRunResult(
         mapping_df=mapping_df, canonical_df=pd.DataFrame(), workbook_bytes=original_bytes,
@@ -163,3 +174,26 @@ def test_queue_history_is_append_only_for_no_match(tmp_path):
     after = queue.read_text(encoding="utf-8").splitlines()
     assert after[:1] == before
     assert len(after) == len(before) + 1
+
+
+def test_null_proposal_no_match_replays_without_writing(tmp_path):
+    schema, queue, item, original = _fixture(tmp_path, null_proposal=True)
+    resolved = review_queue.mark_no_match(
+        item.item_id, expected_run_id=original.run_id, queue_path=queue,
+    )
+    assert resolved.final_canonical_key is None
+    corrected = apply_review_corrections(original, queue_path=queue, schema=schema)
+    assert _cell(corrected, schema, "habitus") is None
+    assert corrected.provenance_records == []
+
+
+def test_null_proposal_can_be_revised_and_replayed_to_valid_key(tmp_path):
+    schema, queue, item, original = _fixture(tmp_path, null_proposal=True)
+    target = schema.row_by_label("habitus")
+    resolved = review_queue.revise_to_canonical_key(
+        item.item_id, target.canonical_key, schema=schema,
+        expected_run_id=original.run_id, queue_path=queue,
+    )
+    assert resolved.final_canonical_key == target.canonical_key
+    corrected = apply_review_corrections(original, queue_path=queue, schema=schema)
+    assert _cell(corrected, schema, "habitus") == "terna"

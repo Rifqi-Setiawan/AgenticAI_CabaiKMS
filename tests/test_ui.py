@@ -7,7 +7,9 @@ from streamlit.testing.v1 import AppTest
 from src.ui.pipeline_runner import PipelineRunResult
 from src.agents.schema_matching import review_queue
 from src.schema.canonical import CanonicalSchema
-from src.schema.contracts import SchemaMapping
+from src.schema.contracts import NULL_ROW, SchemaMapping
+from src.ui.output_builder import CanonicalOutputBuilder, worksheet_to_dataframe
+from src.ui.pipeline_runner import _deterministic_workbook_bytes
 
 APP_PATH = "src/ui/app.py"
 PROGRESS_PATH = "src/ui/pages/2_Progress.py"
@@ -74,6 +76,61 @@ def _fixture_result(with_issues: bool = False) -> PipelineRunResult:
         checkpoint_thread_id="test-thread-fixture-nonexistent",
         error_trace=error_trace,
     )
+
+
+def _real_null_review_result(tmp_path) -> tuple[PipelineRunResult, str]:
+    schema = CanonicalSchema.from_template()
+    queue_path = tmp_path / "review.jsonl"
+    run_id = "ui-replay-run"
+    source_hash = "b" * 64
+    mapping = SchemaMapping(
+        source_attribute="Growth habit", source_context="Vegetative",
+        source_format="row-oriented", target_canonical_row=NULL_ROW,
+        confidence=0.2, reasoning="no confident model proposal",
+        normalization_required=True,
+    )
+    item = review_queue.enqueue(
+        mapping, reason="needs review", queue_path=queue_path,
+        run_id=run_id, mapping_item_id="mapping-ui-replay",
+        source_file_name="source.xlsx", source_file_sha256=source_hash,
+        source_sheet="Observations", source_format="row-oriented",
+        source_attribute_display="Vegetative / Growth habit",
+        schema_version=schema.schema_version, template_hash=schema.template_hash,
+        proposed_canonical_key=None, mapping_method="retrieve_rerank",
+        verifier_status="REVIEW", sample_values=["terna"],
+        raw_values_by_variety={"Domba": ["terna"]},
+    )
+    builder = CanonicalOutputBuilder(schema=schema, variety_names=["Domba"])
+    workbook = builder.build_workbook()
+    try:
+        workbook_bytes = _deterministic_workbook_bytes(workbook)
+        canonical_df = worksheet_to_dataframe(workbook["Sheet1"], schema, ["Domba"])
+    finally:
+        workbook.close()
+    mapping_df = pd.DataFrame([{
+        "review_item_id": item.item_id,
+        "mapping_item_id": "mapping-ui-replay",
+        "source_file_sha256": source_hash,
+        "source_sheet": "Observations",
+        "source_format": "row-oriented",
+        "source_attribute_display": "Vegetative / Growth habit",
+        "source_attribute": "Growth habit",
+        "source_context": "Vegetative",
+        "predicted_row": NULL_ROW,
+        "predicted_label": "NULL",
+        "target_domain": None,
+        "confidence": 0.2,
+        "normalization_required": True,
+        "reasoning": "no confident model proposal",
+        "canonical_write": False,
+        "proposed_target_canonical_key": None,
+    }])
+    return PipelineRunResult(
+        mapping_df=mapping_df, canonical_df=canonical_df,
+        workbook_bytes=workbook_bytes, vision_rows=[], run_id=run_id,
+        checkpoint_thread_id=run_id, review_queue_path=str(queue_path),
+        schema_version=schema.schema_version, template_hash=schema.template_hash,
+    ), schema.row_by_label("habitus").canonical_key
 
 
 class TestPage1Input:
@@ -214,3 +271,37 @@ class TestPage3Hasil:
         assert "Ubah target" in labels
         assert "Tandai NO_MATCH" in labels
         assert any("warna daun" in str(option) for option in at.selectbox[0].options)
+
+    def test_revise_and_apply_correction_end_to_end(self, tmp_path):
+        result, replacement_key = _real_null_review_result(tmp_path)
+        at = AppTest.from_file(HASIL_PATH, default_timeout=APP_TEST_TIMEOUT)
+        at.session_state["cabai_kms_pipeline_result"] = result
+        at.run()
+
+        assert not at.exception
+        assert any(
+            "Vegetative / Growth habit" in expander.label
+            for expander in at.expander
+        )
+        assert len(review_queue.list_pending(
+            queue_path=result.review_queue_path, run_id=result.run_id,
+        )) == 1
+        at.selectbox[0].select(replacement_key).run()
+        next(button for button in at.button if button.label == "Ubah target").click().run()
+
+        assert not at.exception
+        assert review_queue.list_pending(
+            queue_path=result.review_queue_path, run_id=result.run_id,
+        ) == []
+        next(button for button in at.button if button.label == "Terapkan Koreksi").click().run()
+
+        assert not at.exception
+        corrected = at.session_state["cabai_kms_corrected_pipeline_result"]
+        habitus = corrected.canonical_df.loc[
+            corrected.canonical_df["Karakter"] == "habitus", "Domba"
+        ].item()
+        assert habitus == "terna"
+        assert any(
+            button.label == "⬇️ Unduh output terkoreksi"
+            for button in at.download_button
+        )

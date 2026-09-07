@@ -193,3 +193,69 @@ class TestHumanReviewApi:
         assert resolved.status == "no_match"
         assert resolved.final_canonical_key is None
         assert rq.list_pending(queue_path=queue_path, run_id="run-1") == []
+
+    def test_run_bound_null_proposal_cannot_be_approved_or_append_event(self, queue_path):
+        item = rq.enqueue(
+            _mapping(NULL_ROW, 0.2), reason="review", queue_path=queue_path,
+            run_id="run-1", mapping_item_id="m-1", proposed_canonical_key=None,
+        )
+        before = queue_path.read_text(encoding="utf-8").splitlines()
+        with pytest.raises(ValueError, match="cannot be approved"):
+            rq.approve(
+                item.item_id, expected_run_id="run-1", queue_path=queue_path,
+            )
+        assert queue_path.read_text(encoding="utf-8").splitlines() == before
+        assert rq.list_pending(queue_path=queue_path, run_id="run-1") == [item]
+
+    def test_run_bound_generic_revise_requires_final_key_before_append(self, queue_path):
+        schema = CanonicalSchema.from_template()
+        target = schema.row_by_label("habitus")
+        item = rq.enqueue(
+            _mapping(NULL_ROW, 0.2), reason="review", queue_path=queue_path,
+            run_id="run-1", mapping_item_id="m-1", proposed_canonical_key=None,
+        )
+        before = queue_path.read_text(encoding="utf-8").splitlines()
+        with pytest.raises(ValueError, match="requires a final canonical key"):
+            rq.revise(
+                item.item_id, _mapping(target.id, 0.2),
+                expected_run_id="run-1", queue_path=queue_path,
+            )
+        assert queue_path.read_text(encoding="utf-8").splitlines() == before
+        assert rq.list_pending(queue_path=queue_path, run_id="run-1") == [item]
+
+    def test_run_bound_finalized_states_enforce_final_key_invariant(self, queue_path):
+        schema = CanonicalSchema.from_template()
+        target = schema.row_by_label("habitus")
+        approved_item = rq.enqueue(
+            _mapping(target.id, 0.2, attribute="approve"), reason="review",
+            queue_path=queue_path, run_id="run-1", mapping_item_id="approve",
+            proposed_canonical_key=target.canonical_key,
+        )
+        revised_item = rq.enqueue(
+            _mapping(NULL_ROW, 0.2, attribute="revise"), reason="review",
+            queue_path=queue_path, run_id="run-1", mapping_item_id="revise",
+            proposed_canonical_key=None,
+        )
+        no_match_item = rq.enqueue(
+            _mapping(NULL_ROW, 0.2, attribute="no-match"), reason="review",
+            queue_path=queue_path, run_id="run-1", mapping_item_id="no-match",
+            proposed_canonical_key=None,
+        )
+
+        approved = rq.approve(
+            approved_item.item_id, expected_run_id="run-1", queue_path=queue_path,
+        )
+        revised = rq.revise_to_canonical_key(
+            revised_item.item_id, target.canonical_key, schema=schema,
+            expected_run_id="run-1", queue_path=queue_path,
+        )
+        no_match = rq.mark_no_match(
+            no_match_item.item_id, expected_run_id="run-1", queue_path=queue_path,
+        )
+
+        assert approved.final_canonical_key == target.canonical_key
+        assert revised.final_canonical_key == target.canonical_key
+        assert no_match.final_canonical_key is None
+        assert {approved.status, revised.status, no_match.status} == {
+            "approved", "revised", "no_match",
+        }

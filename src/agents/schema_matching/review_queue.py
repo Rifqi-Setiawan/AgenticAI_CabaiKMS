@@ -284,6 +284,11 @@ def approve(
     """A human confirms the original mapping was correct after all."""
     queue_path = Path(queue_path)
     item = _get_pending_or_raise(item_id, queue_path, expected_run_id)
+    if item.run_id is not None and not item.proposed_canonical_key:
+        raise ValueError(
+            "a run-bound review item without a proposed canonical target cannot be "
+            "approved; revise it to a valid canonical key or mark it NO_MATCH"
+        )
     resolved = item.model_copy(
         update={
             "status": "approved",
@@ -305,6 +310,7 @@ def revise(
     queue_path: Path | str = DEFAULT_QUEUE_PATH,
     expected_run_id: str | None = None,
     final_canonical_key: str | None = None,
+    schema=None,
     notes: str | None = None,
 ) -> ReviewItem:
     """A human replaces the mapping with a corrected one."""
@@ -313,6 +319,20 @@ def revise(
     original = item.original_mapping or item.mapping
     if corrected_mapping.source_attribute != original.source_attribute:
         raise ValueError("corrected mapping must retain the review item's source attribute")
+    if item.run_id is not None:
+        if not final_canonical_key:
+            raise ValueError("a run-bound revised review item requires a final canonical key")
+        if schema is None:
+            from src.schema.canonical import CanonicalSchema
+
+            schema = CanonicalSchema.from_template()
+        target = schema.row_by_key(final_canonical_key)
+        if target is None:
+            raise ValueError(f"unknown canonical_key: {final_canonical_key!r}")
+        if corrected_mapping.target_canonical_row != target.id:
+            raise ValueError(
+                "corrected mapping target does not match the supplied final canonical key"
+            )
     resolved = item.model_copy(
         update={
             "mapping": corrected_mapping,
@@ -349,7 +369,8 @@ def revise_to_canonical_key(
     })
     return revise(
         item_id, corrected, resolved_by=resolved_by, queue_path=queue_path,
-        expected_run_id=expected_run_id, final_canonical_key=canonical_key, notes=notes,
+        expected_run_id=expected_run_id, final_canonical_key=canonical_key,
+        schema=schema, notes=notes,
     )
 
 

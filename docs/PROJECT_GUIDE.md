@@ -47,7 +47,7 @@ Ini adalah **prototipe penelitian**, bukan sistem produksi, API backend, atau pl
 | Penulisan Excel | Aktif, varietas dari input, URL citra untuk hasil `KNOWN` |
 | Retry dan validasi ulang | Dipakai runner UI melalui reliability wrappers |
 | Rate limiter | Implementasi dan tes tersedia, tetapi runner UI tidak memasok instance limiter |
-| Manual review | Queue JSONL dan API approve/revise tersedia; belum menjadi alur koreksi UI |
+| Manual review | Alur run aktif tersedia di halaman Hasil: approve/revise/NO_MATCH dan replay deterministik ke output terkoreksi |
 | LangGraph | Node stub dengan checkpoint/resume SQLite; agen nyata belum terpasang di node |
 | UI | Tiga halaman Streamlit: Input, Progres, Hasil |
 | Evaluasi | Harness ekspor untuk review manual; belum ada perhitungan Macro-F1 |
@@ -429,7 +429,7 @@ print(result.error_trace)
 
 ### Manual review queue
 
-Mapping masuk queue jika target `NULL` atau confidence `< 0.6`. File default: `data/review/manual_review_queue.jsonl`. Setiap enqueue/approve/revise menambahkan event baru; status terkini ditentukan oleh event terakhir untuk `item_id` yang sama.
+Mapping masuk queue jika target `NULL` atau confidence `< 0.6`. File default: `data/review/manual_review_queue.jsonl`. Setiap enqueue/approve/revise/NO_MATCH menambahkan event baru; status terkini ditentukan oleh event terakhir untuk `item_id` yang sama.
 
 Inspeksi tanpa mengubah data:
 
@@ -440,7 +440,7 @@ for item in list_pending():
     print(item.item_id, item.mapping.source_attribute, item.reason)
 ```
 
-API lama `approve(item_id, resolved_by=...)` dan `revise(item_id, corrected_mapping, resolved_by=...)` tetap kompatibel. API run-aware menambahkan pemeriksaan `expected_run_id`, selector `revise_to_canonical_key()`, dan status eksplisit `mark_no_match()`.
+API lama tetap kompatibel secara terbatas untuk record historis tanpa `run_id`. Untuk item run-bound, `approve()` hanya sah bila AI sudah mengusulkan `proposed_canonical_key` non-NULL. Proposal NULL harus direvisi melalui `revise_to_canonical_key()` ke key yang valid pada schema aktif atau diselesaikan melalui `mark_no_match()`. Revisi run-bound selalu membutuhkan final canonical key; validasi gagal sebelum event baru ditambahkan.
 
 **Pembaruan Runtime Hardening R1:** halaman **Hasil** kini menampilkan item `REVIEW`
 yang terikat ke run aktif. Pengguna dapat menyetujui usulan, memilih target lain dari
@@ -454,6 +454,9 @@ embedding, reranker/LLM, verifier, dan vision tidak dipanggil ulang. Output asli
 tersedia bila replay gagal. Provenance write hasil review menggunakan
 `mapping_method=human_review`, mempertahankan usulan/confidence/verifier awal, target
 akhir, reviewer, dan status resolusi.
+
+Kampanye evaluasi lanjutan tetap ditunda. Rangkaian review/replay runtime ini tidak
+mengubah retrieval, reranker, threshold acceptance, atau artefak evaluasi.
 
 Keterbatasan: review hanya tersedia selama `PipelineRunResult` run tersebut masih ada
 di session Streamlit; belum ada browser historis atau pemuatan ulang snapshot run dari

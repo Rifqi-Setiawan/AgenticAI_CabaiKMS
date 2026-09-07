@@ -2,16 +2,16 @@
 
 Prototipe penelitian **Adaptive Knowledge Acquisition berbasis Agentic AI** untuk mengubah spreadsheet karakterisasi cabai dan foto tanaman dari Google Drive menjadi workbook Excel berstruktur kanonik.
 
-Dokumentasi diperbarui **3 September 2026**, berdasarkan implementasi di repositori, bukan hanya rancangan proposal.
+Dokumentasi diperbarui **7 September 2026**, berdasarkan implementasi di repositori, bukan hanya rancangan proposal.
 
 ## Kondisi proyek saat ini
 
 - Pipeline Streamlit sudah menghubungkan parsing Excel, pencarian kandidat berbasis embedding, pemetaan atribut dengan LLM, normalisasi deterministik, klasifikasi citra opsional, dan ekspor `.xlsx`.
 - Kolom varietas keluaran berasal dari input; baris karakter berasal dari `data/canonical/template_kanonik.xlsx`.
 - Graf LangGraph masih **stub** untuk pengujian alur/checkpoint. Graf ini bukan pelaksana agen nyata di UI.
-- Review queue tersedia melalui API Python, tetapi UI belum menyediakan persetujuan/koreksi atau penerapan ulang hasil review.
+- Halaman **Hasil** menyediakan review untuk run aktif: approve usulan non-NULL, revise ke `canonical_key` aktif, atau `NO_MATCH`. Setelah seluruh item selesai, koreksi diterapkan deterministik dari output asli tanpa mengulang retrieval, LLM/reranker, verifier, atau vision; unduhan asli tetap tersedia dan event JSONL tetap append-only.
 - CSV belum didukung parser walaupun ditawarkan uploader. Gunakan `.xlsx`.
-- Evaluasi otomatis Macro-F1 belum diimplementasikan; yang tersedia adalah ekspor tabel untuk penilaian manual.
+- Kampanye evaluasi lanjutan masih ditunda. Evaluasi otomatis Macro-F1 belum diimplementasikan; yang tersedia adalah infrastruktur ekspor tabel untuk penilaian manual.
 
 ## Mulai menjalankan
 
