@@ -247,7 +247,11 @@ class GoldAnnotationSet(BaseModel):
 def validate_gold_annotations(
     annotations: GoldAnnotationSet | Sequence[GoldMappingAnnotation], schema: CanonicalSchema,
 ) -> list[GoldMappingAnnotation]:
-    records = annotations.annotations if isinstance(annotations, GoldAnnotationSet) else list(annotations)
+    raw = annotations.annotations if isinstance(annotations, GoldAnnotationSet) else list(annotations)
+    records = [
+        GoldMappingAnnotation.model_validate(record.model_dump())
+        for record in raw
+    ]
     GoldAnnotationSet(annotations=records)
     for record in records:
         unknown = (set(record.gold_canonical_keys) | set(record.ambiguous_candidate_canonical_keys)) - schema.row_keys

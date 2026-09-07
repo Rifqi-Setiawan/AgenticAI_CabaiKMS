@@ -88,6 +88,20 @@ def test_calibration_join_rejects_item_set_mismatch():
         build_calibration_dataset(pd.DataFrame([_mapping("A", None, schema)]), [_gold("B", None)], _manifest(), schema=schema)
 
 
+def test_calibration_builder_cannot_receive_malformed_finalized_human_gold():
+    schema = CanonicalSchema.from_template()
+    malformed_gold = _gold("A", schema.rows[0].canonical_key).model_copy(update={
+        "mapping_identity_kind": None,
+        "mapping_identity_value": None,
+    })
+
+    with pytest.raises(ValueError, match="requires mapping_identity_kind"):
+        build_calibration_dataset(
+            pd.DataFrame([_mapping("A", schema.rows[0].canonical_key, schema)]),
+            [malformed_gold], _manifest(), schema=schema,
+        )
+
+
 def test_calibration_rejects_unknown_gold_and_mixed_configurations():
     schema = CanonicalSchema.from_template()
     with pytest.raises(ValueError, match="unknown canonical key"):

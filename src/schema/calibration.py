@@ -107,7 +107,7 @@ def build_calibration_dataset(
     """Join predictions and gold by mapping_item_id, independent of input order."""
     mappings = _as_records(mapping_outputs)
     gold = _final_annotations(gold_annotations)
-    validate_gold_annotations(gold, schema)
+    gold = validate_gold_annotations(gold, schema)
     fingerprints = {str(row.get("evaluation_config_fingerprint") or "") for row in mappings}
     if "" in fingerprints:
         raise ValueError("mapping observations require evaluation_config_fingerprint")

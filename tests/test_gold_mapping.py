@@ -74,6 +74,23 @@ def test_finalized_human_gold_requires_explicit_identity_basis(schema, annotatio
         GoldMappingAnnotation(**payload)
 
 
+@pytest.mark.parametrize("annotation_source", ["human_independent", "adjudicated"])
+def test_unavailable_identity_cannot_become_finalized_gold(schema, annotation_source):
+    payload = _annotation(schema, annotation_source=annotation_source).model_dump()
+    payload["mapping_identity_kind"] = "unavailable"
+    payload["mapping_identity_value"] = "unresolved"
+    with pytest.raises(ValidationError, match="requires an available stable mapping identity"):
+        GoldMappingAnnotation(**payload)
+
+
+@pytest.mark.parametrize("annotation_source", ["human_independent", "adjudicated"])
+def test_finalized_human_gold_rejects_blank_identity_value(schema, annotation_source):
+    payload = _annotation(schema, annotation_source=annotation_source).model_dump()
+    payload["mapping_identity_value"] = "   "
+    with pytest.raises(ValidationError, match="must be non-blank"):
+        GoldMappingAnnotation(**payload)
+
+
 def test_human_gold_rejects_inconsistent_identity_hash(schema):
     payload = _annotation(schema).model_dump()
     payload["mapping_identity_value"] = "different-source-attribute"
@@ -81,8 +98,15 @@ def test_human_gold_rejects_inconsistent_identity_hash(schema):
         GoldMappingAnnotation(**payload)
 
 
-def test_valid_human_identity_is_accepted_and_legacy_missing_basis_is_ineligible(schema):
-    assert _annotation(schema).calibration_eligible is True
+@pytest.mark.parametrize("status,keys", [
+    (GoldMappingStatus.ONE_TO_ONE, None),
+    (GoldMappingStatus.NO_MATCH, []),
+])
+def test_valid_human_identity_is_accepted(schema, status, keys):
+    assert _annotation(schema, status=status, keys=keys).calibration_eligible is True
+
+
+def test_legacy_missing_basis_is_ineligible(schema):
     payload = _annotation(schema).model_dump()
     payload.update({
         "annotation_source": "legacy_unverified",
