@@ -1,5 +1,6 @@
 import hashlib
 import json
+import shutil
 from types import SimpleNamespace
 
 import pandas as pd
@@ -8,7 +9,9 @@ from eval.create_mapping_annotations import ANNOTATION_COLUMNS
 from eval.finalize_mapping_annotations import FINAL_COLUMNS, _annotation_row, finalize_campaign
 from eval.prepare_annotation_campaign import (
     BLINDED_COLUMNS, HUMAN_COLUMNS, PREDICTION_COLUMNS,
-    assess_campaign_readiness, prepare_campaign,
+    PROJECT_ROOT, assess_campaign_readiness, prepare_campaign,
+    summarize_observation_identities, verify_frozen_artifacts,
+    verify_master_blinded_integrity,
 )
 from src.schema.canonical import CanonicalSchema
 from src.schema.evaluation_config import EvaluationRunConfig
@@ -43,10 +46,11 @@ def _manifest(tmp_path, *, entries=None):
         "source_format": "row-oriented", "sheets": ["Sheet1"],
         "source_backend": "legacy", "retrieval_backend": "exact", "retrieval_k": 8,
         "part_of_validation": True,
+        "variation_tags": ["flat", "row-oriented"],
         "counts": {"annotatable_attributes": 1, "stable_mapping_identities": 1, "unavailable_identities": 0},
     }
     payload = {
-        "campaign_version": "schema-mapping-validation-campaign-v1",
+        "campaign_version": "schema-mapping-pilot-v1", "campaign_type": "pilot",
         "annotation_version": "schema-mapping-gold-v1", "annotation_round": 1,
         "canonical_schema_version": schema.schema_version,
         "canonical_template_hash": schema.template_hash,
@@ -56,11 +60,20 @@ def _manifest(tmp_path, *, entries=None):
         "frozen_evaluation_config_fingerprint": config.fingerprint,
         "annotation_guideline_version": "annotation-guidelines-v1",
         "annotation_guideline_path": "guideline.md",
+        "readiness_requirements": {
+            "minimum_independent_workbooks": 2,
+            "minimum_distinct_source_formats": 2,
+            "minimum_distinct_variation_tags": 2,
+            "minimum_annotatable_item_count": None,
+        },
         "validation_workbooks": entries or [default_entry],
     }
     path = tmp_path / "manifest.json"
     path.write_text(json.dumps(payload), encoding="utf-8")
     (tmp_path / "guideline.md").write_text("test guideline", encoding="utf-8")
+    canonical = tmp_path / "data" / "canonical" / "template_kanonik.xlsx"
+    canonical.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(PROJECT_ROOT / "data" / "canonical" / "template_kanonik.xlsx", canonical)
     return path, payload, default_entry
 
 
@@ -136,6 +149,14 @@ def test_immutable_provenance_matches_master_and_a_b(tmp_path):
     assert a[immutable].equals(b[immutable])
 
 
+def test_master_a_b_integrity_is_matched_by_id_not_row_position(tmp_path):
+    (_, master_path, path_a, path_b, _), _ = _generated(tmp_path)
+    master = pd.read_excel(master_path, sheet_name="Annotations", dtype=object)
+    a = pd.read_excel(path_a, sheet_name="Annotations", dtype=object)
+    b = pd.read_excel(path_b, sheet_name="Annotations", dtype=object)
+    verify_master_blinded_integrity(master, a.sample(frac=1, random_state=7), b)
+
+
 def test_mixed_configuration_causes_readiness_failure(tmp_path):
     manifest, payload, entry = _manifest(tmp_path)
     mixed = dict(entry, entry_id="mixed", retrieval_k=9)
@@ -169,6 +190,18 @@ def test_identity_unavailable_causes_readiness_failure(tmp_path):
     assert any(item.startswith("IDENTITY_UNAVAILABLE") for item in report["blockers"])
 
 
+def test_unavailable_identity_is_counted_from_actual_observation_fields():
+    frame = pd.DataFrame([
+        {"mapping_item_id": "stable", "mapping_identity_kind": "source_attribute_display", "mapping_identity_value": "Height", "mapping_identity_issue": ""},
+        {"mapping_item_id": "", "mapping_identity_kind": "unavailable", "mapping_identity_value": "", "mapping_identity_issue": "STABLE_MAPPING_IDENTITY_UNAVAILABLE"},
+        {"mapping_item_id": "has-id", "mapping_identity_kind": "source_attribute_display", "mapping_identity_value": "", "mapping_identity_issue": ""},
+    ])
+    assert summarize_observation_identities(frame) == {
+        "stable_identity_count": 1, "unavailable_identity_count": 2,
+        "duplicate_mapping_item_id_count": 0,
+    }
+
+
 def test_duplicate_mapping_item_id_causes_readiness_failure(tmp_path):
     manifest, payload, entry = _manifest(tmp_path)
     payload["validation_workbooks"] = [entry, dict(entry, entry_id="same-input-again")]
@@ -184,6 +217,52 @@ def test_metadata_fingerprint_matches_master_observations(tmp_path):
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
     assert master["evaluation_config_fingerprint"].unique().tolist() == [payload["frozen_evaluation_config_fingerprint"]]
     assert metadata["frozen_evaluation_config_fingerprint"] == payload["frozen_evaluation_config_fingerprint"]
+
+
+def test_readiness_counts_and_distributions_are_computed_from_inputs(tmp_path):
+    manifest, _, _ = _manifest(tmp_path)
+    report = assess_campaign_readiness(manifest, project_root=tmp_path)
+    assert report["validation_workbook_count"] == 1
+    assert report["validation_sheet_count"] == 1
+    assert report["total_source_attribute_count"] == 2
+    assert report["annotatable_item_count"] == 1
+    assert report["source_format_distribution"] == {"row-oriented": 1}
+    assert report["variation_tag_distribution"] == {"flat": 1, "row-oriented": 1}
+
+
+def test_final_campaign_insufficient_coverage_fails_closed(tmp_path):
+    manifest, payload, _ = _manifest(tmp_path)
+    payload["campaign_type"] = "final_validation"
+    payload["campaign_version"] = "final-research-validation-v1"
+    manifest.write_text(json.dumps(payload), encoding="utf-8")
+    report = assess_campaign_readiness(manifest, project_root=tmp_path)
+    assert report["campaign_ready"] is False
+    assert report["final_campaign_ready"] is False
+    assert any(item.startswith("FINAL_DATASET_INSUFFICIENT") for item in report["blockers"])
+    assert "FINAL_MINIMUM_ANNOTATABLE_ITEM_COUNT_NOT_DEFINED_BY_METHODOLOGY" in report["blockers"]
+
+
+def test_pilot_can_be_ready_without_final_campaign_readiness(tmp_path):
+    manifest, _, _ = _manifest(tmp_path)
+    report = assess_campaign_readiness(manifest, project_root=tmp_path)
+    assert report["campaign_type"] == "pilot"
+    assert report["pilot_ready"] is True
+    assert report["campaign_ready"] is True
+    assert report["final_campaign_ready"] is False
+
+
+def test_metadata_has_complete_hash_chain_and_detects_tampering(tmp_path):
+    (_, _, _, path_b, metadata_path), _ = _generated(tmp_path)
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    for name in (
+        "campaign_manifest", "readiness", "canonical_template", "annotation_guideline",
+        "master_artifact", "annotator_A_template", "annotator_B_template",
+    ):
+        assert len(metadata[name]["sha256"]) == 64
+    assert len(metadata["validation_workbooks"][0]["sha256"]) == 64
+    assert verify_frozen_artifacts(metadata_path, project_root=tmp_path) == []
+    path_b.write_bytes(path_b.read_bytes() + b"tampered")
+    assert any(item.startswith("FROZEN_ARTIFACT_HASH_MISMATCH") for item in verify_frozen_artifacts(metadata_path, project_root=tmp_path))
 
 
 def test_strict_loader_accepts_completed_fixture_from_blinded_template(tmp_path):

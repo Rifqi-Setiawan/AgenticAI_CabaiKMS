@@ -1,0 +1,32 @@
+{
+  "campaign_version": "schema-mapping-human-campaign-v1",
+  "campaign_type": "pilot",
+  "pilot_ready": true,
+  "final_campaign_ready": false,
+  "created_at_utc": "2026-09-07T04:49:20.526734+00:00",
+  "annotation_round": 1,
+  "annotation_instructions_version": "human-schema-mapping-v1",
+  "gold_annotation_version": "schema-mapping-gold-v1",
+  "evaluation_manifest_version": "schema-mapping-eval-v1",
+  "evaluation_manifest_path": "data/evaluation/validation_manifest.json",
+  "canonical_schema_version": "cabai-kms-canonical-v1",
+  "canonical_template_hash": "8ba7cf35b2de23dedad5d5b639f1cef06846c304f18809de8dfec34e0bf397d9",
+  "evaluation_config_fingerprint": "9bbc2b52332d585895eac0800e1fa1ebdbbc475fac4c30a7e2ee2c5d534fb0fb",
+  "source_backend": "legacy",
+  "retrieval_backend": "exact",
+  "retrieval_k": 8,
+  "mapping_verification_version": "mapping-verification-v1",
+  "embedding_model_name": "paraphrase-multilingual-MiniLM-L12-v2",
+  "prediction_blinded": true,
+  "workbooks": [
+    {
+      "source_file_name": "data_input.xlsx",
+      "source_file_sha256": "71e86f98a416d2f269b873c3a2c96bc729837fac0b104a79089e9d70fd093056",
+      "source_sheet": "Resume Data",
+      "source_format": "row-oriented",
+      "annotatable_items": 13
+    }
+  ],
+  "annotatable_item_count": 13,
+  "unavailable_identity_count": 0
+}

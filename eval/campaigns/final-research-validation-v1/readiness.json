@@ -1,0 +1,36 @@
+{
+  "annotatable_item_count": 13,
+  "blockers": [
+    "FINAL_DATASET_INSUFFICIENT: contains only 1 real workbook / 13 attributes; additional real heterogeneous evaluation workbooks are required.",
+    "FINAL_MINIMUM_ANNOTATABLE_ITEM_COUNT_NOT_DEFINED_BY_METHODOLOGY",
+    "FINAL_SOURCE_FORMAT_DIVERSITY_INSUFFICIENT:1<2"
+  ],
+  "campaign_ready": false,
+  "campaign_type": "final_validation",
+  "campaign_version": "final-research-validation-v1",
+  "canonical_schema_version": "cabai-kms-canonical-v1",
+  "canonical_template_hash": "8ba7cf35b2de23dedad5d5b639f1cef06846c304f18809de8dfec34e0bf397d9",
+  "duplicate_mapping_item_id_count": 0,
+  "evaluation_config_fingerprint": "9bbc2b52332d585895eac0800e1fa1ebdbbc475fac4c30a7e2ee2c5d534fb0fb",
+  "final_campaign_blockers": [
+    "FINAL_DATASET_INSUFFICIENT: contains only 1 real workbook / 13 attributes; additional real heterogeneous evaluation workbooks are required.",
+    "FINAL_SOURCE_FORMAT_DIVERSITY_INSUFFICIENT:1<2",
+    "FINAL_MINIMUM_ANNOTATABLE_ITEM_COUNT_NOT_DEFINED_BY_METHODOLOGY"
+  ],
+  "final_campaign_ready": false,
+  "frozen_evaluation_config_fingerprint": "9bbc2b52332d585895eac0800e1fa1ebdbbc475fac4c30a7e2ee2c5d534fb0fb",
+  "pilot_ready": false,
+  "source_format_distribution": {
+    "row-oriented": 1
+  },
+  "stable_identity_count": 13,
+  "total_source_attribute_count": 14,
+  "unavailable_identity_count": 0,
+  "validation_sheet_count": 1,
+  "validation_workbook_count": 1,
+  "variation_tag_distribution": {
+    "field-data": 1,
+    "hierarchical-header": 1,
+    "row-oriented": 1
+  }
+}

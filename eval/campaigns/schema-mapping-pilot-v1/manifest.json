@@ -1,5 +1,6 @@
 {
-  "campaign_version": "schema-mapping-validation-campaign-v1",
+  "campaign_version": "schema-mapping-pilot-v1",
+  "campaign_type": "pilot",
   "annotation_version": "schema-mapping-gold-v1",
   "annotation_round": 1,
   "canonical_schema_version": "cabai-kms-canonical-v1",
@@ -10,8 +11,14 @@
   "retrieval_backend": "exact",
   "retrieval_k": 8,
   "frozen_evaluation_config_fingerprint": "9bbc2b52332d585895eac0800e1fa1ebdbbc475fac4c30a7e2ee2c5d534fb0fb",
-  "annotation_guideline_version": "annotation-guidelines-v1",
-  "annotation_guideline_path": "docs/annotation_guidelines_v1.md",
+  "annotation_guideline_version": "human-schema-mapping-v1",
+  "annotation_guideline_path": "docs/HUMAN_ANNOTATION_GUIDE.md",
+  "readiness_requirements": {
+    "minimum_independent_workbooks": 2,
+    "minimum_distinct_source_formats": 2,
+    "minimum_distinct_variation_tags": 2,
+    "minimum_annotatable_item_count": null
+  },
   "validation_workbooks": [
     {
       "entry_id": "validation-data-input-resume-data",
@@ -23,6 +30,7 @@
       "retrieval_backend": "exact",
       "retrieval_k": 8,
       "part_of_validation": true,
+      "variation_tags": ["field-data", "hierarchical-header", "row-oriented"],
       "counts": {
         "annotatable_attributes": 13,
         "stable_mapping_identities": 13,

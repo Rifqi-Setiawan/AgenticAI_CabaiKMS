@@ -29,7 +29,7 @@ from src.schema.gold_mapping import MappingIdentityKind, build_mapping_item_iden
 from src.ui.pipeline_runner import run_pipeline_ui
 from src.ui import pipeline_runner
 
-CAMPAIGN_VERSION = "schema-mapping-validation-campaign-v1"
+CAMPAIGN_VERSION = "schema-mapping-pilot-v1"
 GUIDELINE_VERSION = "annotation-guidelines-v1"
 SUPPORTED_FORMATS = {"row-oriented", "transposed"}
 PREDICTION_COLUMNS = {
@@ -86,15 +86,20 @@ def assess_campaign_readiness(
     if manifest.get("canonical_template_hash") != schema.template_hash:
         blockers.append("CANONICAL_TEMPLATE_HASH_MISMATCH")
 
+    campaign_type = manifest.get("campaign_type")
+    if campaign_type not in {"pilot", "final_validation"}:
+        blockers.append(f"INVALID_CAMPAIGN_TYPE:{campaign_type}")
     validation_entries = [item for item in manifest.get("validation_workbooks", []) if item.get("part_of_validation") is True]
     if not validation_entries:
         blockers.append("NO_VALIDATION_WORKBOOKS")
     counts = {
-        "validation_workbook_count": len(validation_entries), "sheet_count": 0,
+        "validation_workbook_count": len(validation_entries), "validation_sheet_count": 0,
         "total_source_attribute_count": 0, "annotatable_item_count": 0,
         "stable_identity_count": 0, "unavailable_identity_count": 0,
     }
     item_ids: list[str] = []
+    source_formats: list[str] = []
+    variation_tags: list[str] = []
     seen_entry_ids: set[str] = set()
     for entry in validation_entries:
         entry_id = str(entry.get("entry_id", "")).strip()
@@ -106,6 +111,8 @@ def assess_campaign_readiness(
         ):
             blockers.append(f"MIXED_EVALUATION_CONFIGURATION:{entry_id}")
         source_format = entry.get("source_format")
+        source_formats.append(str(source_format))
+        variation_tags.extend(str(tag) for tag in entry.get("variation_tags", []))
         if source_format not in SUPPORTED_FORMATS:
             blockers.append(f"UNSUPPORTED_SOURCE_FORMAT:{entry_id}:{source_format}")
             continue
@@ -129,7 +136,7 @@ def assess_campaign_readiness(
             continue
         entry_counts = {"annotatable_attributes": 0, "stable_mapping_identities": 0, "unavailable_identities": 0}
         for sheet in sheets:
-            counts["sheet_count"] += 1
+            counts["validation_sheet_count"] += 1
             try:
                 bundle = source_loader(source, sheet, source_format=source_format)
                 counts["total_source_attribute_count"] += len(bundle.all_attributes)
@@ -158,14 +165,117 @@ def assess_campaign_readiness(
     duplicate_count = len(item_ids) - len(set(item_ids))
     if duplicate_count:
         blockers.append(f"DUPLICATE_MAPPING_ITEM_ID:{duplicate_count}")
+    source_format_distribution = dict(sorted(__import__("collections").Counter(source_formats).items()))
+    variation_tag_distribution = dict(sorted(__import__("collections").Counter(variation_tags).items()))
+    integrity_blockers = sorted(set(blockers))
+    coverage_blockers: list[str] = []
+    requirements = manifest.get("readiness_requirements", {})
+    if campaign_type == "final_validation":
+        minimum_workbooks = requirements.get("minimum_independent_workbooks")
+        if minimum_workbooks is None:
+            coverage_blockers.append("FINAL_MINIMUM_WORKBOOK_COUNT_UNDEFINED")
+        elif counts["validation_workbook_count"] < minimum_workbooks:
+            coverage_blockers.append(
+                f"FINAL_DATASET_INSUFFICIENT: contains only {counts['validation_workbook_count']} real workbook / "
+                f"{counts['annotatable_item_count']} attributes; additional real heterogeneous evaluation workbooks are required."
+            )
+        minimum_formats = requirements.get("minimum_distinct_source_formats")
+        if minimum_formats is None:
+            coverage_blockers.append("FINAL_MINIMUM_SOURCE_FORMAT_DIVERSITY_UNDEFINED")
+        elif len(source_format_distribution) < minimum_formats:
+            coverage_blockers.append(
+                f"FINAL_SOURCE_FORMAT_DIVERSITY_INSUFFICIENT:{len(source_format_distribution)}<{minimum_formats}"
+            )
+        minimum_variations = requirements.get("minimum_distinct_variation_tags")
+        if minimum_variations is None:
+            coverage_blockers.append("FINAL_MINIMUM_STRUCTURE_DIVERSITY_UNDEFINED")
+        elif len(variation_tag_distribution) < minimum_variations:
+            coverage_blockers.append(
+                f"FINAL_STRUCTURE_DIVERSITY_INSUFFICIENT:{len(variation_tag_distribution)}<{minimum_variations}"
+            )
+        minimum_items = requirements.get("minimum_annotatable_item_count")
+        if minimum_items is None:
+            coverage_blockers.append("FINAL_MINIMUM_ANNOTATABLE_ITEM_COUNT_NOT_DEFINED_BY_METHODOLOGY")
+        elif counts["annotatable_item_count"] < minimum_items:
+            coverage_blockers.append(
+                f"FINAL_ANNOTATABLE_ITEM_COUNT_INSUFFICIENT:{counts['annotatable_item_count']}<{minimum_items}"
+            )
+    all_blockers = sorted(set([*integrity_blockers, *coverage_blockers]))
+    pilot_ready = campaign_type == "pilot" and not integrity_blockers
+    final_ready = campaign_type == "final_validation" and not all_blockers
     return {
-        "campaign_version": manifest.get("campaign_version"), **counts,
+        "campaign_version": manifest.get("campaign_version"), "campaign_type": campaign_type, **counts,
         "duplicate_mapping_item_id_count": duplicate_count,
+        "source_format_distribution": source_format_distribution,
+        "variation_tag_distribution": variation_tag_distribution,
+        "evaluation_config_fingerprint": declared_fingerprint,
         "frozen_evaluation_config_fingerprint": declared_fingerprint,
         "canonical_schema_version": manifest.get("canonical_schema_version"),
         "canonical_template_hash": manifest.get("canonical_template_hash"),
-        "campaign_ready": not blockers, "blockers": sorted(set(blockers)),
+        "campaign_ready": pilot_ready if campaign_type == "pilot" else final_ready,
+        "pilot_ready": pilot_ready,
+        "final_campaign_ready": final_ready,
+        "blockers": integrity_blockers if campaign_type == "pilot" else all_blockers,
+        "final_campaign_blockers": coverage_blockers,
     }
+
+
+def summarize_observation_identities(frame: pd.DataFrame) -> dict[str, int]:
+    """Count stable/unavailable identities from generated observation fields."""
+    text = lambda column: frame.get(column, pd.Series("", index=frame.index)).fillna("").astype(str).str.strip()
+    unavailable = (
+        text("mapping_identity_kind").str.casefold().eq(MappingIdentityKind.UNAVAILABLE.value)
+        | text("mapping_item_id").eq("")
+        | text("mapping_identity_value").eq("")
+        | text("mapping_identity_issue").str.contains("STABLE_MAPPING_IDENTITY_UNAVAILABLE", regex=False)
+    )
+    nonblank_ids = text("mapping_item_id").loc[~text("mapping_item_id").eq("")]
+    return {
+        "stable_identity_count": int((~unavailable).sum()),
+        "unavailable_identity_count": int(unavailable.sum()),
+        "duplicate_mapping_item_id_count": int(nonblank_ids.duplicated().sum()),
+    }
+
+
+def verify_master_blinded_integrity(master: pd.DataFrame, annotations_a: pd.DataFrame, annotations_b: pd.DataFrame) -> None:
+    """Verify A/B derive from master by ID, independent of row position."""
+    frames = {"master": master, "A": annotations_a, "B": annotations_b}
+    indexes = {}
+    for name, frame in frames.items():
+        ids = frame["mapping_item_id"].fillna("").astype(str).str.strip()
+        if ids.eq("").any() or ids.duplicated().any():
+            raise ValueError(f"{name} contains missing or duplicate mapping_item_id")
+        indexes[name] = frame.assign(mapping_item_id=ids).set_index("mapping_item_id")
+    if set(indexes["master"].index) != set(indexes["A"].index) or set(indexes["A"].index) != set(indexes["B"].index):
+        raise ValueError("master/A/B mapping_item_id universes differ")
+    immutable = [column for column in IMMUTABLE_COLUMNS if column != "mapping_item_id"]
+    order = sorted(indexes["master"].index)
+    for name in ("A", "B"):
+        left = indexes["master"].loc[order, immutable].fillna("").astype(str)
+        right = indexes[name].loc[order, immutable].fillna("").astype(str)
+        if not left.equals(right):
+            raise ValueError(f"master/{name} immutable provenance differs")
+
+
+def verify_frozen_artifacts(metadata_path: Path, *, project_root: Path = PROJECT_ROOT) -> list[str]:
+    """Return deterministic hash-integrity blockers for every frozen artifact."""
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    records = [
+        metadata["campaign_manifest"], metadata["readiness"], metadata["canonical_template"],
+        metadata["annotation_guideline"], metadata["master_artifact"],
+        metadata["annotator_A_template"], metadata["annotator_B_template"],
+        *metadata["validation_workbooks"],
+    ]
+    blockers = []
+    for record in records:
+        path = Path(record["path"])
+        resolved = path if path.is_absolute() else project_root / path
+        label = record.get("entry_id", record["path"])
+        if not resolved.is_file():
+            blockers.append(f"FROZEN_ARTIFACT_MISSING:{label}")
+        elif _sha256(resolved) != record["sha256"]:
+            blockers.append(f"FROZEN_ARTIFACT_HASH_MISMATCH:{label}")
+    return sorted(blockers)
 
 
 def _reference_frame(schema: CanonicalSchema) -> pd.DataFrame:
@@ -240,6 +350,47 @@ def _git_revision(project_root: Path) -> str | None:
         return None
 
 
+def build_campaign_metadata(
+    manifest_path: Path, output_dir: Path, *, project_root: Path = PROJECT_ROOT,
+    guideline_path: Path | None = None,
+) -> dict:
+    """Build the hash chain for an already-written pilot campaign package."""
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    readiness_path = output_dir / "readiness.json"
+    master_path = output_dir / "master" / "master_evaluation.xlsx"
+    output_a = output_dir / "round1" / "annotator_A_round1.xlsx"
+    output_b = output_dir / "round1" / "annotator_B_round1.xlsx"
+    guideline = guideline_path or project_root / manifest["annotation_guideline_path"]
+    required = [readiness_path, master_path, output_a, output_b, guideline]
+    missing = [path for path in required if not path.is_file()]
+    if missing:
+        raise FileNotFoundError(f"cannot freeze incomplete campaign package: {missing}")
+    expected_config = _manifest_config(manifest)
+    return {
+        "campaign_version": manifest["campaign_version"], "campaign_type": manifest["campaign_type"],
+        "annotation_version": manifest["annotation_version"], "annotation_round": manifest["annotation_round"],
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(), "code_revision": _git_revision(project_root),
+        "campaign_manifest": {"path": manifest_path.as_posix(), "sha256": _sha256(manifest_path)},
+        "readiness": {"path": readiness_path.as_posix(), "sha256": _sha256(readiness_path)},
+        "validation_workbooks": [
+            {"entry_id": entry["entry_id"], "path": entry["path"], "sha256": entry["sha256"]}
+            for entry in manifest["validation_workbooks"] if entry["part_of_validation"]
+        ],
+        "master_artifact": {"path": master_path.as_posix(), "sha256": _sha256(master_path)},
+        "annotator_A_template": {"path": output_a.as_posix(), "sha256": _sha256(output_a)},
+        "annotator_B_template": {"path": output_b.as_posix(), "sha256": _sha256(output_b)},
+        "canonical_schema_version": manifest["canonical_schema_version"],
+        "canonical_template_hash": manifest["canonical_template_hash"],
+        "canonical_template": {
+            "path": "data/canonical/template_kanonik.xlsx",
+            "sha256": _sha256(project_root / "data/canonical/template_kanonik.xlsx"),
+        },
+        "frozen_evaluation_config_fingerprint": expected_config.fingerprint,
+        "annotation_guideline": {"path": manifest["annotation_guideline_path"], "version": manifest["annotation_guideline_version"], "sha256": _sha256(guideline)},
+        "prediction_blinded": True,
+    }
+
+
 def prepare_campaign(
     manifest_path: Path, output_dir: Path, *, project_root: Path = PROJECT_ROOT,
     guideline_path: Path | None = None, pipeline_call: Callable = run_pipeline_ui,
@@ -290,7 +441,10 @@ def prepare_campaign(
             pipeline_runner.run_pipeline = original_orchestrator_call
 
     master = pd.concat(frames, ignore_index=True).reindex(columns=ANNOTATION_COLUMNS)
-    if master["mapping_item_id"].duplicated().any():
+    observed_identity = summarize_observation_identities(master)
+    if observed_identity["unavailable_identity_count"]:
+        raise ValueError("generated observations contain unavailable stable identities")
+    if observed_identity["duplicate_mapping_item_id_count"]:
         raise ValueError("validation campaign contains duplicate mapping_item_id values")
     if len(master) != readiness["annotatable_item_count"]:
         raise ValueError("master item count differs from readiness report")
@@ -299,30 +453,14 @@ def prepare_campaign(
     blinded = master.reindex(columns=BLINDED_COLUMNS).copy(deep=True)
     if PREDICTION_COLUMNS & set(blinded.columns):
         raise ValueError("prediction columns leaked into blinded view")
+    verify_master_blinded_integrity(master, blinded, blinded.copy(deep=True))
     _write_workbook(master_path, master, schema, blinded=False)
     _write_workbook(output_a, blinded, schema, blinded=True)
     _write_workbook(output_b, blinded.copy(deep=True), schema, blinded=True)
 
-    guideline = guideline_path or project_root / manifest["annotation_guideline_path"]
-    metadata = {
-        "campaign_version": manifest["campaign_version"], "annotation_version": manifest["annotation_version"],
-        "annotation_round": manifest["annotation_round"],
-        "generated_at_utc": datetime.now(timezone.utc).isoformat(), "code_revision": _git_revision(project_root),
-        "campaign_manifest": {"path": manifest_path.as_posix(), "sha256": _sha256(manifest_path)},
-        "readiness": {"path": readiness_path.as_posix(), "sha256": _sha256(readiness_path)},
-        "validation_workbooks": [
-            {"entry_id": entry["entry_id"], "path": entry["path"], "sha256": entry["sha256"]}
-            for entry in manifest["validation_workbooks"] if entry["part_of_validation"]
-        ],
-        "master_artifact": {"path": master_path.as_posix(), "sha256": _sha256(master_path)},
-        "annotator_A_template": {"path": output_a.as_posix(), "sha256": _sha256(output_a)},
-        "annotator_B_template": {"path": output_b.as_posix(), "sha256": _sha256(output_b)},
-        "canonical_schema_version": manifest["canonical_schema_version"],
-        "canonical_template_hash": manifest["canonical_template_hash"],
-        "frozen_evaluation_config_fingerprint": expected_config.fingerprint,
-        "annotation_guideline": {"path": guideline.as_posix(), "version": manifest["annotation_guideline_version"], "sha256": _sha256(guideline)},
-        "prediction_blinded": True,
-    }
+    metadata = build_campaign_metadata(
+        manifest_path, output_dir, project_root=project_root, guideline_path=guideline_path,
+    )
     metadata_path.write_bytes(_json_bytes(metadata))
     return readiness_path, master_path, output_a, output_b, metadata_path
 
@@ -333,7 +471,23 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--project-root", type=Path, default=PROJECT_ROOT)
     parser.add_argument("--guideline", type=Path)
+    parser.add_argument("--readiness-only", action="store_true")
+    parser.add_argument("--refresh-metadata-only", action="store_true")
     args = parser.parse_args()
+    if args.readiness_only:
+        args.output_dir.mkdir(parents=True, exist_ok=True)
+        readiness_path = args.output_dir / "readiness.json"
+        readiness_path.write_bytes(_json_bytes(assess_campaign_readiness(args.manifest, project_root=args.project_root)))
+        print(readiness_path)
+        return
+    if args.refresh_metadata_only:
+        metadata_path = args.output_dir / "metadata.json"
+        metadata_path.write_bytes(_json_bytes(build_campaign_metadata(
+            args.manifest, args.output_dir, project_root=args.project_root,
+            guideline_path=args.guideline,
+        )))
+        print(metadata_path)
+        return
     for path in prepare_campaign(args.manifest, args.output_dir, project_root=args.project_root, guideline_path=args.guideline):
         print(path)
 

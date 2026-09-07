@@ -1,8 +1,10 @@
 # Annotation guidelines v1
 
 Version: `annotation-guidelines-v1`  
-Campaign: `schema-mapping-validation-campaign-v1`  
+Campaign: `schema-mapping-pilot-v1`  
 Round: `1`
+
+This expanded guide is retained as supporting pilot documentation. The hash-frozen instruction artifact distributed with the pilot is `docs/HUMAN_ANNOTATION_GUIDE.md`.
 
 Annotate from the source label, structural context, representative values, and the `Canonical Reference` sheet only. The model's proposed target, confidence, retrieval results, verifier result, and acceptance result are intentionally absent. Do not seek them out, infer a decision from them, or consult the other annotator before both first passes are frozen.
 
