@@ -250,7 +250,7 @@ def test_unknown_pipeline_retrieval_backend_fails_before_file_access(retrieval_b
 
 
 def test_review_mapping_never_normalizes_or_writes_but_later_attributes_do(
-    flat_observations, monkeypatch,
+    flat_observations, monkeypatch, tmp_path,
 ):
     """Mixed workbook regression: ACCEPT, REVIEW, ACCEPT stay independent."""
     _isolate_pipeline(monkeypatch)
@@ -276,7 +276,8 @@ def test_review_mapping_never_normalizes_or_writes_but_later_attributes_do(
 
     monkeypatch.setattr(runner, "safe_rerank", safe_mapping)
     monkeypatch.setattr(runner, "normalize", normalize_spy)
-    result = runner.run_pipeline_ui(flat_observations)
+    queue_path = tmp_path / "review.jsonl"
+    result = runner.run_pipeline_ui(flat_observations, review_queue_path=queue_path)
 
     review = result.mapping_df[result.mapping_df.source_attribute == "Growth habit"].iloc[0]
     later = result.mapping_df[result.mapping_df.source_attribute == "Plant Height (cm)"].iloc[0]
@@ -291,6 +292,11 @@ def test_review_mapping_never_normalizes_or_writes_but_later_attributes_do(
     assert later.canonical_write == True  # noqa: E712
     assert result.canonical_df.loc[result.canonical_df.Karakter == "tinggi tanaman", "Domba"].item() == "50--77 cm"
     assert "2 AUTO_ACCEPT, 1 REVIEW, 0 NO_WRITE" in result.agent_status["schema_matching"]
+    pending = runner.review_queue.list_pending(queue_path=queue_path, run_id=result.run_id)
+    assert len(pending) == 1
+    assert pending[0].source_attribute_display == "Growth habit"
+    assert pending[0].source_file_sha256 == result.mapping_df.source_file_sha256.iloc[0]
+    assert pending[0].schema_version == result.schema_version
 
 
 def test_structurally_invalid_result_is_observable_and_does_not_block_next_attribute(
@@ -659,7 +665,13 @@ def test_shadow_mode_cannot_change_primary_pipeline_outputs(flat_observations, m
     assert shadowed.structure_shadow.status.value == "MATCH"
     assert baseline.workbook_bytes == shadowed.workbook_bytes
     assert_frame_equal(baseline.canonical_df, shadowed.canonical_df)
-    assert_frame_equal(baseline.mapping_df, shadowed.mapping_df)
+    assert_frame_equal(
+        baseline.mapping_df.drop(columns="review_item_id"),
+        shadowed.mapping_df.drop(columns="review_item_id"),
+    )
+    assert set(baseline.mapping_df.review_item_id.dropna()).isdisjoint(
+        set(shadowed.mapping_df.review_item_id.dropna())
+    )
     assert baseline.vision_rows == shadowed.vision_rows
     assert baseline.agent_status["vision_classification"] == shadowed.agent_status["vision_classification"]
     assert len(baseline.provenance_records) == len(shadowed.provenance_records)

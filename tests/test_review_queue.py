@@ -4,6 +4,7 @@ import pytest
 
 from src.agents.schema_matching import review_queue as rq
 from src.schema.contracts import NULL_ROW, SchemaMapping
+from src.schema.canonical import CanonicalSchema
 
 
 def _mapping(target_row: str, confidence: float, attribute: str = "x") -> SchemaMapping:
@@ -160,3 +161,35 @@ class TestHumanReviewApi:
         rq.approve(item.item_id, queue_path=queue_path)
         lines = queue_path.read_text(encoding="utf-8").strip().splitlines()
         assert len(lines) == 2  # enqueue + approve, neither line rewritten
+
+    def test_current_run_filter_excludes_historical_items(self, queue_path):
+        rq.enqueue(_mapping("r_1", 0.2), reason="current", queue_path=queue_path, run_id="run-1", mapping_item_id="m-1")
+        rq.enqueue(_mapping("r_1", 0.2), reason="old", queue_path=queue_path, run_id="run-old", mapping_item_id="m-old")
+        assert [item.run_id for item in rq.list_pending(queue_path=queue_path, run_id="run-1")] == ["run-1"]
+
+    def test_revise_selector_persists_stable_canonical_key(self, queue_path):
+        schema = CanonicalSchema.from_template()
+        target = schema.row_by_label("habitus")
+        item = rq.enqueue(
+            _mapping(NULL_ROW, 0.2), reason="review", queue_path=queue_path,
+            run_id="run-1", mapping_item_id="m-1",
+        )
+        revised = rq.revise_to_canonical_key(
+            item.item_id, target.canonical_key, schema=schema,
+            expected_run_id="run-1", queue_path=queue_path,
+        )
+        assert revised.status == "revised"
+        assert revised.final_canonical_key == target.canonical_key
+        assert revised.mapping.target_canonical_row == target.id
+
+    def test_mark_no_match_is_explicit_resolved_state(self, queue_path):
+        item = rq.enqueue(
+            _mapping(NULL_ROW, 0.2), reason="review", queue_path=queue_path,
+            run_id="run-1", mapping_item_id="m-1",
+        )
+        resolved = rq.mark_no_match(
+            item.item_id, expected_run_id="run-1", queue_path=queue_path,
+        )
+        assert resolved.status == "no_match"
+        assert resolved.final_canonical_key is None
+        assert rq.list_pending(queue_path=queue_path, run_id="run-1") == []

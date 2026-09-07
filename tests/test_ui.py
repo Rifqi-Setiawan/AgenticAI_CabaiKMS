@@ -5,6 +5,9 @@ import pytest
 from streamlit.testing.v1 import AppTest
 
 from src.ui.pipeline_runner import PipelineRunResult
+from src.agents.schema_matching import review_queue
+from src.schema.canonical import CanonicalSchema
+from src.schema.contracts import SchemaMapping
 
 APP_PATH = "src/ui/app.py"
 PROGRESS_PATH = "src/ui/pages/2_Progress.py"
@@ -177,3 +180,37 @@ class TestPage3Hasil:
         debugger_button.click().run()
         assert not at.exception
         assert any("checkpoint tersimpan" in w.value for w in list(at.markdown) + list(at.text))
+
+    def test_current_run_review_item_shows_human_actions_and_canonical_selector(self, tmp_path):
+        schema = CanonicalSchema.from_template()
+        result = _fixture_result()
+        result.run_id = "ui-current-run"
+        result.schema_version = schema.schema_version
+        result.template_hash = schema.template_hash
+        result.review_queue_path = str(tmp_path / "review.jsonl")
+        mapping = SchemaMapping(
+            source_attribute="Warna Daun", source_context="Daun",
+            source_format="row-oriented", target_canonical_row=schema.row_by_label("warna daun").id,
+            confidence=0.2, reasoning="needs review", normalization_required=False,
+        )
+        item = review_queue.enqueue(
+            mapping, reason="needs review", queue_path=result.review_queue_path,
+            run_id=result.run_id, mapping_item_id="mapping-ui",
+            source_file_name="source.xlsx", source_file_sha256="a" * 64,
+            source_sheet="Sheet1", source_format="row-oriented",
+            source_attribute_display="Daun / Warna Daun",
+            schema_version=schema.schema_version, template_hash=schema.template_hash,
+            proposed_canonical_key=schema.row_by_label("warna daun").canonical_key,
+            mapping_method="retrieve_rerank", verifier_status="REVIEW",
+            sample_values=["hijau"], raw_values_by_variety={"Gendot": ["hijau"]},
+        )
+        result.mapping_df["review_item_id"] = [item.item_id, None]
+        at = AppTest.from_file(HASIL_PATH, default_timeout=APP_TEST_TIMEOUT)
+        at.session_state["cabai_kms_pipeline_result"] = result
+        at.run()
+        assert not at.exception
+        labels = [button.label for button in at.button]
+        assert "Setujui usulan" in labels
+        assert "Ubah target" in labels
+        assert "Tandai NO_MATCH" in labels
+        assert any("warna daun" in str(option) for option in at.selectbox[0].options)

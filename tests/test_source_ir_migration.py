@@ -110,7 +110,15 @@ def test_gated_row_match_promotes_once_and_enriches_provenance(
     assert gated.retrieval_backend == "exact"
     assert gated.source_ir_version == "source-ir-v1"
     assert gated.structure_shadow.status.value == "MATCH"
-    assert_frame_equal(legacy.mapping_df, gated.mapping_df)
+    assert_frame_equal(
+        legacy.mapping_df.drop(columns=["review_item_id"]),
+        gated.mapping_df.drop(columns=["review_item_id"]),
+    )
+    legacy_review_ids = set(legacy.mapping_df["review_item_id"].dropna())
+    gated_review_ids = set(gated.mapping_df["review_item_id"].dropna())
+    assert legacy_review_ids
+    assert gated_review_ids
+    assert legacy_review_ids.isdisjoint(gated_review_ids)
     assert_frame_equal(legacy.canonical_df, gated.canonical_df)
     assert legacy.workbook_bytes == gated.workbook_bytes
     assert all(record.source_cells == [] for record in legacy.provenance_records)

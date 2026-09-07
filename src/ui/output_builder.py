@@ -28,6 +28,19 @@ SHEET_NAME = "Sheet1"
 MULTI_VALUE_SEPARATOR = "; "
 
 
+def append_unique_value(existing: str | None, value: str | None) -> tuple[str | None, bool]:
+    """Return an idempotent multi-value cell update."""
+    if value is None or str(value).strip() == "":
+        return existing, False
+    value = str(value)
+    if existing is None or str(existing).strip() == "":
+        return value, True
+    existing = str(existing)
+    if value in [part.strip() for part in existing.split(MULTI_VALUE_SEPARATOR)]:
+        return existing, False
+    return existing + MULTI_VALUE_SEPARATOR + value, True
+
+
 @dataclass
 class CanonicalOutputBuilder:
     """Accumulates (canonical_row, varietas) -> normalized value pairs from
@@ -53,19 +66,12 @@ class CanonicalOutputBuilder:
         changes. Callers use this acknowledgement to avoid false provenance
         for blank or duplicate no-op writes.
         """
-        if value is None or str(value).strip() == "":
-            return False
-        self.add_variety(variety_name)
         existing = self._cells.get((row_id, variety_name))
-        if existing is None:
-            self._cells[(row_id, variety_name)] = value
-            return True
-        else:
-            existing_parts = [p.strip() for p in existing.split(MULTI_VALUE_SEPARATOR)]
-            if value not in existing_parts:
-                self._cells[(row_id, variety_name)] = existing + MULTI_VALUE_SEPARATOR + value
-                return True
-        return False
+        updated, changed = append_unique_value(existing, value)
+        if changed and updated is not None:
+            self.add_variety(variety_name)
+            self._cells[(row_id, variety_name)] = updated
+        return changed
 
     def build_workbook(self, template_path: Path | str = DEFAULT_TEMPLATE_PATH) -> openpyxl.Workbook:
         wb = openpyxl.load_workbook(template_path)

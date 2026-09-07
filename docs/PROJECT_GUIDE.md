@@ -440,7 +440,26 @@ for item in list_pending():
     print(item.item_id, item.mapping.source_attribute, item.reason)
 ```
 
-API `approve(item_id, resolved_by=...)` menandai persetujuan, sedangkan `revise(item_id, corrected_mapping, resolved_by=...)` menyimpan koreksi berupa `SchemaMapping`. Keduanya mengubah queue, **bukan workbook yang sudah dibuat**. Belum ada replay hasil koreksi ke pipeline, dan UI belum menyediakan tombol untuk keduanya.
+API lama `approve(item_id, resolved_by=...)` dan `revise(item_id, corrected_mapping, resolved_by=...)` tetap kompatibel. API run-aware menambahkan pemeriksaan `expected_run_id`, selector `revise_to_canonical_key()`, dan status eksplisit `mark_no_match()`.
+
+**Pembaruan Runtime Hardening R1:** halaman **Hasil** kini menampilkan item `REVIEW`
+yang terikat ke run aktif. Pengguna dapat menyetujui usulan, memilih target lain dari
+`CanonicalSchema` aktif (yang disimpan sebagai `canonical_key`), atau menetapkan
+`NO_MATCH`. Setiap keputusan menambah event JSONL baru; event lama tidak ditulis ulang.
+
+Setelah semua item run aktif diselesaikan, **Terapkan Koreksi** memuat salinan bersih
+dari bytes output asli dan menerapkan nilai sumber yang sudah ditangkap saat pipeline
+pertama berjalan. Replay menjalankan normalisasi/output deterministik saja: retrieval,
+embedding, reranker/LLM, verifier, dan vision tidak dipanggil ulang. Output asli tetap
+tersedia bila replay gagal. Provenance write hasil review menggunakan
+`mapping_method=human_review`, mempertahankan usulan/confidence/verifier awal, target
+akhir, reviewer, dan status resolusi.
+
+Keterbatasan: review hanya tersedia selama `PipelineRunResult` run tersebut masih ada
+di session Streamlit; belum ada browser historis atau pemuatan ulang snapshot run dari
+disk. Queue tetap file JSONL lokal dan belum menyediakan locking multi-proses atau
+autentikasi/otorisasi reviewer. Graf checkpoint masih stub debugger, bukan orkestrator
+agentic terintegrasi penuh.
 
 Kegagalan provider tanpa mapping serta masalah vision dicatat melalui trace tertentu, bukan semuanya menjadi `ReviewItem`. Jangan menyamakan jumlah queue, jumlah error trace, dan jumlah kesalahan di output.
 
@@ -598,10 +617,10 @@ Hasil verifikasi audit terkini dicatat di [CHECKPOINTS.md](CHECKPOINTS.md), terp
 
 Temuan berikut adalah batas implementasi, **bukan fitur yang diperbaiki dalam audit dokumentasi ini**:
 
-1. **Review sudah memblokir penulisan, tetapi koreksi belum interaktif.** Gerbang Phase 1 memastikan hanya `AUTO_ACCEPT` yang menulis; `REVIEW` dan `NO_WRITE` tidak mengubah workbook kanonik. Queue review belum tersambung ke editor UI dan replay hasil koreksi.
+1. **Review dan replay kini interaktif untuk run aktif.** `REVIEW` dan `NO_WRITE` tetap tidak menulis pada run awal; keputusan manusia pada item `REVIEW` dapat diterapkan deterministik ke salinan output asli. Persistensi snapshot run lintas restart dan review historis belum tersedia.
 2. **CSV dan perluasan cakupan parsing belum tersedia pada UI.** Uploader menawarkan CSV, tetapi runner masih membutuhkan `.xlsx`. Phase 4 dapat merepresentasikan judul sebelum tabel, header bertingkat, merge, dan layout transposed setelah verifikasi; jalur itu sudah terintegrasi untuk shadow dan `source-ir-gated`, tetapi gate produksi saat ini hanya mempromosikan hasil yang tepat setara dengan referensi legacy. T03 dan T04 sudah diverifikasi; enam dummy lainnya belum diverifikasi pada perbaikan ini.
 3. **Validasi anchor kini menghentikan runner.** Header salah/ambigu atau identitas varietas yang hilang menghasilkan error sebelum pemetaan. Error provider dan mapping NULL masih harus diperiksa terpisah; validasi input bukan jaminan semua atribut akan terpetakan.
-4. **Koreksi manual belum diterapkan ulang.** Queue belum tersambung ke editor UI, replay workbook, atau identitas run yang lengkap.
+4. **Koreksi manual memiliki audit event lokal.** Identitas run/source/schema dan provenance replay sudah tersedia, tetapi queue JSONL belum memiliki locking multi-proses, autentikasi reviewer, atau penyimpanan snapshot run lintas restart.
 5. **Graf masih stub.** Checkpoint/resume tidak memulihkan proses agen nyata; routing stub tidak menjadi jaminan reliability alur UI.
 6. **Rate limiter belum dipasang pada runner.** Retry provider juga dapat mengulangi error konfigurasi/kuota yang tidak akan pulih hanya dengan retry.
 7. **Trace belum mencakup semua jalur.** Catatan normalisasi dan alasan sel vision tidak ditulis hanya sebagian tampil di log; label validasi UI tidak mewakili semua masalah data.

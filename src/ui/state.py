@@ -13,6 +13,7 @@ _RESULT_KEY = "cabai_kms_pipeline_result"
 _LOG_KEY = "cabai_kms_log"
 _RUNNING_KEY = "cabai_kms_running"
 _INPUTS_KEY = "cabai_kms_inputs"
+_CORRECTED_RESULT_KEY = "cabai_kms_corrected_pipeline_result"
 
 
 def has_result() -> bool:
@@ -25,10 +26,24 @@ def get_result() -> Any | None:
 
 def set_result(result: Any) -> None:
     st.session_state[_RESULT_KEY] = result
+    clear_corrected_result()
 
 
 def clear_result() -> None:
     st.session_state.pop(_RESULT_KEY, None)
+    clear_corrected_result()
+
+
+def get_corrected_result() -> Any | None:
+    return st.session_state.get(_CORRECTED_RESULT_KEY)
+
+
+def set_corrected_result(result: Any) -> None:
+    st.session_state[_CORRECTED_RESULT_KEY] = result
+
+
+def clear_corrected_result() -> None:
+    st.session_state.pop(_CORRECTED_RESULT_KEY, None)
 
 
 def get_log() -> list[str]:

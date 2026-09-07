@@ -8,7 +8,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
-MappingMethod = Literal["exact_name", "retrieve_rerank"]
+MappingMethod = Literal["exact_name", "retrieve_rerank", "human_review"]
 
 
 def source_file_sha256(path: Path | str) -> str:
@@ -43,7 +43,7 @@ class CellProvenanceRecord(BaseModel):
     normalized_value: Any
     normalization_required: bool
     mapping_confidence: float
-    acceptance_status: Literal["AUTO_ACCEPT"]
+    acceptance_status: Literal["AUTO_ACCEPT", "HUMAN_REVIEW"]
     acceptance_reason: str
     canonical_write: Literal[True] = True
     schema_version: str
@@ -51,3 +51,10 @@ class CellProvenanceRecord(BaseModel):
     mapping_method: MappingMethod | None = None
     verifier_status: Literal["PASS", "REVIEW", "REJECT"] | None = None
     verifier_hard_issues: list[str] = Field(default_factory=list)
+    review_item_id: str | None = None
+    review_resolution: Literal["approved", "revised", "no_match"] | None = None
+    resolved_by: str | None = None
+    resolved_at: str | None = None
+    original_proposed_canonical_key: str | None = None
+    original_mapping_confidence: float | None = None
+    original_verifier_status: Literal["PASS", "REVIEW", "REJECT"] | None = None

@@ -46,6 +46,7 @@ from src.agents.schema_matching.mapping_verifier import (
     verify_mapping,
 )
 from src.agents.schema_matching.normalize import normalize
+from src.agents.schema_matching import review_queue
 from src.agents.schema_matching.review_queue import AcceptanceStatus, decide_mapping_acceptance
 from src.agents.schema_matching.retrieval import (
     DEFAULT_K,
@@ -80,6 +81,7 @@ from src.ui.output_builder import SHEET_NAME, CanonicalOutputBuilder, combine_mu
 
 MAPPING_COLUMNS = [
     "mapping_item_id",
+    "review_item_id",
     "mapping_identity_kind",
     "mapping_identity_value",
     "mapping_identity_issue",
@@ -140,6 +142,8 @@ class PipelineRunResult:
     mapping_verification_version: str = MAPPING_VERIFICATION_VERSION
     embedding_model_name: str | None = EMBEDDING_MODEL_NAME
     evaluation_config_fingerprint: str = ""
+    run_id: str = ""
+    review_queue_path: str = ""
 
 
 def _noop(_: str) -> None:
@@ -188,6 +192,7 @@ def run_pipeline_ui(
     source_backend: Literal["legacy", "source-ir-gated"] = "legacy",
     retrieval_backend: RetrievalBackend = "chroma",
     embedding_encode_call: Callable[..., object] | None = None,
+    review_queue_path: Path | str = review_queue.DEFAULT_QUEUE_PATH,
 ) -> PipelineRunResult:
     if source_backend not in {"legacy", "source-ir-gated"}:
         raise ValueError(
@@ -361,7 +366,8 @@ def run_pipeline_ui(
 
             on_progress(f"  schema_matching: '{attr.attribute_name}' — reranking...")
             mapping, patch = safe_rerank(
-                profile, retrieved, state, source_format=source_format, schema=schema
+                profile, retrieved, state, source_format=source_format, schema=schema,
+                enqueue_review=False,
             )
         state.update(patch)  # safe_* returns a patch; the caller applies it — see wrappers.py
         verification = verify_mapping(
@@ -389,6 +395,7 @@ def run_pipeline_ui(
         )
         mapping_row = {
             "mapping_item_id": mapping_item_id,
+            "review_item_id": None,
             "mapping_identity_kind": mapping_identity.identity_kind.value,
             "mapping_identity_value": mapping_identity.identity_value,
             "mapping_identity_issue": mapping_identity.issue_code,
@@ -458,6 +465,44 @@ def run_pipeline_ui(
         }
         mapping_rows.append(mapping_row)
 
+        grouped = group_attribute_contributions_by_variety(attr, position_to_variety)
+        if acceptance.status is AcceptanceStatus.REVIEW and mapping is not None:
+            review_item = review_queue.enqueue(
+                mapping,
+                reason=acceptance.reason,
+                queue_path=review_queue_path,
+                run_id=run_id,
+                mapping_item_id=mapping_item_id,
+                source_file_name=file_path.name,
+                source_file_sha256=source_hash,
+                source_sheet=resolved_sheet_name,
+                source_format=source_format,
+                source_attribute_display=attr.display_name,
+                source_attribute_id=attr.source_attribute_id,
+                mapping_identity_kind=mapping_identity.identity_kind.value,
+                mapping_identity_value=mapping_identity.identity_value,
+                schema_version=schema.schema_version,
+                template_hash=schema.template_hash,
+                proposed_canonical_key=target_row.canonical_key if target_row else None,
+                mapping_method=mapping_method,
+                verifier_status=verification.status.value,
+                verifier_warnings=list(verification.warning_codes),
+                verifier_hard_issues=list(verification.hard_issue_codes),
+                sample_values=list(attr.sample_values[:10]),
+                raw_values_by_variety={
+                    variety: [item.raw_value for item in contributions]
+                    for variety, contributions in grouped.items()
+                },
+                source_cells_by_variety={
+                    variety: physical_source_cells(contributions)
+                    for variety, contributions in grouped.items()
+                },
+                source_header_cells=list(attr.header_cells),
+                source_ir_version=(source_bundle.source_ir.ir_version if source_bundle.source_ir else None),
+            )
+            mapping_row["review_item_id"] = review_item.item_id
+            state.update(review_queue.append_error_trace(state, acceptance.reason))
+
         # Selective-acceptance safety invariant: only AUTO_ACCEPT may cross
         # this boundary into normalization or canonical mutation.
         if not acceptance.allows_canonical_write:
@@ -483,9 +528,6 @@ def run_pipeline_ui(
             # AUTO_ACCEPT an absent/NULL/unknown target.
             continue
 
-        grouped = group_attribute_contributions_by_variety(
-            attr, position_to_variety
-        )
         for variety_name, contributions in grouped.items():
             raw_values = [item.raw_value for item in contributions]
             combined = combine_multi_value(raw_values)
@@ -645,6 +687,8 @@ def run_pipeline_ui(
         mapping_verification_version=MAPPING_VERIFICATION_VERSION,
         embedding_model_name=EMBEDDING_MODEL_NAME,
         evaluation_config_fingerprint=evaluation_config.fingerprint,
+        run_id=run_id,
+        review_queue_path=str(review_queue_path),
         source_ir_version=(
             source_bundle.source_ir.ir_version
             if source_bundle.source_ir is not None

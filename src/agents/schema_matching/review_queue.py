@@ -17,6 +17,7 @@ in-place file mutation entirely, at the cost of the file growing over time
 from __future__ import annotations
 
 import json
+import hashlib
 import uuid
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -24,7 +25,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from src.schema.contracts import NULL_ROW, SchemaMapping
 from src.schema.state import GlobalState
@@ -33,7 +34,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_QUEUE_PATH = PROJECT_ROOT / "data" / "review" / "manual_review_queue.jsonl"
 DEFAULT_CONFIDENCE_THRESHOLD = 0.6
 
-ReviewStatus = Literal["pending", "approved", "revised"]
+ReviewStatus = Literal["pending", "approved", "revised", "no_match"]
 
 
 class AcceptanceStatus(str, Enum):
@@ -60,6 +61,31 @@ class ReviewItem(BaseModel):
     status: ReviewStatus
     reason: str
     mapping: SchemaMapping
+    original_mapping: SchemaMapping | None = None
+    run_id: str | None = None
+    mapping_item_id: str | None = None
+    source_file_name: str | None = None
+    source_file_sha256: str | None = None
+    source_sheet: str | None = None
+    source_format: str | None = None
+    source_attribute_display: str | None = None
+    source_attribute_id: str | None = None
+    mapping_identity_kind: str | None = None
+    mapping_identity_value: str | None = None
+    schema_version: str | None = None
+    template_hash: str | None = None
+    proposed_canonical_key: str | None = None
+    mapping_method: str | None = None
+    verifier_status: str | None = None
+    verifier_warnings: list[str] = Field(default_factory=list)
+    verifier_hard_issues: list[str] = Field(default_factory=list)
+    sample_values: list[str] = Field(default_factory=list)
+    raw_values_by_variety: dict[str, list[str]] = Field(default_factory=dict)
+    source_cells_by_variety: dict[str, list[str]] = Field(default_factory=dict)
+    source_header_cells: list[str] = Field(default_factory=list)
+    source_ir_version: str | None = None
+    final_canonical_key: str | None = None
+    resolution_notes: str | None = None
     resolved_by: str | None = None
     resolved_at: datetime | None = None
 
@@ -149,13 +175,24 @@ def enqueue(
     *,
     reason: str,
     queue_path: Path | str = DEFAULT_QUEUE_PATH,
+    **context: Any,
 ) -> ReviewItem:
+    run_id = context.get("run_id")
+    mapping_item_id = context.get("mapping_item_id")
+    source_attribute_id = context.get("source_attribute_id")
+    if run_id and (mapping_item_id or source_attribute_id):
+        identity = mapping_item_id or source_attribute_id
+        item_id = hashlib.sha256(f"{run_id}|{identity}".encode("utf-8")).hexdigest()
+    else:
+        item_id = uuid.uuid4().hex
     item = ReviewItem(
-        item_id=uuid.uuid4().hex,
+        item_id=item_id,
         created_at=datetime.now(timezone.utc),
         status="pending",
         reason=reason,
         mapping=mapping,
+        original_mapping=mapping,
+        **context,
     )
     _append_line(Path(queue_path), json.loads(item.model_dump_json()))
     return item
@@ -203,18 +240,36 @@ def process_mapping(
 # -- simple human-facing API --------------------------------------------
 
 
-def list_pending(queue_path: Path | str = DEFAULT_QUEUE_PATH) -> list[ReviewItem]:
+def list_for_run(
+    run_id: str, queue_path: Path | str = DEFAULT_QUEUE_PATH,
+) -> list[ReviewItem]:
     items = _latest_per_item(_read_all(Path(queue_path)))
-    return [item for item in items.values() if item.status == "pending"]
+    return [item for item in items.values() if item.run_id == run_id]
 
 
-def _get_pending_or_raise(item_id: str, queue_path: Path) -> ReviewItem:
+def list_pending(
+    queue_path: Path | str = DEFAULT_QUEUE_PATH, *, run_id: str | None = None,
+) -> list[ReviewItem]:
+    items = _latest_per_item(_read_all(Path(queue_path)))
+    return [
+        item for item in items.values()
+        if item.status == "pending" and (run_id is None or item.run_id == run_id)
+    ]
+
+
+def _get_pending_or_raise(
+    item_id: str, queue_path: Path, expected_run_id: str | None = None,
+) -> ReviewItem:
     latest = _latest_per_item(_read_all(queue_path))
     item = latest.get(item_id)
     if item is None:
         raise KeyError(f"no review item with id {item_id!r}")
     if item.status != "pending":
         raise ValueError(f"review item {item_id!r} is already {item.status!r}, not pending")
+    if expected_run_id is not None and item.run_id != expected_run_id:
+        raise ValueError(
+            f"review item {item_id!r} belongs to run {item.run_id!r}, not {expected_run_id!r}"
+        )
     return item
 
 
@@ -223,15 +278,19 @@ def approve(
     *,
     resolved_by: str | None = None,
     queue_path: Path | str = DEFAULT_QUEUE_PATH,
+    expected_run_id: str | None = None,
+    notes: str | None = None,
 ) -> ReviewItem:
     """A human confirms the original mapping was correct after all."""
     queue_path = Path(queue_path)
-    item = _get_pending_or_raise(item_id, queue_path)
+    item = _get_pending_or_raise(item_id, queue_path, expected_run_id)
     resolved = item.model_copy(
         update={
             "status": "approved",
             "resolved_by": resolved_by,
             "resolved_at": datetime.now(timezone.utc),
+            "final_canonical_key": item.proposed_canonical_key,
+            "resolution_notes": notes,
         }
     )
     _append_line(queue_path, json.loads(resolved.model_dump_json()))
@@ -244,17 +303,71 @@ def revise(
     *,
     resolved_by: str | None = None,
     queue_path: Path | str = DEFAULT_QUEUE_PATH,
+    expected_run_id: str | None = None,
+    final_canonical_key: str | None = None,
+    notes: str | None = None,
 ) -> ReviewItem:
     """A human replaces the mapping with a corrected one."""
     queue_path = Path(queue_path)
-    item = _get_pending_or_raise(item_id, queue_path)
+    item = _get_pending_or_raise(item_id, queue_path, expected_run_id)
+    original = item.original_mapping or item.mapping
+    if corrected_mapping.source_attribute != original.source_attribute:
+        raise ValueError("corrected mapping must retain the review item's source attribute")
     resolved = item.model_copy(
         update={
             "mapping": corrected_mapping,
             "status": "revised",
             "resolved_by": resolved_by,
             "resolved_at": datetime.now(timezone.utc),
+            "final_canonical_key": final_canonical_key,
+            "resolution_notes": notes,
         }
     )
     _append_line(queue_path, json.loads(resolved.model_dump_json()))
+    return resolved
+
+
+def revise_to_canonical_key(
+    item_id: str,
+    canonical_key: str,
+    *,
+    schema,
+    resolved_by: str | None = None,
+    notes: str | None = None,
+    expected_run_id: str | None = None,
+    queue_path: Path | str = DEFAULT_QUEUE_PATH,
+) -> ReviewItem:
+    """Resolve a pending item to a validated key from the active schema."""
+    target = schema.row_by_key(canonical_key)
+    if target is None:
+        raise ValueError(f"unknown canonical_key: {canonical_key!r}")
+    item = _get_pending_or_raise(item_id, Path(queue_path), expected_run_id)
+    original = item.original_mapping or item.mapping
+    corrected = original.model_copy(update={
+        "target_canonical_row": target.id,
+        "reasoning": f"Human review selected canonical key {canonical_key!r}.",
+    })
+    return revise(
+        item_id, corrected, resolved_by=resolved_by, queue_path=queue_path,
+        expected_run_id=expected_run_id, final_canonical_key=canonical_key, notes=notes,
+    )
+
+
+def mark_no_match(
+    item_id: str,
+    *,
+    resolved_by: str | None = None,
+    notes: str | None = None,
+    expected_run_id: str | None = None,
+    queue_path: Path | str = DEFAULT_QUEUE_PATH,
+) -> ReviewItem:
+    """Resolve a pending item explicitly as having no canonical target."""
+    queue = Path(queue_path)
+    item = _get_pending_or_raise(item_id, queue, expected_run_id)
+    resolved = item.model_copy(update={
+        "status": "no_match", "resolved_by": resolved_by,
+        "resolved_at": datetime.now(timezone.utc), "final_canonical_key": None,
+        "resolution_notes": notes,
+    })
+    _append_line(queue, json.loads(resolved.model_dump_json()))
     return resolved

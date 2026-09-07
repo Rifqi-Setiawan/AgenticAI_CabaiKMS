@@ -146,6 +146,7 @@ def safe_rerank(
     retry_max_delay: float = DEFAULT_MAX_DELAY,
     rate_limiter: RateLimiter | None = None,
     confidence_threshold: float = review_queue.DEFAULT_CONFIDENCE_THRESHOLD,
+    enqueue_review: bool = True,
     **rerank_kwargs: Any,
 ) -> tuple[SchemaMapping | None, dict[str, Any]]:
     """Returns (mapping, state_patch). `mapping` is None only if the
@@ -181,5 +182,8 @@ def safe_rerank(
         return None, patch
 
     mapping = outcome.result
-    review_patch = review_queue.process_mapping(mapping, state, confidence_threshold=confidence_threshold)
+    review_patch = (
+        review_queue.process_mapping(mapping, state, confidence_threshold=confidence_threshold)
+        if enqueue_review else {}
+    )
     return mapping, review_patch
