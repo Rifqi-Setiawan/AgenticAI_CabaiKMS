@@ -1,0 +1,33 @@
+{
+  "campaign_version": "schema-mapping-validation-campaign-v1",
+  "annotation_version": "schema-mapping-gold-v1",
+  "annotation_round": 1,
+  "canonical_schema_version": "cabai-kms-canonical-v1",
+  "canonical_template_hash": "8ba7cf35b2de23dedad5d5b639f1cef06846c304f18809de8dfec34e0bf397d9",
+  "mapping_verification_version": "mapping-verification-v1",
+  "embedding_model_name": "paraphrase-multilingual-MiniLM-L12-v2",
+  "source_backend": "legacy",
+  "retrieval_backend": "exact",
+  "retrieval_k": 8,
+  "frozen_evaluation_config_fingerprint": "9bbc2b52332d585895eac0800e1fa1ebdbbc475fac4c30a7e2ee2c5d534fb0fb",
+  "annotation_guideline_version": "annotation-guidelines-v1",
+  "annotation_guideline_path": "docs/annotation_guidelines_v1.md",
+  "validation_workbooks": [
+    {
+      "entry_id": "validation-data-input-resume-data",
+      "path": "data/samples/data_input.xlsx",
+      "sha256": "71e86f98a416d2f269b873c3a2c96bc729837fac0b104a79089e9d70fd093056",
+      "source_format": "row-oriented",
+      "sheets": ["Resume Data"],
+      "source_backend": "legacy",
+      "retrieval_backend": "exact",
+      "retrieval_k": 8,
+      "part_of_validation": true,
+      "counts": {
+        "annotatable_attributes": 13,
+        "stable_mapping_identities": 13,
+        "unavailable_identities": 0
+      }
+    }
+  ]
+}

@@ -16,6 +16,7 @@ from src.schema.gold_mapping import (
     compare_annotators,
     create_adjudication_template,
     load_gold_annotations,
+    validate_independent_annotation_pair,
 )
 
 
@@ -24,6 +25,7 @@ def main() -> None:
     parser.add_argument("--annotations", type=Path, required=True)
     parser.add_argument("--compare", type=Path)
     parser.add_argument("--disagreements-output", type=Path)
+    parser.add_argument("--pair-only", action="store_true")
     args = parser.parse_args()
     schema = CanonicalSchema.from_template()
     primary = load_gold_annotations(args.annotations, schema=schema)
@@ -34,14 +36,18 @@ def main() -> None:
     print(f"calibration eligible: {eligible}")
     if args.compare:
         secondary = load_gold_annotations(args.compare, schema=schema)
+        if args.pair_only:
+            validate_independent_annotation_pair(primary, secondary)
+            print(f"valid independent pair: {len(primary.annotations)}")
+            return
         agreement, metrics = compare_annotators(primary, secondary)
         print(f"raw agreement: {metrics.raw_agreement}")
         print(f"Cohen's kappa: {metrics.cohens_kappa}")
         print(f"number compared: {metrics.number_compared}")
         print(f"number excluded from kappa: {metrics.number_excluded_from_kappa}")
+        print(f"kappa defined: {metrics.kappa_defined}")
+        print(f"kappa undefined reason: {metrics.kappa_undefined_reason}")
         print(f"disagreements: {int((~agreement['agrees']).sum())}")
-        if not metrics.kappa_defined:
-            print(f"kappa undefined: {metrics.kappa_undefined_reason}")
         if args.disagreements_output:
             create_adjudication_template(
                 primary.annotations, secondary.annotations, args.disagreements_output,
@@ -49,6 +55,8 @@ def main() -> None:
             print(f"adjudication template: {args.disagreements_output}")
     elif args.disagreements_output:
         parser.error("--disagreements-output requires --compare")
+    elif args.pair_only:
+        parser.error("--pair-only requires --compare")
 
 
 if __name__ == "__main__":

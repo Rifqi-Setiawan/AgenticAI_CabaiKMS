@@ -369,25 +369,8 @@ def compare_annotators(
     annotations_b: GoldAnnotationSet | Sequence[GoldMappingAnnotation],
 ) -> tuple[pd.DataFrame, AnnotatorAgreementMetrics]:
     """Compare independent files by stable item identity, never row position."""
-    a = annotations_a.annotations if isinstance(annotations_a, GoldAnnotationSet) else list(annotations_a)
-    b = annotations_b.annotations if isinstance(annotations_b, GoldAnnotationSet) else list(annotations_b)
-    annotators_a = {item.annotator_id for item in a}
-    annotators_b = {item.annotator_id for item in b}
-    if len(annotators_a) != 1 or len(annotators_b) != 1:
-        raise ValueError("each independent annotation input must contain exactly one annotator_id")
-    if annotators_a == annotators_b:
-        raise ValueError("independent annotators must have different IDs")
-    if any(item.annotation_source != "human_independent" for item in [*a, *b]):
-        raise ValueError("independent comparison requires annotation_source='human_independent'")
-    rounds_a = {item.annotation_round for item in a}
-    rounds_b = {item.annotation_round for item in b}
-    if len(rounds_a) != 1 or len(rounds_b) != 1 or rounds_a != rounds_b:
-        raise ValueError("independent annotations must use one matching annotation_round")
+    a, b = validate_independent_annotation_pair(annotations_a, annotations_b)
     by_a, by_b = {x.mapping_item_id: x for x in a}, {x.mapping_item_id: x for x in b}
-    if len(by_a) != len(a) or len(by_b) != len(b):
-        raise ValueError("annotator inputs must have unique mapping_item_id values")
-    if set(by_a) != set(by_b):
-        raise ValueError("annotator item sets differ")
     rows, labels_a, labels_b = [], [], []
     excluded = 0
     for item_id in sorted(by_a):
@@ -420,6 +403,33 @@ def compare_annotators(
         number_compared=len(rows), number_excluded_from_kappa=excluded,
         kappa_defined=kappa is not None, kappa_undefined_reason=undefined_reason,
     )
+
+
+def validate_independent_annotation_pair(
+    annotations_a: GoldAnnotationSet | Sequence[GoldMappingAnnotation],
+    annotations_b: GoldAnnotationSet | Sequence[GoldMappingAnnotation],
+) -> tuple[list[GoldMappingAnnotation], list[GoldMappingAnnotation]]:
+    """Validate the A/B contract without computing agreement statistics."""
+    a = annotations_a.annotations if isinstance(annotations_a, GoldAnnotationSet) else list(annotations_a)
+    b = annotations_b.annotations if isinstance(annotations_b, GoldAnnotationSet) else list(annotations_b)
+    annotators_a = {item.annotator_id for item in a}
+    annotators_b = {item.annotator_id for item in b}
+    if len(annotators_a) != 1 or len(annotators_b) != 1:
+        raise ValueError("each independent annotation input must contain exactly one annotator_id")
+    if annotators_a == annotators_b:
+        raise ValueError("independent annotators must have different IDs")
+    if any(item.annotation_source != "human_independent" for item in [*a, *b]):
+        raise ValueError("independent comparison requires annotation_source='human_independent'")
+    rounds_a = {item.annotation_round for item in a}
+    rounds_b = {item.annotation_round for item in b}
+    if len(rounds_a) != 1 or len(rounds_b) != 1 or rounds_a != rounds_b:
+        raise ValueError("independent annotations must use one matching annotation_round")
+    by_a, by_b = {x.mapping_item_id: x for x in a}, {x.mapping_item_id: x for x in b}
+    if len(by_a) != len(a) or len(by_b) != len(b):
+        raise ValueError("annotator inputs must have unique mapping_item_id values")
+    if set(by_a) != set(by_b):
+        raise ValueError("annotator item sets differ")
+    return a, b
 
 
 def create_adjudication_template(
