@@ -76,6 +76,20 @@ def test_runner_created_limiters_are_distinct_and_closed_on_success(monkeypatch)
     assert vision.closed is True
 
 
+def test_fractional_rpm_observability_reports_equivalent_limit(monkeypatch):
+    monkeypatch.setattr(
+        runner,
+        "_run_pipeline_ui_impl",
+        lambda file_path, **kwargs: runner.describe_rate_limiter(kwargs["text_rate_limiter"]),
+    )
+
+    status = runner.run_pipeline_ui(
+        object(), rate_limit_config=RuntimeRateLimitConfig(text_rpm=0.5),
+    )
+
+    assert status == "enabled, 1 requests / 120s"
+
+
 def test_runner_created_limiters_are_closed_on_exception(monkeypatch):
     _FakeLimiter.instances = []
     monkeypatch.setattr(runner, "RateLimiter", _FakeLimiter)

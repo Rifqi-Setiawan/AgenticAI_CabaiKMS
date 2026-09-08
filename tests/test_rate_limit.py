@@ -8,6 +8,44 @@ from src.reliability.rate_limit import RateLimiter, RuntimeRateLimitConfig
 
 
 class TestRateLimiter:
+    @pytest.mark.parametrize(
+        ("max_rate", "time_period", "message"),
+        [
+            (0, 60, "max_rate"),
+            (-1, 60, "max_rate"),
+            (float("nan"), 60, "max_rate"),
+            (float("inf"), 60, "max_rate"),
+            (1, 0, "time_period"),
+            (1, -1, "time_period"),
+            (1, float("nan"), "time_period"),
+            (1, float("inf"), "time_period"),
+        ],
+    )
+    def test_invalid_primitive_configuration_fails_clearly(
+        self, max_rate, time_period, message,
+    ):
+        with pytest.raises(ValueError, match=message):
+            RateLimiter(max_rate=max_rate, time_period=time_period)
+
+    def test_fractional_rate_is_normalized_and_first_acquire_is_immediate(self):
+        limiter = RateLimiter(max_rate=0.5, time_period=60)
+
+        start = time.monotonic()
+        limiter.acquire_sync()
+        elapsed = time.monotonic() - start
+
+        assert elapsed < 0.05
+        assert limiter.max_rate == 1
+        assert limiter.time_period == 120
+        limiter.close()
+
+    @pytest.mark.parametrize("rpm", [12, 3.5])
+    def test_normal_rpm_values_keep_their_configured_rate(self, rpm):
+        limiter = RateLimiter(max_rate=rpm, time_period=60)
+        assert limiter.max_rate == rpm
+        assert limiter.time_period == 60
+        limiter.close()
+
     def test_burst_up_to_max_rate_is_immediate(self):
         limiter = RateLimiter(max_rate=3, time_period=1.0)
         start = time.monotonic()
@@ -73,6 +111,12 @@ class TestRuntimeRateLimitConfig:
         assert config.text_rpm == 12.0
         assert config.vision_rpm == 3.5
 
+    @pytest.mark.parametrize("name", ["CABAI_KMS_TEXT_RPM", "CABAI_KMS_VISION_RPM"])
+    def test_fractional_rpm_is_accepted(self, name):
+        config = RuntimeRateLimitConfig.from_env({name: "0.5"})
+        field = "text_rpm" if name == "CABAI_KMS_TEXT_RPM" else "vision_rpm"
+        assert getattr(config, field) == 0.5
+
     def test_missing_or_blank_values_disable_limiters(self):
         config = RuntimeRateLimitConfig.from_env({"CABAI_KMS_TEXT_RPM": "  "})
         assert config.text_rpm is None
@@ -83,3 +127,9 @@ class TestRuntimeRateLimitConfig:
     def test_invalid_values_fail_fast(self, name, value):
         with pytest.raises(ValueError, match=name):
             RuntimeRateLimitConfig.from_env({name: value})
+
+    @pytest.mark.parametrize("field", ["text_rpm", "vision_rpm"])
+    @pytest.mark.parametrize("value", [0, -1, float("nan"), float("inf")])
+    def test_direct_construction_rejects_invalid_values(self, field, value):
+        with pytest.raises(ValueError, match=field):
+            RuntimeRateLimitConfig(**{field: value})

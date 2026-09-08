@@ -28,17 +28,20 @@ TEXT_RPM_ENV = "CABAI_KMS_TEXT_RPM"
 VISION_RPM_ENV = "CABAI_KMS_VISION_RPM"
 
 
-def _optional_positive_rpm(name: str, environ: Mapping[str, str]) -> float | None:
-    raw = environ.get(name)
-    if raw is None or raw.strip() == "":
+def _validate_optional_positive_rpm(value: object, name: str) -> float | None:
+    if value is None or (isinstance(value, str) and value.strip() == ""):
         return None
     try:
-        value = float(raw)
-    except ValueError as exc:
+        rpm = float(value)
+    except (TypeError, ValueError) as exc:
         raise ValueError(f"{name} must be a positive numeric requests-per-minute value") from exc
-    if not math.isfinite(value) or value <= 0:
+    if not math.isfinite(rpm) or rpm <= 0:
         raise ValueError(f"{name} must be a positive numeric requests-per-minute value")
-    return value
+    return rpm
+
+
+def _optional_positive_rpm(name: str, environ: Mapping[str, str]) -> float | None:
+    return _validate_optional_positive_rpm(environ.get(name), name)
 
 
 @dataclass(frozen=True)
@@ -47,6 +50,18 @@ class RuntimeRateLimitConfig:
 
     text_rpm: float | None = None
     vision_rpm: float | None = None
+
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self,
+            "text_rpm",
+            _validate_optional_positive_rpm(self.text_rpm, "text_rpm"),
+        )
+        object.__setattr__(
+            self,
+            "vision_rpm",
+            _validate_optional_positive_rpm(self.vision_rpm, "vision_rpm"),
+        )
 
     @classmethod
     def from_env(cls, environ: Mapping[str, str] | None = None) -> "RuntimeRateLimitConfig":
@@ -71,6 +86,23 @@ class RateLimiter:
     acquire_sync() blocks until capacity frees up)."""
 
     def __init__(self, max_rate: float, time_period: float = 60.0):
+        try:
+            max_rate = float(max_rate)
+            time_period = float(time_period)
+        except (TypeError, ValueError) as exc:
+            raise ValueError("max_rate and time_period must be finite positive numbers") from exc
+        if not math.isfinite(max_rate) or max_rate <= 0:
+            raise ValueError("max_rate must be a finite positive number")
+        if not math.isfinite(time_period) or time_period <= 0:
+            raise ValueError("time_period must be a finite positive number")
+
+        # Every project request acquires one full unit. aiolimiter rejects an
+        # acquisition larger than max_rate, so represent fractional rates with
+        # an equivalent one-unit interval (for example, 0.5/60s == 1/120s).
+        if max_rate < 1:
+            time_period /= max_rate
+            max_rate = 1.0
+
         self._limiter = AsyncLimiter(max_rate, time_period)
         self._loop = asyncio.new_event_loop()
         self._lock = threading.Lock()
