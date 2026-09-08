@@ -1,5 +1,8 @@
-"""LangGraph shared state for the acquisition graph (Fase 1 boundary spec —
-the orchestrator that actually threads this through nodes lands in Fase 4).
+"""Lightweight agent/reliability state contracts.
+
+The serializable production checkpoint contract is ``RuntimeGraphState`` in
+``src.orchestrator.graph``. ``GlobalState`` remains the small patch shape used
+by reliability wrappers and deterministic review helpers.
 """
 
 from __future__ import annotations
@@ -14,7 +17,7 @@ class GlobalState(TypedDict, total=False):
     the step it just ran — not every key is present at every point in the
     graph."""
 
-    raw_spreadsheet: Any  # pandas.DataFrame once ingestion lands (Fase 2)
+    raw_spreadsheet: Any  # legacy helper state; production graph stores source identity
     drive_url: str
     image_metadata: list[ImageMetadata]
     classification_results: list[VisionResult]

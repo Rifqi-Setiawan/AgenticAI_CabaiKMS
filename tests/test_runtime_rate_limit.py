@@ -15,6 +15,12 @@ from src.ui import pipeline_runner as runner
 from tests.test_source_parsing import flat_observations
 
 
+@pytest.fixture(autouse=True)
+def _isolated_graph_checkpoints(tmp_path, monkeypatch):
+    import src.orchestrator.graph as graph
+    monkeypatch.setattr(graph, "DEFAULT_CHECKPOINT_DB", tmp_path / "runtime-checkpoints.sqlite")
+
+
 class _FakeLimiter:
     instances: list["_FakeLimiter"] = []
 
@@ -101,6 +107,27 @@ def test_runner_created_limiters_are_closed_on_exception(monkeypatch):
     with pytest.raises(RuntimeError, match="pipeline failed"):
         runner.run_pipeline_ui(
             object(), rate_limit_config=RuntimeRateLimitConfig(text_rpm=12, vision_rpm=3),
+        )
+    assert len(_FakeLimiter.instances) == 2
+    assert all(limiter.closed for limiter in _FakeLimiter.instances)
+
+
+def test_runner_created_limiters_close_on_real_graph_ingestion_failure(tmp_path, monkeypatch):
+    path = tmp_path / "invalid.xlsx"
+    workbook = openpyxl.Workbook()
+    workbook.active.append(["Not a variety column", "Value"])
+    workbook.active.append(["x", "y"])
+    workbook.save(path)
+    workbook.close()
+    _FakeLimiter.instances = []
+    monkeypatch.setattr(runner, "RateLimiter", _FakeLimiter)
+    monkeypatch.setattr(
+        runner, "detect_anchor",
+        lambda *args, **kwargs: AnchorResult("not_found", None, 0.0, "test"),
+    )
+    with pytest.raises(ValueError, match="[Vv]arietas"):
+        runner.run_pipeline_ui(
+            path, rate_limit_config=RuntimeRateLimitConfig(text_rpm=12, vision_rpm=3),
         )
     assert len(_FakeLimiter.instances) == 2
     assert all(limiter.closed for limiter in _FakeLimiter.instances)

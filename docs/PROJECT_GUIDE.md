@@ -48,7 +48,7 @@ Ini adalah **prototipe penelitian**, bukan sistem produksi, API backend, atau pl
 | Retry dan validasi ulang | Dipakai runner UI melalui reliability wrappers |
 | Rate limiter | Terintegrasi opsional pada runner UI; limiter teks dan vision terpisah per run |
 | Manual review | Alur run aktif tersedia di halaman Hasil: approve/revise/NO_MATCH dan replay deterministik ke output terkoreksi |
-| LangGraph | Node stub dengan checkpoint/resume SQLite; agen nyata belum terpasang di node |
+| LangGraph | Koordinator runtime nyata dengan checkpoint/resume SQLite per `run_id` |
 | UI | Tiga halaman Streamlit: Input, Progres, Hasil |
 | Evaluasi | Harness ekspor untuk review manual; belum ada perhitungan Macro-F1 |
 
@@ -132,7 +132,7 @@ Input .xlsx
   -> tabel preview + bytes Excel + log/status
 
 Di akhir runner UI:
-  -> graf LangGraph STUB -> SQLite -> debugger checkpoint
+  -> LangGraph runtime -> checkpoint SQLite per tahap -> hasil UI
      (bukan rekaman/resume pemrosesan agen nyata di atas)
 ```
 
@@ -149,7 +149,7 @@ Fungsi `run_pipeline_ui()` di `src/ui/pipeline_runner.py` menjalankan proses sec
 7. Jika URL/ID Drive diberikan, mengambil metadata foto lalu memproses maksimal lima gambar secara default. Pembatasan dilakukan setelah listing, bukan membatasi jumlah metadata yang diminta dari Drive.
 8. Membaca deskripsi varietas template sekali melalui `VisionSession`, mengunduh foto, dan memanggil `safe_classify_image()`.
 9. Menulis URL Drive hanya jika status `KNOWN`, varietas ada di kolom output, dan baris bagian tanaman ditemukan. Tidak ada threshold confidence numerik tambahan di penulis sel.
-10. Membaca kembali worksheet menjadi DataFrame, menyimpan workbook ke bytes, lalu menjalankan graf stub untuk debugger.
+10. Node finalization mengembalikan kontrak hasil UI dari state graph yang sama; tidak ada eksekusi pipeline kedua.
 
 ### Jalur evaluasi manual
 
@@ -172,7 +172,7 @@ project/
 │   ├── gold/                   Dua workbook review historis, dipertahankan
 │   ├── review/                 Queue JSONL lokal, dibuat saat diperlukan
 │   ├── .chroma/                Indeks embedding lokal
-│   └── .checkpoints/           SQLite graf stub
+│   └── .checkpoints/           SQLite checkpoint runtime LangGraph
 ├── src/
 │   ├── schema/                 Skema, domain, alias, kontrak, shared state
 │   ├── agents/
@@ -181,7 +181,7 @@ project/
 │   │   ├── vision_classification.py
 │   │   └── tabular_update.py
 │   ├── llm/                    Provider teks dan vision
-│   ├── orchestrator/           Graf stub dan checkpoint/resume
+│   ├── orchestrator/           Graf runtime nyata dan checkpoint/resume
 │   ├── reliability/            Retry, rate limiter, verifier, wrappers
 │   └── ui/                     Aplikasi, runner, output builder, state
 │       └── pages/              2_Progress.py dan 3_Hasil.py
@@ -214,13 +214,13 @@ project/
 | `llm/providers.py`, `llm/vision_providers.py` | Klien provider melalui instructor dan penanganan fallback |
 | `reliability/retry.py`, `rate_limit.py` | Backoff dan pembatas permintaan opsional |
 | `reliability/verifier.py`, `wrappers.py` | Validasi ulang, pemanggilan aman, pencatatan error |
-| `orchestrator/graph.py` | Graf stub, routing, penyimpanan dan resume checkpoint |
+| `orchestrator/graph.py` | Graf runtime, routing Drive/vision, resource context, dan resume checkpoint |
 | `ui/app.py` | Upload, parameter pengguna, file sementara, pemanggilan pipeline |
 | `ui/pipeline_runner.py` | Integrasi agen nyata yang dipakai UI |
 | `ui/output_builder.py` | Pengelompokan nilai, konstruksi workbook, tabel preview |
 | `ui/state.py` | Akses session state untuk hasil, log, input terakhir, status berjalan |
 | `ui/pages/2_Progress.py` | Status agen, error trace, log run |
-| `ui/pages/3_Hasil.py` | Inspeksi hasil/reasoning, debugger stub, download Excel |
+| `ui/pages/3_Hasil.py` | Inspeksi hasil/reasoning, checkpoint inspector, download Excel |
 
 ## 5. Input dan skema kanonik
 
@@ -477,8 +477,8 @@ mengubah retrieval, reranker, threshold acceptance, atau artefak evaluasi.
 Keterbatasan: review hanya tersedia selama `PipelineRunResult` run tersebut masih ada
 di session Streamlit; belum ada browser historis atau pemuatan ulang snapshot run dari
 disk. Queue tetap file JSONL lokal dan belum menyediakan locking multi-proses atau
-autentikasi/otorisasi reviewer. Graf checkpoint masih stub debugger, bukan orkestrator
-agentic terintegrasi penuh.
+autentikasi/otorisasi reviewer. Graf checkpoint mengoordinasikan akuisisi runtime,
+tetapi review/replay tetap workflow deterministik terpisah dan bukan graph interrupt.
 
 Kegagalan provider tanpa mapping serta masalah vision dicatat melalui trace tertentu, bukan semuanya menjadi `ReviewItem`. Jangan menyamakan jumlah queue, jumlah error trace, dan jumlah kesalahan di output.
 
@@ -583,9 +583,11 @@ Tidak ada klaim precision/recall/F1 atau akurasi vision berdasarkan keberadaan f
 - `RateLimiter` teks/vision dibuat per run dari konfigurasi RPM environment bila diaktifkan, dipakai ulang untuk semua attempt yang sesuai, dan tetap process-local. Limiter injeksi caller tidak ditutup runner.
 - Gemini utama tidak memiliki fallback sendiri. OpenRouter → Ollama hanya jalur voter kedua pada consensus.
 
-Graf stub berurutan `schema_matching -> drive_crawler -> vision_classification -> tabular_update -> finalization`, dengan routing vision retry/manual_review/continue. `run_pipeline()` dan `resume_pipeline()` memakai `thread_id` dan file SQLite yang sama. Default file adalah `data/.checkpoints/orchestrator.sqlite`.
+Graf runtime berurutan `source_ingestion -> schema_matching_tabular -> drive_crawler? -> vision_classification? -> finalization`. Ingestion, Drive, tabular write, dan finalization adalah node workflow deterministik; AI hanya dipakai oleh struktur ketika backend terkait diaktifkan, reranker untuk atribut unresolved, dan klasifikasi vision. Tanpa folder Drive, dua node multimodal dilewati sepenuhnya.
 
-Checkpoint menyimpan state graf stub, bukan nilai intermediate dari agen nyata di UI. Stage debugger ini best-effort dan baru dipanggil setelah workbook selesai dimaterialisasi. Jika checkpoint gagal, `PipelineRunResult` tetap dikembalikan dengan workbook/mapping/provenance yang sama, `checkpoint_thread_id=None`, status orchestrator gagal, dan trace `checkpoint_debug_failure`; checkpoint sukses tetap menyimpan thread ID nyata. Jangan menghapus database ketika aplikasi sedang berjalan atau ketika riwayat debugger masih diperlukan.
+SQLite menyimpan checkpoint setelah setiap superstep, termasuk boundary penting sesudah `schema_matching_tabular`. State checkpoint hanya membawa identitas/config, output serializable, workbook bytes, mapping/provenance, metadata citra, trace, dan status; API key, payload provider, serta objek `RateLimiter`/event loop tidak disimpan. `run_id` adalah thread ID. Resume memvalidasi fingerprint sumber dan konfigurasi, lalu melanjutkan node berikutnya; schema matching yang sudah checkpoint tidak dipanggil ulang. Discovery Drive yang sudah selesai juga dapat dilanjutkan dari metadata checkpoint. Interupsi di tengah sebuah node belum menyediakan checkpoint per item.
+
+`resume_pipeline_ui()` memerlukan sumber/config yang identik dan runtime resources baru. Limiter buatan runner pada eksekusi resume dibuat sekali untuk kelanjutan itu lalu ditutup; limiter injeksi tetap milik caller. Human review/replay tidak dipindahkan menjadi LangGraph interrupt dan tetap deterministik/model-free.
 
 Pada hasil runtime, note normalisasi untuk write `AUTO_ACCEPT` disimpan di provenance dan `error_trace`. Setiap baris hasil vision juga membawa `write_applied` serta `write_reason`; alasan deterministik untuk status, varietas, atau baris target yang tidak write-eligible ikut disimpan di trace, bukan hanya dicetak pada progress log.
 
@@ -644,9 +646,9 @@ Temuan berikut adalah batas implementasi, **bukan fitur yang diperbaiki dalam au
 2. **CSV dan perluasan cakupan parsing belum tersedia pada UI.** Uploader menawarkan CSV, tetapi runner masih membutuhkan `.xlsx`. Phase 4 dapat merepresentasikan judul sebelum tabel, header bertingkat, merge, dan layout transposed setelah verifikasi; jalur itu sudah terintegrasi untuk shadow dan `source-ir-gated`, tetapi gate produksi saat ini hanya mempromosikan hasil yang tepat setara dengan referensi legacy. T03 dan T04 sudah diverifikasi; enam dummy lainnya belum diverifikasi pada perbaikan ini.
 3. **Validasi anchor kini menghentikan runner.** Header salah/ambigu atau identitas varietas yang hilang menghasilkan error sebelum pemetaan. Error provider dan mapping NULL masih harus diperiksa terpisah; validasi input bukan jaminan semua atribut akan terpetakan.
 4. **Koreksi manual memiliki audit event lokal.** Identitas run/source/schema dan provenance replay sudah tersedia, tetapi queue JSONL belum memiliki locking multi-proses, autentikasi reviewer, atau penyimpanan snapshot run lintas restart.
-5. **Graf masih stub.** Checkpoint/resume tidak memulihkan proses agen nyata; routing stub tidak menjadi jaminan reliability alur UI.
+5. **Resume masih coarse-grained dan lokal.** LangGraph sudah mengoordinasikan runtime nyata, tetapi checkpoint hanya tersedia antarnode; crash di tengah schema matching atau loop vision dapat mengulang node yang belum selesai. SQLite lokal belum memberi layanan resume multi-user.
 6. **Rate limiter runner bersifat opsional dan process-local.** Ia membatasi attempt provider yang terlihat aplikasi, bukan seluruh request internal SDK atau kuota global lintas worker. Klasifikasi kegagalan memakai status/tipe terstruktur yang tersedia, tetapi tidak dapat menjamin klasifikasi sempurna ketika SDK hanya memberi error generik.
-7. **Observability tetap lokal dan sederhana.** Trace mencakup terminal provider failure, note normalisasi, alasan vision non-write, dan kegagalan checkpoint stub, tetapi belum merupakan distributed tracing atau event system persisten.
+7. **Observability tetap lokal dan sederhana.** Trace mencakup terminal provider failure, note normalisasi, dan alasan vision non-write, tetapi belum merupakan distributed tracing atau event system persisten.
 8. **Vision berlandaskan varietas template.** Nama input bisa berbeda dari referensi; belum ada crosswalk spesies/varietas, dan tidak ada numeric confidence gate tambahan pada penulisan foto `KNOWN`.
 9. **Lokasi belum disusun sesuai rancangan komposit.** Pemetaan beberapa atribut ke `Lokasi` baru menggabungkan nilai, belum merakit nama/koordinat/elevasi dengan semantik khusus.
 10. **Deteksi perubahan model embedding masih manual.** Fingerprint indeks sudah mencakup representasi baris, termasuk contoh nilai, alias, dan domain, sehingga perubahan data tersebut memicu rebuild otomatis. Namun, penggantian nama/versi model embedding masih perlu diikuti force reindex atau direktori indeks baru.
@@ -684,7 +686,7 @@ Prioritas lanjutan yang masuk akal: validasi input dan pemblokiran mapping berma
 | `eval/metrics/` kosong | Hapus placeholder tanpa implementasi; Macro-F1 tetap dicatat sebagai rencana |
 | `.venv/` | Pertahankan agar instalasi dependensi tidak hilang |
 | `data/.chroma/` | Pertahankan karena dipakai retrieval; bukan folder tidak terpakai |
-| `data/.checkpoints/orchestrator.sqlite` | Pertahankan riwayat debugger; file ini sudah tracked sebelum audit |
+| `data/.checkpoints/orchestrator.sqlite` | Pertahankan checkpoint runtime yang masih diperlukan untuk resume; file ini sudah tracked sebelum audit |
 | `data/review/`, `data/gold/` | Pertahankan antrean/hasil review; bisa memuat kerja manusia |
 | Template, tiga sampel, YAML, `__init__.py` | Pertahankan input, fixture, konfigurasi, dan struktur paket |
 | Dokumentasi historis | Pertahankan keputusan/evidence; beri keterangan historis bila kondisi sudah berubah |

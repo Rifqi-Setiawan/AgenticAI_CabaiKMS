@@ -214,7 +214,7 @@ def submit_for_review(
 
 def append_error_trace(state: GlobalState, reason: str) -> dict[str, Any]:
     """GlobalState patch — same append-don't-overwrite convention the
-    orchestrator's stub nodes use (src/orchestrator/graph.py)."""
+    runtime orchestrator nodes use (src/orchestrator/graph.py)."""
     trace = list(state.get("error_trace", []))
     trace.append(reason)
     return {"error_trace": trace}

@@ -8,7 +8,7 @@ Dokumentasi diperbarui **7 September 2026**, berdasarkan implementasi di reposit
 
 - Pipeline Streamlit sudah menghubungkan parsing Excel, pencarian kandidat berbasis embedding, pemetaan atribut dengan LLM, normalisasi deterministik, klasifikasi citra opsional, dan ekspor `.xlsx`.
 - Kolom varietas keluaran berasal dari input; baris karakter berasal dari `data/canonical/template_kanonik.xlsx`.
-- Graf LangGraph masih **stub** untuk pengujian alur/checkpoint. Graf ini bukan pelaksana agen nyata di UI.
+- LangGraph adalah koordinator runtime nyata: ingestion deterministik, schema matching/tabular, routing Drive, vision, lalu finalization. Checkpoint SQLite memakai `run_id` sebagai thread ID.
 - Halaman **Hasil** menyediakan review untuk run aktif: approve usulan non-NULL, revise ke `canonical_key` aktif, atau `NO_MATCH`. Setelah seluruh item selesai, koreksi diterapkan deterministik dari output asli tanpa mengulang retrieval, LLM/reranker, verifier, atau vision; unduhan asli tetap tersedia dan event JSONL tetap append-only.
 - CSV belum didukung parser walaupun ditawarkan uploader. Gunakan `.xlsx`.
 - Kampanye evaluasi lanjutan masih ditunda. Evaluasi otomatis Macro-F1 belum diimplementasikan; yang tersedia adalah infrastruktur ekspor tabel untuk penilaian manual.
@@ -36,8 +36,9 @@ Default maksimum yang terlihat aplikasi adalah tiga attempt untuk kegagalan tran
 satu attempt untuk kegagalan non-retryable, atau tiga pemanggilan kontrak (satu awal +
 dua revisi) untuk output terstruktur yang invalid. Retry internal SDK/instructor dan
 fallback Groq → Ollama berada di bawah batas observasi ini. Catatan normalisasi dan
-alasan vision tidak ditulis tersedia pada hasil/trace. Checkpoint LangGraph tetap stub
-debugger best-effort; kegagalannya tidak membatalkan workbook yang sudah selesai.
+alasan vision tidak ditulis tersedia pada hasil/trace. Resume dari checkpoint setelah
+schema/tabular tidak mengulang pemanggilan schema-matching yang sudah selesai; replay
+human-review tetap merupakan alur deterministik terpisah.
 
 ## Pengujian lokal
 

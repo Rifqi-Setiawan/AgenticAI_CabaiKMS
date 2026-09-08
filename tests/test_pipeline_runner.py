@@ -20,6 +20,12 @@ from eval.create_mapping_annotations import create_annotation_table
 from tests.test_source_parsing import flat_observations  # shared temporary workbook fixture
 
 
+@pytest.fixture(autouse=True)
+def _isolated_graph_checkpoints(tmp_path, monkeypatch):
+    import src.orchestrator.graph as graph
+    monkeypatch.setattr(graph, "DEFAULT_CHECKPOINT_DB", tmp_path / "runtime-checkpoints.sqlite")
+
+
 def _all_candidates(schema=None):
     schema = schema or CanonicalSchema.from_template()
     return [
@@ -295,6 +301,7 @@ def test_review_mapping_never_normalizes_or_writes_but_later_attributes_do(
     assert "2 AUTO_ACCEPT, 1 REVIEW, 0 NO_WRITE" in result.agent_status["schema_matching"]
     pending = runner.review_queue.list_pending(queue_path=queue_path, run_id=result.run_id)
     assert len(pending) == 1
+    assert pending[0].run_id == result.run_id
     assert pending[0].source_attribute_display == "Growth habit"
     assert pending[0].source_file_sha256 == result.mapping_df.source_file_sha256.iloc[0]
     assert pending[0].schema_version == result.schema_version
@@ -808,7 +815,7 @@ def test_failed_image_does_not_invalidate_built_tabular_workbook(tmp_path, monke
     assert "provider_retry_exhausted" in result.error_trace[-1]
 
 
-def test_stub_checkpoint_failure_is_nonfatal_and_output_invariant(tmp_path, monkeypatch):
+def test_obsolete_posthoc_stub_hook_is_not_invoked(tmp_path, monkeypatch):
     source = tmp_path / "checkpoint-boundary.xlsx"
     wb = openpyxl.Workbook()
     ws = wb.active
@@ -822,21 +829,10 @@ def test_stub_checkpoint_failure_is_nonfatal_and_output_invariant(tmp_path, monk
         lambda *args, **kwargs: AnchorResult("found", "Variety", 1.0, "test"),
     )
     monkeypatch.setattr(runner.uuid, "uuid4", lambda: SimpleNamespace(hex="fixed-run"))
-    monkeypatch.setattr(runner, "run_pipeline", lambda *args, **kwargs: {})
-    successful = runner.run_pipeline_ui(source)
-
-    def fail_checkpoint(*args, **kwargs):
-        raise RuntimeError("token=supersecret checkpoint unavailable")
-
-    monkeypatch.setattr(runner, "run_pipeline", fail_checkpoint)
-    failed = runner.run_pipeline_ui(source)
-
-    assert successful.checkpoint_thread_id == "fixed-run"
-    assert failed.checkpoint_thread_id is None
-    assert "gagal" in failed.agent_status["orchestrator"]
-    assert "supersecret" not in failed.agent_status["orchestrator"]
-    assert "checkpoint_debug_failure" in failed.error_trace[-1]
-    assert successful.workbook_bytes == failed.workbook_bytes
-    assert_frame_equal(successful.canonical_df, failed.canonical_df)
-    assert_frame_equal(successful.mapping_df, failed.mapping_df)
-    assert successful.provenance_records == failed.provenance_records
+    monkeypatch.setattr(
+        runner, "run_pipeline",
+        lambda *args, **kwargs: pytest.fail("obsolete post-hoc stub must not run"),
+    )
+    result = runner.run_pipeline_ui(source)
+    assert result.checkpoint_thread_id == "fixed-run"
+    assert result.agent_status["orchestrator"].startswith("LangGraph runtime selesai")

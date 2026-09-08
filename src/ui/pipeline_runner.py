@@ -2,7 +2,7 @@
 
 Wires together what's already built (Fase 3 schema-matching, Fase 4 Drive
 crawler, Fase 5 vision classification, Fase 6 tabular update, Fase 7
-reliability wrappers, and Fase 2's checkpointed stub orchestrator) into one
+reliability wrappers, and the checkpointed LangGraph runtime) into one
 function the UI calls. No new agent logic lives here — this module is glue
 + presentation-shaping, same spirit as eval/review_schema_matching.py.
 
@@ -64,7 +64,7 @@ from src.ingestion.runtime_source import (
 )
 from src.ingestion.shadow_pipeline import run_structure_shadow, sanitize_shadow_error_message
 from src.ingestion.source_migration import prepare_gated_runtime_source
-from src.orchestrator.graph import run_pipeline
+from src.orchestrator.graph import run_pipeline  # compatibility seam for older injected tests
 from src.reliability.rate_limit import (
     RateLimiter,
     RuntimeRateLimitConfig,
@@ -182,7 +182,7 @@ def _deterministic_workbook_bytes(workbook) -> bytes:
     return output.getvalue()
 
 
-def _run_pipeline_ui_impl(
+def _run_pipeline_ui_stage_impl(
     file_path: Path,
     *,
     source_format: str = "row-oriented",
@@ -200,6 +200,9 @@ def _run_pipeline_ui_impl(
     review_queue_path: Path | str = review_queue.DEFAULT_QUEUE_PATH,
     text_rate_limiter: RateLimiter | None = None,
     vision_rate_limiter: RateLimiter | None = None,
+    _prepared_source_bundle=None,
+    _run_id: str | None = None,
+    _skip_checkpoint: bool = False,
 ) -> PipelineRunResult:
     if source_backend not in {"legacy", "source-ir-gated"}:
         raise ValueError(
@@ -208,7 +211,7 @@ def _run_pipeline_ui_impl(
         )
     validate_retrieval_backend(retrieval_backend)
 
-    run_id = uuid.uuid4().hex
+    run_id = _run_id or uuid.uuid4().hex
     resolved_sheet_name = sheet_name or _first_sheet(file_path)
     source_hash = source_file_sha256(file_path)
     state: dict = {"error_trace": []}
@@ -221,7 +224,17 @@ def _run_pipeline_ui_impl(
 
     # --- backend-neutral parsing + variety-position preparation ---
     on_progress(f"Memuat berkas: {file_path.name} (format={source_format!r})")
-    if source_backend == "legacy":
+    if _prepared_source_bundle is not None:
+        source_bundle = _prepared_source_bundle
+        structure_shadow = source_bundle.migration_report
+        agent_status["source_ingestion"] = (
+            "legacy — authoritative parser"
+            if source_backend == "legacy"
+            else "source-ir-gated — promoted after MATCH parity"
+        )
+        if structure_shadow is not None:
+            agent_status["structure_shadow"] = structure_shadow.summary
+    elif source_backend == "legacy":
         source_bundle = prepare_legacy_runtime_source(
             file_path,
             resolved_sheet_name,
@@ -685,53 +698,24 @@ def _run_pipeline_ui_impl(
 
     workbook_bytes = _deterministic_workbook_bytes(workbook)
 
-    # --- checkpointed stub orchestrator run (Fase 2), purely so the UI's
-    # checkpoint debugger has a real thread/checkpoint to open ---
     thread_id: str | None = run_id
-    on_progress(f"orchestrator: menjalankan graf (thread_id={thread_id})...")
-    try:
-        run_pipeline(str(file_path), f"drive-folder:{folder_id or '-'}", thread_id=thread_id)
-    except Exception as exc:  # noqa: BLE001 - debug stub is best-effort after output exists
-        message = sanitize_shadow_error_message(exc)
-        thread_id = None
-        agent_status["orchestrator"] = (
-            f"checkpoint/debug gagal ({type(exc).__name__}): {message}"
-        )
-        warning = f"checkpoint_debug_failure: {type(exc).__name__}: {message}"
-        state.update(review_queue.append_error_trace(state, warning))
-        on_progress(f"orchestrator: checkpoint/debug gagal — {message}")
-    else:
-        agent_status["orchestrator"] = f"checkpoint tersimpan (thread_id={thread_id})"
-        on_progress("orchestrator: checkpoint tersimpan.")
-
+    agent_status["orchestrator"] = "dikelola LangGraph runtime"
     on_progress("Selesai.")
-
     return PipelineRunResult(
-        mapping_df=mapping_df,
-        canonical_df=canonical_df,
-        workbook_bytes=workbook_bytes,
-        vision_rows=vision_rows,
-        provenance_records=provenance_records,
-        agent_status=agent_status,
+        mapping_df=mapping_df, canonical_df=canonical_df,
+        workbook_bytes=workbook_bytes, vision_rows=vision_rows,
+        provenance_records=provenance_records, agent_status=agent_status,
         checkpoint_thread_id=thread_id,
         error_trace=list(state.get("error_trace", [])),
-        structure_shadow=structure_shadow,
-        source_backend=source_backend,
+        structure_shadow=structure_shadow, source_backend=source_backend,
         retrieval_backend=retrieval_backend,
         mapping_verifications=mapping_verifications,
-        schema_version=schema.schema_version,
-        template_hash=schema.template_hash,
-        retrieval_k=k,
-        mapping_verification_version=MAPPING_VERIFICATION_VERSION,
+        schema_version=schema.schema_version, template_hash=schema.template_hash,
+        retrieval_k=k, mapping_verification_version=MAPPING_VERIFICATION_VERSION,
         embedding_model_name=EMBEDDING_MODEL_NAME,
         evaluation_config_fingerprint=evaluation_config.fingerprint,
-        run_id=run_id,
-        review_queue_path=str(review_queue_path),
-        source_ir_version=(
-            source_bundle.source_ir.ir_version
-            if source_bundle.source_ir is not None
-            else None
-        ),
+        run_id=run_id, review_queue_path=str(review_queue_path),
+        source_ir_version=(source_bundle.source_ir.ir_version if source_bundle.source_ir else None),
     )
 
 
@@ -740,6 +724,126 @@ def _first_sheet(path: Path) -> str:
     name = wb.sheetnames[0]
     wb.close()
     return name
+
+
+def _runtime_initial_state(
+    file_path: Path, *, run_id: str, source_format: str, sheet_name: str | None,
+    header_rows: int | None, drive_folder_id: str | None, k: int, max_images: int,
+    enable_structure_shadow: bool, source_backend: str, retrieval_backend: str,
+    review_queue_path: Path | str,
+) -> dict:
+    from src.orchestrator.graph import runtime_identity
+
+    if source_backend not in {"legacy", "source-ir-gated"}:
+        raise ValueError(f"unknown source backend {source_backend!r}; expected one of: legacy, source-ir-gated")
+    validate_retrieval_backend(retrieval_backend)
+    schema = CanonicalSchema.from_template()
+    resolved_sheet = sheet_name or _first_sheet(file_path)
+    evaluation = EvaluationRunConfig(
+        source_backend=source_backend, retrieval_backend=retrieval_backend, retrieval_k=k,
+        canonical_schema_version=schema.schema_version,
+        canonical_template_hash=schema.template_hash,
+        mapping_verification_version=MAPPING_VERIFICATION_VERSION,
+        embedding_model_name=EMBEDDING_MODEL_NAME,
+    )
+    state = {
+        "run_id": run_id, "source_path": str(file_path), "source_file_name": file_path.name,
+        "source_file_sha256": source_file_sha256(file_path), "source_format": source_format,
+        "sheet_name": resolved_sheet, "header_rows": header_rows,
+        "drive_folder_id": (drive_folder_id or "").strip(), "max_images": max_images,
+        "enable_structure_shadow": enable_structure_shadow,
+        "source_backend": source_backend, "retrieval_backend": retrieval_backend,
+        "retrieval_k": k, "schema_version": schema.schema_version,
+        "template_hash": schema.template_hash,
+        "evaluation_config_fingerprint": evaluation.fingerprint,
+        "mapping_verification_version": MAPPING_VERIFICATION_VERSION,
+        "embedding_model_name": EMBEDDING_MODEL_NAME,
+        "review_queue_path": str(review_queue_path), "error_trace": [], "agent_status": {},
+    }
+    state["runtime_identity"] = runtime_identity(state)
+    return state
+
+
+def _result_from_runtime_state(state: dict) -> PipelineRunResult:
+    from src.schema.shadow_parity import ShadowParityReport
+
+    mapping_df = pd.read_json(io.StringIO(state["mapping_json"]), orient="table")
+    schema = CanonicalSchema.from_template()
+    workbook = openpyxl.load_workbook(io.BytesIO(state["workbook_bytes"]))
+    canonical_df = worksheet_to_dataframe(workbook[SHEET_NAME], schema, state["variety_names"])
+    workbook.close()
+    return PipelineRunResult(
+        mapping_df=mapping_df, canonical_df=canonical_df,
+        workbook_bytes=state["workbook_bytes"], vision_rows=list(state.get("vision_rows", [])),
+        provenance_records=[CellProvenanceRecord.model_validate(x) for x in state.get("provenance_records", [])],
+        agent_status=dict(state.get("agent_status", {})), checkpoint_thread_id=state["run_id"],
+        error_trace=list(state.get("error_trace", [])),
+        structure_shadow=(ShadowParityReport.model_validate(state["structure_shadow"]) if state.get("structure_shadow") else None),
+        source_backend=state["source_backend"], retrieval_backend=state["retrieval_backend"],
+        mapping_verifications=[MappingVerificationResult.model_validate(x) for x in state.get("mapping_verifications", [])],
+        schema_version=state["schema_version"], template_hash=state["template_hash"],
+        retrieval_k=state["retrieval_k"], mapping_verification_version=state["mapping_verification_version"],
+        embedding_model_name=state["embedding_model_name"],
+        evaluation_config_fingerprint=state["evaluation_config_fingerprint"], run_id=state["run_id"],
+        review_queue_path=state["review_queue_path"], source_ir_version=state.get("source_ir_version"),
+    )
+
+
+def _run_pipeline_ui_impl(
+    file_path: Path, *, source_format: str = "row-oriented", sheet_name: str | None = None,
+    header_rows: int | None = None, drive_folder_id: str | None = None, k: int = DEFAULT_K,
+    max_images: int = 5, on_progress: ProgressCallback = _noop,
+    enable_structure_shadow: bool = False, structure_llm_call: Callable | None = None,
+    source_backend: Literal["legacy", "source-ir-gated"] = "legacy",
+    retrieval_backend: RetrievalBackend = "chroma", embedding_encode_call: Callable[..., object] | None = None,
+    review_queue_path: Path | str = review_queue.DEFAULT_QUEUE_PATH,
+    text_rate_limiter: RateLimiter | None = None, vision_rate_limiter: RateLimiter | None = None,
+    checkpoint_db_path: Path | str | None = None, _run_id: str | None = None,
+    _interrupt_after: list[str] | None = None,
+) -> PipelineRunResult | dict:
+    from src.orchestrator.graph import DEFAULT_CHECKPOINT_DB, RuntimeResources, run_pipeline
+
+    run_id = _run_id or uuid.uuid4().hex
+    initial = _runtime_initial_state(file_path, run_id=run_id, source_format=source_format,
+        sheet_name=sheet_name, header_rows=header_rows, drive_folder_id=drive_folder_id, k=k,
+        max_images=max_images, enable_structure_shadow=enable_structure_shadow,
+        source_backend=source_backend, retrieval_backend=retrieval_backend,
+        review_queue_path=review_queue_path)
+    initial["agent_status"] = {
+        "text_rate_limit": describe_rate_limiter(text_rate_limiter),
+        "vision_rate_limit": describe_rate_limiter(vision_rate_limiter),
+    }
+    resources = RuntimeResources(on_progress=on_progress, text_rate_limiter=text_rate_limiter,
+        vision_rate_limiter=vision_rate_limiter, structure_llm_call=structure_llm_call,
+        embedding_encode_call=embedding_encode_call)
+    final = run_pipeline(initial, resources, db_path=checkpoint_db_path or DEFAULT_CHECKPOINT_DB,
+                         interrupt_after=_interrupt_after)
+    return _result_from_runtime_state(final) if final.get("completed") else final
+
+
+def _resume_pipeline_ui_impl(
+    file_path: Path, *, run_id: str, source_format: str = "row-oriented",
+    sheet_name: str | None = None, header_rows: int | None = None,
+    drive_folder_id: str | None = None, k: int = DEFAULT_K, max_images: int = 5,
+    enable_structure_shadow: bool = False, structure_llm_call: Callable | None = None,
+    source_backend: Literal["legacy", "source-ir-gated"] = "legacy",
+    retrieval_backend: RetrievalBackend = "chroma", embedding_encode_call: Callable[..., object] | None = None,
+    review_queue_path: Path | str = review_queue.DEFAULT_QUEUE_PATH,
+    text_rate_limiter: RateLimiter | None = None, vision_rate_limiter: RateLimiter | None = None,
+    checkpoint_db_path: Path | str | None = None, on_progress: ProgressCallback = _noop,
+) -> PipelineRunResult:
+    from src.orchestrator.graph import DEFAULT_CHECKPOINT_DB, RuntimeResources, resume_pipeline
+
+    expected = _runtime_initial_state(file_path, run_id=run_id, source_format=source_format,
+        sheet_name=sheet_name, header_rows=header_rows, drive_folder_id=drive_folder_id, k=k,
+        max_images=max_images, enable_structure_shadow=enable_structure_shadow,
+        source_backend=source_backend, retrieval_backend=retrieval_backend,
+        review_queue_path=review_queue_path)
+    resources = RuntimeResources(on_progress=on_progress, text_rate_limiter=text_rate_limiter,
+        vision_rate_limiter=vision_rate_limiter, structure_llm_call=structure_llm_call,
+        embedding_encode_call=embedding_encode_call)
+    final = resume_pipeline(expected, resources, db_path=checkpoint_db_path or DEFAULT_CHECKPOINT_DB)
+    return _result_from_runtime_state(final)
 
 
 def run_pipeline_ui(
@@ -761,6 +865,7 @@ def run_pipeline_ui(
     text_rate_limiter: RateLimiter | None = None,
     vision_rate_limiter: RateLimiter | None = None,
     rate_limit_config: RuntimeRateLimitConfig | None = None,
+    checkpoint_db_path: Path | str | None = None,
 ) -> PipelineRunResult:
     """Run the UI pipeline with per-run text and vision limiter ownership.
 
@@ -794,7 +899,40 @@ def run_pipeline_ui(
             review_queue_path=review_queue_path,
             text_rate_limiter=text_rate_limiter,
             vision_rate_limiter=vision_rate_limiter,
+            checkpoint_db_path=checkpoint_db_path,
         )
     finally:
         for limiter in reversed(owned_limiters):
             limiter.close()
+
+
+def resume_pipeline_ui(
+    file_path: Path, *, run_id: str, source_format: str = "row-oriented",
+    sheet_name: str | None = None, header_rows: int | None = None,
+    drive_folder_id: str | None = None, k: int = DEFAULT_K, max_images: int = 5,
+    enable_structure_shadow: bool = False, structure_llm_call: Callable | None = None,
+    source_backend: Literal["legacy", "source-ir-gated"] = "legacy",
+    retrieval_backend: RetrievalBackend = "chroma", embedding_encode_call: Callable[..., object] | None = None,
+    review_queue_path: Path | str = review_queue.DEFAULT_QUEUE_PATH,
+    text_rate_limiter: RateLimiter | None = None, vision_rate_limiter: RateLimiter | None = None,
+    rate_limit_config: RuntimeRateLimitConfig | None = None,
+    checkpoint_db_path: Path | str | None = None, on_progress: ProgressCallback = _noop,
+) -> PipelineRunResult:
+    """Resume a checkpointed graph with fresh non-checkpointed runtime resources."""
+    config = rate_limit_config or RuntimeRateLimitConfig.from_env()
+    owned: list[RateLimiter] = []
+    try:
+        if text_rate_limiter is None and config.text_rpm is not None:
+            text_rate_limiter = RateLimiter(config.text_rpm, 60.0); owned.append(text_rate_limiter)
+        if vision_rate_limiter is None and config.vision_rpm is not None:
+            vision_rate_limiter = RateLimiter(config.vision_rpm, 60.0); owned.append(vision_rate_limiter)
+        return _resume_pipeline_ui_impl(file_path, run_id=run_id, source_format=source_format,
+            sheet_name=sheet_name, header_rows=header_rows, drive_folder_id=drive_folder_id,
+            k=k, max_images=max_images, enable_structure_shadow=enable_structure_shadow,
+            structure_llm_call=structure_llm_call, source_backend=source_backend,
+            retrieval_backend=retrieval_backend, embedding_encode_call=embedding_encode_call,
+            review_queue_path=review_queue_path, text_rate_limiter=text_rate_limiter,
+            vision_rate_limiter=vision_rate_limiter, checkpoint_db_path=checkpoint_db_path,
+            on_progress=on_progress)
+    finally:
+        for limiter in reversed(owned): limiter.close()

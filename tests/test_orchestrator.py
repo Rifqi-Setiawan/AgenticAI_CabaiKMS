@@ -1,168 +1,107 @@
 from __future__ import annotations
 
 import sqlite3
-import uuid
 
+import openpyxl
 import pytest
-from langgraph.errors import EmptyInputError
 
-from src.orchestrator.graph import (
-    LOW_CONFIDENCE_THRESHOLD,
-    _sqlite_checkpointer,
-    resume_pipeline,
-    route_after_vision,
-    run_pipeline,
-)
-from src.schema.contracts import VisionResult
-
-SPREADSHEET = "data/samples/data_input.xlsx"
-DRIVE_URL = "https://drive.google.com/drive/folders/stub"
+from src.agents.schema_matching.anchor import AnchorResult
+from src.agents.schema_matching.retrieval import RetrievalHit
+from src.orchestrator.graph import NODE_ORDER, _sqlite_checkpointer, build_graph
+from src.schema.canonical import CanonicalSchema
+from src.schema.contracts import SchemaMapping
+from src.ui import pipeline_runner as runner
 
 
-def _thread_id() -> str:
-    return uuid.uuid4().hex
+def _source(tmp_path, attribute="Unknown attribute"):
+    path = tmp_path / "runtime.xlsx"
+    wb = openpyxl.Workbook(); ws = wb.active
+    ws.append(["Variety", attribute]); ws.append(["Domba", "perdu"])
+    wb.save(path); wb.close(); return path
 
 
-def _vision_result(confidence: float) -> VisionResult:
-    return VisionResult(
-        classification_status="KNOWN",
-        matched_variety="stub-varietas",
-        identified_part="DAUN",
-        confidence=confidence,
-        visual_evidence="test fixture",
-    )
+def _wire_schema(monkeypatch, calls):
+    schema = CanonicalSchema.from_template(); target = schema.row_by_label("habitus")
+    monkeypatch.setattr(runner, "detect_anchor", lambda *a, **k: AnchorResult("found", "Variety", 1.0, "test"))
+    monkeypatch.setattr(runner, "ensure_indexed", lambda *a, **k: object())
+    monkeypatch.setattr(runner, "retrieve", lambda *a, **k: [RetrievalHit(target.id, target.label, target.domain, 0.1, canonical_key=target.canonical_key)])
+    def mapping(profile, candidates, state, *, source_format, **kwargs):
+        calls.append(profile.attribute_name)
+        return SchemaMapping(source_attribute=profile.attribute_name, source_format=source_format,
+            target_canonical_row=target.id, confidence=0.99, reasoning="mock", normalization_required=True), {}
+    monkeypatch.setattr(runner, "safe_rerank", mapping)
 
 
-class TestRouteAfterVision:
-    """route_after_vision is pure — test it directly rather than only
-    through a full graph run, so each branch is unambiguously exercised."""
-
-    def test_continue_when_confident_and_no_errors(self):
-        state = {"error_trace": [], "classification_results": [_vision_result(0.9)]}
-        assert route_after_vision(state) == "continue"
-
-    def test_retry_when_confidence_below_threshold(self):
-        state = {
-            "error_trace": [],
-            "classification_results": [_vision_result(LOW_CONFIDENCE_THRESHOLD - 0.1)],
-        }
-        assert route_after_vision(state) == "retry"
-
-    def test_retry_when_error_already_flagged_and_under_cap(self):
-        state = {"error_trace": ["one prior issue"], "classification_results": [_vision_result(0.9)]}
-        assert route_after_vision(state) == "retry"
-
-    def test_manual_review_once_retries_exhausted(self):
-        state = {
-            "error_trace": ["issue 1", "issue 2"],
-            "classification_results": [_vision_result(0.1)],
-        }
-        assert route_after_vision(state) == "manual_review"
+def test_graph_has_real_coarse_runtime_topology():
+    assert NODE_ORDER == ("source_ingestion", "schema_matching_tabular", "drive_crawler", "vision_classification", "finalization")
+    graph = build_graph().get_graph()
+    text = " ".join(graph.nodes)
+    assert "stub" not in text
+    assert "schema_matching_tabular" in text
 
 
-class TestPipelineStateFlow:
-    def test_happy_path_fills_expected_state_and_reaches_finalization(self, tmp_path):
-        db_path = tmp_path / "checkpoints.sqlite"
-        result = run_pipeline(
-            SPREADSHEET, DRIVE_URL, db_path=db_path, thread_id=_thread_id()
-        )
+def test_tabular_checkpoint_resume_does_not_repeat_schema_matching(tmp_path, monkeypatch):
+    source, db, calls = _source(tmp_path), tmp_path / "runtime.sqlite", []
+    _wire_schema(monkeypatch, calls)
+    partial = runner._run_pipeline_ui_impl(source, _run_id="resume-run", checkpoint_db_path=db,
+        _interrupt_after=["schema_matching_tabular"])
+    assert partial["workbook_bytes"]
+    assert calls == ["Unknown attribute"]
 
-        assert result["raw_spreadsheet"] == SPREADSHEET
-        assert result["drive_url"] == DRIVE_URL
-        assert len(result["schema_mapping"]) == 1
-        assert len(result["image_metadata"]) == 1
-        assert len(result["classification_results"]) == 1
-        assert result["updated_spreadsheet"] == {"stub": True, "source": SPREADSHEET}
-        assert result["error_trace"] == []  # happy path never triggers retry/manual_review
-
-    def test_checkpoint_file_is_created_on_disk(self, tmp_path):
-        db_path = tmp_path / "checkpoints.sqlite"
-        assert not db_path.exists()
-        run_pipeline(SPREADSHEET, DRIVE_URL, db_path=db_path, thread_id=_thread_id())
-        assert db_path.exists()
-        # it's a real sqlite db, not just an empty file
-        conn = sqlite3.connect(str(db_path))
-        tables = {row[0] for row in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
-        conn.close()
-        assert "checkpoints" in tables
-
-    def test_checkpoint_is_saved_per_node(self, tmp_path):
-        db_path = tmp_path / "checkpoints.sqlite"
-        thread_id = _thread_id()
-        run_pipeline(SPREADSHEET, DRIVE_URL, db_path=db_path, thread_id=thread_id)
-        with _sqlite_checkpointer(db_path) as checkpointer:
-            checkpoints = list(checkpointer.list({"configurable": {"thread_id": thread_id}}))
-        # one per superstep: __start__, schema_matching, drive_crawler,
-        # vision_classification, tabular_update, finalization (at least)
-        assert len(checkpoints) >= 6
-
-    def test_threads_do_not_leak_into_each_other(self, tmp_path):
-        db_path = tmp_path / "checkpoints.sqlite"
-        run_pipeline(SPREADSHEET, DRIVE_URL, db_path=db_path, thread_id="thread-a")
-        run_pipeline("other.xlsx", "https://drive/other", db_path=db_path, thread_id="thread-b")
-
-        with _sqlite_checkpointer(db_path) as checkpointer:
-            state_a = checkpointer.get({"configurable": {"thread_id": "thread-a"}})
-            state_b = checkpointer.get({"configurable": {"thread_id": "thread-b"}})
-
-        assert state_a["channel_values"]["raw_spreadsheet"] == SPREADSHEET
-        assert state_b["channel_values"]["raw_spreadsheet"] == "other.xlsx"
+    result = runner.resume_pipeline_ui(source, run_id="resume-run", checkpoint_db_path=db)
+    assert calls == ["Unknown attribute"]
+    assert result.run_id == "resume-run"
+    assert result.canonical_df.loc[result.canonical_df.Karakter == "habitus", "Domba"].item() == "perdu"
 
 
-class TestResume:
-    def test_interrupted_run_is_missing_downstream_state(self, tmp_path):
-        db_path = tmp_path / "checkpoints.sqlite"
-        partial = run_pipeline(
-            SPREADSHEET,
-            DRIVE_URL,
-            db_path=db_path,
-            thread_id=_thread_id(),
-            interrupt_after=["drive_crawler"],
-        )
-        assert "image_metadata" in partial
-        assert "classification_results" not in partial
-        assert "updated_spreadsheet" not in partial
+def test_resume_matches_uninterrupted_output(tmp_path, monkeypatch):
+    source, calls = _source(tmp_path), []
+    _wire_schema(monkeypatch, calls)
+    uninterrupted = runner._run_pipeline_ui_impl(source, _run_id="full", checkpoint_db_path=tmp_path / "full.sqlite")
+    runner._run_pipeline_ui_impl(source, _run_id="resumed", checkpoint_db_path=tmp_path / "resume.sqlite",
+                                 _interrupt_after=["schema_matching_tabular"])
+    resumed = runner.resume_pipeline_ui(source, run_id="resumed", checkpoint_db_path=tmp_path / "resume.sqlite")
+    assert uninterrupted.workbook_bytes == resumed.workbook_bytes
+    assert uninterrupted.mapping_df.drop(columns="review_item_id").equals(resumed.mapping_df.drop(columns="review_item_id"))
 
-    def test_resume_completes_pipeline_from_checkpoint(self, tmp_path):
-        db_path = tmp_path / "checkpoints.sqlite"
-        thread_id = _thread_id()
-        partial = run_pipeline(
-            SPREADSHEET,
-            DRIVE_URL,
-            db_path=db_path,
-            thread_id=thread_id,
-            interrupt_after=["drive_crawler"],
-        )
 
-        final = resume_pipeline(db_path=db_path, thread_id=thread_id)
+def test_resume_rejects_mismatched_source_or_configuration(tmp_path, monkeypatch):
+    source, calls, db = _source(tmp_path), [], tmp_path / "mismatch.sqlite"
+    _wire_schema(monkeypatch, calls)
+    runner._run_pipeline_ui_impl(source, _run_id="mismatch", checkpoint_db_path=db,
+                                 _interrupt_after=["schema_matching_tabular"])
+    with pytest.raises(ValueError, match="identity"):
+        runner.resume_pipeline_ui(source, run_id="mismatch", k=9, checkpoint_db_path=db)
 
-        assert "classification_results" in final
-        assert "updated_spreadsheet" in final
-        # state carried over from before the interrupt, not recomputed
-        assert final["image_metadata"] == partial["image_metadata"]
-        assert final["schema_mapping"] == partial["schema_mapping"]
-        assert final["raw_spreadsheet"] == SPREADSHEET
 
-    def test_resume_adds_checkpoints_on_top_of_the_interrupted_ones(self, tmp_path):
-        db_path = tmp_path / "checkpoints.sqlite"
-        thread_id = _thread_id()
-        run_pipeline(
-            SPREADSHEET,
-            DRIVE_URL,
-            db_path=db_path,
-            thread_id=thread_id,
-            interrupt_after=["drive_crawler"],
-        )
-        with _sqlite_checkpointer(db_path) as checkpointer:
-            before = len(list(checkpointer.list({"configurable": {"thread_id": thread_id}})))
+def test_run_ids_have_isolated_real_checkpoints(tmp_path, monkeypatch):
+    source, calls, db = _source(tmp_path), [], tmp_path / "isolated.sqlite"
+    _wire_schema(monkeypatch, calls)
+    runner._run_pipeline_ui_impl(source, _run_id="run-a", checkpoint_db_path=db)
+    runner._run_pipeline_ui_impl(source, _run_id="run-b", checkpoint_db_path=db)
+    with _sqlite_checkpointer(db) as cp:
+        assert cp.get({"configurable": {"thread_id": "run-a"}})["channel_values"]["run_id"] == "run-a"
+        assert cp.get({"configurable": {"thread_id": "run-b"}})["channel_values"]["run_id"] == "run-b"
+    with sqlite3.connect(db) as conn:
+        assert conn.execute("SELECT count(*) FROM checkpoints").fetchone()[0] > 0
 
-        resume_pipeline(db_path=db_path, thread_id=thread_id)
-        with _sqlite_checkpointer(db_path) as checkpointer:
-            after = len(list(checkpointer.list({"configurable": {"thread_id": thread_id}})))
 
-        assert after > before
+def test_no_drive_routes_directly_to_finalization(tmp_path, monkeypatch):
+    source, calls = _source(tmp_path, "Seeds per mature fruit"), []
+    monkeypatch.setattr(runner, "detect_anchor", lambda *a, **k: AnchorResult("found", "Variety", 1.0, "test"))
+    monkeypatch.setattr(runner, "list_images", lambda *a, **k: pytest.fail("Drive must be skipped"))
+    monkeypatch.setattr(runner, "VisionSession", lambda: pytest.fail("vision must be skipped"))
+    result = runner._run_pipeline_ui_impl(source, checkpoint_db_path=tmp_path / "skip.sqlite")
+    assert result.agent_status["vision_classification"].startswith("dilewati")
 
-    def test_resuming_a_thread_with_no_checkpoint_fails_loudly(self, tmp_path):
-        db_path = tmp_path / "checkpoints.sqlite"
-        with pytest.raises(EmptyInputError):
-            resume_pipeline(db_path=db_path, thread_id=_thread_id())
+
+def test_graph_matches_shared_direct_tabular_stage(tmp_path, monkeypatch):
+    source, calls = _source(tmp_path, "Seeds per mature fruit"), []
+    monkeypatch.setattr(runner, "detect_anchor", lambda *a, **k: AnchorResult("found", "Variety", 1.0, "test"))
+    direct = runner._run_pipeline_ui_stage_impl(source, _run_id="parity", _skip_checkpoint=True)
+    graph = runner._run_pipeline_ui_impl(source, _run_id="parity", checkpoint_db_path=tmp_path / "parity.sqlite")
+    assert direct.workbook_bytes == graph.workbook_bytes
+    assert direct.mapping_df.equals(graph.mapping_df)
+    assert direct.canonical_df.equals(graph.canonical_df)
+    assert direct.provenance_records == graph.provenance_records
+    assert direct.error_trace == graph.error_trace

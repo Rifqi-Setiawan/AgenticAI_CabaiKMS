@@ -12,6 +12,12 @@ from src.ingestion.source_migration import SourceMigrationGateError
 from tests.test_source_parsing import flat_observations
 
 
+@pytest.fixture(autouse=True)
+def _isolated_runtime_checkpoints(tmp_path, monkeypatch):
+    import src.orchestrator.graph as graph
+    monkeypatch.setattr(graph, "DEFAULT_CHECKPOINT_DB", tmp_path / "source-ir-runtime.sqlite")
+
+
 def _anchor(candidates, **kwargs):
     selected = next((item.column_name for item in candidates if item.column_name == "Variety"), None)
     return AnchorResult("found" if selected else "escalate", selected, 1.0, "test")

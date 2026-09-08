@@ -1,228 +1,188 @@
-"""Fase 2 — orchestrator skeleton (LangGraph StateGraph).
-
-All nodes are stubs: they log, then fill GlobalState with dummy-but-valid
-contract objects (SchemaMapping/ImageMetadata/VisionResult from Fase 1). No
-node in this module calls an LLM, a vision model, or the Drive API — that
-wiring lands once the real agents exist. The point of this fase is the
-graph shape, the state flow, the verify-then-revise conditional edge, and
-checkpoint/resume, all provable without any network calls.
-
-Node order (per the proposal):
-    schema_matching -> drive_crawler -> vision_classification
-        -> [conditional: retry / manual_review / continue]
-        -> tabular_update -> finalization
-"""
-
+"""Real LangGraph coordinator for the acquisition runtime."""
 from __future__ import annotations
 
-import logging
-import sqlite3
+import hashlib, io, json, sqlite3, uuid
 from contextlib import closing, contextmanager
-from datetime import datetime, timezone
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Literal
-
+from typing import Any, Callable, TypedDict
+import openpyxl
 from langgraph.graph import END, StateGraph
-
-from src.schema.canonical import CanonicalSchema
-from src.schema.contracts import ImageMetadata, SchemaMapping, VisionResult
-from src.schema.state import GlobalState
-
-logger = logging.getLogger(__name__)
+from src.agents.drive_crawler import DriveCrawlerError
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CHECKPOINT_DB = PROJECT_ROOT / "data" / ".checkpoints" / "orchestrator.sqlite"
+NODE_ORDER = ("source_ingestion", "schema_matching_tabular", "drive_crawler", "vision_classification", "finalization")
 
-# verify-then-revise thresholds
-LOW_CONFIDENCE_THRESHOLD = 0.6
-MAX_VISION_RETRIES = 2
+class RuntimeGraphState(TypedDict, total=False):
+    run_id: str; runtime_identity: str; source_path: str; source_file_name: str
+    source_file_sha256: str; source_format: str; sheet_name: str; header_rows: int | None
+    drive_folder_id: str; max_images: int; source_backend: str; retrieval_backend: str
+    retrieval_k: int; schema_version: str; template_hash: str
+    evaluation_config_fingerprint: str; source_ir_version: str | None
+    review_queue_path: str; error_trace: list[str]; agent_status: dict[str, str]
+    mapping_json: str; workbook_bytes: bytes; variety_names: list[str]
+    vision_rows: list[dict[str, Any]]; provenance_records: list[dict[str, Any]]
+    mapping_verifications: list[dict[str, Any]]; structure_shadow: dict[str, Any] | None
+    image_metadata: list[dict[str, Any]]; completed: bool
+    enable_structure_shadow: bool; embedding_model_name: str | None
+    mapping_verification_version: str
+    prepared_source_bundle: Any
 
-NODE_ORDER = (
-    "schema_matching",
-    "drive_crawler",
-    "vision_classification",
-    "tabular_update",
-    "finalization",
-)
+@dataclass
+class RuntimeResources:
+    on_progress: Callable[[str], None]
+    text_rate_limiter: Any = None; vision_rate_limiter: Any = None
+    structure_llm_call: Callable | None = None; embedding_encode_call: Callable | None = None
+    prepared_source_bundle: Any = None
 
-# --------------------------------------------------------------------------
-# Nodes (stub)
-# --------------------------------------------------------------------------
+_ACTIVE_RESOURCES: dict[str, RuntimeResources] = {}
 
+def _resources(config):
+    key = config["configurable"]["runtime_resources_id"]
+    if key not in _ACTIVE_RESOURCES:
+        raise RuntimeError("runtime resources unavailable; resume with a runtime context")
+    return _ACTIVE_RESOURCES[key]
 
-def schema_matching(state: GlobalState) -> dict[str, Any]:
-    logger.info("schema_matching: raw_spreadsheet=%s", state.get("raw_spreadsheet"))
-    schema = CanonicalSchema.from_template()
-    dummy_row = schema.rows[0]
-    mapping = SchemaMapping(
-        source_attribute="stub_attribute",
-        source_context="Fase 2 stub — no LLM call",
-        source_format="row-oriented",
-        target_canonical_row=dummy_row.id,
-        confidence=0.95,
-        reasoning="stub node, dummy mapping to exercise graph shape only",
-        normalization_required=False,
-    )
-    return {"schema_mapping": [mapping]}
+def runtime_identity(values):
+    keys = ("run_id", "source_file_sha256", "source_format", "sheet_name", "header_rows",
+            "drive_folder_id", "max_images", "source_backend", "retrieval_backend", "retrieval_k",
+            "schema_version", "template_hash", "evaluation_config_fingerprint",
+            "enable_structure_shadow", "review_queue_path")
+    return hashlib.sha256(json.dumps({k: values.get(k) for k in keys}, sort_keys=True).encode()).hexdigest()
 
+def _prepare_source(state, resources):
+    from src.ui import pipeline_runner as r
+    path, backend = Path(state["source_path"]), state["source_backend"]
+    if backend == "legacy":
+        bundle = r.prepare_legacy_runtime_source(path, state["sheet_name"], source_format=state["source_format"],
+            header_rows=state.get("header_rows"), anchor_detector=r.detect_anchor)
+        status = "legacy — authoritative parser"
+    elif backend == "source-ir-gated":
+        bundle = r.prepare_gated_runtime_source(path, state["sheet_name"], source_format=state["source_format"],
+            header_rows=state.get("header_rows"), llm_call=resources.structure_llm_call,
+            anchor_detector=r.detect_anchor)
+        status = "source-ir-gated — promoted after MATCH parity"
+    else:
+        raise ValueError(f"unknown source backend {backend!r}; expected one of: legacy, source-ir-gated")
+    if not bundle.variety_names:
+        raise ValueError("Tidak ada varietas untuk keluaran. Periksa header dan isi data sumber.")
+    return bundle, status
 
-def drive_crawler(state: GlobalState) -> dict[str, Any]:
-    logger.info("drive_crawler: drive_url=%s", state.get("drive_url"))
-    image = ImageMetadata(
-        file_id="stub-file-id",
-        filename="stub.jpg",
-        mime_type="image/jpeg",
-        size=0,
-        created_time=datetime.now(timezone.utc),
-    )
-    return {"image_metadata": [image]}
+def source_ingestion(state, config):
+    resources, status_map = _resources(config), dict(state.get("agent_status", {}))
+    bundle, status = _prepare_source(state, resources)
+    resources.prepared_source_bundle = bundle; status_map["source_ingestion"] = status
+    if bundle.migration_report: status_map["structure_shadow"] = bundle.migration_report.summary
+    resources.on_progress(f"source_ingestion: {status}")
+    return {"agent_status": status_map,
+            "prepared_source_bundle": bundle,
+            "source_ir_version": bundle.source_ir.ir_version if bundle.source_ir else None,
+            "structure_shadow": bundle.migration_report.model_dump(mode="json") if bundle.migration_report else None}
 
+def schema_matching_tabular(state, config):
+    from src.ui import pipeline_runner as r
+    resources = _resources(config)
+    if resources.prepared_source_bundle is None:
+        resources.prepared_source_bundle = state.get("prepared_source_bundle")
+    if resources.prepared_source_bundle is None:
+        resources.prepared_source_bundle, _ = _prepare_source(state, resources)
+    result = r._run_pipeline_ui_stage_impl(Path(state["source_path"]), source_format=state["source_format"],
+        sheet_name=state["sheet_name"], header_rows=state.get("header_rows"), drive_folder_id=None,
+        k=state["retrieval_k"], on_progress=resources.on_progress,
+        enable_structure_shadow=state.get("enable_structure_shadow", False),
+        structure_llm_call=resources.structure_llm_call, source_backend=state["source_backend"],
+        retrieval_backend=state["retrieval_backend"], embedding_encode_call=resources.embedding_encode_call,
+        review_queue_path=state["review_queue_path"], text_rate_limiter=resources.text_rate_limiter,
+        vision_rate_limiter=resources.vision_rate_limiter, _prepared_source_bundle=resources.prepared_source_bundle,
+        _run_id=state["run_id"], _skip_checkpoint=True)
+    status = dict(result.agent_status); status.pop("vision_classification", None)
+    status["orchestrator"] = "schema/tabular selesai; checkpoint LangGraph"
+    return {"mapping_json": result.mapping_df.to_json(orient="table"), "workbook_bytes": result.workbook_bytes,
+        "variety_names": list(result.canonical_df.columns[2:]), "vision_rows": [],
+        "provenance_records": [x.model_dump(mode="json") for x in result.provenance_records],
+        "mapping_verifications": [x.model_dump(mode="json") for x in result.mapping_verifications],
+        "error_trace": list(result.error_trace), "agent_status": status,
+        "structure_shadow": result.structure_shadow.model_dump(mode="json") if result.structure_shadow else None,
+        "source_ir_version": result.source_ir_version}
 
-def vision_classification(state: GlobalState) -> dict[str, Any]:
-    n_images = len(state.get("image_metadata", []))
-    logger.info("vision_classification: n_images=%d", n_images)
-    result = VisionResult(
-        classification_status="KNOWN",
-        matched_variety="stub-varietas",
-        identified_part="DAUN",
-        confidence=0.9,
-        visual_evidence="stub node, no vision model call",
-    )
-    return {"classification_results": [result]}
+def route_after_tabular(state): return "drive" if state.get("drive_folder_id", "").strip() else "finalize"
 
+def drive_crawler(state, config):
+    from src.ui import pipeline_runner as r
+    resources, status = _resources(config), dict(state.get("agent_status", {})); folder = state["drive_folder_id"].strip()
+    try: images = r.list_images(r.normalize_folder_id(folder))[:state["max_images"]]
+    except DriveCrawlerError as exc:
+        status["vision_classification"] = f"gagal: {exc}"; resources.on_progress(f"drive_crawler: GAGAL — {exc}")
+        return {"image_metadata": [], "agent_status": status}
+    resources.on_progress(f"drive_crawler: {len(images)} citra ditemukan")
+    if not images: status["vision_classification"] = "dilewati (folder Drive kosong, tidak ada citra)"
+    return {"image_metadata": [x.model_dump(mode="json") for x in images], "agent_status": status}
 
-def manual_review(state: GlobalState) -> dict[str, Any]:
-    trace = list(state.get("error_trace", []))
-    trace.append("flagged for manual_review: low confidence or retries exhausted")
-    logger.warning("manual_review: %s", trace[-1])
-    return {"error_trace": trace}
+def route_after_drive(state): return "vision" if state.get("image_metadata") else "finalize"
 
+def vision_classification(state, config):
+    from src.schema.contracts import ImageMetadata
+    from src.ui import pipeline_runner as r
+    resources = _resources(config); wb = openpyxl.load_workbook(io.BytesIO(state["workbook_bytes"])); ws = wb[r.SHEET_NAME]
+    session = r.VisionSession(); trace = {"error_trace": list(state.get("error_trace", []))}; rows=[]; written=uncertain=0
+    for raw in state.get("image_metadata", []):
+        image = ImageMetadata.model_validate(raw)
+        result, patch = r.safe_classify_image(image, session.knowledge_source_text, session.varieties, trace,
+                                              vision_rate_limiter=resources.vision_rate_limiter)
+        trace.update(patch)
+        if result is None: continue
+        uncertain += result.classification_status == "UNCERTAIN"; update = r.apply_vision_result_to_worksheet(ws, image, result)
+        written += update.applied
+        if not update.applied and update.reason:
+            warning=f"vision_non_write: file_id={image.file_id!r}: {update.reason}"
+            trace.update(r.review_queue.append_error_trace(trace, warning))
+        rows.append({"filename": image.filename, "status": result.classification_status,
+            "matched_variety": result.matched_variety, "identified_part": result.identified_part,
+            "confidence": result.confidence, "visual_evidence": result.visual_evidence,
+            "write_applied": update.applied, "write_reason": update.reason})
+    status=dict(state.get("agent_status", {})); status["vision_classification"]=(
+        f"selesai — {len(rows)} citra diklasifikasi, {written} ditulis ke sel, {uncertain} UNCERTAIN")
+    payload=r._deterministic_workbook_bytes(wb); wb.close()
+    return {"workbook_bytes":payload, "vision_rows":rows, "error_trace":trace["error_trace"], "agent_status":status}
 
-def tabular_update(state: GlobalState) -> dict[str, Any]:
-    logger.info("tabular_update: n_mappings=%d", len(state.get("schema_mapping", [])))
-    return {"updated_spreadsheet": {"stub": True, "source": state.get("raw_spreadsheet")}}
+def finalization(state, config):
+    resources=_resources(config); status=dict(state.get("agent_status", {}))
+    if not state.get("drive_folder_id", "").strip(): status["vision_classification"]="dilewati (tidak ada folder Drive)"
+    status["orchestrator"]=f"LangGraph runtime selesai (thread_id={state['run_id']})"; resources.on_progress("finalization: selesai")
+    return {"agent_status":status, "completed":True}
 
-
-def finalization(state: GlobalState) -> dict[str, Any]:
-    logger.info("finalization: error_trace=%s", state.get("error_trace", []))
-    return {"error_trace": state.get("error_trace", [])}
-
-
-# --------------------------------------------------------------------------
-# Conditional edge: verify-then-revise after the risky node
-# --------------------------------------------------------------------------
-
-
-def route_after_vision(state: GlobalState) -> Literal["retry", "manual_review", "continue"]:
-    """Decide what happens after vision_classification, based on
-    error_trace (things already flagged upstream) and the classification's
-    own confidence — never by re-running the model to "see if it feels ok"."""
-    error_trace = state.get("error_trace", [])
-    if len(error_trace) >= MAX_VISION_RETRIES:
-        return "manual_review"
-
-    results = state.get("classification_results", [])
-    low_confidence = bool(results) and results[-1].confidence < LOW_CONFIDENCE_THRESHOLD
-    if error_trace or low_confidence:
-        return "retry"
-
-    return "continue"
-
-
-# --------------------------------------------------------------------------
-# Graph assembly
-# --------------------------------------------------------------------------
-
-
-def build_graph(checkpointer: Any = None, *, interrupt_after: list[str] | None = None):
-    graph = StateGraph(GlobalState)
-
-    graph.add_node("schema_matching", schema_matching)
-    graph.add_node("drive_crawler", drive_crawler)
-    graph.add_node("vision_classification", vision_classification)
-    graph.add_node("manual_review", manual_review)
-    graph.add_node("tabular_update", tabular_update)
-    graph.add_node("finalization", finalization)
-
-    graph.set_entry_point("schema_matching")
-    graph.add_edge("schema_matching", "drive_crawler")
-    graph.add_edge("drive_crawler", "vision_classification")
-    graph.add_conditional_edges(
-        "vision_classification",
-        route_after_vision,
-        {
-            "retry": "vision_classification",
-            "manual_review": "manual_review",
-            "continue": "tabular_update",
-        },
-    )
-    graph.add_edge("manual_review", "tabular_update")
-    graph.add_edge("tabular_update", "finalization")
-    graph.add_edge("finalization", END)
-
-    return graph.compile(checkpointer=checkpointer, interrupt_after=interrupt_after)
-
-
-# --------------------------------------------------------------------------
-# Entry points
-# --------------------------------------------------------------------------
-
-
-# Fase 1 contract models get put straight into GlobalState by the stub nodes
-# above, so the checkpoint serializer needs to know it's fine to
-# msgpack/unpack them — otherwise a future langgraph version blocks it by
-# default (see LANGGRAPH_STRICT_MSGPACK).
-_ALLOWED_CHECKPOINT_TYPES = {
-    ("src.schema.contracts", "SchemaMapping"),
-    ("src.schema.contracts", "VisionResult"),
-    ("src.schema.contracts", "ImageMetadata"),
-}
-
+def build_graph(checkpointer=None, *, interrupt_after=None):
+    g=StateGraph(RuntimeGraphState)
+    for name,node in (("source_ingestion",source_ingestion),("schema_matching_tabular",schema_matching_tabular),
+        ("drive_crawler",drive_crawler),("vision_classification",vision_classification),("finalization",finalization)): g.add_node(name,node)
+    g.set_entry_point("source_ingestion"); g.add_edge("source_ingestion","schema_matching_tabular")
+    g.add_conditional_edges("schema_matching_tabular",route_after_tabular,{"drive":"drive_crawler","finalize":"finalization"})
+    g.add_conditional_edges("drive_crawler",route_after_drive,{"vision":"vision_classification","finalize":"finalization"})
+    g.add_edge("vision_classification","finalization"); g.add_edge("finalization",END)
+    return g.compile(checkpointer=checkpointer, interrupt_after=interrupt_after)
 
 @contextmanager
-def _sqlite_checkpointer(db_path: Path):
-    from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
+def _sqlite_checkpointer(db_path):
     from langgraph.checkpoint.sqlite import SqliteSaver
+    path=Path(db_path); path.parent.mkdir(parents=True,exist_ok=True)
+    with closing(sqlite3.connect(str(path),check_same_thread=False)) as conn: yield SqliteSaver(conn)
 
-    db_path.parent.mkdir(parents=True, exist_ok=True)
-    serde = JsonPlusSerializer(allowed_msgpack_modules=_ALLOWED_CHECKPOINT_TYPES)
-    with closing(sqlite3.connect(str(db_path), check_same_thread=False)) as conn:
-        yield SqliteSaver(conn, serde=serde)
+def _invoke(state, resources, *, db_path, thread_id, interrupt_after=None):
+    key=uuid.uuid4().hex; _ACTIVE_RESOURCES[key]=resources
+    try:
+        with _sqlite_checkpointer(db_path) as cp:
+            app=build_graph(cp,interrupt_after=interrupt_after)
+            return app.invoke(state,config={"configurable":{"thread_id":thread_id,"runtime_resources_id":key}})
+    finally: _ACTIVE_RESOURCES.pop(key,None)
 
+def run_pipeline(initial_state, resources, *, db_path=DEFAULT_CHECKPOINT_DB, interrupt_after=None):
+    return _invoke(initial_state,resources,db_path=db_path,thread_id=initial_state["run_id"],interrupt_after=interrupt_after)
 
-def run_pipeline(
-    spreadsheet_path: str,
-    drive_url: str,
-    *,
-    db_path: str | Path = DEFAULT_CHECKPOINT_DB,
-    thread_id: str = "default",
-    interrupt_after: list[str] | None = None,
-) -> GlobalState:
-    """Run the stub pipeline from scratch for `thread_id`, checkpointing to
-    a local SQLite file at every node. If `interrupt_after` is given, the
-    graph stops after that node — resume with `resume_pipeline` using the
-    same db_path/thread_id."""
-    with _sqlite_checkpointer(Path(db_path)) as checkpointer:
-        app = build_graph(checkpointer, interrupt_after=interrupt_after)
-        config = {"configurable": {"thread_id": thread_id}}
-        initial_state: GlobalState = {
-            "raw_spreadsheet": spreadsheet_path,
-            "drive_url": drive_url,
-            "error_trace": [],
-        }
-        result = app.invoke(initial_state, config=config)
-    return result
-
-
-def resume_pipeline(
-    *,
-    db_path: str | Path = DEFAULT_CHECKPOINT_DB,
-    thread_id: str = "default",
-) -> GlobalState:
-    """Continue a previously interrupted/checkpointed run for `thread_id`
-    from its last saved checkpoint through to finalization."""
-    with _sqlite_checkpointer(Path(db_path)) as checkpointer:
-        app = build_graph(checkpointer)
-        config = {"configurable": {"thread_id": thread_id}}
-        result = app.invoke(None, config=config)
-    return result
+def resume_pipeline(expected_state, resources, *, db_path=DEFAULT_CHECKPOINT_DB):
+    thread_id=expected_state["run_id"]
+    with _sqlite_checkpointer(db_path) as cp: saved=cp.get({"configurable":{"thread_id":thread_id}})
+    if saved is None: raise ValueError(f"no checkpoint exists for thread_id={thread_id!r}")
+    if saved["channel_values"].get("runtime_identity") != expected_state["runtime_identity"]:
+        raise ValueError("resume source/config identity does not match checkpoint")
+    return _invoke(None,resources,db_path=db_path,thread_id=thread_id)
