@@ -1,6 +1,7 @@
 import io
 import hashlib
 from pathlib import Path
+from types import SimpleNamespace
 
 import openpyxl
 import pytest
@@ -10,7 +11,7 @@ from src.agents.schema_matching.anchor import AnchorResult
 from src.agents.schema_matching.exact_match import ExactNameResolution, ExactNameStatus
 from src.agents.schema_matching.retrieval import RetrievalHit
 from src.schema.canonical import CanonicalSchema
-from src.schema.contracts import SchemaMapping
+from src.schema.contracts import ImageMetadata, SchemaMapping, VisionResult
 from src.schema.structure import StructureProposal
 from src.ingestion.runtime_source import RuntimeSourceAttribute, RuntimeSourceBundle
 from src.ui import pipeline_runner as runner
@@ -697,3 +698,145 @@ def test_shadow_exception_cannot_abort_primary_pipeline(flat_observations, monke
     assert result.structure_shadow.status.value == "NEW_PATH_FAILED"
     assert result.structure_shadow.new_path_error_type == "RuntimeError"
     assert "supersecret" not in result.structure_shadow.new_path_error_message
+
+
+def test_auto_accept_normalization_note_is_visible_in_trace_and_provenance(
+    tmp_path, monkeypatch,
+):
+    source = tmp_path / "normalization-warning.xlsx"
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.append(["Variety", "Unclear measurement"])
+    ws.append(["Domba", "5 1,"])
+    wb.save(source)
+    wb.close()
+
+    _isolate_pipeline(monkeypatch)
+    schema = CanonicalSchema.from_template()
+    target = schema.row_by_label("panjang buah muda").id
+    monkeypatch.setattr(
+        runner, "safe_rerank",
+        lambda profile, *args, **kwargs: (
+            _mapping(schema, profile.attribute_name, target), {},
+        ),
+    )
+
+    result = runner.run_pipeline_ui(source)
+
+    assert result.mapping_df.iloc[0].acceptance_status == "AUTO_ACCEPT"
+    assert result.mapping_df.iloc[0].canonical_write == True  # noqa: E712
+    assert result.provenance_records[0].normalization_note
+    assert "normalization_warning" in result.error_trace[-1]
+
+
+def test_vision_non_write_reason_is_retained_without_losing_tabular_output(
+    tmp_path, monkeypatch,
+):
+    source = tmp_path / "vision-non-write.xlsx"
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.append(["Variety", "Seeds per mature fruit"])
+    ws.append(["Domba", "42"])
+    wb.save(source)
+    wb.close()
+
+    _isolate_pipeline(monkeypatch)
+    image = ImageMetadata(
+        file_id="image-1", filename="leaf.jpg", mime_type="image/jpeg", size=10,
+        created_time="2026-01-01T00:00:00Z",
+    )
+    monkeypatch.setattr(runner, "normalize_folder_id", lambda value: value)
+    monkeypatch.setattr(runner, "list_images", lambda folder: [image])
+    monkeypatch.setattr(
+        runner, "VisionSession",
+        lambda: SimpleNamespace(knowledge_source_text="knowledge", varieties=[]),
+    )
+    monkeypatch.setattr(
+        runner, "safe_classify_image",
+        lambda *args, **kwargs: (
+            VisionResult(
+                classification_status="KNOWN", matched_variety="Absent variety",
+                identified_part="DAUN", confidence=0.9, visual_evidence="clear leaf",
+            ),
+            {},
+        ),
+    )
+
+    result = runner.run_pipeline_ui(source, drive_folder_id="folder")
+
+    assert result.canonical_df.loc[
+        result.canonical_df.Karakter == "jumlah biji/buah masak", "Domba"
+    ].item() == "42"
+    assert result.vision_rows[0]["write_applied"] is False
+    assert "not found" in result.vision_rows[0]["write_reason"]
+    assert "vision_non_write" in result.error_trace[-1]
+
+
+def test_failed_image_does_not_invalidate_built_tabular_workbook(tmp_path, monkeypatch):
+    source = tmp_path / "failed-image.xlsx"
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.append(["Variety", "Seeds per mature fruit"])
+    ws.append(["Domba", "42"])
+    wb.save(source)
+    wb.close()
+
+    _isolate_pipeline(monkeypatch)
+    image = ImageMetadata(
+        file_id="image-failed", filename="bad.jpg", mime_type="image/jpeg", size=10,
+        created_time="2026-01-01T00:00:00Z",
+    )
+    monkeypatch.setattr(runner, "normalize_folder_id", lambda value: value)
+    monkeypatch.setattr(runner, "list_images", lambda folder: [image])
+    monkeypatch.setattr(
+        runner, "VisionSession",
+        lambda: SimpleNamespace(knowledge_source_text="knowledge", varieties=[]),
+    )
+    monkeypatch.setattr(
+        runner, "safe_classify_image",
+        lambda *args, **kwargs: (
+            None, {"error_trace": ["provider_retry_exhausted: image-failed"]},
+        ),
+    )
+
+    result = runner.run_pipeline_ui(source, drive_folder_id="folder")
+
+    assert result.canonical_df.loc[
+        result.canonical_df.Karakter == "jumlah biji/buah masak", "Domba"
+    ].item() == "42"
+    assert result.workbook_bytes
+    assert "provider_retry_exhausted" in result.error_trace[-1]
+
+
+def test_stub_checkpoint_failure_is_nonfatal_and_output_invariant(tmp_path, monkeypatch):
+    source = tmp_path / "checkpoint-boundary.xlsx"
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.append(["Variety", "Seeds per mature fruit"])
+    ws.append(["Domba", "42"])
+    wb.save(source)
+    wb.close()
+
+    monkeypatch.setattr(
+        runner, "detect_anchor",
+        lambda *args, **kwargs: AnchorResult("found", "Variety", 1.0, "test"),
+    )
+    monkeypatch.setattr(runner.uuid, "uuid4", lambda: SimpleNamespace(hex="fixed-run"))
+    monkeypatch.setattr(runner, "run_pipeline", lambda *args, **kwargs: {})
+    successful = runner.run_pipeline_ui(source)
+
+    def fail_checkpoint(*args, **kwargs):
+        raise RuntimeError("token=supersecret checkpoint unavailable")
+
+    monkeypatch.setattr(runner, "run_pipeline", fail_checkpoint)
+    failed = runner.run_pipeline_ui(source)
+
+    assert successful.checkpoint_thread_id == "fixed-run"
+    assert failed.checkpoint_thread_id is None
+    assert "gagal" in failed.agent_status["orchestrator"]
+    assert "supersecret" not in failed.agent_status["orchestrator"]
+    assert "checkpoint_debug_failure" in failed.error_trace[-1]
+    assert successful.workbook_bytes == failed.workbook_bytes
+    assert_frame_equal(successful.canonical_df, failed.canonical_df)
+    assert_frame_equal(successful.mapping_df, failed.mapping_df)
+    assert successful.provenance_records == failed.provenance_records

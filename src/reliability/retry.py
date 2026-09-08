@@ -13,8 +13,9 @@ from __future__ import annotations
 
 from typing import Callable, TypeVar
 
-from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
+from tenacity import retry, retry_if_exception, stop_after_attempt, wait_exponential
 
+from src.reliability.provider_failures import ProviderCallError
 from src.reliability.rate_limit import RateLimiter
 
 T = TypeVar("T")
@@ -37,8 +38,13 @@ def with_retry(
     (including retries), not just the first."""
 
     def decorator(func: Callable[..., T]) -> Callable[..., T]:
+        def _should_retry(exc: BaseException) -> bool:
+            if not isinstance(exc, exceptions):
+                return False
+            return not isinstance(exc, ProviderCallError) or exc.retryable
+
         @retry(
-            retry=retry_if_exception_type(exceptions),
+            retry=retry_if_exception(_should_retry),
             stop=stop_after_attempt(max_attempts),
             wait=wait_exponential(multiplier=base_delay, max=max_delay),
             reraise=True,

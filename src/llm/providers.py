@@ -16,7 +16,15 @@ import os
 from typing import TypeVar
 
 from dotenv import load_dotenv
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
+
+from src.reliability.provider_failures import (
+    ProviderCallError,
+    ProviderFailureKind,
+    classify_provider_exception,
+    combine_failure_kinds,
+    provider_error_summary,
+)
 
 load_dotenv()
 
@@ -27,7 +35,7 @@ OLLAMA_MODEL = "llama3.1:8b"
 OLLAMA_DEFAULT_BASE_URL = "http://localhost:11434/v1"
 
 
-class LLMCallError(Exception):
+class LLMCallError(ProviderCallError):
     """Raised when both the primary and fallback provider calls fail."""
 
 
@@ -37,7 +45,10 @@ def _groq_instructor_client():
 
     api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
-        raise LLMCallError("GROQ_API_KEY is not set")
+        raise LLMCallError(
+            "GROQ_API_KEY is not set",
+            failure_kind=ProviderFailureKind.NON_RETRYABLE_CONFIGURATION,
+        )
     return instructor.from_groq(Groq(api_key=api_key), mode=instructor.Mode.TOOLS)
 
 
@@ -60,6 +71,7 @@ def call_with_fallback(
     rate limit, ...), retry once against local Ollama. Raises LLMCallError
     with both underlying errors if neither works."""
     errors: list[str] = []
+    failure_kinds: list[ProviderFailureKind] = []
 
     try:
         client = _groq_instructor_client()
@@ -70,7 +82,8 @@ def call_with_fallback(
             max_retries=max_retries,
         )
     except Exception as exc:  # noqa: BLE001 — this except IS the fallback boundary
-        errors.append(f"groq: {exc}")
+        errors.append(provider_error_summary("groq", exc))
+        failure_kinds.append(classify_provider_exception(exc))
 
     try:
         client = _ollama_instructor_client()
@@ -80,7 +93,13 @@ def call_with_fallback(
             response_model=response_model,
             max_retries=max_retries,
         )
+    except ValidationError:
+        raise
     except Exception as exc:  # noqa: BLE001
-        errors.append(f"ollama: {exc}")
+        errors.append(provider_error_summary("ollama", exc))
+        failure_kinds.append(classify_provider_exception(exc))
 
-    raise LLMCallError("both providers failed — " + "; ".join(errors))
+    raise LLMCallError(
+        "both providers failed — " + "; ".join(errors),
+        failure_kind=combine_failure_kinds(failure_kinds),
+    )

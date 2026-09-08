@@ -5,6 +5,11 @@ import time
 import pytest
 
 from src.reliability.rate_limit import RateLimiter
+from src.reliability.provider_failures import (
+    ProviderCallError,
+    ProviderFailureKind,
+    classify_provider_exception,
+)
 from src.reliability.retry import run_with_retry, with_retry
 
 
@@ -16,7 +21,57 @@ class _OtherError(Exception):
     pass
 
 
+class _StatusError(Exception):
+    def __init__(self, status_code):
+        self.status_code = status_code
+
+
+class APIConnectionError(Exception):
+    pass
+
+
+@pytest.mark.parametrize(
+    ("error", "expected"),
+    [
+        (TimeoutError(), ProviderFailureKind.RETRYABLE_TRANSIENT),
+        (ConnectionError(), ProviderFailureKind.RETRYABLE_TRANSIENT),
+        (APIConnectionError(), ProviderFailureKind.RETRYABLE_TRANSIENT),
+        (_StatusError(429), ProviderFailureKind.RETRYABLE_TRANSIENT),
+        (_StatusError(503), ProviderFailureKind.RETRYABLE_TRANSIENT),
+        (_StatusError(401), ProviderFailureKind.NON_RETRYABLE_CONFIGURATION),
+        (_StatusError(404), ProviderFailureKind.NON_RETRYABLE_CONFIGURATION),
+        (_StatusError(400), ProviderFailureKind.NON_RETRYABLE_REQUEST),
+        (RuntimeError("unknown"), ProviderFailureKind.NON_RETRYABLE_REQUEST),
+    ],
+)
+def test_provider_failure_classification_uses_structured_signals(error, expected):
+    assert classify_provider_exception(error) is expected
+
+
 class TestRunWithRetry:
+    def test_non_retryable_provider_failure_does_not_retry_or_backoff(self):
+        calls = []
+
+        def invalid_configuration():
+            calls.append(1)
+            raise ProviderCallError(
+                "invalid configuration",
+                failure_kind=ProviderFailureKind.NON_RETRYABLE_CONFIGURATION,
+            )
+
+        start = time.monotonic()
+        with pytest.raises(ProviderCallError):
+            run_with_retry(
+                invalid_configuration,
+                exceptions=(ProviderCallError,),
+                max_attempts=5,
+                base_delay=10,
+                max_delay=10,
+            )
+
+        assert calls == [1]
+        assert time.monotonic() - start < 0.1
+
     def test_succeeds_without_retry_when_no_exception(self):
         calls = []
 

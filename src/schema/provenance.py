@@ -42,6 +42,7 @@ class CellProvenanceRecord(BaseModel):
     raw_value: Any
     normalized_value: Any
     normalization_required: bool
+    normalization_note: str | None = None
     mapping_confidence: float
     acceptance_status: Literal["AUTO_ACCEPT", "HUMAN_REVIEW"]
     acceptance_reason: str

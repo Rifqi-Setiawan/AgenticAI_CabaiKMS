@@ -23,7 +23,15 @@ import os
 from typing import TypeVar
 
 from dotenv import load_dotenv
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
+
+from src.reliability.provider_failures import (
+    ProviderCallError,
+    ProviderFailureKind,
+    classify_provider_exception,
+    combine_failure_kinds,
+    provider_error_summary,
+)
 
 load_dotenv()  # once at import — see src/llm/providers.py's docstring for why
 
@@ -39,7 +47,7 @@ OLLAMA_VL_BASE_URL_DEFAULT = "http://localhost:11434/v1"
 OLLAMA_VL_MODEL = "qwen2.5-vl:7b"
 
 
-class VisionCallError(Exception):
+class VisionCallError(ProviderCallError):
     """Raised when an LVM call fails outright — no result to return."""
 
 
@@ -53,14 +61,20 @@ def _openai_compatible_client(base_url: str, api_key: str):
 def _gemini_client():
     api_key = os.environ.get("GOOGLE_API_KEY")
     if not api_key:
-        raise VisionCallError("GOOGLE_API_KEY is not set")
+        raise VisionCallError(
+            "GOOGLE_API_KEY is not set",
+            failure_kind=ProviderFailureKind.NON_RETRYABLE_CONFIGURATION,
+        )
     return _openai_compatible_client(GEMINI_BASE_URL, api_key)
 
 
 def _openrouter_client():
     api_key = os.environ.get("OPENROUTER_API_KEY")
     if not api_key:
-        raise VisionCallError("OPENROUTER_API_KEY is not set")
+        raise VisionCallError(
+            "OPENROUTER_API_KEY is not set",
+            failure_kind=ProviderFailureKind.NON_RETRYABLE_CONFIGURATION,
+        )
     return _openai_compatible_client(OPENROUTER_BASE_URL, api_key)
 
 
@@ -89,8 +103,13 @@ def call_gemini(
         )
     except VisionCallError:
         raise
+    except ValidationError:
+        raise
     except Exception as exc:  # noqa: BLE001 — normalize every failure mode to one error type
-        raise VisionCallError(f"gemini: {exc}") from exc
+        raise VisionCallError(
+            provider_error_summary("gemini", exc),
+            failure_kind=classify_provider_exception(exc),
+        ) from exc
 
 
 def call_second_voter(
@@ -103,6 +122,7 @@ def call_second_voter(
     Qwen2.5-VL-7B if OpenRouter is unavailable. Only invoked when consensus
     mode is enabled — see VisionSession(consensus=True)."""
     errors: list[str] = []
+    failure_kinds: list[ProviderFailureKind] = []
 
     try:
         client = _openrouter_client()
@@ -113,7 +133,8 @@ def call_second_voter(
             max_retries=max_retries,
         )
     except Exception as exc:  # noqa: BLE001
-        errors.append(f"openrouter: {exc}")
+        errors.append(provider_error_summary("openrouter", exc))
+        failure_kinds.append(classify_provider_exception(exc))
 
     try:
         client = _ollama_vl_client()
@@ -123,7 +144,13 @@ def call_second_voter(
             response_model=response_model,
             max_retries=max_retries,
         )
+    except ValidationError:
+        raise
     except Exception as exc:  # noqa: BLE001
-        errors.append(f"ollama: {exc}")
+        errors.append(provider_error_summary("ollama", exc))
+        failure_kinds.append(classify_provider_exception(exc))
 
-    raise VisionCallError("second voter failed — " + "; ".join(errors))
+    raise VisionCallError(
+        "second voter failed — " + "; ".join(errors),
+        failure_kind=combine_failure_kinds(failure_kinds),
+    )

@@ -87,7 +87,8 @@ def verify_with_trace(
 
     prefix = f"{context}: " if context else ""
     reason = (
-        f"{prefix}gagal validasi kontrak setelah {outcome.attempts} percobaan "
+        f"{prefix}contract_revision_exhausted: gagal validasi kontrak "
+        f"setelah {outcome.attempts} percobaan "
         f"(maks {max_revisions} revisi) -> manual_review. Alasan: "
         + "; ".join(outcome.failure_reasons)
     )

@@ -30,6 +30,15 @@ Pemakaian pertama embedding dapat mengunduh model dari Hugging Face. Permintaan 
 
 Rate limiting pada runner UI bersifat opsional. Isi `CABAI_KMS_TEXT_RPM` dan/atau `CABAI_KMS_VISION_RPM` dengan angka positif untuk membatasi attempt provider teks dan vision secara terpisah; nilai kosong menonaktifkannya. Batas ini bekerja pada boundary attempt aplikasi—termasuk retry—bukan sebagai jaminan atas setiap request HTTP tersembunyi di dalam SDK provider.
 
+Kegagalan provider diklasifikasikan sebelum retry: timeout/koneksi, status 429,
+dan status 5xx dapat diulang; konfigurasi/autentikasi/request permanen gagal cepat.
+Default maksimum yang terlihat aplikasi adalah tiga attempt untuk kegagalan transien,
+satu attempt untuk kegagalan non-retryable, atau tiga pemanggilan kontrak (satu awal +
+dua revisi) untuk output terstruktur yang invalid. Retry internal SDK/instructor dan
+fallback Groq → Ollama berada di bawah batas observasi ini. Catatan normalisasi dan
+alasan vision tidak ditulis tersedia pada hasil/trace. Checkpoint LangGraph tetap stub
+debugger best-effort; kegagalannya tidak membatalkan workbook yang sudah selesai.
+
 ## Pengujian lokal
 
 ```powershell

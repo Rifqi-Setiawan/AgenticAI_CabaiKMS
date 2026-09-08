@@ -134,7 +134,7 @@ class PipelineRunResult:
     vision_rows: list[dict]
     provenance_records: list[CellProvenanceRecord] = field(default_factory=list)
     agent_status: dict[str, str] = field(default_factory=dict)
-    checkpoint_thread_id: str = ""
+    checkpoint_thread_id: str | None = None
     error_trace: list[str] = field(default_factory=list)
     structure_shadow: ShadowParityReport | None = None
     source_backend: str = "legacy"
@@ -547,6 +547,13 @@ def _run_pipeline_ui_impl(
             normalized = normalize(combined, target_row)
             written = builder.set_cell(target_row.id, variety_name, normalized.value)
             if written:
+                if normalized.note:
+                    warning = (
+                        f"normalization_warning: atribut={attr.attribute_name!r}, "
+                        f"varietas={variety_name!r}: {normalized.note}"
+                    )
+                    state.update(review_queue.append_error_trace(state, warning))
+                    on_progress(f"  schema_matching: {warning}")
                 mapping_row["canonical_write"] = True
                 provenance_records.append(
                     CellProvenanceRecord(
@@ -573,6 +580,7 @@ def _run_pipeline_ui_impl(
                         raw_value=combined,
                         normalized_value=normalized.value,
                         normalization_required=mapping.normalization_required,
+                        normalization_note=normalized.note,
                         mapping_confidence=mapping.confidence,
                         acceptance_status=acceptance.status.value,
                         acceptance_reason=acceptance.reason,
@@ -647,6 +655,11 @@ def _run_pipeline_ui_impl(
                     if update_result.applied:
                         n_written += 1
                     elif update_result.reason:
+                        warning = (
+                            f"vision_non_write: file_id={image.file_id!r}: "
+                            f"{update_result.reason}"
+                        )
+                        state.update(review_queue.append_error_trace(state, warning))
                         on_progress(f"    tidak ditulis ke sel: {update_result.reason}")
                     vision_rows.append(
                         {
@@ -656,6 +669,8 @@ def _run_pipeline_ui_impl(
                             "identified_part": result.identified_part,
                             "confidence": result.confidence,
                             "visual_evidence": result.visual_evidence,
+                            "write_applied": update_result.applied,
+                            "write_reason": update_result.reason,
                         }
                     )
                 agent_status["vision_classification"] = (
@@ -672,11 +687,22 @@ def _run_pipeline_ui_impl(
 
     # --- checkpointed stub orchestrator run (Fase 2), purely so the UI's
     # checkpoint debugger has a real thread/checkpoint to open ---
-    thread_id = run_id
+    thread_id: str | None = run_id
     on_progress(f"orchestrator: menjalankan graf (thread_id={thread_id})...")
-    run_pipeline(str(file_path), f"drive-folder:{folder_id or '-'}", thread_id=thread_id)
-    agent_status["orchestrator"] = f"checkpoint tersimpan (thread_id={thread_id})"
-    on_progress("orchestrator: checkpoint tersimpan.")
+    try:
+        run_pipeline(str(file_path), f"drive-folder:{folder_id or '-'}", thread_id=thread_id)
+    except Exception as exc:  # noqa: BLE001 - debug stub is best-effort after output exists
+        message = sanitize_shadow_error_message(exc)
+        thread_id = None
+        agent_status["orchestrator"] = (
+            f"checkpoint/debug gagal ({type(exc).__name__}): {message}"
+        )
+        warning = f"checkpoint_debug_failure: {type(exc).__name__}: {message}"
+        state.update(review_queue.append_error_trace(state, warning))
+        on_progress(f"orchestrator: checkpoint/debug gagal — {message}")
+    else:
+        agent_status["orchestrator"] = f"checkpoint tersimpan (thread_id={thread_id})"
+        on_progress("orchestrator: checkpoint tersimpan.")
 
     on_progress("Selesai.")
 

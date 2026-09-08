@@ -162,7 +162,9 @@ if result.vision_rows:
     st.dataframe(pd.DataFrame(result.vision_rows), width="stretch")
 
 st.subheader("Debugger checkpoint")
-if st.button("🔍 Buka Debugger Checkpoint"):
+if result.checkpoint_thread_id is None:
+    st.info("Checkpoint debugger tidak tersedia untuk run ini; output tetap berhasil dibuat.")
+elif st.button("🔍 Buka Debugger Checkpoint"):
     with _sqlite_checkpointer(DEFAULT_CHECKPOINT_DB) as checkpointer:
         checkpoints = list(
             checkpointer.list({"configurable": {"thread_id": result.checkpoint_thread_id}})

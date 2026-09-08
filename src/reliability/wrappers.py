@@ -15,19 +15,12 @@ every failure point named in the brief:
                                     review_queue.process_mapping (Fase 3e) —
                                     not reimplemented here
 
-A real provider call (LLMCallError / VisionCallError) is retried first —
-transient network blips, momentary rate limits — via run_with_retry, INSIDE
-each attempt the outer verify-then-revise loop makes. If retry exhausts
-anyway (e.g. a rate limit that won't clear for a while, not just a blip),
-that same exception type is also in the OUTER loop's revisable_exceptions:
-without that, an exhausted retry would propagate straight out of
-verify_with_revision uncaught, crashing the whole pipeline run over ONE
-attribute's provider failure — confirmed the hard way against a real Groq
-daily quota limit, not a hypothetical. A contract failure
-(ValidationError, or classify_image's own TypeError guard) is revisable
-for the same reason but for a different cause: the model produced
-something structurally invalid, so asking again (not just retrying the
-identical request) is the correct remedy.
+Explicitly transient provider failures are retried inside one contract
+attempt. A terminal provider failure is caught outside the verifier and
+goes directly to the safe no-write path; it is never multiplied by the
+contract revision loop. Contract failures (ValidationError, or
+classify_image's own TypeError guard) remain revisable because the model
+produced something structurally invalid.
 """
 
 from __future__ import annotations
@@ -42,6 +35,7 @@ from src.agents.schema_matching.retrieval import RetrievalHit, SourceAttributePr
 from src.agents.vision_classification import VarietyDescription, classify_image, download_image_bytes
 from src.llm.providers import LLMCallError
 from src.llm.vision_providers import VisionCallError
+from src.reliability.provider_failures import ProviderCallError
 from src.reliability.rate_limit import RateLimiter
 from src.reliability.retry import DEFAULT_BASE_DELAY, DEFAULT_MAX_ATTEMPTS, DEFAULT_MAX_DELAY, run_with_retry
 from src.reliability.verifier import DEFAULT_MAX_REVISIONS, verify_with_trace
@@ -49,8 +43,22 @@ from src.schema.canonical import CanonicalSchema
 from src.schema.contracts import ImageMetadata, SchemaMapping, VisionResult
 from src.schema.state import GlobalState
 
-VISION_REVISABLE_EXCEPTIONS = (ValidationError, TypeError, VisionCallError)
-SCHEMA_MATCHING_REVISABLE_EXCEPTIONS = (ValidationError, LLMCallError)
+VISION_REVISABLE_EXCEPTIONS = (ValidationError, TypeError)
+SCHEMA_MATCHING_REVISABLE_EXCEPTIONS = (ValidationError,)
+
+
+def _provider_failure_patch(
+    state: GlobalState,
+    context: str,
+    exc: ProviderCallError,
+    max_retry_attempts: int,
+) -> dict[str, Any]:
+    attempts = max_retry_attempts if exc.retryable else 1
+    reason = (
+        f"{context}: {exc.terminal_reason} ({type(exc).__name__}, "
+        f"application_attempts={attempts}) -> manual_review"
+    )
+    return review_queue.append_error_trace(state, reason)
 
 
 def safe_classify_image(
@@ -121,13 +129,17 @@ def safe_classify_image(
             rate_limiter=classification_limiter,
         )
 
-    outcome, patch = verify_with_trace(
-        _attempt,
-        state,
-        max_revisions=max_revisions,
-        revisable_exceptions=VISION_REVISABLE_EXCEPTIONS,
-        context=f"vision_classification file_id={image.file_id!r}",
-    )
+    context = f"vision_classification file_id={image.file_id!r}"
+    try:
+        outcome, patch = verify_with_trace(
+            _attempt,
+            state,
+            max_revisions=max_revisions,
+            revisable_exceptions=VISION_REVISABLE_EXCEPTIONS,
+            context=context,
+        )
+    except VisionCallError as exc:
+        return None, _provider_failure_patch(state, context, exc, max_retry_attempts)
     if not outcome.accepted:
         return None, patch
 
@@ -180,13 +192,17 @@ def safe_rerank(
             rate_limiter=rate_limiter,
         )
 
-    outcome, patch = verify_with_trace(
-        _attempt,
-        state,
-        max_revisions=max_revisions,
-        revisable_exceptions=SCHEMA_MATCHING_REVISABLE_EXCEPTIONS,
-        context=f"schema_matching atribut={profile.attribute_name!r}",
-    )
+    context = f"schema_matching atribut={profile.attribute_name!r}"
+    try:
+        outcome, patch = verify_with_trace(
+            _attempt,
+            state,
+            max_revisions=max_revisions,
+            revisable_exceptions=SCHEMA_MATCHING_REVISABLE_EXCEPTIONS,
+            context=context,
+        )
+    except LLMCallError as exc:
+        return None, _provider_failure_patch(state, context, exc, max_retry_attempts)
     if not outcome.accepted:
         return None, patch
 

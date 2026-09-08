@@ -274,7 +274,7 @@ Penemuan sel dilakukan secara sparse terhadap sel openpyxl yang benar-benar teri
 
 `normalize()` merapikan token kosong, desimal koma, penulisan rentang menjadi `--`, pemisah multi-nilai menjadi `; `, dan spasi. Vocabulary matching memakai kecocokan tepat tanpa membedakan kapitalisasi terhadap contoh pada baris kanonik.
 
-Tidak ada konversi satuan otomatis, penghitungan rerata, penerjemahan warna bebas ke kode RHS, atau penyusunan koordinat `Lokasi` secara terstruktur. Nilai ambigu dapat dipertahankan dengan catatan; runner UI saat ini mengambil `.value` tanpa meneruskan semua catatan normalisasi ke `error_trace`.
+Tidak ada konversi satuan otomatis, penghitungan rerata, penerjemahan warna bebas ke kode RHS, atau penyusunan koordinat `Lokasi` secara terstruktur. Nilai ambigu dapat dipertahankan dengan catatan. Untuk write `AUTO_ACCEPT`, runner mempertahankan catatan tersebut pada provenance sel dan `error_trace`; catatan informasional tidak mengubah write menjadi `REVIEW`.
 
 ## 6. Kontrak data dan hasil
 
@@ -574,16 +574,20 @@ Tidak ada klaim precision/recall/F1 atau akurasi vision berdasarkan keberadaan f
 
 ## 10. Reliability dan checkpoint
 
-- Retry menggunakan tenacity, default tiga percobaan, backoff dasar 1 detik dan maksimum 10 detik.
-- Verifier mengizinkan dua revisi setelah percobaan pertama. Pada implementasi sekarang revisi memanggil closure lagi; bukan critic LLM terpisah yang menyusun umpan balik baru.
-- Provider/instructor memiliki mekanisme retry internal. Lapisan-lapisan tersebut dapat memperbesar total request dan waktu tunggu; tiga percobaan wrapper bukan batas total request eksternal.
+- Kegagalan provider memiliki klasifikasi kecil dan eksplisit: `retryable_transient`, `non_retryable_configuration`, dan `non_retryable_request`. Timeout/koneksi, status 408/409/429, dan status 5xx dianggap transien. Status autentikasi/otorisasi dan model tidak ditemukan (401/403/404) dianggap konfigurasi; bad request lain dan error tanpa sinyal terstruktur dianggap request non-retryable secara konservatif.
+- Retry tenacity hanya mengulang provider error yang eksplisit transien, default maksimum tiga attempt aplikasi, dengan backoff dasar 1 detik dan maksimum 10 detik. Error konfigurasi/request permanen berhenti pada attempt pertama tanpa backoff.
+- Transport dan revisi kontrak terpisah. Provider transien yang habis setelah tiga attempt langsung masuk safe no-write dengan `provider_retry_exhausted`; konfigurasi/request permanen memakai `provider_configuration_error`/`provider_request_error`. Ketiganya tidak memasuki loop revisi kontrak.
+- `ValidationError`/output terstruktur invalid tetap dapat memakai verifier: satu pemanggilan awal ditambah maksimum dua revisi (`contract_revision_exhausted` bila semuanya gagal), sehingga default maksimum tiga pemanggilan kontrak.
+- Angka tersebut adalah attempt yang dikontrol aplikasi. Dalam satu attempt teks, fallback Groq ke Ollama tetap dapat dijalankan. Provider/instructor juga dapat memiliki retry internal yang tidak terlihat dan tidak dihitung sebagai attempt aplikasi.
 - `safe_rerank()` menangani mapping gagal/NULL/low-confidence. `safe_classify_image()` mencoba download, klasifikasi, dan mencatat kegagalan/`UNCERTAIN`.
-- `RateLimiter` tersedia melalui parameter `rate_limiter`, tetapi nilai default adalah `None` dan UI tidak mengaktifkannya.
+- `RateLimiter` teks/vision dibuat per run dari konfigurasi RPM environment bila diaktifkan, dipakai ulang untuk semua attempt yang sesuai, dan tetap process-local. Limiter injeksi caller tidak ditutup runner.
 - Gemini utama tidak memiliki fallback sendiri. OpenRouter → Ollama hanya jalur voter kedua pada consensus.
 
 Graf stub berurutan `schema_matching -> drive_crawler -> vision_classification -> tabular_update -> finalization`, dengan routing vision retry/manual_review/continue. `run_pipeline()` dan `resume_pipeline()` memakai `thread_id` dan file SQLite yang sama. Default file adalah `data/.checkpoints/orchestrator.sqlite`.
 
-Checkpoint menyimpan state graf stub, bukan nilai intermediate dari agen nyata di UI. Kegagalan checkpoint di akhir runner masih dapat membuat UI melaporkan run gagal walaupun workbook sudah dibangun di memori. Jangan menghapus database ketika aplikasi sedang berjalan atau ketika riwayat debugger masih diperlukan.
+Checkpoint menyimpan state graf stub, bukan nilai intermediate dari agen nyata di UI. Stage debugger ini best-effort dan baru dipanggil setelah workbook selesai dimaterialisasi. Jika checkpoint gagal, `PipelineRunResult` tetap dikembalikan dengan workbook/mapping/provenance yang sama, `checkpoint_thread_id=None`, status orchestrator gagal, dan trace `checkpoint_debug_failure`; checkpoint sukses tetap menyimpan thread ID nyata. Jangan menghapus database ketika aplikasi sedang berjalan atau ketika riwayat debugger masih diperlukan.
+
+Pada hasil runtime, note normalisasi untuk write `AUTO_ACCEPT` disimpan di provenance dan `error_trace`. Setiap baris hasil vision juga membawa `write_applied` serta `write_reason`; alasan deterministik untuk status, varietas, atau baris target yang tidak write-eligible ikut disimpan di trace, bukan hanya dicetak pada progress log.
 
 ## 11. Pengujian dan troubleshooting
 
@@ -641,8 +645,8 @@ Temuan berikut adalah batas implementasi, **bukan fitur yang diperbaiki dalam au
 3. **Validasi anchor kini menghentikan runner.** Header salah/ambigu atau identitas varietas yang hilang menghasilkan error sebelum pemetaan. Error provider dan mapping NULL masih harus diperiksa terpisah; validasi input bukan jaminan semua atribut akan terpetakan.
 4. **Koreksi manual memiliki audit event lokal.** Identitas run/source/schema dan provenance replay sudah tersedia, tetapi queue JSONL belum memiliki locking multi-proses, autentikasi reviewer, atau penyimpanan snapshot run lintas restart.
 5. **Graf masih stub.** Checkpoint/resume tidak memulihkan proses agen nyata; routing stub tidak menjadi jaminan reliability alur UI.
-6. **Rate limiter runner bersifat opsional dan process-local.** Ia membatasi attempt provider yang terlihat aplikasi, bukan seluruh request internal SDK atau kuota global lintas worker. Retry provider juga dapat mengulangi error konfigurasi/kuota yang tidak akan pulih hanya dengan retry.
-7. **Trace belum mencakup semua jalur.** Catatan normalisasi dan alasan sel vision tidak ditulis hanya sebagian tampil di log; label validasi UI tidak mewakili semua masalah data.
+6. **Rate limiter runner bersifat opsional dan process-local.** Ia membatasi attempt provider yang terlihat aplikasi, bukan seluruh request internal SDK atau kuota global lintas worker. Klasifikasi kegagalan memakai status/tipe terstruktur yang tersedia, tetapi tidak dapat menjamin klasifikasi sempurna ketika SDK hanya memberi error generik.
+7. **Observability tetap lokal dan sederhana.** Trace mencakup terminal provider failure, note normalisasi, alasan vision non-write, dan kegagalan checkpoint stub, tetapi belum merupakan distributed tracing atau event system persisten.
 8. **Vision berlandaskan varietas template.** Nama input bisa berbeda dari referensi; belum ada crosswalk spesies/varietas, dan tidak ada numeric confidence gate tambahan pada penulisan foto `KNOWN`.
 9. **Lokasi belum disusun sesuai rancangan komposit.** Pemetaan beberapa atribut ke `Lokasi` baru menggabungkan nilai, belum merakit nama/koordinat/elevasi dengan semantik khusus.
 10. **Deteksi perubahan model embedding masih manual.** Fingerprint indeks sudah mencakup representasi baris, termasuk contoh nilai, alias, dan domain, sehingga perubahan data tersebut memicu rebuild otomatis. Namun, penggantian nama/versi model embedding masih perlu diikuti force reindex atau direktori indeks baru.

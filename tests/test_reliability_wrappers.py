@@ -6,6 +6,7 @@ from pydantic import ValidationError
 from src.agents.vision_classification import VarietyDescription
 from src.llm.providers import LLMCallError
 from src.llm.vision_providers import VisionCallError
+from src.reliability.provider_failures import ProviderFailureKind
 from src.reliability.rate_limit import RateLimiter
 from src.reliability.wrappers import safe_classify_image, safe_rerank
 from src.schema.canonical import CanonicalSchema
@@ -13,6 +14,14 @@ from src.schema.contracts import NULL_ROW, ImageMetadata, SchemaMapping, VisionR
 from src.agents.schema_matching.retrieval import RetrievalHit, SourceAttributeProfile
 
 FAST = {"max_retry_attempts": 3, "retry_base_delay": 0.001, "retry_max_delay": 0.01}
+
+
+def _transient_vision(message: str) -> VisionCallError:
+    return VisionCallError(message, failure_kind=ProviderFailureKind.RETRYABLE_TRANSIENT)
+
+
+def _transient_text(message: str) -> LLMCallError:
+    return LLMCallError(message, failure_kind=ProviderFailureKind.RETRYABLE_TRANSIENT)
 
 
 def _image(file_id="f1") -> ImageMetadata:
@@ -116,13 +125,33 @@ class TestSafeClassifyImageDownload:
 
 
 class TestSafeClassifyImageClassification:
+    def test_missing_google_api_key_fails_once_without_retry_or_revision(self, monkeypatch):
+        import src.llm.vision_providers as providers
+
+        monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+        attempts = []
+
+        def missing_key(*, response_model, messages):
+            attempts.append(1)
+            providers._gemini_client()
+
+        result, patch = safe_classify_image(
+            _image(), "-", VARIETIES, {"error_trace": []}, image_bytes=b"x",
+            lvm_call=missing_key, max_revisions=2, **FAST,
+        )
+
+        assert result is None
+        assert attempts == [1]
+        assert "provider_configuration_error" in patch["error_trace"][-1]
+        assert "application_attempts=1" in patch["error_trace"][-1]
+
     def test_transient_vision_call_error_is_retried_and_recovers(self):
         attempts = []
 
         def flaky_lvm(*, response_model, messages):
             attempts.append(1)
             if len(attempts) < 2:
-                raise VisionCallError("transient provider hiccup")
+                raise _transient_vision("transient provider hiccup")
             return _vision()
 
         state = {"error_trace": []}
@@ -140,7 +169,7 @@ class TestSafeClassifyImageClassification:
         def flaky_lvm(*, response_model, messages):
             attempts.append(1)
             if len(attempts) == 1:
-                raise VisionCallError("retry")
+                raise _transient_vision("retry")
             return _vision()
 
         result, _ = safe_classify_image(
@@ -169,7 +198,10 @@ class TestSafeClassifyImageClassification:
         assert patch == {}
 
     def test_format_invalid_exhausts_revisions_and_falls_to_manual_review(self):
+        attempts = []
+
         def always_invalid_lvm(*, response_model, messages):
+            attempts.append(1)
             raise ValidationError.from_exception_data("VisionResult", [])
 
         state = {"error_trace": []}
@@ -178,18 +210,18 @@ class TestSafeClassifyImageClassification:
             max_revisions=1, **FAST,
         )
         assert result is None
+        assert len(attempts) == 2  # one initial contract call + one revision
+        assert "contract_revision_exhausted" in patch["error_trace"][-1]
         assert "manual_review" in patch["error_trace"][-1]
 
     def test_persistent_vision_call_error_does_not_crash_the_caller(self):
-        """Regression test for a real bug: once run_with_retry exhausts its
-        own retries and re-raises VisionCallError, that exception must
-        still be caught by the OUTER verify-then-revise loop (it's in
-        VISION_REVISABLE_EXCEPTIONS) rather than propagating uncaught and
-        crashing the whole pipeline over one image's provider failure —
-        this actually happened against a real exhausted Groq quota."""
+        """Exhausted transport retry stops before contract revision."""
+
+        attempts = []
 
         def always_fails(*, response_model, messages):
-            raise VisionCallError("simulated persistent provider failure")
+            attempts.append(1)
+            raise _transient_vision("simulated persistent provider failure")
 
         state = {"error_trace": []}
         result, patch = safe_classify_image(
@@ -197,7 +229,8 @@ class TestSafeClassifyImageClassification:
             max_revisions=1, **FAST,
         )
         assert result is None
-        assert "manual_review" in patch["error_trace"][-1]
+        assert len(attempts) == FAST["max_retry_attempts"]
+        assert "provider_retry_exhausted" in patch["error_trace"][-1]
 
     def test_uncertain_status_is_returned_but_flagged_for_review(self):
         state = {"error_trace": []}
@@ -239,6 +272,31 @@ class TestSafeClassifyImageClassification:
 
 
 class TestSafeRerank:
+    def test_missing_groq_api_key_fails_once_without_retry_or_revision(
+        self, schema, monkeypatch,
+    ):
+        import src.llm.providers as providers
+
+        monkeypatch.delenv("GROQ_API_KEY", raising=False)
+        fallback_calls = []
+
+        def unavailable_fallback():
+            fallback_calls.append(1)
+            raise LLMCallError("local fallback unavailable")
+
+        monkeypatch.setattr(providers, "_ollama_instructor_client", unavailable_fallback)
+        profile = SourceAttributeProfile(attribute_name="x")
+        mapping, patch = safe_rerank(
+            profile, [], {"error_trace": []}, source_format="row-oriented",
+            schema=schema, llm_call=providers.call_with_fallback,
+            max_revisions=2, **FAST,
+        )
+
+        assert mapping is None
+        assert fallback_calls == [1]
+        assert "provider_configuration_error" in patch["error_trace"][-1]
+        assert "application_attempts=1" in patch["error_trace"][-1]
+
     def test_exact_seed_alias_maps_without_manual_review_or_llm(self, schema):
         profile = SourceAttributeProfile(
             attribute_name="Seeds per mature fruit",
@@ -265,8 +323,11 @@ class TestSafeRerank:
         one attribute's provider failure — confirmed against a real
         exhausted Groq daily quota, not a hypothetical."""
 
+        attempts = []
+
         def always_rate_limited(*, response_model, messages):
-            raise LLMCallError("simulated persistent rate limit")
+            attempts.append(1)
+            raise _transient_text("simulated persistent rate limit")
 
         profile = SourceAttributeProfile(attribute_name="x")
         state = {"error_trace": []}
@@ -275,7 +336,8 @@ class TestSafeRerank:
             llm_call=always_rate_limited, max_revisions=1, **FAST,
         )
         assert mapping is None
-        assert "manual_review" in patch["error_trace"][-1]
+        assert len(attempts) == FAST["max_retry_attempts"]
+        assert "provider_retry_exhausted" in patch["error_trace"][-1]
 
     def test_transient_llm_call_error_is_retried_and_recovers(self, schema):
         attempts = []
@@ -283,7 +345,7 @@ class TestSafeRerank:
         def flaky_llm_call(*, response_model, messages):
             attempts.append(1)
             if len(attempts) < 2:
-                raise LLMCallError("transient")
+                raise _transient_text("transient")
             return _mapping()
 
         profile = SourceAttributeProfile(attribute_name="x")
