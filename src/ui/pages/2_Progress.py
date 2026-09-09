@@ -16,6 +16,7 @@ if str(PROJECT_ROOT) not in sys.path:
 import streamlit as st
 
 from src.ui import state
+from src.ui.demo_support import stage_state
 
 st.set_page_config(page_title="CABAI-KMS — Progres", page_icon="🌶️", layout="wide")
 st.title("Halaman 2: Progres")
@@ -28,10 +29,18 @@ if not state.has_result():
 else:
     result = state.get_result()
 
-    st.subheader("Status tiap agen")
-    cols = st.columns(max(len(result.agent_status), 1))
-    for col, (agent_name, status) in zip(cols, result.agent_status.items()):
-        col.metric(agent_name, "OK" if "gagal" not in status.lower() else "GAGAL")
+    st.subheader("Status tahap runtime")
+    stages = [
+        ("source_ingestion", "source_ingestion"),
+        ("schema_matching/tabular", "schema_matching"),
+        ("drive_crawler", "drive_crawler"),
+        ("vision_classification", "vision_classification"),
+        ("orchestrator/finalization", "orchestrator"),
+    ]
+    cols = st.columns(len(stages))
+    for col, (label, key) in zip(cols, stages):
+        status = result.agent_status.get(key, "dilewati (tidak ada status)")
+        col.metric(label, stage_state(status))
         col.caption(status)
 
     st.subheader("Status validasi")
@@ -40,7 +49,7 @@ else:
         st.success("Tidak ada atribut/citra yang ditandai untuk manual_review.")
     else:
         st.warning(f"{n_issues} entri ditandai untuk manual_review (lihat detail di bawah).")
-        with st.expander("Detail error_trace"):
+        with st.expander("Advanced / Debug — error_trace"):
             for entry in result.error_trace:
                 st.write(f"- {entry}")
 

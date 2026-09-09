@@ -24,6 +24,7 @@ from src.agents.schema_matching import review_queue
 from src.orchestrator.graph import DEFAULT_CHECKPOINT_DB, _sqlite_checkpointer
 from src.schema.canonical import CanonicalSchema
 from src.ui import state
+from src.ui.demo_support import run_summary, safe_download_stem
 from src.ui.review_replay import apply_review_corrections
 
 st.set_page_config(page_title="CABAI-KMS — Hasil", page_icon="🌶️", layout="wide")
@@ -35,14 +36,28 @@ if not state.has_result():
 
 result = state.get_result()
 corrected_result = state.get_corrected_result()
-
-st.subheader("Review manusia")
 schema = CanonicalSchema.from_template()
 current_run_items = (
     review_queue.list_for_run(result.run_id, result.review_queue_path)
     if result.run_id and result.review_queue_path else []
 )
 pending_items = [item for item in current_run_items if item.status == "pending"]
+last_inputs = state.get_last_inputs()
+summary = run_summary(result, last_inputs, unresolved_review_count=len(pending_items))
+
+st.subheader("Ringkasan run")
+st.caption(
+    f"Source: {summary['Source']} · Sheet: {summary['Sheet']} · Run: {summary['Run ID']} · "
+    f"Backend: {summary['Source backend']} / {summary['Retrieval backend']}"
+)
+summary_keys = ["Mapped attributes", "AUTO_ACCEPT", "REVIEW", "NO_WRITE", "Unresolved reviews"]
+for column, key in zip(st.columns(len(summary_keys)), summary_keys):
+    column.metric(key, summary[key])
+method_keys = ["Exact-name", "Retrieve-rerank", "Images discovered", "Vision processed", "Vision writes", "Vision non-writes"]
+for column, key in zip(st.columns(len(method_keys)), method_keys):
+    column.metric(key, summary[key])
+
+st.subheader("Review manusia")
 if not current_run_items:
     st.success("Run ini tidak memiliki mapping berstatus REVIEW.")
 else:
@@ -66,6 +81,7 @@ else:
             st.write(f"**Confidence:** {item.mapping.confidence:.2f}")
             st.write(f"**Metode:** {item.mapping_method or '-'}")
             st.write(f"**Verifier:** {item.verifier_status or '-'}")
+            st.write(f"**Alasan REVIEW:** {item.reason}")
             if item.verifier_warnings:
                 st.write(f"**Peringatan:** {', '.join(item.verifier_warnings)}")
             if item.status != "pending":
@@ -84,6 +100,7 @@ else:
                 key=f"target_{item.item_id}",
             )
             approve_col, revise_col, no_match_col = st.columns(3)
+            st.write("**Pilihan tindakan manusia:** setujui usulan, ubah target, atau tandai NO_MATCH.")
             try:
                 if approve_col.button(
                     "Setujui usulan", key=f"approve_{item.item_id}",
@@ -111,7 +128,7 @@ else:
                     state.clear_corrected_result()
                     st.rerun()
             except Exception as exc:  # noqa: BLE001 - preserve queue and original result
-                st.error(f"Keputusan review gagal disimpan: {exc}")
+                st.error("Keputusan review gagal disimpan. Periksa pilihan dan identitas run aktif.")
 
     if pending_items:
         st.warning(f"{len(pending_items)} item REVIEW masih PENDING.")
@@ -123,7 +140,7 @@ else:
                 st.success("Koreksi berhasil diterapkan dari output asli tanpa menjalankan model lagi.")
             except Exception as exc:  # noqa: BLE001 - original result remains downloadable
                 state.clear_corrected_result()
-                st.error(f"Replay koreksi gagal; output asli tetap tersedia: {exc}")
+                st.error("Replay koreksi gagal; output asli tetap tersedia. Lihat Advanced / Debug.")
 
 st.subheader("Tabel keluaran terstandarisasi")
 st.caption(
@@ -135,13 +152,25 @@ st.caption(
 display_result = corrected_result or result
 st.dataframe(display_result.canonical_df, width="stretch")
 
-st.subheader("Detail pemetaan (source attribute → canonical row)")
+st.subheader("Inspektor pemetaan")
+st.caption("Prediksi model tidak sama dengan write yang diterima. Periksa verifier, acceptance, dan canonical_write.")
 if result.mapping_df.empty:
     st.write("(tidak ada atribut untuk dipetakan)")
 else:
     st.dataframe(
-        result.mapping_df[["source_attribute_display", "predicted_row", "predicted_label", "target_domain", "confidence"]]
-        .rename(columns={"source_attribute_display": "source_attribute"}),
+        result.mapping_df[[
+            "source_attribute_display", "predicted_label", "proposed_target_canonical_key",
+            "mapping_method", "confidence", "verifier_status", "acceptance_status", "canonical_write",
+        ]].rename(columns={
+            "source_attribute_display": "Source attribute",
+            "predicted_label": "Proposed canonical label",
+            "proposed_target_canonical_key": "Proposed canonical key",
+            "mapping_method": "Mapping method",
+            "confidence": "Confidence",
+            "verifier_status": "Verifier status",
+            "acceptance_status": "Acceptance status",
+            "canonical_write": "Canonical write",
+        }),
         width="stretch",
     )
     chosen = st.selectbox(
@@ -154,44 +183,80 @@ else:
         st.write(f"**Target baris kanonik:** {row['predicted_row']} ({row['predicted_label']})")
         st.write(f"**Domain:** {row['target_domain']}")
         st.write(f"**Confidence:** {row['confidence']:.2f}")
+        st.write(f"**Verifier:** {row['verifier_status']}")
+        st.write(f"**Acceptance:** {row['acceptance_status']}")
+        st.write(f"**Canonical write:** {row['canonical_write']}")
         st.write(f"**Normalisasi diperlukan:** {row['normalization_required']}")
         st.write(f"**Reasoning:** {row['reasoning']}")
 
-if result.vision_rows:
-    st.subheader("Hasil klasifikasi citra")
-    st.dataframe(pd.DataFrame(result.vision_rows), width="stretch")
+st.subheader("Hasil multimodal")
+drive_requested = bool(last_inputs.get("drive_url", "").strip())
+if not drive_requested:
+    st.info("Vision skipped — no Drive folder provided")
+else:
+    vision = pd.DataFrame(result.vision_rows)
+    classified = sum(row.get("status") != "FAILED" for row in result.vision_rows)
+    uncertain = sum(row.get("status") == "UNCERTAIN" for row in result.vision_rows)
+    vision_counts = {
+        "Images discovered": result.images_discovered,
+        "Classified": classified,
+        "Written": sum(bool(row.get("write_applied")) for row in result.vision_rows),
+        "UNCERTAIN": uncertain,
+        "Non-written": sum(not bool(row.get("write_applied")) for row in result.vision_rows),
+    }
+    for column, (label, value) in zip(st.columns(5), vision_counts.items()):
+        column.metric(label, value)
+    if vision.empty:
+        st.info("Tidak ada citra yang menghasilkan baris klasifikasi.")
+    else:
+        vision = vision.rename(columns={"status": "classification_status"})
+        visible = [
+            "filename", "classification_status", "matched_variety", "identified_part",
+            "confidence", "write_applied", "write_reason",
+        ]
+        st.dataframe(vision.reindex(columns=visible), width="stretch")
 
-st.subheader("Debugger checkpoint")
-if result.checkpoint_thread_id is None:
-    st.info("Checkpoint debugger tidak tersedia untuk run ini; output tetap berhasil dibuat.")
-elif st.button("🔍 Buka Debugger Checkpoint"):
-    with _sqlite_checkpointer(DEFAULT_CHECKPOINT_DB) as checkpointer:
-        checkpoints = list(
-            checkpointer.list({"configurable": {"thread_id": result.checkpoint_thread_id}})
-        )
-    st.write(f"Thread ID: `{result.checkpoint_thread_id}` — {len(checkpoints)} checkpoint tersimpan.")
-    for i, cp in enumerate(checkpoints):
-        with st.expander(f"Checkpoint #{i + 1} — {cp.checkpoint.get('ts', '?')}"):
-            st.json(
-                {
-                    "channel_values_keys": list(cp.checkpoint.get("channel_values", {}).keys()),
-                    "config": cp.config,
-                }
+with st.expander("Advanced / Debug"):
+    st.write(f"Evaluation fingerprint: `{result.evaluation_config_fingerprint or '-'}`")
+    st.write(f"Template hash: `{result.template_hash or '-'}`")
+    st.write(f"Checkpoint thread ID: `{result.checkpoint_thread_id or '-'}`")
+    if result.error_trace:
+        st.write("**Detailed error trace**")
+        for entry in result.error_trace:
+            st.write(f"- {entry}")
+    if result.checkpoint_thread_id is None:
+        st.info("Checkpoint debugger tidak tersedia untuk run ini; output tetap berhasil dibuat.")
+    elif st.button("🔍 Buka Debugger Checkpoint"):
+        with _sqlite_checkpointer(DEFAULT_CHECKPOINT_DB) as checkpointer:
+            checkpoints = list(
+                checkpointer.list({"configurable": {"thread_id": result.checkpoint_thread_id}})
             )
+        st.write(f"Thread ID: `{result.checkpoint_thread_id}` — {len(checkpoints)} checkpoint tersimpan.")
+        for i, cp in enumerate(checkpoints):
+            with st.expander(f"Checkpoint #{i + 1} — {cp.checkpoint.get('ts', '?')}"):
+                st.json(
+                    {
+                        "channel_values_keys": list(cp.checkpoint.get("channel_values", {}).keys()),
+                        "config": cp.config,
+                    }
+                )
 
 st.subheader("Unduh hasil akhir")
 st.caption("Output asli selalu dipertahankan. Output terkoreksi dibuat ulang dari basis asli setelah semua review selesai.")
 
+download_stem = safe_download_stem(last_inputs.get("filename", "hasil.xlsx"))
+if corrected_result is not None:
+    st.download_button(
+        "⬇️ Unduh output terkoreksi (direkomendasikan)",
+        data=corrected_result.workbook_bytes,
+        file_name=f"{download_stem}_cabai_kms_corrected.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        type="primary",
+    )
 st.download_button(
     "⬇️ Unduh hasil asli",
     data=result.workbook_bytes,
-    file_name="hasil_akuisisi.xlsx",
+    file_name=f"{download_stem}_cabai_kms.xlsx",
     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    type="secondary" if corrected_result is not None else "primary",
 )
-if corrected_result is not None:
-    st.download_button(
-        "⬇️ Unduh output terkoreksi",
-        data=corrected_result.workbook_bytes,
-        file_name="hasil_akuisisi_terkoreksi.xlsx",
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    )

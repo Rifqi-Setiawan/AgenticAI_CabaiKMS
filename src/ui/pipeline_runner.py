@@ -132,6 +132,7 @@ class PipelineRunResult:
     canonical_df: pd.DataFrame
     workbook_bytes: bytes
     vision_rows: list[dict]
+    images_discovered: int = 0
     provenance_records: list[CellProvenanceRecord] = field(default_factory=list)
     agent_status: dict[str, str] = field(default_factory=dict)
     checkpoint_thread_id: str | None = None
@@ -705,6 +706,7 @@ def _result_from_runtime_state(state: dict) -> PipelineRunResult:
     return PipelineRunResult(
         mapping_df=mapping_df, canonical_df=canonical_df,
         workbook_bytes=state["workbook_bytes"], vision_rows=list(state.get("vision_rows", [])),
+        images_discovered=len(state.get("image_metadata", [])),
         provenance_records=[CellProvenanceRecord.model_validate(x) for x in state.get("provenance_records", [])],
         agent_status=dict(state.get("agent_status", {})), checkpoint_thread_id=state["run_id"],
         error_trace=list(state.get("error_trace", [])),

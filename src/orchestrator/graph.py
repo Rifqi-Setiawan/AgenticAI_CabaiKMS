@@ -112,9 +112,10 @@ def drive_crawler(state, config):
     resources, status = _resources(config), dict(state.get("agent_status", {})); folder = state["drive_folder_id"].strip()
     try: images = r.list_images(r.normalize_folder_id(folder))[:state["max_images"]]
     except DriveCrawlerError as exc:
-        status["vision_classification"] = f"gagal: {exc}"; resources.on_progress(f"drive_crawler: GAGAL — {exc}")
+        status["drive_crawler"] = f"gagal: {exc}"; status["vision_classification"] = "dilewati (Drive gagal)"; resources.on_progress(f"drive_crawler: GAGAL — {exc}")
         return {"image_metadata": [], "agent_status": status}
     resources.on_progress(f"drive_crawler: {len(images)} citra ditemukan")
+    status["drive_crawler"] = f"selesai — {len(images)} citra ditemukan"
     if not images: status["vision_classification"] = "dilewati (folder Drive kosong, tidak ada citra)"
     return {"image_metadata": [x.model_dump(mode="json") for x in images], "agent_status": status}
 
@@ -124,13 +125,18 @@ def vision_classification(state, config):
     from src.schema.contracts import ImageMetadata
     from src.ui import pipeline_runner as r
     resources = _resources(config); wb = openpyxl.load_workbook(io.BytesIO(state["workbook_bytes"])); ws = wb[r.SHEET_NAME]
-    session = r.VisionSession(); trace = {"error_trace": list(state.get("error_trace", []))}; rows=[]; written=uncertain=0
+    session = r.VisionSession(); trace = {"error_trace": list(state.get("error_trace", []))}; rows=[]; written=uncertain=classified=0
     for raw in state.get("image_metadata", []):
         image = ImageMetadata.model_validate(raw)
         result, patch = r.safe_classify_image(image, session.knowledge_source_text, session.varieties, trace,
                                               vision_rate_limiter=resources.vision_rate_limiter)
         trace.update(patch)
-        if result is None: continue
+        if result is None:
+            rows.append({"filename": image.filename, "status": "FAILED", "matched_variety": None,
+                "identified_part": None, "confidence": None, "visual_evidence": None,
+                "write_applied": False, "write_reason": "classification failed; see Advanced / Debug trace"})
+            continue
+        classified += 1
         uncertain += result.classification_status == "UNCERTAIN"; update = r.apply_vision_result_to_worksheet(ws, image, result)
         written += update.applied
         if not update.applied and update.reason:
@@ -141,13 +147,14 @@ def vision_classification(state, config):
             "confidence": result.confidence, "visual_evidence": result.visual_evidence,
             "write_applied": update.applied, "write_reason": update.reason})
     status=dict(state.get("agent_status", {})); status["vision_classification"]=(
-        f"selesai — {len(rows)} citra diklasifikasi, {written} ditulis ke sel, {uncertain} UNCERTAIN")
+        f"selesai — {classified} citra diklasifikasi, {written} ditulis ke sel, {uncertain} UNCERTAIN")
     payload=r._deterministic_workbook_bytes(wb); wb.close()
     return {"workbook_bytes":payload, "vision_rows":rows, "error_trace":trace["error_trace"], "agent_status":status}
 
 def finalization(state, config):
     resources=_resources(config); status=dict(state.get("agent_status", {}))
-    if not state.get("drive_folder_id", "").strip(): status["vision_classification"]="dilewati (tidak ada folder Drive)"
+    if not state.get("drive_folder_id", "").strip():
+        status["drive_crawler"]="dilewati (tidak ada folder Drive)"; status["vision_classification"]="dilewati (tidak ada folder Drive)"
     status["orchestrator"]=f"LangGraph runtime selesai (thread_id={state['run_id']})"; resources.on_progress("finalization: selesai")
     return {"agent_status":status, "completed":True}
 

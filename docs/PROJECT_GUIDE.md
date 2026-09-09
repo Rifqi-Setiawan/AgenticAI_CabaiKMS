@@ -1,6 +1,6 @@
 # Panduan Lengkap CABAI-KMS Akuisisi
 
-**Audit implementasi: 6 September 2026.** Dokumen ini menjelaskan apa yang benar-benar tersedia pada kode saat audit. Nama model dan nilai default di sini adalah konfigurasi kode, bukan jaminan ketersediaan layanan eksternal. Catatan eksperimen Juli 2026 tetap disimpan sebagai riwayat.
+**Audit implementasi: 9 September 2026.** Dokumen ini menjelaskan apa yang benar-benar tersedia pada kode saat audit. Nama model dan nilai default di sini adalah konfigurasi kode, bukan jaminan ketersediaan layanan eksternal. Catatan eksperimen Juli 2026 tetap disimpan sebagai riwayat.
 
 ## Daftar isi
 
@@ -49,7 +49,7 @@ Ini adalah **prototipe penelitian**, bukan sistem produksi, API backend, atau pl
 | Rate limiter | Terintegrasi opsional pada runner UI; limiter teks dan vision terpisah per run |
 | Manual review | Alur run aktif tersedia di halaman Hasil: approve/revise/NO_MATCH dan replay deterministik ke output terkoreksi |
 | LangGraph | Koordinator runtime nyata dengan checkpoint/resume SQLite per `run_id` |
-| UI | Tiga halaman Streamlit: Input, Progres, Hasil |
+| UI | Tiga halaman Streamlit: preflight/input `.xlsx`, status Progres, serta ringkasan/inspektor/review/download pada Hasil |
 | Evaluasi | Harness ekspor untuk review manual; belum ada perhitungan Macro-F1 |
 
 **Implikasi:** status “selesai” menunjukkan eksekusi selesai, bukan seluruh data sudah benar atau telah disetujui manusia. Baca detail pemetaan dan log sebelum menggunakan hasil untuk penelitian.
@@ -139,7 +139,7 @@ setelah setiap node selesai.
 
 Fungsi `run_pipeline_ui()` di `src/ui/pipeline_runner.py` menjalankan LangGraph secara sinkron:
 
-1. Membaca sheet pilihan; secara default sheet pertama. UI tidak memiliki pilihan sheet.
+1. Membaca worksheet pilihan; UI menampilkan selector untuk workbook multi-sheet dan menggunakan sheet pertama sebagai default.
 2. Pada format row-oriented, mendeteksi kolom varietas dari embedding teks header saja. Pada transposed, memakai nama kolom setelah `Karakter`.
 3. Memuat `CanonicalSchema` dan memastikan indeks Chroma tersedia.
 4. Untuk setiap atribut non-anchor, membuat profil nama/konteks/contoh nilai, mengambil kandidat, lalu memanggil `safe_rerank()`.
@@ -214,12 +214,13 @@ project/
 | `reliability/retry.py`, `rate_limit.py` | Backoff dan pembatas permintaan opsional |
 | `reliability/verifier.py`, `wrappers.py` | Validasi ulang, pemanggilan aman, pencatatan error |
 | `orchestrator/graph.py` | Graf runtime, routing Drive/vision, resource context, dan resume checkpoint |
-| `ui/app.py` | Upload, parameter pengguna, file sementara, pemanggilan pipeline |
+| `ui/app.py` | Preflight `.xlsx`, pilihan worksheet, readiness, parameter pengguna, file sementara, satu pemanggilan pipeline |
+| `ui/demo_support.py` | Helper deterministik untuk preflight, ringkasan, status tahap, pesan aman, dan nama unduhan |
 | `ui/pipeline_runner.py` | Integrasi agen nyata yang dipakai UI |
 | `ui/output_builder.py` | Pengelompokan nilai, konstruksi workbook, tabel preview |
 | `ui/state.py` | Akses session state untuk hasil, log, input terakhir, status berjalan |
-| `ui/pages/2_Progress.py` | Status agen, error trace, log run |
-| `ui/pages/3_Hasil.py` | Inspeksi hasil/reasoning, checkpoint inspector, download Excel |
+| `ui/pages/2_Progress.py` | Status SUCCESS/SKIPPED/WARNING/FAILED per tahap, error trace, log run |
+| `ui/pages/3_Hasil.py` | Ringkasan run, selective mapping, review, vision, download, dan Advanced/Debug |
 
 ## 5. Input dan skema kanonik
 
@@ -406,12 +407,14 @@ Nama model lain berupa konstanta kode: teks Groq `llama-3.3-70b-versatile`, teks
 ### Alur pengguna
 
 1. Jalankan Streamlit, lalu buka alamat lokal yang ditampilkan terminal.
-2. Unggah `.xlsx` dan pilih orientasi yang sesuai.
-3. Kosongkan folder Drive untuk uji tabular, atau isi URL/ID folder berisi foto yang dapat diakses service account.
-4. Klik **Jalankan Pipeline**; log diperbarui pada halaman Input selama proses sinkron berjalan.
-5. Buka **Progres** untuk status dan log run. Halaman ini bukan monitor worker latar belakang.
-6. Buka **Hasil** untuk tabel kanonik, mapping/confidence/reasoning, dan klasifikasi citra.
-7. Periksa warning dan sel hasil, kemudian unduh Excel.
+2. Unggah `.xlsx`; preflight hanya memeriksa ekstensi, keterbacaan workbook, dan daftar worksheet tanpa memanggil provider.
+3. Untuk workbook multi-sheet, pilih worksheet; lalu pilih orientasi dan opsi header yang sesuai.
+4. Kosongkan folder Drive untuk uji tabular, atau isi URL/ID yang plausibel dan pilih batas 1–20 gambar (default 5).
+5. Periksa **Runtime readiness**. Ini hanya status konfigurasi dan tidak mengklaim provider/Ollama dapat dijangkau.
+6. Klik **Jalankan Pipeline**; log diperbarui pada halaman Input selama proses sinkron berjalan.
+7. Buka **Progres** untuk status tiap tahap dan log run. Halaman ini bukan monitor worker latar belakang.
+8. Buka **Hasil** untuk ringkasan, perbedaan prediksi versus accepted write, review, dan hasil citra termasuk alasan non-write.
+9. Jika koreksi manusia sudah diterapkan, unduh output corrected yang direkomendasikan; output asli tetap tersedia.
 
 Input upload disalin ke file sementara dan dihapus dalam blok `finally`. Runtime/API memiliki checkpoint resume melalui `resume_pipeline_ui()` selama sumber dan konfigurasi identik serta file sumber masih tersedia. Streamlit saat ini tidak menyediakan tombol **Resume** dan tidak otomatis melanjutkan run setelah browser atau proses dimulai ulang. Tidak ada antrean job. Saat run baru dimulai, hasil sebelumnya dibersihkan dari session state agar run gagal tidak menawarkan unduhan lama.
 
@@ -642,7 +645,7 @@ Hasil verifikasi audit terkini dicatat di [CHECKPOINTS.md](CHECKPOINTS.md), terp
 Temuan berikut adalah batas implementasi, **bukan fitur yang diperbaiki dalam audit dokumentasi ini**:
 
 1. **Review dan replay kini interaktif untuk run aktif.** `REVIEW` dan `NO_WRITE` tetap tidak menulis pada run awal; keputusan manusia pada item `REVIEW` dapat diterapkan deterministik ke salinan output asli. Persistensi snapshot run lintas restart dan review historis belum tersedia.
-2. **CSV dan perluasan cakupan parsing belum tersedia pada UI.** Uploader menawarkan CSV, tetapi runner masih membutuhkan `.xlsx`. Phase 4 dapat merepresentasikan judul sebelum tabel, header bertingkat, merge, dan layout transposed setelah verifikasi; jalur itu sudah terintegrasi untuk shadow dan `source-ir-gated`, tetapi gate produksi saat ini hanya mempromosikan hasil yang tepat setara dengan referensi legacy. T03 dan T04 sudah diverifikasi; enam dummy lainnya belum diverifikasi pada perbaikan ini.
+2. **CSV belum didukung dan tidak ditawarkan UI.** Runner dan uploader hanya menerima `.xlsx`. Phase 4 dapat merepresentasikan judul sebelum tabel, header bertingkat, merge, dan layout transposed setelah verifikasi; jalur itu sudah terintegrasi melalui `source_ingestion` untuk shadow dan `source-ir-gated`, tetapi gate produksi saat ini hanya mempromosikan hasil yang tepat setara dengan referensi legacy. T03 dan T04 sudah diverifikasi; enam dummy lainnya belum diverifikasi pada perbaikan ini.
 3. **Validasi anchor kini menghentikan runner.** Header salah/ambigu atau identitas varietas yang hilang menghasilkan error sebelum pemetaan. Error provider dan mapping NULL masih harus diperiksa terpisah; validasi input bukan jaminan semua atribut akan terpetakan.
 4. **Koreksi manual memiliki audit event lokal.** Identitas run/source/schema dan provenance replay sudah tersedia, tetapi queue JSONL belum memiliki locking multi-proses, autentikasi reviewer, atau penyimpanan snapshot run lintas restart.
 5. **Resume masih coarse-grained dan lokal.** LangGraph sudah mengoordinasikan runtime nyata, tetapi checkpoint hanya tersedia antarnode; crash di tengah schema matching atau loop vision dapat mengulang node yang belum selesai. SQLite lokal belum memberi layanan resume multi-user.

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import io
+from unittest.mock import patch
 
 import openpyxl
 import pandas as pd
@@ -34,8 +35,13 @@ def _fixture_result(with_issues: bool = False) -> PipelineRunResult:
                 "source_context": None,
                 "predicted_row": "r_7",
                 "predicted_label": "warna daun",
+                "proposed_target_canonical_key": "daun.warna",
                 "target_domain": "daun",
+                "mapping_method": "exact_name",
                 "confidence": 0.9,
+                "verifier_status": "PASS",
+                "acceptance_status": "AUTO_ACCEPT",
+                "canonical_write": True,
                 "normalization_required": False,
                 "reasoning": "cocok jelas dengan label 'warna daun'",
             },
@@ -45,8 +51,13 @@ def _fixture_result(with_issues: bool = False) -> PipelineRunResult:
                 "source_context": None,
                 "predicted_row": "r_8",
                 "predicted_label": "panjang daun",
+                "proposed_target_canonical_key": "daun.panjang",
                 "target_domain": "daun",
+                "mapping_method": "retrieve_rerank",
                 "confidence": 0.85,
+                "verifier_status": "REVIEW",
+                "acceptance_status": "REVIEW",
+                "canonical_write": False,
                 "normalization_required": True,
                 "reasoning": "cocok dengan tipe data numerik",
             },
@@ -63,6 +74,7 @@ def _fixture_result(with_issues: bool = False) -> PipelineRunResult:
         {
             "filename": "daun1.jpg", "status": "KNOWN", "matched_variety": "Gendot",
             "identified_part": "DAUN", "confidence": 0.9, "visual_evidence": "ok",
+            "write_applied": False, "write_reason": "target row not found",
         }
     ]
     error_trace = ["contoh entri error_trace"] if with_issues else []
@@ -79,6 +91,17 @@ def _fixture_result(with_issues: bool = False) -> PipelineRunResult:
         checkpoint_thread_id="test-thread-fixture-nonexistent",
         error_trace=error_trace,
     )
+
+
+def _xlsx_bytes(*sheet_names: str) -> bytes:
+    workbook = openpyxl.Workbook()
+    workbook.active.title = sheet_names[0]
+    for name in sheet_names[1:]:
+        workbook.create_sheet(name)
+    output = io.BytesIO()
+    workbook.save(output)
+    workbook.close()
+    return output.getvalue()
 
 
 def _real_null_review_result(tmp_path) -> tuple[PipelineRunResult, str]:
@@ -125,6 +148,9 @@ def _real_null_review_result(tmp_path) -> tuple[PipelineRunResult, str]:
         "confidence": 0.2,
         "normalization_required": True,
         "reasoning": "no confident model proposal",
+        "mapping_method": "retrieve_rerank",
+        "verifier_status": "REVIEW",
+        "acceptance_status": "REVIEW",
         "canonical_write": False,
         "proposed_target_canonical_key": None,
     }])
@@ -137,6 +163,11 @@ def _real_null_review_result(tmp_path) -> tuple[PipelineRunResult, str]:
 
 
 class TestPage1Input:
+    def test_uploader_accepts_xlsx_only(self):
+        at = AppTest.from_file(APP_PATH, default_timeout=APP_TEST_TIMEOUT).run()
+        uploader = at.get("file_uploader")[0]
+        assert uploader.allowed_type == [".xlsx"]
+
     def test_header_selection_only_for_row_oriented(self):
         at = AppTest.from_file(APP_PATH, default_timeout=APP_TEST_TIMEOUT).run()
         assert at.selectbox[0].options == ["Otomatis", "1 baris", "2 baris"]
@@ -157,13 +188,42 @@ class TestPage1Input:
         assert len(at.radio) >= 1
         assert any("Jalankan Pipeline" in b.label for b in at.button)
 
-    def test_run_without_file_shows_error(self):
+    def test_run_without_file_is_disabled(self):
         at = AppTest.from_file(APP_PATH, default_timeout=APP_TEST_TIMEOUT)
         at.run()
         run_button = next(b for b in at.button if "Jalankan Pipeline" in b.label)
-        run_button.click().run()
+        assert run_button.disabled
+
+    def test_invalid_workbook_preflight_blocks_run(self):
+        at = AppTest.from_file(APP_PATH, default_timeout=APP_TEST_TIMEOUT).run()
+        at.get("file_uploader")[0].upload("broken.xlsx", b"not an xlsx").run()
         assert not at.exception
-        assert any("Unggah spreadsheet" in e.value for e in at.error)
+        assert any("tidak dapat dibuka" in error.value for error in at.error)
+        assert next(b for b in at.button if "Jalankan Pipeline" in b.label).disabled
+
+    def test_multisheet_selection_and_max_images_reach_runtime(self):
+        calls = []
+
+        def fake_run(file_path, **kwargs):
+            calls.append(kwargs)
+            return _fixture_result()
+
+        with patch("src.ui.pipeline_runner.run_pipeline_ui", fake_run):
+            at = AppTest.from_file(APP_PATH, default_timeout=APP_TEST_TIMEOUT).run()
+            at.get("file_uploader")[0].upload(
+                "demo.xlsx", _xlsx_bytes("First", "Chosen")
+            ).run()
+            sheet = next(box for box in at.selectbox if box.label == "Worksheet yang diproses")
+            sheet.select("Chosen").run()
+            max_images = next(item for item in at.number_input if item.label == "Maximum images to process")
+            max_images.set_value(7).run()
+            next(b for b in at.button if "Jalankan Pipeline" in b.label).click().run()
+
+        assert not at.exception
+        assert calls[-1]["sheet_name"] == "Chosen"
+        assert calls[-1]["max_images"] == 7
+        assert calls[-1]["drive_folder_id"] == ""
+        assert len(calls) == 1
 
     def test_shows_last_result_hint_when_result_exists(self):
         at = AppTest.from_file(APP_PATH, default_timeout=APP_TEST_TIMEOUT)
@@ -188,9 +248,21 @@ class TestPage2Progress:
         at.run()
         assert not at.exception
         metric_labels = [m.label for m in at.metric]
-        assert "schema_matching" in metric_labels
+        assert "schema_matching/tabular" in metric_labels
         assert "vision_classification" in metric_labels
+        assert "drive_crawler" in metric_labels
         assert any("selesai." in c.value for c in at.code)
+
+    def test_no_drive_is_skipped_not_failed(self):
+        result = _fixture_result()
+        result.agent_status["drive_crawler"] = "dilewati (tidak ada folder Drive)"
+        result.agent_status["vision_classification"] = "dilewati (tidak ada folder Drive)"
+        at = AppTest.from_file(PROGRESS_PATH, default_timeout=APP_TEST_TIMEOUT)
+        at.session_state["cabai_kms_pipeline_result"] = result
+        at.run()
+        values = {metric.label: metric.value for metric in at.metric}
+        assert values["drive_crawler"] == "SKIPPED"
+        assert values["vision_classification"] == "SKIPPED"
 
     def test_no_issues_shows_success(self):
         at = AppTest.from_file(PROGRESS_PATH, default_timeout=APP_TEST_TIMEOUT)
@@ -222,6 +294,46 @@ class TestPage3Hasil:
         assert not at.exception
         assert len(at.dataframe) >= 2  # canonical + mapping (+ vision)
         assert any("Unduh hasil" in b.label for b in list(at.button) + list(at.download_button))
+
+    def test_summary_and_mapping_inspector_use_actual_decision_fields(self):
+        result = _fixture_result()
+        third = result.mapping_df.iloc[[1]].copy()
+        third["source_attribute_display"] = "Unknown"
+        third["acceptance_status"] = "NO_WRITE"
+        third["canonical_write"] = False
+        result.mapping_df = pd.concat([result.mapping_df, third], ignore_index=True)
+        at = AppTest.from_file(HASIL_PATH, default_timeout=APP_TEST_TIMEOUT)
+        at.session_state["cabai_kms_pipeline_result"] = result
+        at.session_state["cabai_kms_inputs"] = {"filename": "demo.xlsx", "sheet_name": "Data", "drive_url": ""}
+        at.run()
+        assert not at.exception
+        metrics = {metric.label: metric.value for metric in at.metric}
+        assert metrics["AUTO_ACCEPT"] == "1"
+        assert metrics["REVIEW"] == "1"
+        assert metrics["NO_WRITE"] == "1"
+        mapping_columns = set(at.dataframe[1].value.columns)
+        assert {"Proposed canonical label", "Mapping method", "Verifier status", "Acceptance status", "Canonical write"} <= mapping_columns
+        assert any("Prediksi model tidak sama" in caption.value for caption in at.caption)
+
+    def test_no_drive_reports_vision_skipped_without_error(self):
+        at = AppTest.from_file(HASIL_PATH, default_timeout=APP_TEST_TIMEOUT)
+        at.session_state["cabai_kms_pipeline_result"] = _fixture_result()
+        at.session_state["cabai_kms_inputs"] = {"filename": "demo.xlsx", "sheet_name": "Data", "drive_url": ""}
+        at.run()
+        assert any("Vision skipped" in info.value for info in at.info)
+        assert not at.error
+
+    def test_vision_view_exposes_write_reason(self):
+        result = _fixture_result()
+        result.images_discovered = 1
+        at = AppTest.from_file(HASIL_PATH, default_timeout=APP_TEST_TIMEOUT)
+        at.session_state["cabai_kms_pipeline_result"] = result
+        at.session_state["cabai_kms_inputs"] = {"filename": "demo.xlsx", "sheet_name": "Data", "drive_url": "folder"}
+        at.run()
+        assert not at.exception
+        assert "write_reason" in at.dataframe[2].value.columns
+        assert at.dataframe[2].value.iloc[0]["write_reason"] == "target row not found"
+        assert any(expander.label == "Advanced / Debug" for expander in at.expander)
 
     def test_reasoning_selectbox_shows_full_reasoning_on_selection(self):
         at = AppTest.from_file(HASIL_PATH, default_timeout=APP_TEST_TIMEOUT)
@@ -311,6 +423,57 @@ class TestPage3Hasil:
         ].item()
         assert habitus == "terna"
         assert any(
-            button.label == "⬇️ Unduh output terkoreksi"
+            button.label == "⬇️ Unduh output terkoreksi (direkomendasikan)"
             for button in at.download_button
         )
+        assert at.download_button[0].label == "⬇️ Unduh output terkoreksi (direkomendasikan)"
+
+
+class TestDemoScenarios:
+    def test_upload_select_run_review_apply_and_download(self, tmp_path):
+        result, replacement_key = _real_null_review_result(tmp_path)
+        calls = []
+
+        def fake_run(file_path, **kwargs):
+            calls.append(kwargs)
+            return result
+
+        with patch("src.ui.pipeline_runner.run_pipeline_ui", fake_run):
+            input_page = AppTest.from_file(APP_PATH, default_timeout=APP_TEST_TIMEOUT).run()
+            input_page.get("file_uploader")[0].upload(
+                "field demo.xlsx", _xlsx_bytes("Raw", "Demo")
+            ).run()
+            next(box for box in input_page.selectbox if box.label == "Worksheet yang diproses").select("Demo").run()
+            next(button for button in input_page.button if "Jalankan Pipeline" in button.label).click().run()
+
+        assert len(calls) == 1
+        assert calls[0]["sheet_name"] == "Demo"
+        hasil = AppTest.from_file(HASIL_PATH, default_timeout=APP_TEST_TIMEOUT)
+        hasil.session_state["cabai_kms_pipeline_result"] = input_page.session_state["cabai_kms_pipeline_result"]
+        hasil.session_state["cabai_kms_inputs"] = input_page.session_state["cabai_kms_inputs"]
+        hasil.run()
+        assert any("field demo.xlsx" in caption.value for caption in hasil.caption)
+        assert len(hasil.dataframe) >= 2
+        hasil.selectbox[0].select(replacement_key).run()
+        next(button for button in hasil.button if button.label == "Ubah target").click().run()
+        next(button for button in hasil.button if button.label == "Terapkan Koreksi").click().run()
+        assert hasil.download_button[0].label == "⬇️ Unduh output terkoreksi (direkomendasikan)"
+
+    def test_mocked_multimodal_demo_flow_shows_write_status_and_reason(self):
+        result = _fixture_result()
+        result.images_discovered = 1
+
+        with patch("src.ui.pipeline_runner.run_pipeline_ui", return_value=result):
+            input_page = AppTest.from_file(APP_PATH, default_timeout=APP_TEST_TIMEOUT).run()
+            input_page.get("file_uploader")[0].upload("vision.xlsx", _xlsx_bytes("Data")).run()
+            input_page.text_input[0].set_value("folder-demo").run()
+            next(button for button in input_page.button if "Jalankan Pipeline" in button.label).click().run()
+
+        hasil = AppTest.from_file(HASIL_PATH, default_timeout=APP_TEST_TIMEOUT)
+        hasil.session_state["cabai_kms_pipeline_result"] = input_page.session_state["cabai_kms_pipeline_result"]
+        hasil.session_state["cabai_kms_inputs"] = input_page.session_state["cabai_kms_inputs"]
+        hasil.run()
+        vision = hasil.dataframe[2].value
+        assert vision.iloc[0]["classification_status"] == "KNOWN"
+        assert vision.iloc[0]["write_applied"] == False
+        assert vision.iloc[0]["write_reason"] == "target row not found"

@@ -2,7 +2,7 @@
 
 Prototipe penelitian **Adaptive Knowledge Acquisition berbasis Agentic AI** untuk mengubah spreadsheet karakterisasi cabai dan foto tanaman dari Google Drive menjadi workbook Excel berstruktur kanonik.
 
-Dokumentasi diperbarui **7 September 2026**, berdasarkan implementasi di repositori, bukan hanya rancangan proposal.
+Dokumentasi diperbarui **9 September 2026**, berdasarkan implementasi di repositori, bukan hanya rancangan proposal.
 
 ## Kondisi proyek saat ini
 
@@ -10,7 +10,8 @@ Dokumentasi diperbarui **7 September 2026**, berdasarkan implementasi di reposit
 - Kolom varietas keluaran berasal dari input; baris karakter berasal dari `data/canonical/template_kanonik.xlsx`.
 - LangGraph adalah koordinator runtime nyata: ingestion deterministik, schema matching/tabular, routing Drive, vision, lalu finalization. Checkpoint SQLite memakai `run_id` sebagai thread ID.
 - Halaman **Hasil** menyediakan review untuk run aktif: approve usulan non-NULL, revise ke `canonical_key` aktif, atau `NO_MATCH`. Setelah seluruh item selesai, koreksi diterapkan deterministik dari output asli tanpa mengulang retrieval, LLM/reranker, verifier, atau vision; unduhan asli tetap tersedia dan event JSONL tetap append-only.
-- CSV belum didukung parser walaupun ditawarkan uploader. Gunakan `.xlsx`.
+- UI hanya menerima `.xlsx`, menjalankan preflight lokal, dan menyediakan pilihan worksheet untuk workbook multi-sheet.
+- Kontrol gambar dibatasi 1–20 (default 5). Ringkasan run, selective acceptance, review, hasil vision, unduhan, serta status tahap disajikan tanpa membuat jalur eksekusi selain LangGraph.
 - Kampanye evaluasi lanjutan masih ditunda. Evaluasi otomatis Macro-F1 belum diimplementasikan; yang tersedia adalah infrastruktur ekspor tabel untuk penilaian manual.
 
 ## Mulai menjalankan
@@ -53,6 +54,7 @@ Perintah ini mengecualikan tes embedding dan koneksi fallback live; keberhasilan
 | Dokumen | Isi |
 |---|---|
 | [Panduan lengkap proyek](docs/PROJECT_GUIDE.md) | Status implementasi, arsitektur, struktur file, kontrak data, alur, konfigurasi, penggunaan, testing, keterbatasan, dan pemeliharaan |
+| [Runbook demo](docs/DEMO_RUNBOOK.md) | Checklist persiapan, alur demo langsung, dan fallback kegagalan |
 | [Penyiapan Google Drive](docs/DRIVE_SETUP.md) | Langkah service account dan akses folder |
 | [Keputusan desain](docs/DESIGN_DECISIONS.md) | Keputusan dan alasan; dibedakan dari implementasi yang sudah tersedia |
 | [Profiling data](docs/PROFILING.md) | Catatan historis bentuk template dan contoh input |
