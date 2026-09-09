@@ -120,25 +120,24 @@ waktu ekspor aktual.
 Lima lapisan utama adalah data/skema, ingestion, agen, orkestrasi/reliability, serta UI/evaluasi. `src/llm/` menyediakan akses provider lintas agen.
 
 ```text
-Input .xlsx
-  -> parser sesuai format pilihan pengguna
-  -> identitas varietas (anchor / header transposed)
-  -> exact label/alias unik? -> SchemaMapping deterministik
-       atau: retrieval kandidat (Chroma default / exact opt-in) -> safe_rerank
-  -> deterministic Mapping Verifier -> selective acceptance combiner
-  -> normalisasi -> akumulasi nilai
-  -> workbook berdasarkan salinan template
-  -> [opsional] Drive -> download -> Gemini -> URL foto pada sel Gambar
-  -> tabel preview + bytes Excel + log/status
+run_pipeline_ui(Input .xlsx)
+  -> LangGraph source_ingestion
+       -> parser legacy, atau Source IR terverifikasi untuk source-ir-gated
+  -> schema_matching_tabular
+       -> exact/retrieval/rerank -> verifier -> selective acceptance
+       -> normalisasi -> provenance -> workbook tabular
+  -> [opsional] drive_crawler -> metadata citra Drive
+  -> [opsional] vision_classification -> URL foto pada sel Gambar
+  -> finalization
+  -> PipelineRunResult
 
-Di akhir runner UI:
-  -> LangGraph runtime -> checkpoint SQLite per tahap -> hasil UI
-     (bukan rekaman/resume pemrosesan agen nyata di atas)
+LangGraph mengoordinasikan pemrosesan nyata dan menulis checkpoint SQLite
+setelah setiap node selesai.
 ```
 
 ### Jalur aplikasi nyata
 
-Fungsi `run_pipeline_ui()` di `src/ui/pipeline_runner.py` menjalankan proses secara sinkron:
+Fungsi `run_pipeline_ui()` di `src/ui/pipeline_runner.py` menjalankan LangGraph secara sinkron:
 
 1. Membaca sheet pilihan; secara default sheet pertama. UI tidak memiliki pilihan sheet.
 2. Pada format row-oriented, mendeteksi kolom varietas dari embedding teks header saja. Pada transposed, memakai nama kolom setelah `Karakter`.
@@ -146,8 +145,8 @@ Fungsi `run_pipeline_ui()` di `src/ui/pipeline_runner.py` menjalankan proses sec
 4. Untuk setiap atribut non-anchor, membuat profil nama/konteks/contoh nilai, mengambil kandidat, lalu memanggil `safe_rerank()`.
 5. Mapping melewati gerbang acceptance deterministik. Hanya `AUTO_ACCEPT` yang boleh dinormalisasi dan ditulis; `REVIEW` dan `NO_WRITE` tidak boleh mengubah workbook kanonik. Mapping `NULL`, target tidak valid, dan kegagalan lain berhenti sebagai `NO_WRITE`.
 6. Menggabungkan nilai per varietas dengan pemisah `; `, lalu membangun workbook dari template. Sel referensi varietas lama dibersihkan pada salinan yang berada di memori, bukan file template asli.
-7. Jika URL/ID Drive diberikan, mengambil metadata foto lalu memproses maksimal lima gambar secara default. Pembatasan dilakukan setelah listing, bukan membatasi jumlah metadata yang diminta dari Drive.
-8. Membaca deskripsi varietas template sekali melalui `VisionSession`, mengunduh foto, dan memanggil `safe_classify_image()`.
+7. Jika URL/ID Drive diberikan, node `drive_crawler` mengambil metadata foto lalu membatasi hasil ke maksimal lima gambar secara default. Pembatasan dilakukan setelah listing, bukan membatasi jumlah metadata yang diminta dari Drive.
+8. Node `vision_classification` membaca deskripsi varietas template sekali melalui `VisionSession`, mengunduh foto, dan memanggil `safe_classify_image()`.
 9. Menulis URL Drive hanya jika status `KNOWN`, varietas ada di kolom output, dan baris bagian tanaman ditemukan. Tidak ada threshold confidence numerik tambahan di penulis sel.
 10. Node finalization mengembalikan kontrak hasil UI dari state graph yang sama; tidak ada eksekusi pipeline kedua.
 
@@ -414,7 +413,7 @@ Nama model lain berupa konstanta kode: teks Groq `llama-3.3-70b-versatile`, teks
 6. Buka **Hasil** untuk tabel kanonik, mapping/confidence/reasoning, dan klasifikasi citra.
 7. Periksa warning dan sel hasil, kemudian unduh Excel.
 
-Input upload disalin ke file sementara dan dihapus dalam blok `finally`. Tidak ada antrean job atau kemampuan resume proses UI. Saat run baru dimulai, hasil sebelumnya dibersihkan dari session state agar run gagal tidak menawarkan unduhan lama.
+Input upload disalin ke file sementara dan dihapus dalam blok `finally`. Runtime/API memiliki checkpoint resume melalui `resume_pipeline_ui()` selama sumber dan konfigurasi identik serta file sumber masih tersedia. Streamlit saat ini tidak menyediakan tombol **Resume** dan tidak otomatis melanjutkan run setelah browser atau proses dimulai ulang. Tidak ada antrean job. Saat run baru dimulai, hasil sebelumnya dibersihkan dari session state agar run gagal tidak menawarkan unduhan lama.
 
 ### Memanggil runner dari Python
 

@@ -182,15 +182,13 @@ def _deterministic_workbook_bytes(workbook) -> bytes:
     return output.getvalue()
 
 
-def _run_pipeline_ui_stage_impl(
+def _run_tabular_stage_impl(
     file_path: Path,
     *,
     source_format: str = "row-oriented",
     sheet_name: str | None = None,
     header_rows: int | None = None,
-    drive_folder_id: str | None = None,
     k: int = DEFAULT_K,
-    max_images: int = 5,
     on_progress: ProgressCallback = _noop,
     enable_structure_shadow: bool = False,
     structure_llm_call: Callable | None = None,
@@ -199,10 +197,8 @@ def _run_pipeline_ui_stage_impl(
     embedding_encode_call: Callable[..., object] | None = None,
     review_queue_path: Path | str = review_queue.DEFAULT_QUEUE_PATH,
     text_rate_limiter: RateLimiter | None = None,
-    vision_rate_limiter: RateLimiter | None = None,
     _prepared_source_bundle=None,
     _run_id: str | None = None,
-    _skip_checkpoint: bool = False,
 ) -> PipelineRunResult:
     if source_backend not in {"legacy", "source-ir-gated"}:
         raise ValueError(
@@ -217,9 +213,7 @@ def _run_pipeline_ui_stage_impl(
     state: dict = {"error_trace": []}
     agent_status: dict[str, str] = {}
     agent_status["text_rate_limit"] = describe_rate_limiter(text_rate_limiter)
-    agent_status["vision_rate_limit"] = describe_rate_limiter(vision_rate_limiter)
     on_progress(f"text rate limit: {agent_status['text_rate_limit']}")
-    on_progress(f"vision rate limit: {agent_status['vision_rate_limit']}")
     structure_shadow: ShadowParityReport | None = None
 
     # --- backend-neutral parsing + variety-position preparation ---
@@ -625,74 +619,10 @@ def _run_pipeline_ui_stage_impl(
     if not mapping_df.empty:
         mapping_df = mapping_df.sort_values("confidence", ascending=True, kind="stable").reset_index(drop=True)
 
-    # --- materialize the canonical-shaped workbook (schema-matching values only, so far) ---
+    # Materialize the tabular canonical workbook. Optional Drive discovery and
+    # vision mutation are owned exclusively by the LangGraph runtime nodes.
     workbook = builder.build_workbook()
     worksheet = workbook[SHEET_NAME]
-
-    # --- vision classification (Fase 4 + 5, via the Fase 7 wrapper), writing
-    # straight onto the SAME worksheet via Fase 6's own tabular_update logic ---
-    vision_rows: list[dict] = []
-    folder_id = (drive_folder_id or "").strip()
-    if not folder_id:
-        agent_status["vision_classification"] = "dilewati (tidak ada folder Drive)"
-        on_progress("vision_classification: dilewati — tidak ada folder Drive diberikan.")
-    else:
-        try:
-            on_progress(f"vision_classification: membuka folder Drive {folder_id!r}...")
-            images = list_images(normalize_folder_id(folder_id))[:max_images]
-            if not images:
-                agent_status["vision_classification"] = "dilewati (folder Drive kosong, tidak ada citra)"
-                on_progress("vision_classification: folder Drive kosong — dilewati.")
-            else:
-                on_progress(f"vision_classification: {len(images)} citra ditemukan (dibatasi {max_images})")
-                session = VisionSession()
-                n_uncertain = 0
-                n_written = 0
-                for image in images:
-                    on_progress(f"  vision_classification: '{image.filename}'...")
-                    result, patch = safe_classify_image(
-                        image, session.knowledge_source_text, session.varieties, state,
-                        vision_rate_limiter=vision_rate_limiter,
-                    )
-                    state.update(patch)
-                    if result is None:
-                        on_progress(f"  vision_classification: '{image.filename}' -> GAGAL, diarahkan ke manual_review")
-                        continue
-                    if result.classification_status == "UNCERTAIN":
-                        n_uncertain += 1
-                    on_progress(
-                        f"  vision_classification: '{image.filename}' -> {result.classification_status} "
-                        f"({result.identified_part}, varietas={result.matched_variety})"
-                    )
-                    update_result = apply_vision_result_to_worksheet(worksheet, image, result)
-                    if update_result.applied:
-                        n_written += 1
-                    elif update_result.reason:
-                        warning = (
-                            f"vision_non_write: file_id={image.file_id!r}: "
-                            f"{update_result.reason}"
-                        )
-                        state.update(review_queue.append_error_trace(state, warning))
-                        on_progress(f"    tidak ditulis ke sel: {update_result.reason}")
-                    vision_rows.append(
-                        {
-                            "filename": image.filename,
-                            "status": result.classification_status,
-                            "matched_variety": result.matched_variety,
-                            "identified_part": result.identified_part,
-                            "confidence": result.confidence,
-                            "visual_evidence": result.visual_evidence,
-                            "write_applied": update_result.applied,
-                            "write_reason": update_result.reason,
-                        }
-                    )
-                agent_status["vision_classification"] = (
-                    f"selesai — {len(vision_rows)} citra diklasifikasi, {n_written} ditulis ke sel, "
-                    f"{n_uncertain} UNCERTAIN"
-                )
-        except DriveCrawlerError as exc:
-            agent_status["vision_classification"] = f"gagal: {exc}"
-            on_progress(f"vision_classification: GAGAL — {exc}")
 
     canonical_df = worksheet_to_dataframe(worksheet, schema, builder.variety_names)
 
@@ -703,7 +633,7 @@ def _run_pipeline_ui_stage_impl(
     on_progress("Selesai.")
     return PipelineRunResult(
         mapping_df=mapping_df, canonical_df=canonical_df,
-        workbook_bytes=workbook_bytes, vision_rows=vision_rows,
+        workbook_bytes=workbook_bytes, vision_rows=[],
         provenance_records=provenance_records, agent_status=agent_status,
         checkpoint_thread_id=thread_id,
         error_trace=list(state.get("error_trace", [])),

@@ -87,16 +87,15 @@ def schema_matching_tabular(state, config):
         resources.prepared_source_bundle = state.get("prepared_source_bundle")
     if resources.prepared_source_bundle is None:
         resources.prepared_source_bundle, _ = _prepare_source(state, resources)
-    result = r._run_pipeline_ui_stage_impl(Path(state["source_path"]), source_format=state["source_format"],
-        sheet_name=state["sheet_name"], header_rows=state.get("header_rows"), drive_folder_id=None,
+    result = r._run_tabular_stage_impl(Path(state["source_path"]), source_format=state["source_format"],
+        sheet_name=state["sheet_name"], header_rows=state.get("header_rows"),
         k=state["retrieval_k"], on_progress=resources.on_progress,
         enable_structure_shadow=state.get("enable_structure_shadow", False),
         structure_llm_call=resources.structure_llm_call, source_backend=state["source_backend"],
         retrieval_backend=state["retrieval_backend"], embedding_encode_call=resources.embedding_encode_call,
         review_queue_path=state["review_queue_path"], text_rate_limiter=resources.text_rate_limiter,
-        vision_rate_limiter=resources.vision_rate_limiter, _prepared_source_bundle=resources.prepared_source_bundle,
-        _run_id=state["run_id"], _skip_checkpoint=True)
-    status = dict(result.agent_status); status.pop("vision_classification", None)
+        _prepared_source_bundle=resources.prepared_source_bundle, _run_id=state["run_id"])
+    status = dict(state.get("agent_status", {})); status.update(result.agent_status)
     status["orchestrator"] = "schema/tabular selesai; checkpoint LangGraph"
     return {"mapping_json": result.mapping_df.to_json(orient="table"), "workbook_bytes": result.workbook_bytes,
         "variety_names": list(result.canonical_df.columns[2:]), "vision_rows": [],

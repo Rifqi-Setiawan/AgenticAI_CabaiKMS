@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import sqlite3
+import inspect
+from types import SimpleNamespace
 
 import openpyxl
 import pytest
@@ -9,7 +11,7 @@ from src.agents.schema_matching.anchor import AnchorResult
 from src.agents.schema_matching.retrieval import RetrievalHit
 from src.orchestrator.graph import NODE_ORDER, _sqlite_checkpointer, build_graph
 from src.schema.canonical import CanonicalSchema
-from src.schema.contracts import SchemaMapping
+from src.schema.contracts import ImageMetadata, SchemaMapping, VisionResult
 from src.ui import pipeline_runner as runner
 
 
@@ -30,6 +32,39 @@ def _wire_schema(monkeypatch, calls):
         return SchemaMapping(source_attribute=profile.attribute_name, source_format=source_format,
             target_canonical_row=target.id, confidence=0.99, reasoning="mock", normalization_required=True), {}
     monkeypatch.setattr(runner, "safe_rerank", mapping)
+
+
+def _wire_one_image(monkeypatch, calls):
+    image = ImageMetadata(
+        file_id="image-1",
+        filename="leaf.jpg",
+        mime_type="image/jpeg",
+        size=10,
+        created_time="2026-01-01T00:00:00Z",
+    )
+    monkeypatch.setattr(runner, "normalize_folder_id", lambda folder: folder)
+
+    def list_once(folder):
+        calls["drive"] += 1
+        return [image]
+
+    def classify_once(*args, **kwargs):
+        calls["vision"] += 1
+        return VisionResult(
+            classification_status="KNOWN",
+            matched_variety="Domba",
+            identified_part="DAUN",
+            confidence=0.9,
+            visual_evidence="mock",
+        ), {}
+
+    monkeypatch.setattr(runner, "list_images", list_once)
+    monkeypatch.setattr(
+        runner,
+        "VisionSession",
+        lambda: SimpleNamespace(knowledge_source_text="knowledge", varieties=[]),
+    )
+    monkeypatch.setattr(runner, "safe_classify_image", classify_once)
 
 
 def test_graph_has_real_coarse_runtime_topology():
@@ -98,10 +133,65 @@ def test_no_drive_routes_directly_to_finalization(tmp_path, monkeypatch):
 def test_graph_matches_shared_direct_tabular_stage(tmp_path, monkeypatch):
     source, calls = _source(tmp_path, "Seeds per mature fruit"), []
     monkeypatch.setattr(runner, "detect_anchor", lambda *a, **k: AnchorResult("found", "Variety", 1.0, "test"))
-    direct = runner._run_pipeline_ui_stage_impl(source, _run_id="parity", _skip_checkpoint=True)
+    direct = runner._run_tabular_stage_impl(source, _run_id="parity")
     graph = runner._run_pipeline_ui_impl(source, _run_id="parity", checkpoint_db_path=tmp_path / "parity.sqlite")
     assert direct.workbook_bytes == graph.workbook_bytes
     assert direct.mapping_df.equals(graph.mapping_df)
     assert direct.canonical_df.equals(graph.canonical_df)
     assert direct.provenance_records == graph.provenance_records
     assert direct.error_trace == graph.error_trace
+
+
+def test_tabular_stage_api_has_no_multimodal_execution_path():
+    parameters = inspect.signature(runner._run_tabular_stage_impl).parameters
+    assert "drive_folder_id" not in parameters
+    assert "max_images" not in parameters
+    assert "vision_rate_limiter" not in parameters
+
+
+def test_full_graph_owns_exactly_one_drive_and_vision_call(tmp_path, monkeypatch):
+    source, schema_calls = _source(tmp_path), []
+    multimodal_calls = {"drive": 0, "vision": 0}
+    _wire_schema(monkeypatch, schema_calls)
+    _wire_one_image(monkeypatch, multimodal_calls)
+
+    result = runner._run_pipeline_ui_impl(
+        source,
+        drive_folder_id="folder",
+        checkpoint_db_path=tmp_path / "one-image.sqlite",
+    )
+
+    assert schema_calls == ["Unknown attribute"]
+    assert multimodal_calls == {"drive": 1, "vision": 1}
+    assert len(result.vision_rows) == 1
+
+
+def test_drive_checkpoint_resume_does_not_repeat_listing(tmp_path, monkeypatch):
+    source, schema_calls = _source(tmp_path), []
+    db = tmp_path / "drive-resume.sqlite"
+    multimodal_calls = {"drive": 0, "vision": 0}
+    _wire_schema(monkeypatch, schema_calls)
+    _wire_one_image(monkeypatch, multimodal_calls)
+
+    partial = runner._run_pipeline_ui_impl(
+        source,
+        drive_folder_id="folder",
+        _run_id="drive-resume",
+        checkpoint_db_path=db,
+        _interrupt_after=["drive_crawler"],
+    )
+    assert partial["image_metadata"]
+    assert schema_calls == ["Unknown attribute"]
+    assert multimodal_calls == {"drive": 1, "vision": 0}
+
+    result = runner.resume_pipeline_ui(
+        source,
+        run_id="drive-resume",
+        drive_folder_id="folder",
+        checkpoint_db_path=db,
+    )
+
+    assert schema_calls == ["Unknown attribute"]
+    assert multimodal_calls == {"drive": 1, "vision": 1}
+    assert result.run_id == "drive-resume"
+    assert len(result.vision_rows) == 1
