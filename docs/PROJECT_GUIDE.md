@@ -67,7 +67,8 @@ yang sama tidak boleh diulang. Proposal model berstatus
 Source IR.
 
 Source IR mempertahankan koordinat header dan nilai, termasuk posisi kosong, tanpa
-normalisasi atau schema matching. Fitur ini belum dipasang ke LangGraph. Pada backend
+normalisasi atau schema matching. Node LangGraph `source_ingestion` memanggil
+`prepare_gated_runtime_source()` ketika backend `source-ir-gated` dipilih. Pada backend
 `legacy`, profiler/agent/verifier/Source IR tidak berjalan kecuali shadow diaktifkan
 dengan `enable_structure_shadow=True`; hasil shadow tidak pernah mengganti keluaran
 legacy. Pada backend `source-ir-gated`, seluruh jalur tersebut dipakai dan Source IR

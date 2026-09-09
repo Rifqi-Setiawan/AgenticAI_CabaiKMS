@@ -5,6 +5,7 @@ from types import SimpleNamespace
 
 import openpyxl
 import pandas as pd
+import pytest
 
 from src.ui.demo_support import (
     inspect_xlsx_upload,
@@ -71,9 +72,22 @@ def test_summary_uses_mapping_decisions_and_vision_write_flags():
     assert summary["Images discovered"] == 3
 
 
-def test_stage_classification_and_safe_download_name():
-    assert stage_state("selesai") == "SUCCESS"
-    assert stage_state("dilewati (tidak ada folder Drive)") == "SKIPPED"
-    assert stage_state("selesai dengan REVIEW") == "WARNING"
-    assert stage_state("gagal: credentials") == "FAILED"
+@pytest.mark.parametrize(
+    ("status", "expected"),
+    [
+        ("selesai — 13 atribut: 13 AUTO_ACCEPT, 0 REVIEW, 0 NO_WRITE", "SUCCESS"),
+        ("selesai — 12 AUTO_ACCEPT, 1 REVIEW, 0 NO_WRITE", "WARNING"),
+        ("selesai — 5 citra diklasifikasi, 5 ditulis ke sel, 0 UNCERTAIN", "SUCCESS"),
+        ("selesai — 5 citra diklasifikasi, 4 ditulis ke sel, 1 UNCERTAIN", "WARNING"),
+        ("dilewati (tidak ada folder Drive)", "SKIPPED"),
+        ("dilewati (Drive gagal)", "SKIPPED"),
+        ("gagal: access denied", "FAILED"),
+        ("selesai dengan peringatan provider", "WARNING"),
+    ],
+)
+def test_stage_classification(status, expected):
+    assert stage_state(status) == expected
+
+
+def test_safe_download_name():
     assert safe_download_stem("field demo (final).xlsx") == "field_demo_final"

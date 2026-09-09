@@ -264,6 +264,21 @@ class TestPage2Progress:
         assert values["drive_crawler"] == "SKIPPED"
         assert values["vision_classification"] == "SKIPPED"
 
+    def test_zero_review_and_zero_uncertain_are_success(self):
+        result = _fixture_result()
+        result.agent_status["schema_matching"] = (
+            "selesai — 13 atribut: 13 AUTO_ACCEPT, 0 REVIEW, 0 NO_WRITE"
+        )
+        result.agent_status["vision_classification"] = (
+            "selesai — 5 citra diklasifikasi, 5 ditulis ke sel, 0 UNCERTAIN"
+        )
+        at = AppTest.from_file(PROGRESS_PATH, default_timeout=APP_TEST_TIMEOUT)
+        at.session_state["cabai_kms_pipeline_result"] = result
+        at.run()
+        values = {metric.label: metric.value for metric in at.metric}
+        assert values["schema_matching/tabular"] == "SUCCESS"
+        assert values["vision_classification"] == "SUCCESS"
+
     def test_no_issues_shows_success(self):
         at = AppTest.from_file(PROGRESS_PATH, default_timeout=APP_TEST_TIMEOUT)
         at.session_state["cabai_kms_pipeline_result"] = _fixture_result(with_issues=False)
@@ -276,7 +291,8 @@ class TestPage2Progress:
         at.session_state["cabai_kms_pipeline_result"] = _fixture_result(with_issues=True)
         at.run()
         assert not at.exception
-        assert any("ditandai untuk manual_review" in w.value for w in at.warning)
+        assert any("catatan runtime/peringatan" in w.value for w in at.warning)
+        assert all("manual_review" not in w.value for w in at.warning)
 
 
 class TestPage3Hasil:

@@ -73,11 +73,16 @@ def stage_state(status: str | None) -> str:
     value = (status or "").lower()
     if not value:
         return "SKIPPED"
-    if any(token in value for token in ("gagal", "failed", "error")):
-        return "FAILED"
+    # Explicitly skipped stages remain skipped even when their reason names an
+    # upstream failure, for example "dilewati (Drive gagal)".
     if any(token in value for token in ("dilewati", "skipped", "tidak ada folder", "folder drive kosong")):
         return "SKIPPED"
-    if any(token in value for token in ("warning", "review", "uncertain", "peringatan")):
+    if any(token in value for token in ("gagal", "failed", "error")):
+        return "FAILED"
+    if any(token in value for token in ("warning", "peringatan")):
+        return "WARNING"
+    counted_warnings = re.findall(r"\b(\d+)\s+(?:review|uncertain)\b", value)
+    if any(int(count) > 0 for count in counted_warnings):
         return "WARNING"
     return "SUCCESS"
 

@@ -1,7 +1,7 @@
 """Fase 8 — Halaman 2: Progres.
 
-Status tiap agen, streaming log (dari run terakhir), dan status validasi
-(berapa atribut/citra yang gagal kontrak atau ditandai untuk manual_review).
+Status tiap tahap, streaming log (dari run terakhir), dan catatan runtime
+non-fatal seperti normalisasi, provider, atau alasan vision non-write.
 """
 
 from __future__ import annotations
@@ -43,12 +43,12 @@ else:
         col.metric(label, stage_state(status))
         col.caption(status)
 
-    st.subheader("Status validasi")
+    st.subheader("Catatan runtime / peringatan")
     n_issues = len(result.error_trace)
     if n_issues == 0:
-        st.success("Tidak ada atribut/citra yang ditandai untuk manual_review.")
+        st.success("Tidak ada catatan runtime atau peringatan tambahan.")
     else:
-        st.warning(f"{n_issues} entri ditandai untuk manual_review (lihat detail di bawah).")
+        st.warning(f"{n_issues} catatan runtime/peringatan tersedia di Advanced / Debug.")
         with st.expander("Advanced / Debug — error_trace"):
             for entry in result.error_trace:
                 st.write(f"- {entry}")
