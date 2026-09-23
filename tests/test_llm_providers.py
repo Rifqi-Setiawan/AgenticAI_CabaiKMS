@@ -13,6 +13,11 @@ class _Dummy(BaseModel):
     x: int
 
 
+@pytest.fixture(autouse=True)
+def _legacy_text_mode(monkeypatch):
+    monkeypatch.setenv("CABAI_KMS_TEXT_PROVIDER", "legacy")
+
+
 def test_missing_groq_key_is_classified_as_configuration_error(monkeypatch):
     monkeypatch.delenv("GROQ_API_KEY", raising=False)
     with pytest.raises(LLMCallError) as exc_info:

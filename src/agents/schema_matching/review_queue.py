@@ -117,9 +117,9 @@ def decide_mapping_acceptance(
     """Return the single, deterministic commit decision for one mapping.
 
     Fail closed: an absent mapping, a mapping covered by the existing review
-    rules, or any reliability-layer patch cannot reach canonical mutation.
-    The patch check also protects callers when a wrapper adds a new review
-    condition without simultaneously changing this function.
+    rules, or a reliability-layer error trace cannot reach canonical mutation.
+    Neutral state additions such as successful provider-call telemetry must not
+    be interpreted as failures merely because the patch dictionary is non-empty.
     """
     trace = list((reliability_patch or {}).get("error_trace", []))
     patch_reason = trace[-1] if trace else None
@@ -134,7 +134,7 @@ def decide_mapping_acceptance(
             AcceptanceStatus.REVIEW,
             patch_reason or _reason_for(mapping, confidence_threshold),
         )
-    if reliability_patch:
+    if trace:
         return MappingAcceptance(
             AcceptanceStatus.REVIEW,
             patch_reason or "reliability layer requires manual review",

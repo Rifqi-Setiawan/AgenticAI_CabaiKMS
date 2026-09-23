@@ -13,6 +13,11 @@ class _Dummy(BaseModel):
     x: int
 
 
+@pytest.fixture(autouse=True)
+def _legacy_vision_mode(monkeypatch):
+    monkeypatch.setenv("CABAI_KMS_VISION_PROVIDER", "legacy")
+
+
 def test_call_gemini_raises_cleanly_without_api_key(monkeypatch):
     monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
     with pytest.raises(VisionCallError) as exc_info:

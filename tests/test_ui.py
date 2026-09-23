@@ -402,6 +402,7 @@ class TestPage3Hasil:
         assert "Ubah target" in labels
         assert "Tandai NO_MATCH" in labels
         assert any("warna daun" in str(option) for option in at.selectbox[0].options)
+        assert at.selectbox[0].value == schema.row_by_label("warna daun").canonical_key
 
     def test_revise_and_apply_correction_end_to_end(self, tmp_path):
         result, replacement_key = _real_null_review_result(tmp_path)
@@ -410,6 +411,8 @@ class TestPage3Hasil:
         at.run()
 
         assert not at.exception
+        assert at.selectbox[0].value is None
+        assert next(button for button in at.button if button.label == "Ubah target").disabled
         assert any(
             "Vegetative / Growth habit" in expander.label
             for expander in at.expander

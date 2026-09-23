@@ -1,12 +1,12 @@
 # Design Decisions — CABAI-KMS Akuisisi
 
 > Keputusan desain tidak berarti semua fitur sudah selesai diimplementasikan.
-> Status kode per 3 September 2026 ada di [PROJECT_GUIDE.md](PROJECT_GUIDE.md).
+> Status kode per 23 September 2026 ada di [PROJECT_GUIDE.md](PROJECT_GUIDE.md).
 
 Status legend: **[FINAL]** decided by the user, not up for debate.
 **[PROPOSED]** my inference from profiling, needs a yes/no.
-**[OPEN]** genuinely blocked on the user — see `docs/OPEN_QUESTIONS.md` for
-the numbered question this links to.
+**[OPEN]** genuinely blocked on the user; current blockers belong in the
+limitations section of `docs/PROJECT_GUIDE.md` until decided.
 
 ## (a) Canonical row count is dynamic
 
@@ -17,7 +17,7 @@ bound, array size, or validation check. N is derived by counting non-empty
 `Nomor`/row-1 entries in `Sheet1` at load time.
 
 **[FINAL, confirmed 2026-07-20]** Based on profiling (`docs/PROFILING.md`
-§1.1), confirmed by the user (`docs/OPEN_QUESTIONS.md` Q4):
+§1.1) and confirmed by the user:
 - Row 56 (label `Lokasi`) is the location row.
 - Rows 57–60 (labels `Gambar Daun`, `Gambar Batang`, `Gambar Buah`, `Gambar
   Bunga`) are the four image rows, one per plant part.
@@ -236,7 +236,7 @@ values exist in that YAML file at load time.
 All 60 current rows have an unambiguous domain assignment (see
 `row_domains.yaml`); none needed `unassigned`.
 
-**[FINAL, confirmed 2026-07-20]** Resolves `docs/OPEN_QUESTIONS.md` Q5:
+**[FINAL, confirmed 2026-07-20]** The user confirmed:
 - `buah` and `biji` are separate domains (rows 37–53 and 54–55
   respectively) — not merged into one `buah_biji` bucket as I'd first
   proposed.
@@ -254,8 +254,7 @@ All 60 current rows have an unambiguous domain assignment (see
 **[FINAL]** Drive folder has no subfolders; every image is a direct child.
 Plant-part classification (daun/batang/buah/bunga) is decided from image
 content plus filename signal, never from folder structure. The crawler is
-implemented in `src/agents/drive_crawler.py`; its historical live verification
-is recorded in `docs/CHECKPOINTS.md`. Vision is implemented separately.
+implemented in `src/agents/drive_crawler.py`; vision is implemented separately.
 
 ## (d) Exactly two raw-format variants
 
@@ -266,8 +265,8 @@ is recorded in `docs/CHECKPOINTS.md`. Vision is implemented separately.
 position isn't fixed) is mandatory for parsing variant (ii).
 
 **[FINAL, resolved 2026-07-20]** Profiling only turned up a variant-(ii)
-example (`data/samples/data_input.xlsx`) and no variant-(i) example. Per
-the user (`docs/OPEN_QUESTIONS.md` Q1), a fabricated variant-(i) fixture was
+example (`data/samples/data_input.xlsx`) and no variant-(i) example. With
+the user's approval, a fabricated variant-(i) fixture was
 generated instead of waiting for a real one:
 `data/samples/sample_transposed_sintetis.xlsx`. It is derived from the
 canonical template's own row labels (read dynamically, not hand-copied) but

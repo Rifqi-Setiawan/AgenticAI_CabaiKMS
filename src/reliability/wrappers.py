@@ -35,6 +35,7 @@ from src.agents.schema_matching.retrieval import RetrievalHit, SourceAttributePr
 from src.agents.vision_classification import VarietyDescription, classify_image, download_image_bytes
 from src.llm.providers import LLMCallError
 from src.llm.vision_providers import VisionCallError
+from src.llm.telemetry import drain_provider_calls
 from src.reliability.provider_failures import ProviderCallError
 from src.reliability.rate_limit import RateLimiter
 from src.reliability.retry import DEFAULT_BASE_DELAY, DEFAULT_MAX_ATTEMPTS, DEFAULT_MAX_DELAY, run_with_retry
@@ -45,6 +46,13 @@ from src.schema.state import GlobalState
 
 VISION_REVISABLE_EXCEPTIONS = (ValidationError, TypeError)
 SCHEMA_MATCHING_REVISABLE_EXCEPTIONS = (ValidationError,)
+
+
+def _attach_provider_trace(state: GlobalState, patch: dict[str, Any]) -> dict[str, Any]:
+    records = drain_provider_calls()
+    if not records:
+        return patch
+    return {**patch, "provider_trace": [*state.get("provider_trace", []), *records]}
 
 
 def _provider_failure_patch(
@@ -83,6 +91,8 @@ def safe_classify_image(
     exhausted its revisions) — the patch always explains why in that
     case. A successful UNCERTAIN result IS returned (the caller may still
     want it) but is also flagged in the patch for review."""
+
+    drain_provider_calls()
 
     # ``rate_limiter`` remains a backwards-compatible alias for the vision
     # provider only. Drive download has its own optional limiter so Gemini
@@ -139,9 +149,11 @@ def safe_classify_image(
             context=context,
         )
     except VisionCallError as exc:
-        return None, _provider_failure_patch(state, context, exc, max_retry_attempts)
+        return None, _attach_provider_trace(
+            state, _provider_failure_patch(state, context, exc, max_retry_attempts)
+        )
     if not outcome.accepted:
-        return None, patch
+        return None, _attach_provider_trace(state, patch)
 
     result = outcome.result
     if result.classification_status == "UNCERTAIN":
@@ -149,9 +161,9 @@ def safe_classify_image(
             state,
             f"status UNCERTAIN untuk file_id={image.file_id!r}: {result.visual_evidence}",
         )
-        return result, uncertain_patch
+        return result, _attach_provider_trace(state, uncertain_patch)
 
-    return result, {}
+    return result, _attach_provider_trace(state, {})
 
 
 def safe_rerank(
@@ -176,6 +188,8 @@ def safe_rerank(
     mapping ("atribut tak terpetakan") IS returned, with the patch
     explaining why via review_queue.process_mapping (Fase 3e), not a
     second, competing mechanism."""
+
+    drain_provider_calls()
 
     def _attempt() -> SchemaMapping:
         return run_with_retry(
@@ -202,13 +216,15 @@ def safe_rerank(
             context=context,
         )
     except LLMCallError as exc:
-        return None, _provider_failure_patch(state, context, exc, max_retry_attempts)
+        return None, _attach_provider_trace(
+            state, _provider_failure_patch(state, context, exc, max_retry_attempts)
+        )
     if not outcome.accepted:
-        return None, patch
+        return None, _attach_provider_trace(state, patch)
 
     mapping = outcome.result
     review_patch = (
         review_queue.process_mapping(mapping, state, confidence_threshold=confidence_threshold)
         if enqueue_review else {}
     )
-    return mapping, review_patch
+    return mapping, _attach_provider_trace(state, review_patch)

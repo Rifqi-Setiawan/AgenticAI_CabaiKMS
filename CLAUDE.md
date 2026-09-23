@@ -1,6 +1,6 @@
 # CLAUDE.md — cabai-kms-akuisisi
 
-Current implementation reference (audited 2026-09-03):
+Current implementation reference (audited 2026-09-23):
 [`README.md`](README.md) and [`docs/PROJECT_GUIDE.md`](docs/PROJECT_GUIDE.md).
 This file states project conventions, not a claim that the proposal is complete.
 
@@ -16,9 +16,9 @@ review in the loop.
 
 Detailed data profiling: [`docs/PROFILING.md`](docs/PROFILING.md).
 Design decisions and their rationale: [`docs/DESIGN_DECISIONS.md`](docs/DESIGN_DECISIONS.md).
-Anything still unresolved: [`docs/OPEN_QUESTIONS.md`](docs/OPEN_QUESTIONS.md).
 Full project reference (flow, tech stack, role of every folder/file):
 [`docs/PROJECT_GUIDE.md`](docs/PROJECT_GUIDE.md).
+Per-feature runtime map: [`docs/TECH_STACK_AND_FLOWS.md`](docs/TECH_STACK_AND_FLOWS.md).
 
 ## Architecture — 5 layers
 
@@ -30,21 +30,20 @@ Full project reference (flow, tech stack, role of every folder/file):
    row-oriented spreadsheets (anchor-column detection required for (ii)),
    and the Drive image crawler (flat file list, part inferred from image
    content + filename, never folder structure).
-3. **Agents** (`src/agents/`) — LLM-driven extraction/standardization per
-   canonical row: turning a messy source value (range, decimal-comma,
-   multi-value, color code, ...) into the canonical row's expected format,
-   plus an image-to-plant-part classification agent.
+3. **Agents** (`src/agents/`) — exact-name matching, embedding retrieval,
+   LLM reranking untuk atribut unresolved, normalisasi nilai deterministik,
+   Drive crawling, dan klasifikasi citra multimodal.
 4. **Orchestration & Reliability** (`src/orchestrator/`, `src/reliability/`)
-   — a stub LangGraph graph for checkpoint/routing tests. Real agents run
-   synchronously through `src/ui/pipeline_runner.py`, using retry/validation
-   wrappers; the implemented rate limiter is not yet supplied by this runner.
-   Chroma retrieves canonical-row candidates, not a reviewed few-shot corpus.
+   — LangGraph menjalankan pipeline nyata dengan checkpoint SQLite, routing
+   Drive/vision, retry/validation wrappers, verifier deterministik, dan rate
+   limiter opsional per run. Chroma retrieves canonical-row candidates, not a
+   reviewed few-shot corpus.
 5. **Interface & Evaluation** (`src/ui/`, `eval/`) — a Streamlit review UI
-   for inspection/download. Review queue approve/revise APIs exist in Python
-   but are not wired into an editor or output replay. `eval/` exports mappings
-   for manual grading; Macro-F1 is not implemented yet.
+   for inspection/download. Review approve/revise/NO_MATCH dan replay output
+   deterministik tersedia untuk run aktif. `eval/` menyediakan kampanye
+   anotasi dan analisis kalibrasi; klaim metrik final belum tersedia.
 
-`src/llm/` is a cross-cutting provider abstraction (Groq / Gemini / Ollama / OpenRouter clients)
+`src/llm/` is a cross-cutting provider abstraction (9Router by default; Groq / Gemini / Ollama / OpenRouter in explicit legacy mode)
 used by layers 3 and 4 — not a layer of its own.
 
 Inter-agent contracts (Fase 1, `src/schema/contracts.py`): `SchemaMapping`
@@ -61,7 +60,7 @@ never a hardcoded `Literal`. Shared LangGraph state shape is
 ## Stack
 
 Python, `pandas` + `openpyxl` (spreadsheet I/O), `pydantic` (schema
-validation), `langgraph` + `langgraph-checkpoint-sqlite` (stub graph),
+validation), `langgraph` + `langgraph-checkpoint-sqlite` (runtime graph),
 `chromadb` + `sentence-transformers` (canonical-row retrieval),
 `instructor` (structured LLM output), `tenacity` + `aiolimiter`
 (retry/optional rate-limit), `groq` + `openai` (provider clients),
@@ -94,5 +93,6 @@ introduces its first import.
   agent contracts.
 - Big design decisions (schema semantics, agent contracts, evaluation
   metric definitions) get raised as an explicit question before being
-  implemented — don't silently guess. Use `docs/OPEN_QUESTIONS.md` for
-  anything that blocks progress across sessions.
+  implemented — don't silently guess. Record final decisions in
+  `docs/DESIGN_DECISIONS.md` and current blockers/limitations in
+  `docs/PROJECT_GUIDE.md`.

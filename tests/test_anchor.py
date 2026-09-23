@@ -46,7 +46,7 @@ TRANSPOSED_HEADERS = [
 # real varietas names (e.g. "Cabai rawit NTB", "Cabai landung") contain the
 # same word ("Cabai") the concept phrases and "Bentuk Buah Cabai"'s header
 # do — a lexical-overlap confound that's exactly the point of scoring on
-# header text alone. See docs/CHECKPOINTS.md / the module docstring.
+# header text alone. See the anchor module docstring.
 ROW_ORIENTED_CANDIDATES_SINTETIS_1 = [
     AnchorCandidate("No", [str(i) for i in range(1, 11)]),
     AnchorCandidate("Lokasi Sampling", [f"Lahan Percobaan {i}, Indonesia" for i in range(1, 11)]),

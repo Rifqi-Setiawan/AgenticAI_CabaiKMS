@@ -1,6 +1,6 @@
 # Panduan Lengkap CABAI-KMS Akuisisi
 
-**Audit implementasi: 9 September 2026.** Dokumen ini menjelaskan apa yang benar-benar tersedia pada kode saat audit. Nama model dan nilai default di sini adalah konfigurasi kode, bukan jaminan ketersediaan layanan eksternal. Catatan eksperimen Juli 2026 tetap disimpan sebagai riwayat.
+**Audit implementasi: 23 September 2026.** Dokumen ini menjelaskan apa yang benar-benar tersedia pada kode saat audit. Nama model dan nilai default di sini adalah konfigurasi kode, bukan jaminan ketersediaan layanan eksternal. Catatan eksperimen Juli 2026 tetap disimpan sebagai riwayat. Ringkasan per fitur tersedia di [TECH_STACK_AND_FLOWS.md](TECH_STACK_AND_FLOWS.md).
 
 ## Daftar isi
 
@@ -38,12 +38,12 @@ Ini adalah **prototipe penelitian**, bukan sistem produksi, API backend, atau pl
 | Source ingestion | `legacy` tetap default; `legacy + shadow` hanya observasi; `source-ir-gated` dapat menjadi input produksi hanya setelah parity `MATCH` |
 | Anchor varietas | Aktif, embedding header, ambang similarity `0.7` |
 | Exact-name resolution | Label/alias eksplisit yang unik diselesaikan sebelum retrieval; konflik nama bersifat `AMBIGUOUS` dan jatuh ke jalur semantik |
-| Retrieval | Chroma HNSW cosine tetap default; exact exhaustive cosine tersedia sebagai opt-in; diinisialisasi lazy hanya bila diperlukan; default top-k `8` |
-| Reranking | Aktif, Groq dengan fallback Ollama; output Pydantic |
+| Retrieval | Chroma HNSW cosine tetap default; exact exhaustive cosine tersedia sebagai opt-in; diinisialisasi lazy; default top-k `8`; profil lengkap digabung dengan header-only fallback `k=10` |
+| Reranking | Aktif melalui 9Router dengan model teks `ag/gemini-3.8-flash-medium`; output Instructor/Pydantic; legacy Groq → Ollama hanya rollback eksplisit |
 | Mapping Verifier | Phase 7C1 aktif; deterministik, tanpa LLM, mengumpulkan evidence dan memblokir hanya pelanggaran hard invariant |
 | Normalisasi | Aktif, deterministik; bukan ekstraksi/penalaran bebas oleh LLM |
 | Google Drive | Aktif, service account read-only, daftar foto anak langsung folder |
-| Vision | Aktif, Gemini; consensus dua model tersedia di API Python, tidak di UI |
+| Vision | Aktif melalui 9Router dengan `ag/gemini-3.8-flash-high`; single-voter tervalidasi; consensus hanya tersedia pada API Python dalam mode legacy |
 | Penulisan Excel | Aktif, varietas dari input, URL citra untuk hasil `KNOWN` |
 | Retry dan validasi ulang | Dipakai runner UI melalui reliability wrappers |
 | Rate limiter | Terintegrasi opsional pada runner UI; limiter teks dan vision terpisah per run |
@@ -120,6 +120,8 @@ waktu ekspor aktual.
 
 Lima lapisan utama adalah data/skema, ingestion, agen, orkestrasi/reliability, serta UI/evaluasi. `src/llm/` menyediakan akses provider lintas agen.
 
+Untuk matriks setiap flow/fitur beserta tech stack, logika, dan model yang dipakai, lihat [Tech Stack dan Alur Fitur](TECH_STACK_AND_FLOWS.md).
+
 ```text
 run_pipeline_ui(Input .xlsx)
   -> LangGraph source_ingestion
@@ -142,8 +144,8 @@ Fungsi `run_pipeline_ui()` di `src/ui/pipeline_runner.py` menjalankan LangGraph 
 
 1. Membaca worksheet pilihan; UI menampilkan selector untuk workbook multi-sheet dan menggunakan sheet pertama sebagai default.
 2. Pada format row-oriented, mendeteksi kolom varietas dari embedding teks header saja. Pada transposed, memakai nama kolom setelah `Karakter`.
-3. Memuat `CanonicalSchema` dan memastikan indeks Chroma tersedia.
-4. Untuk setiap atribut non-anchor, membuat profil nama/konteks/contoh nilai, mengambil kandidat, lalu memanggil `safe_rerank()`.
+3. Memuat `CanonicalSchema`; indeks retrieval baru dibuat secara lazy bila ada atribut yang tidak selesai melalui exact-name.
+4. Untuk setiap atribut non-anchor, mencoba label/alias exact. Atribut unresolved mengambil kandidat dari profil lengkap dan, bila memiliki contoh nilai, query header-only `k=10`; kandidat digabung memakai distance terbaik dan diurutkan sebelum `safe_rerank()`.
 5. Mapping melewati gerbang acceptance deterministik. Hanya `AUTO_ACCEPT` yang boleh dinormalisasi dan ditulis; `REVIEW` dan `NO_WRITE` tidak boleh mengubah workbook kanonik. Mapping `NULL`, target tidak valid, dan kegagalan lain berhenti sebagai `NO_WRITE`.
 6. Menggabungkan nilai per varietas dengan pemisah `; `, lalu membangun workbook dari template. Sel referensi varietas lama dibersihkan pada salinan yang berada di memori, bukan file template asli.
 7. Jika URL/ID Drive diberikan, node `drive_crawler` mengambil metadata foto lalu membatasi hasil ke maksimal lima gambar secara default. Pembatasan dilakukan setelah listing, bukan membatasi jumlah metadata yang diminta dari Drive.
@@ -165,7 +167,7 @@ project/
 ├── pyproject.toml               Konfigurasi pytest; bukan manifest paket lengkap
 ├── .env.example                Contoh konfigurasi tanpa rahasia
 ├── .gitignore
-├── docs/                       Panduan, keputusan, profiling, riwayat audit
+├── docs/                       Panduan aktif, keputusan, profiling, dan runbook
 ├── data/
 │   ├── canonical/              template_kanonik.xlsx, input utama
 │   ├── samples/                Tiga workbook contoh nyata/sintetis
@@ -173,6 +175,7 @@ project/
 │   ├── review/                 Queue JSONL lokal, dibuat saat diperlukan
 │   ├── .chroma/                Indeks embedding lokal
 │   └── .checkpoints/           SQLite checkpoint runtime LangGraph
+├── data_input_dummy/           Fixture input efektif D01–D04 dan fixture historis T01–T08
 ├── src/
 │   ├── schema/                 Skema, domain, alias, kontrak, shared state
 │   ├── agents/
@@ -249,6 +252,7 @@ Contoh: `data/samples/data_input.xlsx` dan `data_input_sintetis_1.xlsx`.
 - Header kosong, nama atribut duplikat dalam kelompok yang sama, atau struktur sparse yang ambigu ditolak dengan pesan pemeriksaan input. Subheader yang sama pada kelompok berbeda diperbolehkan dan ditampilkan sebagai nama berkualifikasi, misalnya `Young Fruit / Fruit Length` dan `Mature Fruit / Fruit Length`; nama leaf dan parent tetap dikirim terpisah ke retrieval/LLM. Deteksi otomatis belum merupakan parser universal untuk seluruh variasi workbook.
 - Kolom identitas varietas dapat berpindah posisi; anchor detector memilihnya dari nama header. Referensi embedding mencakup `Variety` dalam bahasa Inggris. Jika kolom varietas tidak ditemukan, tidak memiliki nilai, atau observasi berisi data tetapi varietasnya kosong, runner berhenti sebelum indexing/LLM agar data tidak hilang diam-diam.
 - Data beberapa observasi dengan nama varietas sama digabung; bukan dihitung rata-ratanya.
+- Baris yang seluruh selnya kosong dipertahankan sebagai posisi kosong lalu diabaikan saat kontribusi dikelompokkan. Baris kosong berurutan aman. Sebaliknya, baris yang kolom varietasnya kosong tetapi kolom lain berisi data ditolak agar nilai tidak dikaitkan ke varietas yang salah.
 
 Contoh nyata `data_input.xlsx` berisi lokasi, koordinat, fisiologi, tanah, dan mikroklimat. Banyak atribut tersebut tidak memiliki padanan karakter morfologi di template; hasil `NULL` tidak otomatis berarti bug. Sampel sintetis merupakan bahan pengujian, bukan bukti akurasi pada data lapangan.
 
@@ -258,10 +262,24 @@ Contoh: `data/samples/sample_transposed_sintetis.xlsx`.
 
 - Parser mencari baris yang sel pertamanya sama persis dengan `Karakter` setelah trim.
 - Sel berikutnya adalah nama varietas; atribut dan nilainya berada pada baris-baris setelah header.
+- Baris setelah header yang tidak memiliki label atribut pada kolom pertama dilewati, termasuk satu atau beberapa baris kosong.
 - Boleh ada judul sebelum header. Jangan sisipkan kolom varietas kosong di tengah header karena parser memadatkan nama tetapi mengambil nilai berdasarkan posisi.
 - Template kanonik dengan `Nomor` di kolom pertama **tidak langsung cocok** sebagai input parser transposed ini.
 
 Format dipilih pengguna; aplikasi tidak otomatis menentukan orientasi. Semua parser saat ini memakai `openpyxl`, bukan parser CSV. Formula dibaca sebagai nilai tersimpan (`data_only=True`), sehingga workbook perlu sudah memiliki hasil kalkulasi dari aplikasi spreadsheet.
+
+### Data input dummy
+
+Folder `data_input_dummy/` menyimpan fixture yang sengaja menggabungkan beberapa kondisi agar satu file menguji lebih dari satu cabang:
+
+| File | Fokus pengujian |
+|---|---|
+| `D01_transposed_indonesia_mixed.xlsx` | Format transposed berbahasa Indonesia, nama atribut campuran, nilai noisy/missing, dan baris kosong |
+| `D02_row_flat_english_semantic.xlsx` | Satu-satunya fixture utama berbahasa Inggris; istilah sumber sengaja berbeda dari label kanonik tetapi bermakna setara, serta memuat baris kosong |
+| `D03_row_multilevel_indonesia.xlsx` | Row-oriented dengan header bertingkat berbahasa Indonesia dan konteks parent/leaf |
+| `D04_varietas_kosong_invalid.xlsx` | Negative test: baris memiliki nilai atribut tetapi identitas varietas kosong, sehingga ingestion harus berhenti |
+
+File D01–D03 menguji keberhasilan alur dan D04 menguji fail-fast. Status exact/retrieval, confidence, atau jumlah review tidak dijadikan angka tetap karena dapat berubah bersama alias, template, model embedding, prompt, dan model provider. Gunakan mapping table serta decision status untuk memeriksa penyebab setiap hasil.
 
 ### Deterministic Workbook Structure Profiler
 
@@ -323,11 +341,18 @@ Jika environment sudah tersedia, gunakan terlebih dahulu; jangan membuat ulang a
 
 | Variabel | Kegunaan | Default/perilaku |
 |---|---|---|
-| `GROQ_API_KEY` | Provider teks utama | Jika kosong/gagal, mencoba Ollama |
+| `CABAI_KMS_TEXT_PROVIDER` | Pilihan provider teks | `9router`; gunakan `legacy` hanya untuk rollback eksplisit |
+| `CABAI_KMS_VISION_PROVIDER` | Pilihan provider vision | `9router`; secondary consensus dinonaktifkan |
+| `NINEROUTER_BASE_URL` | Endpoint OpenAI-compatible lokal atau VPS | Default `http://127.0.0.1:20128/v1`; VPS HTTPS didukung; wajib berakhiran `/v1` |
+| `NINEROUTER_API_KEY` | API key 9Router | Wajib di mode 9Router; jangan commit `.env` |
+| `NINEROUTER_TEXT_MODEL` | Model teks 9Router | Wajib persis `ag/gemini-3.8-flash-medium` |
+| `NINEROUTER_VISION_MODEL` | Model vision 9Router untuk klasifikasi citra | Wajib persis `ag/gemini-3.8-flash-high` |
+| `NINEROUTER_TIMEOUT_SECONDS` | Timeout request 9Router | `60`; wajib positif |
+| `GROQ_API_KEY` | Provider teks legacy utama | Hanya `legacy`; jika kosong/gagal, mencoba Ollama |
 | `OLLAMA_BASE_URL` | Endpoint fallback teks dan vision | `http://localhost:11434/v1` |
-| `GOOGLE_API_KEY` | Gemini vision | Dibutuhkan ketika klasifikasi foto dipanggil |
+| `GOOGLE_API_KEY` | Gemini vision legacy | Hanya dibutuhkan dalam mode `legacy` |
 | `GEMINI_MODEL_NAME` | Nama model vision Gemini | `gemini-flash-latest`, dibaca saat import |
-| `OPENROUTER_API_KEY` | Voter kedua consensus | Opsional; bukan fallback langsung Gemini |
+| `OPENROUTER_API_KEY` | Voter kedua consensus legacy | Tidak pernah dipakai dalam mode 9Router |
 | `GOOGLE_DRIVE_CREDENTIALS_PATH` | JSON service account Drive | Wajib untuk akses Drive; bukan OAuth client JSON |
 | `GOOGLE_DRIVE_FOLDER_ID` | Folder default bagi `list_images()` | Boleh ID/URL; UI tetap perlu input folder secara eksplisit |
 | `CABAI_KMS_TEXT_RPM` | Batas attempt provider schema-matching per menit | Kosong/tidak ada: disabled; wajib angka positif bila diisi |
@@ -356,6 +381,14 @@ Chroma PersistentClient dengan HNSW approximate cosine. Opt-in
 canonical row di memori dan sama sekali tidak membuka atau memperbarui Chroma.
 Keduanya memakai model embedding, `CanonicalRow.serialize()`, query
 `SourceAttributeProfile`, serta kontrak `RetrievalHit.distance` yang sama.
+
+Runner lebih dahulu melakukan retrieval dengan profil lengkap: nama, konteks, maksimal
+10 contoh nilai, tipe heuristik, dan evidence struktur bila tersedia. Bila profil
+memiliki contoh nilai dan query utama menghasilkan `k` kandidat lengkap, runner juga
+melakukan query header-only dengan `k=10`. Dua hasil digabung berdasarkan row ID,
+distance terkecil dipertahankan, lalu seluruh kandidat diurutkan ascending. View kedua
+meningkatkan recall ketika nilai numerik/kategorik generik menenggelamkan makna header;
+reranker dan verifier tetap menentukan keputusan akhir.
 
 Exact index menormalisasi matriks dan query secara defensif, menolak zero vector,
 serta memecahkan skor sama/nyaris sama dengan `canonical_key` agar ranking
@@ -399,7 +432,7 @@ dapat mengubah keputusan legacy `REVIEW` menjadi `AUTO_ACCEPT`. Soft verifier
 acceptance lama. Dataset kalibrasi dapat dibangun melalui
 `eval/mapping_verifier_dataset.py`; gold hanya dimasukkan bila diberikan eksplisit.
 
-Nama model lain berupa konstanta kode: teks Groq `llama-3.3-70b-versatile`, teks Ollama `llama3.1:8b`, voter kedua OpenRouter `qwen/qwen2.5-vl-72b-instruct`, fallback vision Ollama `qwen2.5-vl:7b`. Embedding menggunakan `paraphrase-multilingual-MiniLM-L12-v2`.
+Runtime default memakai model teks 9Router `ag/gemini-3.8-flash-medium` untuk reranking dan pemahaman struktur opt-in, serta model vision 9Router `ag/gemini-3.8-flash-high` untuk klasifikasi foto. Nama model legacy yang menjadi konstanta kode adalah teks Groq `openai/gpt-oss-120b`, teks Ollama `llama3.1:8b`, voter kedua OpenRouter `qwen/qwen2.5-vl-72b-instruct`, dan fallback vision Ollama `qwen2.5-vl:7b`; vision utama legacy memakai `GEMINI_MODEL_NAME` dengan default `gemini-flash-latest`. Embedding lokal menggunakan `paraphrase-multilingual-MiniLM-L12-v2` dan bukan LLM generatif.
 
 `.env` dimuat ketika modul provider/crawler diimpor. Restart aplikasi setelah mengganti konfigurasi. Lihat [DRIVE_SETUP.md](DRIVE_SETUP.md) untuk pengaturan akun dan akses folder.
 
@@ -580,11 +613,11 @@ Tidak ada klaim precision/recall/F1 atau akurasi vision berdasarkan keberadaan f
 - Kegagalan provider memiliki klasifikasi kecil dan eksplisit: `retryable_transient`, `non_retryable_configuration`, dan `non_retryable_request`. Timeout/koneksi, status 408/409/429, dan status 5xx dianggap transien. Status autentikasi/otorisasi dan model tidak ditemukan (401/403/404) dianggap konfigurasi; bad request lain dan error tanpa sinyal terstruktur dianggap request non-retryable secara konservatif.
 - Retry tenacity hanya mengulang provider error yang eksplisit transien, default maksimum tiga attempt aplikasi, dengan backoff dasar 1 detik dan maksimum 10 detik. Error konfigurasi/request permanen berhenti pada attempt pertama tanpa backoff.
 - Transport dan revisi kontrak terpisah. Provider transien yang habis setelah tiga attempt langsung masuk safe no-write dengan `provider_retry_exhausted`; konfigurasi/request permanen memakai `provider_configuration_error`/`provider_request_error`. Ketiganya tidak memasuki loop revisi kontrak.
-- `ValidationError`/output terstruktur invalid tetap dapat memakai verifier: satu pemanggilan awal ditambah maksimum dua revisi (`contract_revision_exhausted` bila semuanya gagal), sehingga default maksimum tiga pemanggilan kontrak.
-- Angka tersebut adalah attempt yang dikontrol aplikasi. Dalam satu attempt teks, fallback Groq ke Ollama tetap dapat dijalankan. Provider/instructor juga dapat memiliki retry internal yang tidak terlihat dan tidak dihitung sebagai attempt aplikasi.
+- `ValidationError`/output terstruktur invalid tetap dapat memakai verifier aplikasi: satu pemanggilan awal ditambah maksimum dua revisi (`contract_revision_exhausted` bila semuanya gagal). Di dalam satu pemanggilan tersebut provider juga meneruskan `max_retries=2` kepada Instructor untuk repair kontrak; mekanisme ini terpisah dari retry transport.
+- Angka tersebut adalah attempt yang dikontrol aplikasi. Pada mode 9Router tidak ada fallback ke provider legacy. Dalam satu attempt teks mode legacy, fallback Groq ke Ollama dapat dijalankan. Instructor dapat melakukan revisi kontrak yang dicatat terpisah dari retry transport aplikasi.
 - `safe_rerank()` menangani mapping gagal/NULL/low-confidence. `safe_classify_image()` mencoba download, klasifikasi, dan mencatat kegagalan/`UNCERTAIN`.
 - `RateLimiter` teks/vision dibuat per run dari konfigurasi RPM environment bila diaktifkan, dipakai ulang untuk semua attempt yang sesuai, dan tetap process-local. Limiter injeksi caller tidak ditutup runner.
-- Gemini utama tidak memiliki fallback sendiri. OpenRouter → Ollama hanya jalur voter kedua pada consensus.
+- Pada mode 9Router, vision memakai satu model tervalidasi tanpa fallback legacy atau second voter. Pada mode legacy, Gemini utama tidak memiliki fallback sendiri; OpenRouter → Ollama hanya jalur voter kedua ketika consensus diminta eksplisit.
 
 Graf runtime berurutan `source_ingestion -> schema_matching_tabular -> drive_crawler? -> vision_classification? -> finalization`. Ingestion, Drive, tabular write, dan finalization adalah node workflow deterministik; AI hanya dipakai oleh struktur ketika backend terkait diaktifkan, reranker untuk atribut unresolved, dan klasifikasi vision. Tanpa folder Drive, dua node multimodal dilewati sepenuhnya.
 
@@ -601,7 +634,7 @@ Pada hasil runtime, note normalisasi untuk write `AUTO_ACCEPT` disimpan di prove
 Tes lokal tanpa kelompok embedding/live fallback:
 
 ```powershell
-.\.venv\Scripts\python.exe -B -m pytest -q -p no:cacheprovider -m "not indexing and not llm_fallback_live"
+.\.venv\Scripts\python.exe -B -m pytest -q -p no:cacheprovider -m "not indexing and not llm_fallback_live and not ninerouter_live"
 ```
 
 Tes embedding/retrieval/anchor (model harus sudah di-cache atau dapat diunduh):
@@ -618,9 +651,11 @@ Seluruh suite, termasuk percobaan koneksi localhost untuk fallback:
 
 Marker `llm_fallback_live` menguji koneksi fallback nyata yang diharapkan gagal saat server Ollama tidak berjalan. Baca tes sebelum menjalankannya pada mesin dengan Ollama aktif. Sebagian besar tes agen memakai klien mock/injeksi; `test_ui.py` memakai `Streamlit AppTest`, bukan browser end-to-end dengan API produksi.
 
+Marker `ninerouter_live` bersifat opt-in dan memeriksa endpoint, daftar model, structured text, serta request vision multimodal nyata. Jalankan hanya ketika 9Router dapat dijangkau dan key tersedia.
+
 Kelompok tes mencakup skema/kontrak, indexing/retrieval/anchor, reranking/normalisasi/review, Drive/vision/provider, penulisan output, retry/limiter/verifier/wrappers, graf/resume, dan halaman UI. `test_source_parsing.py` menguji header satu/dua baris serta sampel lama. `test_pipeline_runner.py` memeriksa alur parsing sampai bytes Excel dan kesamaan preview dengan workbook yang dibaca ulang, dengan provider/index/checkpoint mock; ini belum membuktikan akurasi model atau integrasi seluruh layanan nyata.
 
-Hasil verifikasi audit terkini dicatat di [CHECKPOINTS.md](CHECKPOINTS.md), terpisah dari pengujian layanan eksternal terdahulu.
+Perintah di atas memverifikasi kode lokal sesuai marker yang dipilih. Bukti layanan eksternal harus diperoleh ulang melalui preflight live; hasil historis tidak dianggap status terkini.
 
 ### Gejala umum
 
@@ -636,7 +671,8 @@ Hasil verifikasi audit terkini dicatat di [CHECKPOINTS.md](CHECKPOINTS.md), terp
 | Foto tidak ditulis | Periksa `KNOWN`, kecocokan nama varietas output, label baris Gambar, dan log alasan penolakan |
 | Folder `.env` terisi tetapi vision dilewati | UI tidak memakai folder env sebagai fallback; isi URL/ID pada form |
 | Kredensial/Drive 404 | Periksa path JSON service account, ID folder, dan sharing Viewer; jangan tempel isi private key pada log |
-| Groq/Gemini quota/auth/model error | Periksa akses akun, kuota dan konfigurasi; audit ini tidak memverifikasi ketersediaan model secara live |
+| 9Router connectivity/auth/model error | Jalankan `python -B -m scripts.ninerouter_preflight`; periksa endpoint `/v1`, key, model wajib, kuota/account di 9Router, timeout, dan dukungan multimodal |
+| Groq/Gemini/Ollama error | Hanya relevan pada rollback `legacy`; periksa key, endpoint lokal, model, dan kuota provider terkait |
 | Embedding lambat/gagal di awal | Periksa cache model, akses unduhan, dan kompatibilitas dependensi embedding |
 | Mengubah alias/domain tidak mengubah retrieval | Restart aplikasi; fingerprint representasi akan memicu rebuild indeks. Gunakan `ensure_indexed(force=True)` jika indeks berasal dari versi lama |
 | Hasil lama dari sebelum pembaruan | Restart aplikasi dan jalankan ulang pipeline; versi baru membersihkan hasil lama ketika run baru dimulai |
@@ -646,7 +682,7 @@ Hasil verifikasi audit terkini dicatat di [CHECKPOINTS.md](CHECKPOINTS.md), terp
 Temuan berikut adalah batas implementasi, **bukan fitur yang diperbaiki dalam audit dokumentasi ini**:
 
 1. **Review dan replay kini interaktif untuk run aktif.** `REVIEW` dan `NO_WRITE` tetap tidak menulis pada run awal; keputusan manusia pada item `REVIEW` dapat diterapkan deterministik ke salinan output asli. Persistensi snapshot run lintas restart dan review historis belum tersedia.
-2. **CSV belum didukung dan tidak ditawarkan UI.** Runner dan uploader hanya menerima `.xlsx`. Phase 4 dapat merepresentasikan judul sebelum tabel, header bertingkat, merge, dan layout transposed setelah verifikasi; jalur itu sudah terintegrasi melalui `source_ingestion` untuk shadow dan `source-ir-gated`, tetapi gate produksi saat ini hanya mempromosikan hasil yang tepat setara dengan referensi legacy. T03 dan T04 sudah diverifikasi; enam dummy lainnya belum diverifikasi pada perbaikan ini.
+2. **CSV belum didukung dan tidak ditawarkan UI.** Runner dan uploader hanya menerima `.xlsx`. Phase 4 dapat merepresentasikan judul sebelum tabel, header bertingkat, merge, dan layout transposed setelah verifikasi; jalur itu sudah terintegrasi melalui `source_ingestion` untuk shadow dan `source-ir-gated`, tetapi gate produksi saat ini hanya mempromosikan hasil yang tepat setara dengan referensi legacy. Coverage Source IR tetap perlu diverifikasi ulang ketika fixture atau parser berubah.
 3. **Validasi anchor kini menghentikan runner.** Header salah/ambigu atau identitas varietas yang hilang menghasilkan error sebelum pemetaan. Error provider dan mapping NULL masih harus diperiksa terpisah; validasi input bukan jaminan semua atribut akan terpetakan.
 4. **Koreksi manual memiliki audit event lokal.** Identitas run/source/schema dan provenance replay sudah tersedia, tetapi queue JSONL belum memiliki locking multi-proses, autentikasi reviewer, atau penyimpanan snapshot run lintas restart.
 5. **Resume masih coarse-grained dan lokal.** LangGraph sudah mengoordinasikan runtime nyata, tetapi checkpoint hanya tersedia antarnode; crash di tengah schema matching atau loop vision dapat mengulang node yang belum selesai. SQLite lokal belum memberi layanan resume multi-user.
@@ -658,7 +694,7 @@ Temuan berikut adalah batas implementasi, **bukan fitur yang diperbaiki dalam au
 11. **Fondasi evaluasi sudah ada, anotasi nyata belum tersedia.** Phase 7C2A menyediakan kontrak gold, split holdout, dan metrik selektif, tetapi belum menghasilkan klaim performa. Macro-F1 per domain, gold vision, anotasi dua manusia, serta analisis error lapangan tetap perlu dibangun; sampel sintetis tidak menggantikan validasi lapangan.
 12. **Belum siap produksi.** Belum tersedia lockfile dependensi, autentikasi aplikasi, job queue, isolation per pengguna untuk review/checkpoint, kebijakan retensi, deployment teruji, dan monitoring layanan.
 
-Prioritas lanjutan yang masuk akal: validasi input dan pemblokiran mapping bermasalah; review/replay dan trace; integrasi graf dengan agen nyata serta limiter; terakhir reproduksibilitas dan evaluasi terukur. Perubahan semantik penelitian tetap perlu keputusan pemilik proyek.
+Prioritas lanjutan yang masuk akal adalah kampanye anotasi nyata dan evaluasi terukur, perluasan parser yang tervalidasi di luar parity legacy, persistensi review/checkpoint multi-user, serta hardening deployment dan monitoring. Perubahan semantik penelitian tetap perlu keputusan pemilik proyek.
 
 ## 13. Pemeliharaan, keamanan, dan pembersihan
 
@@ -680,21 +716,4 @@ Prioritas lanjutan yang masuk akal: validasi input dan pemblokiran mapping berma
 - `data/gold/` dapat mengandung anotasi manusia; jangan jalankan harness dengan output menimpa file tersebut secara tidak sengaja.
 - Output baru dapat ditempatkan di `data/outputs/` (diabaikan Git); folder ini dibuat ketika diperlukan oleh harness.
 
-### Kebijakan pembersihan audit
-
-| Target | Keputusan dan alasan |
-|---|---|
-| `.pytest_cache/` | Hapus cache tes yang dapat dibuat ulang |
-| `__pycache__/` di `src/`, `tests/`, `eval/` | Hapus bytecode turunan, bukan source |
-| `eval/metrics/` kosong | Hapus placeholder tanpa implementasi; Macro-F1 tetap dicatat sebagai rencana |
-| `.venv/` | Pertahankan agar instalasi dependensi tidak hilang |
-| `data/.chroma/` | Pertahankan karena dipakai retrieval; bukan folder tidak terpakai |
-| `data/.checkpoints/orchestrator.sqlite` | Pertahankan checkpoint runtime yang masih diperlukan untuk resume; file ini sudah tracked sebelum audit |
-| `data/review/`, `data/gold/` | Pertahankan antrean/hasil review; bisa memuat kerja manusia |
-| Template, tiga sampel, YAML, `__init__.py` | Pertahankan input, fixture, konfigurasi, dan struktur paket |
-| Dokumentasi historis | Pertahankan keputusan/evidence; beri keterangan historis bila kondisi sudah berubah |
-| `.env`, `credentials.json` | Tidak dibaca isinya atau dihapus dalam audit ini |
-
-Cache yang dihapus tidak memerlukan pemulihan: Python/pytest akan membuatnya lagi. Folder metrics kosong dapat dibuat kembali ketika implementasi evaluasi ditambahkan. `.gitignore` mengabaikan checkpoint baru dan output lokal; pola ignore **tidak** menghentikan tracking database checkpoint yang sudah masuk Git. Melepas database itu dari tracking memerlukan perubahan indeks Git tersendiri dan tidak dilakukan pada audit ini.
-
-Lihat [CHECKPOINTS.md](CHECKPOINTS.md) untuk hasil pembersihan dan verifikasi aktual; lihat [DESIGN_DECISIONS.md](DESIGN_DECISIONS.md), [OPEN_QUESTIONS.md](OPEN_QUESTIONS.md), dan [PROFILING.md](PROFILING.md) untuk konteks penelitian.
+Dokumen historis dipertahankan hanya bila masih menjadi evidence desain atau fixture aktif. Lihat [DESIGN_DECISIONS.md](DESIGN_DECISIONS.md) dan [PROFILING.md](PROFILING.md) untuk konteks penelitian yang masih dirujuk implementasi.

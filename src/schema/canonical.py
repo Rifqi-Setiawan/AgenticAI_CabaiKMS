@@ -162,7 +162,7 @@ class CanonicalSchema:
                 warnings.warn(
                     f"canonical row {i} ({label!r}) has no domain in "
                     f"{row_domains_path} — marking {UNASSIGNED_DOMAIN!r}. "
-                    "Raise this in docs/OPEN_QUESTIONS.md.",
+                    "Record the unresolved schema decision in docs/PROJECT_GUIDE.md.",
                     stacklevel=2,
                 )
                 domain = UNASSIGNED_DOMAIN

@@ -61,13 +61,28 @@ class TestMappingAcceptance:
         assert decision.allows_canonical_write is False
         assert decision.reason == patch["error_trace"][0]
 
-    def test_reliability_patch_blocks_otherwise_confident_mapping(self):
+    def test_reliability_error_trace_blocks_otherwise_confident_mapping(self):
         decision = rq.decide_mapping_acceptance(
             _mapping("r_1", confidence=0.95),
             reliability_patch={"error_trace": ["explicit wrapper review"]},
         )
         assert decision.status is rq.AcceptanceStatus.REVIEW
         assert decision.allows_canonical_write is False
+
+    def test_successful_provider_trace_does_not_block_confident_mapping(self):
+        decision = rq.decide_mapping_acceptance(
+            _mapping("r_1", confidence=0.95),
+            reliability_patch={
+                "provider_trace": [{
+                    "gateway": "9router",
+                    "role": "text",
+                    "success": True,
+                    "structured_output_valid": True,
+                }],
+            },
+        )
+        assert decision.status is rq.AcceptanceStatus.AUTO_ACCEPT
+        assert decision.allows_canonical_write is True
 
 
 class TestSubmitForReview:

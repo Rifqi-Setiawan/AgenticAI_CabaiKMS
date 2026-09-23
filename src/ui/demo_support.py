@@ -13,6 +13,11 @@ import openpyxl
 
 from src.agents.drive_crawler import normalize_folder_id
 from src.reliability.rate_limit import RuntimeRateLimitConfig
+from src.llm.openai_compatible import (
+    NINEROUTER_REQUIRED_TEXT_MODEL,
+    NINEROUTER_REQUIRED_VISION_MODEL,
+    provider_mode,
+)
 
 
 @dataclass(frozen=True)
@@ -54,10 +59,25 @@ def validate_drive_input(value: str) -> str | None:
 
 def runtime_readiness(environ: Mapping[str, str] | None = None, *, drive_requested: bool) -> dict[str, str]:
     source = os.environ if environ is None else environ
-    text = "Groq key configured" if source.get("GROQ_API_KEY") else "Groq key not configured"
-    text += "; fallback Ollama possible (reachability not checked)"
+    text_mode = provider_mode("CABAI_KMS_TEXT_PROVIDER", source)
+    vision_mode = provider_mode("CABAI_KMS_VISION_PROVIDER", source)
+    if text_mode == "9router":
+        text = (
+            "9Router key configured" if source.get("NINEROUTER_API_KEY")
+            else "9Router key not configured"
+        )
+        text += f"; model={NINEROUTER_REQUIRED_TEXT_MODEL}; no legacy fallback"
+    else:
+        text = "Legacy Groq key configured" if source.get("GROQ_API_KEY") else "Legacy Groq key not configured"
+        text += "; Ollama fallback possible (reachability not checked)"
     vision = "enabled for this run" if drive_requested else "skipped until a Drive folder is provided"
-    vision += "; Google key configured" if source.get("GOOGLE_API_KEY") else "; Google key not configured"
+    if vision_mode == "9router":
+        vision += (
+            f"; 9Router model={NINEROUTER_REQUIRED_VISION_MODEL}; "
+            "single-voter mode (secondary consensus disabled)"
+        )
+    else:
+        vision += "; legacy Google key configured" if source.get("GOOGLE_API_KEY") else "; legacy Google key not configured"
     try:
         limits = RuntimeRateLimitConfig.from_env(source)
         rate = (

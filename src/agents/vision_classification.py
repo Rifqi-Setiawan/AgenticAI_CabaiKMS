@@ -43,7 +43,8 @@ import openpyxl
 
 from src.schema.canonical import DEFAULT_TEMPLATE_PATH
 from src.schema.contracts import ImageMetadata, VisionResult
-from src.llm.vision_providers import call_gemini, call_second_voter
+from src.llm.openai_compatible import provider_mode
+from src.llm.vision_providers import call_second_voter, call_vision
 
 LVMCall = Callable[..., VisionResult]
 
@@ -229,7 +230,7 @@ def classify_image(
     *,
     image_bytes: bytes | None = None,
     drive_service: Any = None,
-    lvm_call: LVMCall = call_gemini,
+    lvm_call: LVMCall = call_vision,
     consensus: bool = False,
     second_voter_call: LVMCall = call_second_voter,
 ) -> VisionResult:
@@ -248,7 +249,9 @@ def classify_image(
     if not isinstance(primary, VisionResult):
         raise TypeError(f"lvm_call must return a VisionResult, got {type(primary)!r}")
 
-    if not consensus:
+    # Two calls to the same model through different 9Router accounts are not
+    # independent-model consensus. Ignore the legacy flag in 9Router mode.
+    if not consensus or provider_mode("CABAI_KMS_VISION_PROVIDER") == "9router":
         return primary
 
     secondary = second_voter_call(response_model=VisionResult, messages=messages)
@@ -269,7 +272,7 @@ class VisionSession:
         self,
         template_path: Path | str = DEFAULT_TEMPLATE_PATH,
         *,
-        lvm_call: LVMCall = call_gemini,
+        lvm_call: LVMCall = call_vision,
         consensus: bool = False,
         second_voter_call: LVMCall = call_second_voter,
         drive_service: Any = None,
@@ -277,7 +280,16 @@ class VisionSession:
         self.varieties = load_variety_descriptions(template_path)
         self.knowledge_source_text = build_knowledge_source_text(self.varieties)
         self.lvm_call = lvm_call
-        self.consensus = consensus
+        self.consensus_requested = consensus
+        self.consensus = (
+            consensus and provider_mode("CABAI_KMS_VISION_PROVIDER") == "legacy"
+        )
+        self.consensus_note = (
+            "Secondary vision consensus is disabled in 9Router mode because "
+            "account redundancy is not independent-model agreement."
+            if consensus and not self.consensus
+            else None
+        )
         self.second_voter_call = second_voter_call
         self.drive_service = drive_service
 

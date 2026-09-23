@@ -13,19 +13,27 @@
 
 rows:
   - label: habitus
-    alt_labels: []
+    alt_labels:
+      - Bentuk pertumbuhan tanaman
   - label: tinggi tanaman
-    alt_labels: []
+    alt_labels:
+      - plant height
+      - mature plant height
+      - vertical plant size
+      - vertical height at maturity
   - label: umur
     alt_labels: []
   - label: adaptasi ekologi
     alt_labels: []
   - label: batang
-    alt_labels: []
+    alt_labels:
+      - stem hairiness
+      - stem pubescence
   - label: tekstur daun
     alt_labels: []
   - label: warna daun
-    alt_labels: []
+    alt_labels:
+      - Warna dominan daun
   - label: panjang daun
     alt_labels: []
   - label: lebar daun
@@ -39,7 +47,9 @@ rows:
   - label: warna pangkal tangkai daun bag bawah
     alt_labels: []
   - label: bentuk ujung daun
-    alt_labels: []
+    alt_labels:
+      - leaf tip shape
+      - leaf apex shape
   - label: bentuk pangkal daun
     alt_labels: []
   - label: bentuk daun
@@ -75,7 +85,8 @@ rows:
   - label: jumlah gagang bunga/ruas
     alt_labels: []
   - label: posisi bunga
-    alt_labels: []
+    alt_labels:
+      - Arah bunga pada tanaman
   - label: bentuk kelopak bunga
     alt_labels: []
   - label: panjang kelopak bunga
@@ -85,9 +96,20 @@ rows:
   - label: kedudukan kelopak bunga
     alt_labels: []
   - label: panjang buah muda
-    alt_labels: []
+    alt_labels:
+      - unripe fruit length
+      - young fruit length
+      - unripe pod length
+      - lengthwise size of young fruit
+      - longitudinal measurement of an unripe pod
   - label: keliling buah muda
-    alt_labels: []
+    alt_labels:
+      - unripe fruit circumference
+      - young fruit girth
+      - unripe pod circumference
+      - unripe pod girth
+      - girth measurement of an unripe pod
+      - circumference of young fruit
   - label: panjang tangkai buah muda
     alt_labels: []
   - label: panjang kelopak buah muda
@@ -127,7 +149,9 @@ rows:
       - Seed count per mature fruit
       - Seeds per fruit
   - label: Lokasi
-    alt_labels: []
+    alt_labels:
+      - sampling location
+      - collection site
   - label: Gambar Daun
     alt_labels: []
   - label: Gambar Batang

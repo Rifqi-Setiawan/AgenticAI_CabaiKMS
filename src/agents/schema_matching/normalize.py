@@ -1,27 +1,3 @@
-"""Fase 3f — post-mapping value normalization N(v_raw, r_i).
-
-Rules are conservative by design: they never touch botanical meaning, only
-notation. A value normalization CANNOT confidently resolve (a garbled
-number/range fragment, an unrecognized-but-digit-bearing token) is left
-exactly as given, with a note meant for GlobalState.error_trace — never
-silently guessed. Real messy examples this was built and tested against are
-catalogued in docs/PROFILING.md §1.2/§2.3.
-
-Rules applied, in order:
-1. empty tokens ("-", "NA", "null", "", whitespace-only, ...) -> None
-   (the controlled empty value)
-2. decimal comma -> dot, only between two digits (never touches a
-   ";"-separated list or a trailing stray comma)
-3. numeric range separator unified to "--" (e.g. "60 - 89 cm" -> "60--89 cm")
-4. multi-value separator unified to "; " (only acts on an already-present
-   ";" — never invents a split from a bare comma, which could just as
-   easily be a decimal or free text)
-5. whitespace runs collapsed to a single space
-6. categorical values snapped to the target row's own contoh_nilai
-   vocabulary (Fase 1) on a case-insensitive exact match, otherwise left
-   untouched — never forced into the "closest" vocabulary word
-"""
-
 from __future__ import annotations
 
 import re

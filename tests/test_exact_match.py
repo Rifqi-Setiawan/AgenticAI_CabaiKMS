@@ -52,6 +52,61 @@ def test_unique_curated_alias_maps_and_builds_compatible_mapping():
     assert mapping.normalization_required is True
 
 
+@pytest.mark.parametrize(
+    ("source_name", "canonical_key"),
+    [
+        ("Bentuk pertumbuhan tanaman", "habitus"),
+        ("Warna dominan daun", "warna_daun"),
+        ("Arah bunga pada tanaman", "posisi_bunga"),
+    ],
+)
+def test_d01_curated_semantic_aliases_resolve_exactly(source_name, canonical_key):
+    result = resolve_exact_name(source_name, CanonicalSchema.from_template())
+    assert result.status is ExactNameStatus.MATCH
+    assert result.canonical_key == canonical_key
+    assert result.matched_name_type == "alias"
+
+
+@pytest.mark.parametrize(
+    ("alias", "canonical_key"),
+    [
+        ("mature plant height", "tinggi_tanaman"),
+        ("vertical plant size", "tinggi_tanaman"),
+        ("vertical height at maturity", "tinggi_tanaman"),
+        ("stem hairiness", "batang"),
+        ("leaf apex shape", "bentuk_ujung_daun"),
+        ("unripe fruit length", "panjang_buah_muda"),
+        ("unripe pod length", "panjang_buah_muda"),
+        ("lengthwise size of young fruit", "panjang_buah_muda"),
+        ("young fruit girth", "keliling_buah_muda"),
+        ("unripe pod girth", "keliling_buah_muda"),
+        ("circumference of young fruit", "keliling_buah_muda"),
+        ("collection site", "lokasi"),
+    ],
+)
+def test_generic_english_aliases_resolve_exactly(alias, canonical_key):
+    result = resolve_exact_name(alias, CanonicalSchema.from_template())
+    assert result.status is ExactNameStatus.MATCH
+    assert result.canonical_key == canonical_key
+    assert result.matched_name_type == "alias"
+
+
+@pytest.mark.parametrize(
+    "d02_paraphrase",
+    [
+        "Vertical size at maturity",
+        "Hair coverage on the stem",
+        "Leaf-tip profile",
+        "Longitudinal size of the unripe pod",
+        "Girth of the unripe pod",
+        "Specimen collection site",
+    ],
+)
+def test_d02_paraphrases_still_require_semantic_matching(d02_paraphrase):
+    result = resolve_exact_name(d02_paraphrase, CanonicalSchema.from_template())
+    assert result.status is ExactNameStatus.NO_MATCH
+
+
 def test_typo_is_not_fuzzy_matched():
     schema = _schema(_row("r_2", "tinggi_tanaman", "Tinggi Tanaman"))
     assert resolve_exact_name("Tinggi Tanamann", schema).status is ExactNameStatus.NO_MATCH

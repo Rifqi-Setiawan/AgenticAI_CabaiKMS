@@ -4,7 +4,9 @@ import pytest
 from pydantic import ValidationError
 
 from src.agents.vision_classification import VarietyDescription
+from src.agents.schema_matching import review_queue
 from src.llm.providers import LLMCallError
+from src.llm.telemetry import record_provider_call
 from src.llm.vision_providers import VisionCallError
 from src.reliability.provider_failures import ProviderFailureKind
 from src.reliability.rate_limit import RateLimiter
@@ -14,6 +16,12 @@ from src.schema.contracts import NULL_ROW, ImageMetadata, SchemaMapping, VisionR
 from src.agents.schema_matching.retrieval import RetrievalHit, SourceAttributeProfile
 
 FAST = {"max_retry_attempts": 3, "retry_base_delay": 0.001, "retry_max_delay": 0.01}
+
+
+@pytest.fixture(autouse=True)
+def _legacy_provider_modes(monkeypatch):
+    monkeypatch.setenv("CABAI_KMS_TEXT_PROVIDER", "legacy")
+    monkeypatch.setenv("CABAI_KMS_VISION_PROVIDER", "legacy")
 
 
 def _transient_vision(message: str) -> VisionCallError:
@@ -272,6 +280,33 @@ class TestSafeClassifyImageClassification:
 
 
 class TestSafeRerank:
+    def test_successful_provider_telemetry_remains_auto_acceptable(self, schema):
+        def traced_llm_call(*, response_model, messages):
+            record_provider_call({
+                "gateway": "9router",
+                "role": "text",
+                "success": True,
+                "structured_output_valid": True,
+            })
+            return _mapping(confidence=0.95)
+
+        mapping, patch = safe_rerank(
+            SourceAttributeProfile(attribute_name="semantic alias"),
+            [],
+            {"error_trace": [], "provider_trace": []},
+            source_format="row-oriented",
+            schema=schema,
+            llm_call=traced_llm_call,
+            enqueue_review=False,
+            **FAST,
+        )
+
+        assert patch["provider_trace"][-1]["success"] is True
+        decision = review_queue.decide_mapping_acceptance(
+            mapping, reliability_patch=patch,
+        )
+        assert decision.status is review_queue.AcceptanceStatus.AUTO_ACCEPT
+
     def test_missing_groq_api_key_fails_once_without_retry_or_revision(
         self, schema, monkeypatch,
     ):

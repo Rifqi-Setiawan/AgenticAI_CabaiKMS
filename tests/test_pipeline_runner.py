@@ -9,7 +9,7 @@ from pandas.testing import assert_frame_equal
 
 from src.agents.schema_matching.anchor import AnchorResult
 from src.agents.schema_matching.exact_match import ExactNameResolution, ExactNameStatus
-from src.agents.schema_matching.retrieval import RetrievalHit
+from src.agents.schema_matching.retrieval import RetrievalHit, SourceAttributeProfile
 from src.schema.canonical import CanonicalSchema
 from src.schema.contracts import ImageMetadata, SchemaMapping, VisionResult
 from src.schema.structure import StructureProposal
@@ -239,7 +239,9 @@ def test_exact_retrieval_pipeline_is_offline_and_does_not_touch_chroma(
     assert result.retrieval_backend == "exact"
     assert result.agent_status["retrieval"].startswith("exact — exhaustive cosine")
     assert sum(len(call) == canonical_count for call in encode_calls) == 1
-    assert sum(len(call) == 1 for call in encode_calls) == 3
+    # Each unresolved attribute gets one value-aware query and one
+    # header-only high-recall query against the same offline exact index.
+    assert sum(len(call) == 1 for call in encode_calls) == 6
 
 
 @pytest.mark.parametrize("source_backend", ["legacy-ish", ""])
@@ -441,6 +443,38 @@ def test_first_unresolved_attribute_initializes_chroma_once(tmp_path, monkeypatc
     assert result.mapping_df.mapping_method.tolist() == [
         "exact_name", "retrieve_rerank", "retrieve_rerank"
     ]
+
+
+def test_header_fallback_adds_unique_candidates_and_resorts_by_distance(monkeypatch):
+    schema = CanonicalSchema.from_template()
+    primary = [
+        RetrievalHit(row.id, row.label, row.domain, index / 100, row.canonical_key)
+        for index, row in enumerate(schema.rows[:8], start=1)
+    ]
+    secondary_rows = [schema.rows[0], *schema.rows[8:18]]
+    secondary = [
+        RetrievalHit(row.id, row.label, row.domain, index / 100, row.canonical_key)
+        for index, row in enumerate(secondary_rows, start=1)
+    ]
+    calls = []
+
+    def fake_retrieve(profile, *, k, **kwargs):
+        calls.append((list(profile.sample_values), k))
+        return primary if profile.sample_values else secondary
+
+    monkeypatch.setattr(runner, "retrieve", fake_retrieve)
+    result = runner._retrieve_with_header_fallback(
+        SourceAttributeProfile("Longitudinal size", sample_values=["10 cm"]),
+        k=8,
+        schema=schema,
+        backend="chroma",
+        collection=object(),
+    )
+
+    assert calls == [(["10 cm"], 8), ([], 10)]
+    assert len({hit.row_id for hit in result}) == len(result)
+    assert schema.rows[8].id in [hit.row_id for hit in result]
+    assert [hit.distance for hit in result] == sorted(hit.distance for hit in result)
 
 
 def test_ambiguous_exact_name_is_observable_and_falls_through(tmp_path, monkeypatch):

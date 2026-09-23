@@ -24,3 +24,4 @@ class GlobalState(TypedDict, total=False):
     updated_spreadsheet: Any  # pandas.DataFrame
     schema_mapping: list[SchemaMapping]
     error_trace: list[str]
+    provider_trace: list[dict[str, Any]]

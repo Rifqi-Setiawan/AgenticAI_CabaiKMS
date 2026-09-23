@@ -9,6 +9,15 @@ class ProviderFailureKind(str, Enum):
     RETRYABLE_TRANSIENT = "retryable_transient"
     NON_RETRYABLE_CONFIGURATION = "non_retryable_configuration"
     NON_RETRYABLE_REQUEST = "non_retryable_request"
+    AUTHENTICATION = "authentication_failure"
+    MODEL_NOT_FOUND = "model_not_found"
+    INVALID_REQUEST = "invalid_request"
+    RATE_LIMIT = "rate_limit_or_quota"
+    CONNECTION = "connection_failure"
+    TIMEOUT = "timeout"
+    TRANSIENT_UPSTREAM = "transient_upstream"
+    INVALID_STRUCTURED_OUTPUT = "invalid_structured_output"
+    UNSUPPORTED_MULTIMODAL = "unsupported_multimodal_input"
 
 
 class ProviderCallError(Exception):
@@ -25,19 +34,31 @@ class ProviderCallError(Exception):
 
     @property
     def retryable(self) -> bool:
-        return self.failure_kind is ProviderFailureKind.RETRYABLE_TRANSIENT
+        return self.failure_kind in {
+            ProviderFailureKind.RETRYABLE_TRANSIENT,
+            ProviderFailureKind.RATE_LIMIT,
+            ProviderFailureKind.CONNECTION,
+            ProviderFailureKind.TIMEOUT,
+            ProviderFailureKind.TRANSIENT_UPSTREAM,
+        }
 
     @property
     def terminal_reason(self) -> str:
         if self.retryable:
             return "provider_retry_exhausted"
-        if self.failure_kind is ProviderFailureKind.NON_RETRYABLE_CONFIGURATION:
+        if self.failure_kind in {
+            ProviderFailureKind.NON_RETRYABLE_CONFIGURATION,
+            ProviderFailureKind.AUTHENTICATION,
+            ProviderFailureKind.MODEL_NOT_FOUND,
+        }:
             return "provider_configuration_error"
         return "provider_request_error"
 
 
 def _status_code(exc: BaseException) -> int | None:
     status = getattr(exc, "status_code", None)
+    if status is None:
+        status = getattr(exc, "code", None)
     if status is None:
         status = getattr(getattr(exc, "response", None), "status_code", None)
     return status if isinstance(status, int) else None
@@ -68,6 +89,31 @@ def classify_provider_exception(exc: BaseException) -> ProviderFailureKind:
         return ProviderFailureKind.RETRYABLE_TRANSIENT
     if status in {401, 403, 404}:
         return ProviderFailureKind.NON_RETRYABLE_CONFIGURATION
+    return ProviderFailureKind.NON_RETRYABLE_REQUEST
+
+
+def classify_ninerouter_exception(exc: BaseException) -> ProviderFailureKind:
+    """Granular classification for 9Router's OpenAI-compatible boundary."""
+    if isinstance(exc, ProviderCallError):
+        return exc.failure_kind
+    names = {cls.__name__ for cls in type(exc).__mro__}
+    if isinstance(exc, TimeoutError) or names & {"APITimeoutError", "ConnectTimeout", "ReadTimeout"}:
+        return ProviderFailureKind.TIMEOUT
+    if isinstance(exc, ConnectionError) or names & {"APIConnectionError", "ConnectError"}:
+        return ProviderFailureKind.CONNECTION
+    status = _status_code(exc)
+    if status in {401, 403}:
+        return ProviderFailureKind.AUTHENTICATION
+    if status == 404:
+        return ProviderFailureKind.MODEL_NOT_FOUND
+    if status == 429:
+        return ProviderFailureKind.RATE_LIMIT
+    if status is not None and status >= 500:
+        return ProviderFailureKind.TRANSIENT_UPSTREAM
+    if status == 415:
+        return ProviderFailureKind.UNSUPPORTED_MULTIMODAL
+    if status in {400, 409, 422}:
+        return ProviderFailureKind.INVALID_REQUEST
     return ProviderFailureKind.NON_RETRYABLE_REQUEST
 
 

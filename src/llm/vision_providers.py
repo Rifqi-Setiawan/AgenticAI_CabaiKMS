@@ -20,6 +20,7 @@ availability shifts again.
 from __future__ import annotations
 
 import os
+import time
 from typing import TypeVar
 
 from dotenv import load_dotenv
@@ -29,9 +30,17 @@ from src.reliability.provider_failures import (
     ProviderCallError,
     ProviderFailureKind,
     classify_provider_exception,
+    classify_ninerouter_exception,
     combine_failure_kinds,
     provider_error_summary,
 )
+from src.llm.openai_compatible import (
+    NINEROUTER_REQUIRED_VISION_MODEL,
+    NinerouterConfig,
+    ninerouter_instructor_client,
+    provider_mode,
+)
+from src.llm.telemetry import record_provider_call
 
 load_dotenv()  # once at import — see src/llm/providers.py's docstring for why
 
@@ -110,6 +119,84 @@ def call_gemini(
             provider_error_summary("gemini", exc),
             failure_kind=classify_provider_exception(exc),
         ) from exc
+
+
+def call_ninerouter_vision(
+    *,
+    response_model: type[T],
+    messages: list[dict],
+    max_retries: int = 2,
+) -> T:
+    """Call the fixed 9Router multimodal model with no legacy fallback."""
+    started = time.perf_counter()
+    base_record = {
+        "gateway": "9router",
+        "provider_route": "antigravity",
+        "requested_model": NINEROUTER_REQUIRED_VISION_MODEL,
+        "model_id": NINEROUTER_REQUIRED_VISION_MODEL,
+        "role": "vision",
+        "attempt": 1,
+        "selected_account": "unknown",
+    }
+    try:
+        config = NinerouterConfig.from_env(require_role="vision")
+        client = ninerouter_instructor_client(config)
+        result = client.chat.completions.create(
+            model=config.vision_model,
+            messages=messages,
+            response_model=response_model,
+            max_retries=max_retries,
+        )
+    except ValidationError:
+        record_provider_call({
+            **base_record,
+            "latency_ms": round((time.perf_counter() - started) * 1000),
+            "success": False,
+            "failure_kind": ProviderFailureKind.INVALID_STRUCTURED_OUTPUT.value,
+            "structured_output_valid": False,
+        })
+        raise
+    except Exception as exc:  # noqa: BLE001
+        kind = classify_ninerouter_exception(exc)
+        record_provider_call({
+            **base_record,
+            "latency_ms": round((time.perf_counter() - started) * 1000),
+            "success": False,
+            "failure_kind": kind.value,
+            "structured_output_valid": False,
+        })
+        raise VisionCallError(
+            provider_error_summary("9router", exc), failure_kind=kind
+        ) from exc
+
+    record_provider_call({
+        **base_record,
+        "latency_ms": round((time.perf_counter() - started) * 1000),
+        "success": True,
+        "failure_kind": None,
+        "structured_output_valid": True,
+    })
+    return result
+
+
+def call_vision(
+    *,
+    response_model: type[T],
+    messages: list[dict],
+    max_retries: int = 2,
+) -> T:
+    """Configuration-controlled primary vision call."""
+    try:
+        mode = provider_mode("CABAI_KMS_VISION_PROVIDER")
+    except ProviderCallError as exc:
+        raise VisionCallError(str(exc), failure_kind=exc.failure_kind) from exc
+    if mode == "9router":
+        return call_ninerouter_vision(
+            response_model=response_model, messages=messages, max_retries=max_retries
+        )
+    return call_gemini(
+        response_model=response_model, messages=messages, max_retries=max_retries
+    )
 
 
 def call_second_voter(

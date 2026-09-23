@@ -1,18 +1,9 @@
-"""LLM provider abstraction: Groq (primary) with local Ollama (fallback),
-both going through `instructor` for constrained decoding into a Pydantic
-model. First consumer is the schema-matching reranker
-(src/agents/schema_matching/reranking.py); nothing here is schema-matching
-specific.
-
-Loads .env on import (python-dotenv) so GROQ_API_KEY set there is picked up
-without every entrypoint having to call load_dotenv() itself. In test
-suites, `call_with_fallback` is exercised only via an injected mock
-`llm_call`, never against the real network.
-"""
+"""Text provider dispatch: 9Router by default, explicit legacy rollback."""
 
 from __future__ import annotations
 
 import os
+import time
 from typing import TypeVar
 
 from dotenv import load_dotenv
@@ -22,9 +13,17 @@ from src.reliability.provider_failures import (
     ProviderCallError,
     ProviderFailureKind,
     classify_provider_exception,
+    classify_ninerouter_exception,
     combine_failure_kinds,
     provider_error_summary,
 )
+from src.llm.openai_compatible import (
+    NINEROUTER_REQUIRED_TEXT_MODEL,
+    NinerouterConfig,
+    ninerouter_instructor_client,
+    provider_mode,
+)
+from src.llm.telemetry import record_provider_call
 
 load_dotenv()
 
@@ -36,7 +35,7 @@ OLLAMA_DEFAULT_BASE_URL = "http://localhost:11434/v1"
 
 
 class LLMCallError(ProviderCallError):
-    """Raised when both the primary and fallback provider calls fail."""
+    """Raised when the selected text provider fails."""
 
 
 def _groq_instructor_client():
@@ -61,7 +60,7 @@ def _ollama_instructor_client():
     return instructor.from_openai(client, mode=instructor.Mode.JSON)
 
 
-def call_with_fallback(
+def _call_legacy(
     *,
     response_model: type[T],
     messages: list[dict[str, str]],
@@ -102,4 +101,90 @@ def call_with_fallback(
     raise LLMCallError(
         "both providers failed — " + "; ".join(errors),
         failure_kind=combine_failure_kinds(failure_kinds),
+    )
+
+
+def call_ninerouter_text(
+    *,
+    response_model: type[T],
+    messages: list[dict],
+    max_retries: int = 2,
+) -> T:
+    """Call the one fixed 9Router text model; never fall back to legacy."""
+    started = time.perf_counter()
+    attempt = 1
+    base_record = {
+        "gateway": "9router",
+        "provider_route": "antigravity",
+        "requested_model": NINEROUTER_REQUIRED_TEXT_MODEL,
+        "model_id": NINEROUTER_REQUIRED_TEXT_MODEL,
+        "role": "text",
+        "attempt": attempt,
+        "selected_account": "unknown",
+    }
+    try:
+        config = NinerouterConfig.from_env(require_role="text")
+        client = ninerouter_instructor_client(config)
+        result = client.chat.completions.create(
+            model=config.text_model,
+            messages=messages,
+            response_model=response_model,
+            # Instructor retries are limited to contract repair. The underlying
+            # OpenAI client always has max_retries=0.
+            max_retries=max_retries,
+        )
+    except ValidationError:
+        record_provider_call({
+            **base_record,
+            "latency_ms": round((time.perf_counter() - started) * 1000),
+            "success": False,
+            "failure_kind": ProviderFailureKind.INVALID_STRUCTURED_OUTPUT.value,
+            "structured_output_valid": False,
+        })
+        raise
+    except Exception as exc:  # noqa: BLE001 - provider normalization boundary
+        kind = classify_ninerouter_exception(exc)
+        record_provider_call({
+            **base_record,
+            "latency_ms": round((time.perf_counter() - started) * 1000),
+            "success": False,
+            "failure_kind": kind.value,
+            "structured_output_valid": False,
+        })
+        raise LLMCallError(
+            provider_error_summary("9router", exc), failure_kind=kind
+        ) from exc
+
+    record_provider_call({
+        **base_record,
+        "latency_ms": round((time.perf_counter() - started) * 1000),
+        "success": True,
+        "failure_kind": None,
+        "structured_output_valid": True,
+    })
+    return result
+
+
+def call_with_fallback(
+    *,
+    response_model: type[T],
+    messages: list[dict],
+    max_retries: int = 2,
+) -> T:
+    """Compatibility entry point with configuration-controlled dispatch.
+
+    In 9Router mode the historical name does not imply a fallback: exactly
+    one configured model is called. Groq -> Ollama remains available only in
+    explicit ``CABAI_KMS_TEXT_PROVIDER=legacy`` mode.
+    """
+    try:
+        mode = provider_mode("CABAI_KMS_TEXT_PROVIDER")
+    except ProviderCallError as exc:
+        raise LLMCallError(str(exc), failure_kind=exc.failure_kind) from exc
+    if mode == "9router":
+        return call_ninerouter_text(
+            response_model=response_model, messages=messages, max_retries=max_retries
+        )
+    return _call_legacy(
+        response_model=response_model, messages=messages, max_retries=max_retries
     )

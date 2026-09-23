@@ -20,7 +20,7 @@ class RuntimeGraphState(TypedDict, total=False):
     drive_folder_id: str; max_images: int; source_backend: str; retrieval_backend: str
     retrieval_k: int; schema_version: str; template_hash: str
     evaluation_config_fingerprint: str; source_ir_version: str | None
-    review_queue_path: str; error_trace: list[str]; agent_status: dict[str, str]
+    review_queue_path: str; error_trace: list[str]; provider_trace: list[dict[str, Any]]; agent_status: dict[str, str]
     mapping_json: str; workbook_bytes: bytes; variety_names: list[str]
     vision_rows: list[dict[str, Any]]; provenance_records: list[dict[str, Any]]
     mapping_verifications: list[dict[str, Any]]; structure_shadow: dict[str, Any] | None
@@ -101,7 +101,7 @@ def schema_matching_tabular(state, config):
         "variety_names": list(result.canonical_df.columns[2:]), "vision_rows": [],
         "provenance_records": [x.model_dump(mode="json") for x in result.provenance_records],
         "mapping_verifications": [x.model_dump(mode="json") for x in result.mapping_verifications],
-        "error_trace": list(result.error_trace), "agent_status": status,
+        "error_trace": list(result.error_trace), "provider_trace": list(result.provider_trace), "agent_status": status,
         "structure_shadow": result.structure_shadow.model_dump(mode="json") if result.structure_shadow else None,
         "source_ir_version": result.source_ir_version}
 
@@ -125,7 +125,7 @@ def vision_classification(state, config):
     from src.schema.contracts import ImageMetadata
     from src.ui import pipeline_runner as r
     resources = _resources(config); wb = openpyxl.load_workbook(io.BytesIO(state["workbook_bytes"])); ws = wb[r.SHEET_NAME]
-    session = r.VisionSession(); trace = {"error_trace": list(state.get("error_trace", []))}; rows=[]; written=uncertain=classified=0
+    session = r.VisionSession(); trace = {"error_trace": list(state.get("error_trace", [])), "provider_trace": list(state.get("provider_trace", []))}; rows=[]; written=uncertain=classified=0
     for raw in state.get("image_metadata", []):
         image = ImageMetadata.model_validate(raw)
         result, patch = r.safe_classify_image(image, session.knowledge_source_text, session.varieties, trace,
@@ -149,7 +149,8 @@ def vision_classification(state, config):
     status=dict(state.get("agent_status", {})); status["vision_classification"]=(
         f"selesai — {classified} citra diklasifikasi, {written} ditulis ke sel, {uncertain} UNCERTAIN")
     payload=r._deterministic_workbook_bytes(wb); wb.close()
-    return {"workbook_bytes":payload, "vision_rows":rows, "error_trace":trace["error_trace"], "agent_status":status}
+    return {"workbook_bytes":payload, "vision_rows":rows, "error_trace":trace["error_trace"],
+            "provider_trace": trace.get("provider_trace", []), "agent_status":status}
 
 def finalization(state, config):
     resources=_resources(config); status=dict(state.get("agent_status", {}))

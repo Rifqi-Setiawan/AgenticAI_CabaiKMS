@@ -62,6 +62,12 @@ VARIETIES = [
 ]
 
 
+@pytest.fixture(autouse=True)
+def _legacy_vision_mode(monkeypatch):
+    # These tests exercise the retained independent legacy voter explicitly.
+    monkeypatch.setenv("CABAI_KMS_VISION_PROVIDER", "legacy")
+
+
 class TestLoadVarietyDescriptions:
     def test_reads_real_template_dynamically(self):
         varieties = load_variety_descriptions()

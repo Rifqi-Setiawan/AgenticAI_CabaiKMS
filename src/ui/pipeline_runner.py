@@ -50,7 +50,9 @@ from src.agents.schema_matching import review_queue
 from src.agents.schema_matching.review_queue import AcceptanceStatus, decide_mapping_acceptance
 from src.agents.schema_matching.retrieval import (
     DEFAULT_K,
+    MAX_K,
     RetrievalBackend,
+    RetrievalHit,
     SourceAttributeProfile,
     retrieve,
     validate_retrieval_backend,
@@ -137,6 +139,7 @@ class PipelineRunResult:
     agent_status: dict[str, str] = field(default_factory=dict)
     checkpoint_thread_id: str | None = None
     error_trace: list[str] = field(default_factory=list)
+    provider_trace: list[dict] = field(default_factory=list)
     structure_shadow: ShadowParityReport | None = None
     source_backend: str = "legacy"
     source_ir_version: str | None = None
@@ -154,6 +157,48 @@ class PipelineRunResult:
 
 def _noop(_: str) -> None:
     return None
+
+
+def _retrieve_with_header_fallback(
+    profile: SourceAttributeProfile,
+    *,
+    k: int,
+    schema: CanonicalSchema,
+    **retrieval_kwargs,
+) -> list[RetrievalHit]:
+    """Preserve value-aware retrieval while adding a high-recall header view.
+
+    Numeric/categorical samples normally help retrieval, but they can swamp a
+    semantically precise English header (for example every length field starts
+    looking alike). A second header-only query contributes candidates without
+    replacing the primary ranking. The reranker still makes the final choice.
+    """
+    primary = retrieve(profile, k=k, schema=schema, **retrieval_kwargs)
+    if not profile.sample_values or len(primary) != k:
+        return primary
+
+    header_only = SourceAttributeProfile(
+        attribute_name=profile.attribute_name,
+        structural_context=profile.structural_context,
+        header_path=profile.header_path,
+        source_value_type=profile.source_value_type,
+        source_attribute_id=profile.source_attribute_id,
+    )
+    secondary = retrieve(
+        header_only,
+        k=MAX_K,
+        schema=schema,
+        **retrieval_kwargs,
+    )
+    best_by_row = {hit.row_id: hit for hit in primary}
+    for hit in secondary:
+        current = best_by_row.get(hit.row_id)
+        if current is None or hit.distance < current.distance:
+            best_by_row[hit.row_id] = hit
+    return sorted(
+        best_by_row.values(),
+        key=lambda hit: (hit.distance, hit.row_id),
+    )
 
 
 def _deterministic_workbook_bytes(workbook) -> bytes:
@@ -211,7 +256,7 @@ def _run_tabular_stage_impl(
     run_id = _run_id or uuid.uuid4().hex
     resolved_sheet_name = sheet_name or _first_sheet(file_path)
     source_hash = source_file_sha256(file_path)
-    state: dict = {"error_trace": []}
+    state: dict = {"error_trace": [], "provider_trace": []}
     agent_status: dict[str, str] = {}
     agent_status["text_rate_limit"] = describe_rate_limiter(text_rate_limiter)
     on_progress(f"text rate limit: {agent_status['text_rate_limit']}")
@@ -381,7 +426,12 @@ def _run_tabular_stage_impl(
                 retrieval_kwargs["exact_index"] = retrieval_resource
             if embedding_encode_call is not None:
                 retrieval_kwargs["encode_call"] = embedding_encode_call
-            retrieved = retrieve(profile, k=k, schema=schema, **retrieval_kwargs)
+            retrieved = _retrieve_with_header_fallback(
+                profile,
+                k=k,
+                schema=schema,
+                **retrieval_kwargs,
+            )
 
             on_progress(f"  schema_matching: '{attr.attribute_name}' — reranking...")
             mapping, patch = safe_rerank(
@@ -638,6 +688,7 @@ def _run_tabular_stage_impl(
         provenance_records=provenance_records, agent_status=agent_status,
         checkpoint_thread_id=thread_id,
         error_trace=list(state.get("error_trace", [])),
+        provider_trace=list(state.get("provider_trace", [])),
         structure_shadow=structure_shadow, source_backend=source_backend,
         retrieval_backend=retrieval_backend,
         mapping_verifications=mapping_verifications,
@@ -689,7 +740,7 @@ def _runtime_initial_state(
         "evaluation_config_fingerprint": evaluation.fingerprint,
         "mapping_verification_version": MAPPING_VERIFICATION_VERSION,
         "embedding_model_name": EMBEDDING_MODEL_NAME,
-        "review_queue_path": str(review_queue_path), "error_trace": [], "agent_status": {},
+        "review_queue_path": str(review_queue_path), "error_trace": [], "provider_trace": [], "agent_status": {},
     }
     state["runtime_identity"] = runtime_identity(state)
     return state
@@ -710,6 +761,7 @@ def _result_from_runtime_state(state: dict) -> PipelineRunResult:
         provenance_records=[CellProvenanceRecord.model_validate(x) for x in state.get("provenance_records", [])],
         agent_status=dict(state.get("agent_status", {})), checkpoint_thread_id=state["run_id"],
         error_trace=list(state.get("error_trace", [])),
+        provider_trace=list(state.get("provider_trace", [])),
         structure_shadow=(ShadowParityReport.model_validate(state["structure_shadow"]) if state.get("structure_shadow") else None),
         source_backend=state["source_backend"], retrieval_backend=state["retrieval_backend"],
         mapping_verifications=[MappingVerificationResult.model_validate(x) for x in state.get("mapping_verifications", [])],

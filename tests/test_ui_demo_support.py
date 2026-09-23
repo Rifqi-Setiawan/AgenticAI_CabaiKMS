@@ -13,6 +13,7 @@ from src.ui.demo_support import (
     safe_download_stem,
     stage_state,
     validate_drive_input,
+    runtime_readiness,
 )
 
 
@@ -91,3 +92,16 @@ def test_stage_classification(status, expected):
 
 def test_safe_download_name():
     assert safe_download_stem("field demo (final).xlsx") == "field_demo_final"
+
+
+def test_readiness_shows_role_specific_ninerouter_models():
+    readiness = runtime_readiness(
+        {
+            "CABAI_KMS_TEXT_PROVIDER": "9router",
+            "CABAI_KMS_VISION_PROVIDER": "9router",
+            "NINEROUTER_API_KEY": "configured",
+        },
+        drive_requested=True,
+    )
+    assert "ag/gemini-3.8-flash-medium" in readiness["Text provider"]
+    assert "ag/gemini-3.8-flash-high" in readiness["Vision"]

@@ -25,7 +25,7 @@
 # valid domains by collecting the unique `domain` values actually present below.
 #
 # If a future row's category is genuinely unclear, set `domain: unassigned` and
-# raise it in docs/OPEN_QUESTIONS.md instead of guessing.
+# record the blocker in docs/PROJECT_GUIDE.md instead of guessing.
 #
 # NORMALIZATION WARNING: several labels in the actual template have inconsistent
 # leading/trailing whitespace (e.g. "bentuk ujung daun ", "warna mahkota ").

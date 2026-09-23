@@ -91,9 +91,17 @@ else:
                 st.write(f"**Diselesaikan oleh:** {item.resolved_by or '-'}")
                 continue
             notes = st.text_input("Catatan (opsional)", key=f"notes_{item.item_id}")
+            canonical_keys = [row.canonical_key for row in schema.rows]
+            proposed_index = (
+                canonical_keys.index(item.proposed_canonical_key)
+                if proposed is not None and item.proposed_canonical_key in canonical_keys
+                else None
+            )
             selected_key = st.selectbox(
                 "Target kanonik pengganti",
-                options=[row.canonical_key for row in schema.rows],
+                options=canonical_keys,
+                index=proposed_index,
+                placeholder="Pilih target kanonik...",
                 format_func=lambda key: (
                     f"{schema.row_by_key(key).label} — {schema.row_by_key(key).domain} [{key}]"
                 ),
@@ -112,7 +120,11 @@ else:
                     )
                     state.clear_corrected_result()
                     st.rerun()
-                if revise_col.button("Ubah target", key=f"revise_{item.item_id}"):
+                if revise_col.button(
+                    "Ubah target",
+                    key=f"revise_{item.item_id}",
+                    disabled=selected_key is None,
+                ):
                     review_queue.revise_to_canonical_key(
                         item.item_id, selected_key, schema=schema,
                         resolved_by=reviewer or None, notes=notes or None,
