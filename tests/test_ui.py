@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import io
+from pathlib import Path
 from unittest.mock import patch
 
 import openpyxl
@@ -15,9 +16,10 @@ from src.schema.contracts import NULL_ROW, SchemaMapping
 from src.ui.output_builder import CanonicalOutputBuilder, worksheet_to_dataframe
 from src.ui.pipeline_runner import _deterministic_workbook_bytes
 
-APP_PATH = "src/ui/app.py"
-PROGRESS_PATH = "src/ui/pages/2_Progress.py"
-HASIL_PATH = "src/ui/pages/3_Hasil.py"
+ROOT_DIR = Path(__file__).resolve().parent.parent
+APP_PATH = str(ROOT_DIR / "src/ui/app.py")
+PROGRESS_PATH = str(ROOT_DIR / "src/ui/pages/2_Progress.py")
+HASIL_PATH = str(ROOT_DIR / "src/ui/pages/3_Hasil.py")
 
 # app.py's import chain now pulls in the full pipeline stack (torch,
 # transformers, langgraph, chromadb, google api client, ...) — the
