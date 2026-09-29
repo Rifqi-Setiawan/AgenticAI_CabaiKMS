@@ -1,0 +1,14 @@
+# Direct dependency pins. Generate a platform-specific transitive hash lock before deployment.
+# These are ADDITIVE; resolve conflicts with the repository's existing lock in a new venv.
+SQLAlchemy==2.0.50
+psycopg[binary]==3.3.6
+fastapi==0.128.2
+uvicorn==0.48.0
+pydantic==2.13.4
+pydantic-settings==2.14.1
+Pillow==12.3.0
+httpx==0.28.1
+boto3==1.43.18
+python-dotenv==1.2.2
+google-auth[requests]==2.58.1
+# UI, pandas, openpyxl, LangGraph and existing model providers remain upstream dependencies.

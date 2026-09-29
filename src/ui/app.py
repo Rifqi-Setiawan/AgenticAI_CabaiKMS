@@ -25,7 +25,7 @@ from src.ui.demo_support import (
     user_error_message,
     validate_drive_input,
 )
-from src.ui.pipeline_runner import run_pipeline_ui
+from src.integrations.pipeline_hooks import run_pipeline_with_kms as run_pipeline_ui
 
 st.set_page_config(page_title="CABAI-KMS Akuisisi", page_icon="🌶️", layout="wide")
 
@@ -139,6 +139,7 @@ if run_clicked:
             with st.spinner("Menjalankan pipeline..."):
                 result = run_pipeline_ui(
                     tmp_path,
+                    kms_source_filename=uploaded_file.name,
                     source_format=source_format,
                     sheet_name=selected_sheet,
                     header_rows=header_rows,
@@ -162,3 +163,5 @@ if run_clicked:
 if state.has_result():
     last = state.get_last_inputs()
     st.info(f"Hasil terakhir: berkas `{last.get('filename', '-')}` — buka halaman Progres/Hasil di sidebar.")
+
+# CABAI_KMS_EXTENSION_V1

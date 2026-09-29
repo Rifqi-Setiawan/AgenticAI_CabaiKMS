@@ -122,6 +122,11 @@ def drive_crawler(state, config):
 def route_after_drive(state): return "vision" if state.get("image_metadata") else "finalize"
 
 def vision_classification(state, config):
+    # CABAI_KMS_EXTENSION_V1
+    from src.integrations.client import enabled
+    if enabled():
+        from src.integrations.vision_hook import vision_classification_with_storage
+        return vision_classification_with_storage(state, config)
     from src.schema.contracts import ImageMetadata
     from src.ui import pipeline_runner as r
     resources = _resources(config); wb = openpyxl.load_workbook(io.BytesIO(state["workbook_bytes"])); ws = wb[r.SHEET_NAME]

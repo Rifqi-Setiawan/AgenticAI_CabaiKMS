@@ -20,7 +20,7 @@ if str(PROJECT_ROOT) not in sys.path:
 import pandas as pd
 import streamlit as st
 
-from src.agents.schema_matching import review_queue
+from src.integrations.review_proxy import review_queue
 from src.orchestrator.graph import DEFAULT_CHECKPOINT_DB, _sqlite_checkpointer
 from src.schema.canonical import CanonicalSchema
 from src.ui import state
@@ -272,3 +272,7 @@ st.download_button(
     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     type="secondary" if corrected_result is not None else "primary",
 )
+
+# CABAI_KMS_EXTENSION_V1
+from src.integrations.streamlit_commit import render_commit_panel
+render_commit_panel(result, schema, current_run_items, last_inputs)

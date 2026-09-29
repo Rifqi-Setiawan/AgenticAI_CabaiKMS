@@ -42,3 +42,9 @@ data/.checkpoints/
 .DS_Store
 Thumbs.db
 ~$*
+
+.kms_backups/
+.env.kms.*
+!.env.kms.example
+.venv-kms/
+data/review/kms_runs/
