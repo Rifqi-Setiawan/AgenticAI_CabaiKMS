@@ -17,8 +17,10 @@ import streamlit as st
 
 from src.ui import state
 from src.ui.demo_support import stage_state
+from src.ui.theme import apply_theme
 
 st.set_page_config(page_title="CABAI-KMS — Progres", page_icon="🌶️", layout="wide")
+apply_theme()
 st.title("Halaman 2: Progres")
 
 if state.is_running():

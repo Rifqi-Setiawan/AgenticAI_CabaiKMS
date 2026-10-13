@@ -26,8 +26,10 @@ from src.schema.canonical import CanonicalSchema
 from src.ui import state
 from src.ui.demo_support import run_summary, safe_download_stem
 from src.ui.review_replay import apply_review_corrections
+from src.ui.theme import apply_theme
 
 st.set_page_config(page_title="CABAI-KMS — Hasil", page_icon="🌶️", layout="wide")
+apply_theme()
 st.title("Halaman 3: Inspektor Hasil")
 
 if not state.has_result():

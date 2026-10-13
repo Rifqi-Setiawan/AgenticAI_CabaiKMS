@@ -26,8 +26,10 @@ from src.ui.demo_support import (
     validate_drive_input,
 )
 from src.integrations.pipeline_hooks import run_pipeline_with_kms as run_pipeline_ui
+from src.ui.theme import apply_theme
 
 st.set_page_config(page_title="CABAI-KMS Akuisisi", page_icon="🌶️", layout="wide")
+apply_theme()
 
 st.title("🌶️ CABAI-KMS — Adaptive Knowledge Acquisition")
 st.subheader("Halaman 1: Input")
