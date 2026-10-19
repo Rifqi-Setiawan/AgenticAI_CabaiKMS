@@ -1,0 +1,30 @@
+[
+  {
+    "id": "plant_cabai_rawit",
+    "label": "Cabai rawit",
+    "identity_level": "source_category",
+    "scientific_name": "Capsicum frutescens L",
+    "source_category": "Cabai rawit"
+  },
+  {
+    "id": "plant_cabai_besar",
+    "label": "Cabai besar",
+    "identity_level": "source_category",
+    "scientific_name": "Capsicum annum L",
+    "source_category": "Cabai besar"
+  },
+  {
+    "id": "plant_cultivar_maruti",
+    "label": "Cabai Rawit Merah Maruti",
+    "identity_level": "cultivar",
+    "scientific_name": "Capsicum frutescens L",
+    "source_category": "Cabai rawit"
+  },
+  {
+    "id": "plant_cultivar_hiyung",
+    "label": "Cabai Rawit Hiyung",
+    "identity_level": "cultivar",
+    "scientific_name": "Capsicum frutescens L",
+    "source_category": "Cabai rawit"
+  }
+]
