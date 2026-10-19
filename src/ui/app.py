@@ -82,10 +82,12 @@ max_images = st.number_input(
     max_value=20,
     value=5,
     step=1,
-    help="Batas ini diabaikan bila folder Drive dikosongkan.",
+    help="Setiap foto memerlukan inferensi model vision multimodal (~20-50 detik per foto). Pilih 2-3 untuk demo/pengujian cepat. Batas ini diabaikan bila folder Drive dikosongkan.",
 )
 if not drive_url.strip():
     st.caption("Drive kosong: batas gambar diabaikan dan vision akan dilewati.")
+else:
+    st.caption("ℹ️ Mode vision aktif. Estimasi waktu klasifikasi ~30-50 detik per citra melalui model multimodal.")
 drive_error = validate_drive_input(drive_url)
 if drive_error:
     st.error(drive_error)

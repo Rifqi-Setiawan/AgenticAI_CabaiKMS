@@ -131,12 +131,15 @@ def vision_classification(state, config):
     from src.ui import pipeline_runner as r
     resources = _resources(config); wb = openpyxl.load_workbook(io.BytesIO(state["workbook_bytes"])); ws = wb[r.SHEET_NAME]
     session = r.VisionSession(); trace = {"error_trace": list(state.get("error_trace", [])), "provider_trace": list(state.get("provider_trace", []))}; rows=[]; written=uncertain=classified=0
-    for raw in state.get("image_metadata", []):
+    total_images = len(state.get("image_metadata", []))
+    for idx, raw in enumerate(state.get("image_metadata", []), start=1):
         image = ImageMetadata.model_validate(raw)
+        resources.on_progress(f"vision [{idx}/{total_images}]: menganalisis citra '{image.filename}' via model multimodal...")
         result, patch = r.safe_classify_image(image, session.knowledge_source_text, session.varieties, trace,
                                               vision_rate_limiter=resources.vision_rate_limiter)
         trace.update(patch)
         if result is None:
+            resources.on_progress(f"vision [{idx}/{total_images}]: Gagal klasifikasi '{image.filename}'")
             rows.append({"filename": image.filename, "status": "FAILED", "matched_variety": None,
                 "identified_part": None, "confidence": None, "visual_evidence": None,
                 "write_applied": False, "write_reason": "classification failed; see Advanced / Debug trace"})
@@ -144,6 +147,8 @@ def vision_classification(state, config):
         classified += 1
         uncertain += result.classification_status == "UNCERTAIN"; update = r.apply_vision_result_to_worksheet(ws, image, result)
         written += update.applied
+        write_status = f"ditulis ke sel '{result.identified_part}' ({result.matched_variety})" if update.applied else f"tidak ditulis ({update.reason})"
+        resources.on_progress(f"vision [{idx}/{total_images}]: '{image.filename}' -> {result.classification_status} [{result.identified_part}, {result.matched_variety}] ({write_status})")
         if not update.applied and update.reason:
             warning=f"vision_non_write: file_id={image.file_id!r}: {update.reason}"
             trace.update(r.review_queue.append_error_trace(trace, warning))
@@ -153,6 +158,7 @@ def vision_classification(state, config):
             "write_applied": update.applied, "write_reason": update.reason})
     status=dict(state.get("agent_status", {})); status["vision_classification"]=(
         f"selesai — {classified} citra diklasifikasi, {written} ditulis ke sel, {uncertain} UNCERTAIN")
+    resources.on_progress(f"vision_classification: selesai ({classified} citra diklasifikasi, {written} ditulis ke workbook)")
     payload=r._deterministic_workbook_bytes(wb); wb.close()
     return {"workbook_bytes":payload, "vision_rows":rows, "error_trace":trace["error_trace"],
             "provider_trace": trace.get("provider_trace", []), "agent_status":status}
