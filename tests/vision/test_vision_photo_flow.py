@@ -2,7 +2,7 @@
 
 Contract source:
 - reports/cabai-kms-jsonb/TECH_PLAN.md:
-  * Line 28: S6b introduction (Backend Alur Foto Multi-Sinyal, pemilik forge)
+  * Line 28: S6b introduction (Backend Alur Foto Multi-Sinyal)
   * Line 522: Table 5 DoD & boundaries for S6b
   * Line 558: Acceptance criterion A23 (test_vision_three_way_signal_classification)
   * Line 559: Acceptance criterion A24 (PHOTO_VARIETY_MISMATCH fail-closed review items)

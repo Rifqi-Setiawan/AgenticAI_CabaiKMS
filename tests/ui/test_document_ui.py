@@ -2,7 +2,7 @@
 
 Contract source:
 - reports/cabai-kms-jsonb/TECH_PLAN.md:
-  * Line 523: Table 5 DoD & boundaries for S7 (UI Streamlit: Review Kategori & Commit, pemilik prism)
+  * Line 523: Table 5 DoD & boundaries for S7 (UI Streamlit: Review Kategori & Commit)
   * Line 541: Acceptance criterion A06 (test_plant_identity_level_and_source_category_retention)
   * Line 555: Acceptance criterion A20 (test_regression_pipeline_media_and_excel_export)
   * Line 691: Section 11 Gate 1-2 S6/S7 implementation phases
@@ -22,8 +22,8 @@ DoD S7:
   4. Tombol commit transaksional (disabled on pending, calls /runs/v2/{id}/commit, handles replay & sanitized conflict)
   5. JSONB viewer (staged draft & committed documents via GET /documents without historical trace arrays)
 
-All tests are deterministic, mock HTTP/client calls without real network or external services,
-and serve as the test-first RED acceptance harness before S7 implementation by prism.
+All tests are deterministic, mock HTTP/client calls without real network or LLM,
+and serve as the test-first RED acceptance harness before S7 implementation.
 """
 
 from __future__ import annotations

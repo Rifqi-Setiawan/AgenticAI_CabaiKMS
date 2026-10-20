@@ -2,7 +2,7 @@
 
 Contract source:
 - reports/cabai-kms-jsonb/TECH_PLAN.md:
-  * Line 525: Table 5 DoD & boundaries for S8 (Skrip Migrasi Data Legacy & Karantina, pemilik forge)
+  * Line 525: Table 5 DoD & boundaries for S8 (Skrip Migrasi Data Legacy & Karantina)
   * Line 553: Acceptance criterion A18 (test_migration_dry_run_and_unattributed_quarantine)
   * Line 554: Acceptance criterion A19 (test_no_destructive_purge_in_migration_pipeline)
   * Line 629: Section 9.3 Legacy table retention policy (30-day transition, read-only)
@@ -23,7 +23,7 @@ Criteria covered:
 - DoD-S8-ROLLBACK: Simulasi rollback teruji tanpa destructive purge (pre & post-cutover).
 - DoD-S8-DOCS: Dokumentasi prosedur docs/KMS_JSONB_MIGRATION.md tersedia dan lengkap.
 
-Candidate implementation files (strict boundaries for forge):
+Candidate implementation files (strict boundaries):
 - scripts/migrate_kms_documents.py
 - docs/KMS_JSONB_MIGRATION.md
 
@@ -67,7 +67,7 @@ def _load_migration_module() -> Any:
     """Load scripts.migrate_kms_documents dynamically.
 
     In the test-first RED phase, this raises ModuleNotFoundError because
-    scripts/migrate_kms_documents.py has not yet been implemented by forge.
+    scripts/migrate_kms_documents.py has not yet been implemented.
     """
     import scripts.migrate_kms_documents as module
 
@@ -122,7 +122,7 @@ def legacy_seed_data(test_db: Engine) -> dict[str, Any]:
 
     with test_db.connect() as conn:
         with conn.begin():
-            conn.execute(text("SET LOCAL kms.actor = 'sentinel-test'"))
+            conn.execute(text("SET LOCAL kms.actor = 'kms-test'"))
 
             # 1. Source artifact
             conn.execute(
@@ -540,7 +540,7 @@ def test_no_destructive_purge_in_migration_pipeline():
     pada tabel legacy (kms.variety_character_values, kms.value_observations, kms.draft_revisions).
     """
     assert SCRIPT_PATH.is_file(), (
-        f"Migration script {SCRIPT_PATH} does not exist yet (S8 implementation pending by forge)"
+        f"Migration script {SCRIPT_PATH} does not exist yet"
     )
 
     script_content = SCRIPT_PATH.read_text(encoding="utf-8")
@@ -653,7 +653,7 @@ def test_rollback_simulation_post_cutover_detects_delta_without_destructive_purg
     # 1. Simulasikan adanya dokumen JSONB baru yang ditulis post-cutover
     with test_db.connect() as conn:
         with conn.begin():
-            conn.execute(text("SET LOCAL kms.actor = 'sentinel-test'"))
+            conn.execute(text("SET LOCAL kms.actor = 'kms-test'"))
             conn.execute(
                 text("""
                     INSERT INTO kms.knowledge_documents (
@@ -750,7 +750,7 @@ def test_migration_documentation_exists_and_covers_procedures():
     4. Kebijakan retensi tabel legacy 30 hari tanpa purge destruktif.
     """
     assert DOC_PATH.is_file(), (
-        f"Documentation file {DOC_PATH} does not exist yet (S8 documentation pending by forge)"
+        f"Documentation file {DOC_PATH} does not exist yet"
     )
 
     doc_text = DOC_PATH.read_text(encoding="utf-8")
