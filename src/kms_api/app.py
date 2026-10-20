@@ -5,7 +5,7 @@ import io
 import zipfile
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 from uuid import UUID
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
@@ -16,6 +16,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from src.storage.config import Settings, get_settings
 from src.storage.contracts import CommitRequest, PromoteAliasRequest, RebaseRequest, StageRequest
 from src.storage.db import make_engine, preflight
+from src.storage.document_contracts import StageV2Request
+from src.storage.document_repository import DocumentRepository
 from src.storage.errors import Conflict, InvalidState, KmsError, NotFound
 from src.storage.image_storage import ImageStorageManager, MediaError, make_blob_store
 from src.storage.learning import LearningRepository
@@ -77,7 +79,12 @@ def validate_xlsx(payload: bytes, limit: int) -> None:
         raise InvalidState('Invalid .xlsx archive.') from error
 
 
-def create_app(settings: Settings | None = None, repository=None, blob_store=None) -> FastAPI:
+def create_app(
+    settings: Settings | None = None,
+    repository=None,
+    blob_store=None,
+    document_repository: DocumentRepository | None = None,
+) -> FastAPI:
     settings = settings or get_settings()
     principals = settings.principals()
     injected = repository is not None
@@ -85,6 +92,9 @@ def create_app(settings: Settings | None = None, repository=None, blob_store=Non
     repo = repository or KmsRepository(engine, allow_legacy_sourceless_runs=settings.allow_legacy_sourceless_runs)
     store = blob_store or make_blob_store(settings)
     images = ImageStorageManager(store, max_bytes=settings.media_max_bytes, max_pixels=settings.media_max_pixels)
+
+    doc_engine = getattr(repo, "engine", None) or engine
+    doc_repo = document_repository or (DocumentRepository(doc_engine) if doc_engine is not None else None)
 
     @asynccontextmanager
     async def lifespan(app):
@@ -162,6 +172,51 @@ def create_app(settings: Settings | None = None, repository=None, blob_store=Non
     @app.post('/runs/{run_id}/rebase')
     def rebase(run_id: str, request: RebaseRequest, principal: Annotated[Principal, Depends(curator)]):
         return repo.rebase(run_id, request.expected_revision, request.reason, actor=principal.subject)
+
+    @app.post('/runs/v2/stage')
+    def stage_v2(request: StageV2Request, principal: Annotated[Principal, Depends(writer)]):
+        if doc_repo is None:
+            raise InvalidState('Document endpoints require a database.')
+        return doc_repo.stage(request.draft, expected_revision=request.expected_revision, actor=principal.subject)
+
+    @app.get('/runs/v2/{run_id}')
+    def get_run_v2(run_id: str, principal: Annotated[Principal, Depends(authenticate)]):
+        if doc_repo is None:
+            raise InvalidState('Document endpoints require a database.')
+        return doc_repo.get_run(run_id)
+
+    @app.post('/runs/v2/{run_id}/commit')
+    def commit_v2(run_id: str, request: CommitRequest, principal: Annotated[Principal, Depends(writer)]):
+        if doc_repo is None:
+            raise InvalidState('Document endpoints require a database.')
+        return doc_repo.commit(run_id, request.expected_revision, request.payload_sha256, actor=principal.subject)
+
+    @app.post('/runs/v2/{run_id}/reviews/{item_id}/resolve')
+    def resolve_review_v2(run_id: str, item_id: str, decision: dict[str, Any], principal: Annotated[Principal, Depends(writer)]):
+        if doc_repo is None:
+            raise InvalidState('Document endpoints require a database.')
+        return doc_repo.resolve_review(run_id, item_id, decision, actor=principal.subject)
+
+    @app.get('/documents')
+    def list_documents(
+        principal: Annotated[Principal, Depends(authenticate)],
+        variety_id: str | None = None,
+        habitat_id: str | None = None,
+        limit: int = Query(100, ge=1, le=1000),
+        offset: int = Query(0, ge=0),
+    ):
+        if doc_repo is None:
+            raise InvalidState('Document endpoints require a database.')
+        return {'items': doc_repo.list_documents(variety_id=variety_id, habitat_id=habitat_id, limit=limit, offset=offset)}
+
+    @app.get('/documents/{doc_id}')
+    def get_document(doc_id: str, principal: Annotated[Principal, Depends(authenticate)]):
+        if doc_repo is None:
+            raise InvalidState('Document endpoints require a database.')
+        doc = doc_repo.get_document(doc_id)
+        if doc is None:
+            raise NotFound(f'Document {doc_id} not found.')
+        return doc
 
     @app.get('/values')
     def values(principal: Annotated[Principal, Depends(authenticate)], limit: int = Query(100, ge=1, le=1000), offset: int = Query(0, ge=0)):

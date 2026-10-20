@@ -434,6 +434,13 @@ class DocumentDraft(Contract):
         return documents
 
 
+class StageV2Request(Contract):
+    """Draft staging envelope request for atomic document persistence."""
+
+    draft: DocumentDraft
+    expected_revision: int = Field(default=0, ge=0)
+
+
 class CommitReceipt(Contract):
     """Receipt documenting successful atomic document commit."""
 
@@ -487,6 +494,7 @@ __all__ = [
     "PhotoMismatchDecision",
     "PlantIdentity",
     "SamplingLocationDetail",
+    "StageV2Request",
     "VisionClassificationResult",
     "validate_document",
 ]

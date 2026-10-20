@@ -19,7 +19,7 @@ def default_test_env(monkeypatch):
 @pytest.fixture(autouse=True)
 def clean_test_database_if_needed(request):
     """Clean disposable PostgreSQL test database before integration tests run."""
-    if "db" in getattr(request, "fixturenames", []):
+    if any(name in getattr(request, "fixturenames", []) for name in ("db", "test_db")):
         url = os.getenv("TEST_DATABASE_URL")
         if url:
             from sqlalchemy.engine import make_url

@@ -16,7 +16,11 @@ from src.storage.db import transaction
 from src.storage.document_contracts import (
     CommitReceipt,
     DocumentDraft,
+    HabitatIdentity,
     KnowledgeDocument,
+    MediaReference,
+    PhotoMismatchDecision,
+    PlantIdentity,
     validate_document,
 )
 from src.storage.errors import Conflict, InvalidState, NotFound
@@ -250,7 +254,7 @@ class DocumentRepository:
 
             draft = DocumentDraft.model_validate(run.draft_payload)
             if any(review.status == "pending" for review in draft.reviews):
-                raise InvalidState("Resolve every pending review before committing.")
+                raise Conflict("Resolve every pending review before committing.")
             if not draft.source_uri:
                 raise InvalidState("Archive the original source before committing a new run.")
 
@@ -437,12 +441,240 @@ class DocumentRepository:
         """Retrieve a KnowledgeDocument row by deterministic document key."""
         with Session(self.engine) as session:
             row = session.execute(
-                text("SELECT document, version FROM kms.knowledge_documents WHERE id = :id"),
+                text("SELECT id, document, version FROM kms.knowledge_documents WHERE id = :id"),
                 {"id": doc_id},
             ).mappings().first()
             if row is None:
                 return None
-            return dict(row)
+            doc = dict(row["document"])
+            doc["id"] = row["id"]
+            doc["doc_id"] = row["id"]
+            doc["version"] = row["version"]
+            return doc
+
+    def list_documents(
+        self,
+        *,
+        variety_id: str | None = None,
+        habitat_id: str | None = None,
+        limit: int = 100,
+        offset: int = 0,
+    ) -> list[dict[str, Any]]:
+        """Query committed KnowledgeDocuments with optional filtering and pagination."""
+        query = "SELECT id, document, version FROM kms.knowledge_documents WHERE 1=1"
+        params: dict[str, Any] = {"limit": limit, "offset": offset}
+        if variety_id:
+            query += " AND variety_id = :variety_id"
+            params["variety_id"] = variety_id
+        if habitat_id:
+            query += " AND habitat_id = :habitat_id"
+            params["habitat_id"] = habitat_id
+        query += " ORDER BY id LIMIT :limit OFFSET :offset"
+
+        with Session(self.engine) as session:
+            rows = session.execute(text(query), params).mappings().all()
+            result = []
+            for row in rows:
+                doc = dict(row["document"])
+                doc["id"] = row["id"]
+                doc["doc_id"] = row["id"]
+                doc["version"] = row["version"]
+                result.append(doc)
+            return result
+
+    def resolve_review(
+        self,
+        run_id: str,
+        item_id: str,
+        decision: dict[str, Any] | PhotoMismatchDecision,
+        *,
+        actor: str,
+    ) -> dict[str, Any]:
+        """Resolve a pending review item in a staged DocumentDraft envelope."""
+        if hasattr(decision, "model_dump"):
+            dec_dict = decision.model_dump(mode="json")
+        else:
+            dec_dict = dict(decision)
+
+        action = dec_dict.get("action")
+        notes = dec_dict.get("notes")
+
+        with transaction(self.engine) as session:
+            context(session, actor, run_id)
+            self._lock(session, run_id)
+            run = session.get(AcquisitionRun, run_id)
+            if run is None:
+                raise NotFound(f"Run {run_id} not found.")
+            if run.status == "COMMITTED":
+                raise Conflict("Run already committed. Create a new amendment run_id.")
+
+            draft = DocumentDraft.model_validate(run.draft_payload)
+            target_item = next((r for r in draft.reviews if r.item_id == item_id), None)
+            if target_item is None:
+                raise NotFound(f"Review item {item_id} not found in run {run_id}.")
+            if target_item.status != "pending":
+                raise Conflict(f"Review item {item_id} is already resolved ({target_item.status}).")
+
+            if action == "ASSIGN_EXISTING":
+                variety_id = dec_dict.get("selected_variety_id")
+                habitat_id = dec_dict.get("target_habitat_id")
+                target_key = (
+                    f"{variety_id}:{habitat_id}"
+                    if variety_id and habitat_id
+                    else target_item.target_document_key
+                )
+                if not target_key or target_key not in draft.documents:
+                    raise InvalidState(f"Target document '{target_key}' not found in draft.")
+
+                target_doc = draft.documents[target_key]
+                asset_id = target_item.payload.get("asset_id") or (
+                    target_item.raw_values[0] if target_item.raw_values else ""
+                )
+                raw_organ = target_item.payload.get("organ_part") or "habitus"
+                organ = raw_organ.lower() if isinstance(raw_organ, str) else "habitus"
+                if organ not in {"habitus", "daun", "batang", "bunga", "buah", "biji"}:
+                    organ = "habitus"
+
+                if asset_id and not any(m.asset_id == asset_id for m in target_doc.media_refs):
+                    media_ref = MediaReference(
+                        asset_id=asset_id,
+                        organ_part=organ,
+                        caption=target_item.payload.get("caption"),
+                        source_filename=target_item.source_label,
+                        provenance_run_id=run_id,
+                        assigned_via="HITL_REVIEW",
+                        resolution_status="linked",
+                    )
+                    target_doc.media_refs.append(media_ref)
+
+                target_item.status = "approved"
+                target_item.decision = dec_dict
+                target_item.target_document_key = target_key
+                if notes:
+                    target_item.notes = notes
+
+            elif action == "CREATE_NEW_DOCUMENT":
+                new_variety_name = dec_dict.get("new_variety_name") or "Cabai Baru"
+                identity_level = dec_dict.get("identity_level") or "cultivar"
+                target_habitat_id = dec_dict.get("target_habitat_id")
+
+                matching_habitat = next(
+                    (d.habitat for d in draft.documents.values() if d.habitat.id == target_habitat_id),
+                    None,
+                )
+                if matching_habitat is None:
+                    row = session.execute(
+                        text("SELECT document->'habitat' FROM kms.knowledge_documents WHERE habitat_id = :h LIMIT 1"),
+                        {"h": target_habitat_id},
+                    ).scalar_one_or_none()
+                    if row:
+                        matching_habitat = HabitatIdentity.model_validate(row)
+                    else:
+                        raise InvalidState(f"Target habitat {target_habitat_id} not found in draft or persistent documents.")
+
+                from src.storage.identity_resolution import _slugify
+
+                var_slug = _slugify(new_variety_name).replace("-", "_")
+                plant_id = f"plant_{var_slug}"
+                variety = PlantIdentity(id=plant_id, label=new_variety_name, identity_level=identity_level)
+                new_doc_key = f"{variety.id}:{matching_habitat.id}"
+
+                sample_locs = copy.deepcopy(
+                    next(
+                        (d.sampling_locations for d in draft.documents.values() if d.habitat.id == target_habitat_id),
+                        [],
+                    )
+                )
+                asset_id = target_item.payload.get("asset_id") or (
+                    target_item.raw_values[0] if target_item.raw_values else ""
+                )
+                raw_organ = target_item.payload.get("organ_part") or "habitus"
+                organ = raw_organ.lower() if isinstance(raw_organ, str) else "habitus"
+                if organ not in {"habitus", "daun", "batang", "bunga", "buah", "biji"}:
+                    organ = "habitus"
+
+                media_refs = []
+                if asset_id:
+                    media_refs.append(
+                        MediaReference(
+                            asset_id=asset_id,
+                            organ_part=organ,
+                            caption=target_item.payload.get("caption"),
+                            source_filename=target_item.source_label,
+                            provenance_run_id=run_id,
+                            assigned_via="HITL_REVIEW",
+                            resolution_status="linked",
+                        )
+                    )
+
+                new_doc = KnowledgeDocument(
+                    schema_version="kms-document-v1",
+                    variety=variety,
+                    habitat=matching_habitat,
+                    sampling_locations=sample_locs,
+                    attributes={},
+                    media_refs=media_refs,
+                    updated_by_run=run_id,
+                    doc_id=new_doc_key,
+                )
+                draft.documents[new_doc_key] = new_doc
+                if draft.base_versions is not None:
+                    draft.base_versions[new_doc_key] = 0
+
+                target_item.status = "approved"
+                target_item.decision = dec_dict
+                target_item.target_document_key = new_doc_key
+                if notes:
+                    target_item.notes = notes
+
+            elif action == "DISCARD":
+                target_item.status = "rejected"
+                target_item.decision = dec_dict
+                if notes:
+                    target_item.notes = notes
+
+                asset_id = target_item.payload.get("asset_id") or (
+                    target_item.raw_values[0] if target_item.raw_values else None
+                )
+                if asset_id:
+                    for d in draft.documents.values():
+                        for m in d.media_refs:
+                            if m.asset_id == asset_id:
+                                m.resolution_status = "discarded"
+
+            else:
+                decision_status = dec_dict.get("status", "approved")
+                target_item.status = "approved" if decision_status != "rejected" else "rejected"
+                target_item.decision = dec_dict
+                if notes:
+                    target_item.notes = notes
+
+            auto_accepted = sum(
+                1
+                for d in draft.documents.values()
+                for a in d.attributes.values()
+                if a.resolution == "AUTO_ACCEPT"
+            )
+            reviewed = sum(
+                1
+                for d in draft.documents.values()
+                for a in d.attributes.values()
+                if a.resolution != "AUTO_ACCEPT"
+            ) + len([r for r in draft.reviews if r.status != "pending"])
+            total_attrs = max(
+                run.total_attributes or 0,
+                len(draft.reviews) + sum(len(d.attributes) for d in draft.documents.values()),
+                auto_accepted + reviewed,
+            )
+
+            run.draft_payload = draft.model_dump(mode="json")
+            run.base_versions = draft.base_versions or {}
+            run.auto_accepted_count = auto_accepted
+            run.reviewed_count = reviewed
+            run.total_attributes = total_attrs
+            session.flush()
+
+            return target_item.model_dump(mode="json")
 
     def get_run(self, run_id: str) -> dict[str, Any]:
         """Retrieve run summary and draft."""
