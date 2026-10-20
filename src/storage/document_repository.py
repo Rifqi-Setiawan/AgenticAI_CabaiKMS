@@ -1,0 +1,457 @@
+"""Additive DDL and JSONB document repository for CabaiKMS."""
+
+from __future__ import annotations
+
+import copy
+from datetime import datetime, timezone
+import hashlib
+from typing import Any
+
+from sqlalchemy import select, text
+from sqlalchemy.engine import Engine
+from sqlalchemy.orm import Session
+
+from src.storage.contracts import canonical_json, digest_json
+from src.storage.db import transaction
+from src.storage.document_contracts import (
+    CommitReceipt,
+    DocumentDraft,
+    KnowledgeDocument,
+    validate_document,
+)
+from src.storage.errors import Conflict, InvalidState, NotFound
+from src.storage.models import AcquisitionRun
+
+__all__ = ["DocumentRepository", "context"]
+
+
+def context(session: Session, actor: str, run_id: str = "") -> None:
+    """Set PostgreSQL session settings for audit trail."""
+    if not actor.strip():
+        raise InvalidState("Authenticated actor required.")
+    session.execute(
+        text("SELECT set_config('kms.actor', :a, true), set_config('kms.run_id', :r, true)"),
+        {"a": actor, "r": run_id},
+    )
+
+
+class DocumentRepository:
+    """Repository managing dynamic JSONB documents, staging, and optimistic atomic commit."""
+
+    def __init__(self, engine: Engine) -> None:
+        self.engine = engine
+
+    @staticmethod
+    def _lock(session: Session, run_id: str) -> None:
+        session.execute(
+            text("SELECT pg_advisory_xact_lock(hashtextextended(:key, 0))"),
+            {"key": "run:" + run_id},
+        )
+
+    @staticmethod
+    def _archive_draft(session: Session, run: AcquisitionRun, actor: str) -> None:
+        session.execute(
+            text("""
+                INSERT INTO kms.draft_revisions
+                (run_id, revision, payload_sha256, payload, base_versions, actor)
+                VALUES (:r, :v, :h, CAST(:p AS jsonb), CAST(:b AS jsonb), :a)
+            """),
+            {
+                "r": run.run_id,
+                "v": run.revision,
+                "h": run.payload_sha256,
+                "p": canonical_json(run.draft_payload),
+                "b": canonical_json(run.base_versions),
+                "a": actor,
+            },
+        )
+
+    @staticmethod
+    def _run_summary(run: AcquisitionRun) -> dict[str, Any]:
+        return {
+            "run_id": run.run_id,
+            "status": run.status,
+            "revision": run.revision,
+            "payload_sha256": run.payload_sha256,
+            "receipt": run.receipt,
+        }
+
+    def register_source(
+        self, sha256: str, uri: str, size: int, *, actor: str
+    ) -> dict[str, Any]:
+        """Register source artifact in kms.source_artifacts."""
+        with transaction(self.engine) as session:
+            context(session, actor)
+            session.execute(
+                text("""
+                    INSERT INTO kms.source_artifacts (sha256, storage_uri, file_size)
+                    VALUES (:h, :u, :s) ON CONFLICT DO NOTHING
+                """),
+                {"h": sha256, "u": uri, "s": size},
+            )
+            row = session.execute(
+                text(
+                    "SELECT sha256, storage_uri, file_size FROM kms.source_artifacts WHERE sha256 = :h"
+                ),
+                {"h": sha256},
+            ).mappings().one()
+            if row["file_size"] != size:
+                raise Conflict("Source checksum collision or corrupt registry.")
+            return dict(row)
+
+    def get_source(self, sha256: str) -> dict[str, Any]:
+        """Retrieve source artifact metadata."""
+        with Session(self.engine) as session:
+            row = session.execute(
+                text("SELECT * FROM kms.source_artifacts WHERE sha256 = :h"),
+                {"h": sha256},
+            ).mappings().first()
+            if row is None:
+                raise NotFound("Source artifact not found.")
+            return dict(row)
+
+    def stage(
+        self, draft: DocumentDraft, *, expected_revision: int, actor: str
+    ) -> dict[str, Any]:
+        """Stage or update a DocumentDraft envelope."""
+        payload = draft.model_dump(mode="json")
+        checksum = digest_json(payload)
+        with transaction(self.engine) as session:
+            context(session, actor, draft.run_id)
+            self._lock(session, draft.run_id)
+            existing = session.get(AcquisitionRun, draft.run_id)
+            if existing is not None:
+                if existing.payload_sha256 == checksum:
+                    return self._run_summary(existing)
+                if existing.status == "COMMITTED":
+                    raise Conflict("Run already committed. Create a new amendment run_id.")
+                if existing.revision != expected_revision:
+                    raise Conflict("Draft revision changed. Reload the saved draft before editing.")
+                previous = DocumentDraft.model_validate(existing.draft_payload)
+                for field in (
+                    "source_filename",
+                    "file_sha256",
+                    "source_uri",
+                    "source_scope",
+                    "schema_version",
+                    "template_hash",
+                    "config_fingerprint",
+                ):
+                    if getattr(previous, field) != getattr(draft, field):
+                        raise Conflict("Source/schema/config/run identity cannot change inside one run.")
+                new_reviews = {review.item_id: review for review in draft.reviews}
+                if set(new_reviews) != {review.item_id for review in previous.reviews}:
+                    raise Conflict("Review membership cannot change inside an existing run.")
+                for review in previous.reviews:
+                    incoming = new_reviews[review.item_id]
+                    if review.status != "pending" and incoming.model_dump(mode="json") != review.model_dump(mode="json"):
+                        raise Conflict("A persisted review cannot be reverted.")
+
+                auto_accepted = sum(
+                    1
+                    for d in draft.documents.values()
+                    for a in d.attributes.values()
+                    if a.resolution == "AUTO_ACCEPT"
+                )
+                reviewed = sum(
+                    1
+                    for d in draft.documents.values()
+                    for a in d.attributes.values()
+                    if a.resolution != "AUTO_ACCEPT"
+                ) + len([r for r in draft.reviews if r.status != "pending"])
+                total_attrs = max(
+                    len(draft.reviews) + sum(len(d.attributes) for d in draft.documents.values()),
+                    auto_accepted + reviewed,
+                )
+
+                existing.revision += 1
+                existing.draft_payload = payload
+                existing.payload_sha256 = checksum
+                existing.auto_accepted_count = auto_accepted
+                existing.reviewed_count = reviewed
+                existing.total_attributes = total_attrs
+
+                merged_bv = dict(existing.base_versions)
+                if draft.base_versions:
+                    merged_bv.update(draft.base_versions)
+                existing.base_versions = merged_bv
+
+                session.flush()
+                self._archive_draft(session, existing, actor)
+                return self._run_summary(existing)
+
+            if expected_revision != 0:
+                raise Conflict("New runs must use expected_revision=0.")
+            if draft.source_uri:
+                source = session.execute(
+                    text("SELECT storage_uri FROM kms.source_artifacts WHERE sha256 = :h"),
+                    {"h": draft.file_sha256},
+                ).scalar_one_or_none()
+                if source != draft.source_uri:
+                    raise InvalidState("Source artifact is not registered, or checksum/URI mismatch.")
+
+            auto_accepted = sum(
+                1
+                for d in draft.documents.values()
+                for a in d.attributes.values()
+                if a.resolution == "AUTO_ACCEPT"
+            )
+            reviewed = sum(
+                1
+                for d in draft.documents.values()
+                for a in d.attributes.values()
+                if a.resolution != "AUTO_ACCEPT"
+            ) + len([r for r in draft.reviews if r.status != "pending"])
+            total_attrs = max(
+                len(draft.reviews) + sum(len(d.attributes) for d in draft.documents.values()),
+                auto_accepted + reviewed,
+            )
+
+            run = AcquisitionRun(
+                run_id=draft.run_id,
+                source_filename=draft.source_filename,
+                file_sha256=draft.file_sha256,
+                source_uri=draft.source_uri,
+                schema_version=draft.schema_version,
+                template_hash=draft.template_hash,
+                config_fingerprint=draft.config_fingerprint,
+                total_attributes=total_attrs,
+                auto_accepted_count=auto_accepted,
+                reviewed_count=reviewed,
+                status="STAGED",
+                revision=1,
+                payload_sha256=checksum,
+                draft_payload=payload,
+                base_versions=draft.base_versions or {},
+            )
+            session.add(run)
+            session.flush()
+            self._archive_draft(session, run, actor)
+            return self._run_summary(run)
+
+    def commit(
+        self, run_id: str, revision: int, payload_sha256: str, *, actor: str
+    ) -> CommitReceipt:
+        """Atomically commit a staged DocumentDraft into kms.knowledge_documents."""
+        with transaction(self.engine) as session:
+            context(session, actor, run_id)
+            self._lock(session, run_id)
+            run = session.get(AcquisitionRun, run_id)
+            if run is None:
+                raise NotFound("Run not found.")
+            if run.revision != revision or run.payload_sha256 != payload_sha256:
+                raise Conflict("Commit revision/digest no longer matches the reviewed draft.")
+            if run.status == "COMMITTED":
+                receipt_dict = copy.deepcopy(run.receipt)
+                if isinstance(receipt_dict, dict):
+                    receipt_dict["replayed"] = True
+                    return CommitReceipt.model_validate(receipt_dict)
+                return receipt_dict
+
+            draft = DocumentDraft.model_validate(run.draft_payload)
+            if any(review.status == "pending" for review in draft.reviews):
+                raise InvalidState("Resolve every pending review before committing.")
+            if not draft.source_uri:
+                raise InvalidState("Archive the original source before committing a new run.")
+
+            sorted_keys = sorted(draft.documents.keys())
+
+            # Advisory lock per document to serialize concurrent writers deterministically
+            for doc_key in sorted_keys:
+                session.execute(
+                    text("SELECT pg_advisory_xact_lock(hashtextextended(:k, 0))"),
+                    {"k": "doc:" + doc_key},
+                )
+
+            # Optimistic concurrency check against database versions
+            for doc_key in sorted_keys:
+                row = session.execute(
+                    text("SELECT version FROM kms.knowledge_documents WHERE id = :id"),
+                    {"id": doc_key},
+                ).mappings().first()
+                current_ver = row["version"] if row is not None else 0
+                expected_ver = run.base_versions.get(
+                    doc_key, draft.base_versions.get(doc_key, 0)
+                )
+                if current_ver != expected_ver:
+                    raise Conflict(
+                        f"Document {doc_key} base version {expected_ver} does not match database version {current_ver}."
+                    )
+
+            created_count = 0
+            updated_count = 0
+            attributes_committed = 0
+            prohibited_history_keys = (
+                "previous_value",
+                "previous_values",
+                "observations",
+                "history",
+                "raw_history",
+            )
+
+            for doc_key in sorted_keys:
+                incoming_doc = draft.documents[doc_key]
+                incoming_dict = incoming_doc.model_dump(mode="json")
+                row = session.execute(
+                    text("SELECT version, document FROM kms.knowledge_documents WHERE id = :id"),
+                    {"id": doc_key},
+                ).mappings().first()
+                current_ver = row["version"] if row is not None else 0
+                expected_ver = run.base_versions.get(
+                    doc_key, draft.base_versions.get(doc_key, 0)
+                )
+
+                if current_ver == 0:
+                    doc_data = copy.deepcopy(incoming_dict)
+                    doc_data["version"] = 1
+                    doc_data["updated_by_run"] = run_id
+                    doc_data["doc_id"] = doc_key
+
+                    for p in prohibited_history_keys:
+                        doc_data.pop(p, None)
+                    for attr in doc_data.get("attributes", {}).values():
+                        if isinstance(attr, dict):
+                            for p in prohibited_history_keys:
+                                attr.pop(p, None)
+
+                    session.execute(
+                        text("""
+                            INSERT INTO kms.knowledge_documents
+                            (id, variety_id, habitat_id, document, version, created_at, updated_at)
+                            VALUES (:id, :v_id, :h_id, CAST(:doc AS jsonb), 1, now(), now())
+                        """),
+                        {
+                            "id": doc_key,
+                            "v_id": incoming_doc.variety.id,
+                            "h_id": incoming_doc.habitat.id,
+                            "doc": canonical_json(doc_data),
+                        },
+                    )
+                    created_count += 1
+                    attributes_committed += len(doc_data.get("attributes", {}))
+                else:
+                    existing_doc = row["document"]
+                    new_ver = current_ver + 1
+
+                    # Merge attributes: incoming overwrites existing (A10)
+                    merged_attrs = dict(existing_doc.get("attributes", {}))
+                    merged_attrs.update(incoming_dict.get("attributes", {}))
+
+                    # Merge sampling locations
+                    loc_map = {
+                        loc.get("location_ref"): loc
+                        for loc in existing_doc.get("sampling_locations", [])
+                        if loc.get("location_ref")
+                    }
+                    for loc in incoming_dict.get("sampling_locations", []):
+                        ref = loc.get("location_ref")
+                        if ref:
+                            loc_map[ref] = loc
+                    merged_locs = list(loc_map.values())
+
+                    # Merge media refs
+                    media_map = {
+                        m.get("asset_id"): m
+                        for m in existing_doc.get("media_refs", [])
+                        if m.get("asset_id")
+                    }
+                    for m in incoming_dict.get("media_refs", []):
+                        aid = m.get("asset_id")
+                        if aid:
+                            media_map[aid] = m
+                    merged_media = list(media_map.values())
+
+                    doc_data = copy.deepcopy(existing_doc)
+                    doc_data["schema_version"] = incoming_dict.get(
+                        "schema_version", existing_doc.get("schema_version", "kms-document-v1")
+                    )
+                    doc_data["variety"] = incoming_dict.get("variety", existing_doc.get("variety"))
+                    doc_data["habitat"] = incoming_dict.get("habitat", existing_doc.get("habitat"))
+                    doc_data["sampling_locations"] = merged_locs
+                    doc_data["attributes"] = merged_attrs
+                    doc_data["media_refs"] = merged_media
+                    doc_data["updated_by_run"] = run_id
+                    doc_data["version"] = new_ver
+                    doc_data["doc_id"] = doc_key
+
+                    for p in prohibited_history_keys:
+                        doc_data.pop(p, None)
+                    for attr in doc_data.get("attributes", {}).values():
+                        if isinstance(attr, dict):
+                            for p in prohibited_history_keys:
+                                attr.pop(p, None)
+
+                    res = session.execute(
+                        text("""
+                            UPDATE kms.knowledge_documents
+                            SET document = CAST(:doc AS jsonb), version = :new_v, updated_at = now()
+                            WHERE id = :id AND version = :exp_v
+                        """),
+                        {
+                            "id": doc_key,
+                            "doc": canonical_json(doc_data),
+                            "new_v": new_ver,
+                            "exp_v": current_ver,
+                        },
+                    )
+                    if res.rowcount != 1:
+                        raise Conflict(f"Concurrent update conflict on document {doc_key}.")
+                    updated_count += 1
+                    attributes_committed += len(doc_data.get("attributes", {}))
+
+            # Record single sanitized outbox event
+            outbox_payload = {
+                "run_id": run_id,
+                "revision": revision,
+                "payload_sha256": payload_sha256,
+                "documents_committed": sorted_keys,
+            }
+            session.execute(
+                text("""
+                    INSERT INTO kms.outbox_events (run_id, event_type, payload)
+                    VALUES (:r, 'KMS_DOCUMENT_COMMITTED', CAST(:p AS jsonb))
+                """),
+                {"r": run_id, "p": canonical_json(outbox_payload)},
+            )
+
+            receipt = CommitReceipt(
+                run_id=run_id,
+                revision=revision,
+                documents_created=created_count,
+                documents_updated=updated_count,
+                documents_unchanged=0,
+                reviews_resolved=len([r for r in draft.reviews if r.status != "pending"]),
+                attributes_committed=attributes_committed,
+                media_linked=sum(len(d.media_refs) for d in draft.documents.values()),
+                replayed=False,
+                committed_at=datetime.now(timezone.utc),
+                committed_documents_count=len(draft.documents),
+            )
+            run.status = "COMMITTED"
+            run.receipt = receipt.model_dump(mode="json")
+            run.committed_at = receipt.committed_at
+            session.flush()
+            return receipt
+
+    def get_document(self, doc_id: str) -> dict[str, Any] | None:
+        """Retrieve a KnowledgeDocument row by deterministic document key."""
+        with Session(self.engine) as session:
+            row = session.execute(
+                text("SELECT document, version FROM kms.knowledge_documents WHERE id = :id"),
+                {"id": doc_id},
+            ).mappings().first()
+            if row is None:
+                return None
+            return dict(row)
+
+    def get_run(self, run_id: str) -> dict[str, Any]:
+        """Retrieve run summary and draft."""
+        with Session(self.engine) as session:
+            run = session.get(AcquisitionRun, run_id)
+            if run is None:
+                raise NotFound("Run not found.")
+            return {
+                **self._run_summary(run),
+                "draft": run.draft_payload,
+                "base_versions": run.base_versions,
+            }
