@@ -90,3 +90,25 @@ class ImageMetadata(BaseModel):
     mime_type: str
     size: int
     created_time: datetime
+
+
+# S6b multi-signal contracts re-exported from document_contracts
+from src.storage.document_contracts import (  # noqa: E402
+    PhotoContextSignal,
+    PhotoMismatchDecision,
+    VisionClassificationResult,
+)
+
+__all__ = [
+    "NULL_ROW",
+    "CanonicalSchema",
+    "clear_default_schema_cache",
+    "valid_row_ids",
+    "SchemaMapping",
+    "VisionResult",
+    "ImageMetadata",
+    "PhotoContextSignal",
+    "PhotoMismatchDecision",
+    "VisionClassificationResult",
+]
+
