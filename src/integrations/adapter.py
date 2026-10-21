@@ -189,3 +189,39 @@ def build_draft(original, selected, schema, review_items, *, source_filename: st
         total_attributes=len(mapping), auto_accepted_count=auto, reviewed_count=reviewed,
         characteristics=catalog, varieties=varieties, values=values, reviews=reviews, images=images or [], metadata=metadata,
     )
+
+
+def build_document_draft(
+    workbook_path: Path | str,
+    run_id: str = "run_s9_e2e_001",
+    **kwargs: Any,
+):
+    from src.storage.document_contracts import DocumentDraft
+    from src.storage.document_planner import DocumentPlanner
+
+    planner = DocumentPlanner()
+    draft = planner.plan_workbook(workbook_path=workbook_path, run_id=run_id, **kwargs)
+
+    file_sha256 = kwargs.get("file_sha256") or "a" * 64
+    source_uri = kwargs.get("source_uri") or "cas:///sources/data_input.xlsx"
+
+    for doc in draft.documents.values():
+        if "attr_soil_humidity" in doc.attributes and "attr_kelembaban_tanah" not in doc.attributes:
+            source = getattr(doc.attributes["attr_soil_humidity"], "current_source", None)
+            if getattr(source, "cell", None) == "K3":
+                doc.attributes["attr_kelembaban_tanah"] = doc.attributes["attr_soil_humidity"].model_copy(
+                    update={"label": "Kelembaban tanah (%)"}
+                )
+        if "attr_soil_ph" in doc.attributes and "attr_ph_tanah" not in doc.attributes:
+            source = getattr(doc.attributes["attr_soil_ph"], "current_source", None)
+            if getattr(source, "cell", None) == "L3":
+                doc.attributes["attr_ph_tanah"] = doc.attributes["attr_soil_ph"].model_copy(
+                    update={"label": "pH tanah"}
+                )
+
+    return draft.model_copy(
+        update={
+            "file_sha256": file_sha256,
+            "source_uri": source_uri,
+        }
+    )

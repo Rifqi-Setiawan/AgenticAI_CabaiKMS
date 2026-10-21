@@ -318,6 +318,21 @@ Preview dibentuk dari worksheet yang sudah mengalami penulisan tabular dan visio
 
 `provenance_records` saat ini hanya mencakup penulisan kanonik dari schema matching; penulisan vision belum memiliki provenance pada fase ini. Provenance sel dibuat hanya setelah penulisan kanonik non-kosong benar-benar mengubah builder. `REVIEW`, `NO_WRITE`, nilai kosong, dan penulisan duplikat/no-op tidak menghasilkan provenance. Backend `legacy` belum menyediakan koordinat sumber sehingga `source_cells` kosong. Backend `source-ir-gated` yang lulus `MATCH` mempropagasikan koordinat fisik nilai dan header Source IR ke provenance kanonik.
 
+### Arsitektur Dokumen JSONB (KnowledgeDocument) dan Endpoint API V2
+
+KMS mengadopsi model penyimpanan terstruktur berbasis **JSONB** (`kms.knowledge_documents`) menggunakan kontrak `KnowledgeDocument`:
+- **Struktur Dokumen**: Setiap dokumen mengikat pasangan identitas varietas tanaman (`PlantIdentity`) dan habitat administratif (`HabitatIdentity`), kumpulan atribut dinamis (`attributes`), dan referensi media terverifikasi (`media_refs`).
+- **Endpoint API V2**:
+  - `POST /runs/v2/stage`: Melakukan *staging* `DocumentDraft` yang memuat usulan dokumen dan review item.
+  - `POST /runs/v2/{id}/commit`: Melakukan *commit* transaksional all-or-nothing setelah seluruh pending review terselesaikan.
+  - `POST /runs/v2/{id}/reviews/{item_id}/resolve`: Menyelesaikan item review kurasi.
+  - `GET /documents`: Melakukan kueri pencarian dokumen pengetahuan aktif.
+- **Tiga Aksi Resolusi Review Foto**:
+  - `ASSIGN_EXISTING`: Menautkan foto ke dokumen varietas yang sudah ada pada habitat terkait dan melepaskan status review.
+  - `CREATE_NEW_DOCUMENT`: Membentuk dokumen baru untuk varietas baru yang tervalidasi tanpa mengarang taksonomi artifisial.
+  - `DISCARD`: Menolak foto secara non-destruktif tanpa menghapus blob fisik di storage CAS.
+
+
 ## 7. Instalasi dan konfigurasi
 
 ### Dependensi

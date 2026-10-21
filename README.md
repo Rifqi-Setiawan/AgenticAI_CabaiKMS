@@ -81,12 +81,21 @@ Alternatif developer-facing yang menampilkan diagnostik tersanitasi dan mengemba
 .\.venv\Scripts\python.exe -B -m scripts.ninerouter_preflight
 ```
 
+## Arsitektur Dokumen JSONB & Penyimpanan Pengetahuan (KMS V2)
+
+KMS mengimplementasikan model penyimpanan dokumen pengetahuan berbasis **JSONB** (`kms.knowledge_documents`) menggunakan kontrak `KnowledgeDocument`:
+- **Identitas Berpasangan**: Dokumen diidentifikasi oleh pasangan varietas tanaman dan habitat administratif teresolusi (`variety_id:habitat_id`), bukan varietas semata. Resolusi **habitat administratif** diturunkan dari hierarki wilayah administratif desa (`province`, `regency`, `district`, `village`) secara deterministik tanpa terpengaruh elevasi atau pH tanah.
+- **Siklus Hidup Staging & Commit Transaksional**: Perubahan diproses melalui siklus hidup **staging** (`POST /runs/v2/stage`) dan diakhiri dengan **commit** transaksional all-or-nothing (`POST /runs/v2/{id}/commit`) setelah seluruh item review terselesaikan.
+- **Migrasi Data Legacy & Kebijakan Retensi**: Migrasi dari skema relasional lama diatur melalui panduan operasional di [`docs/KMS_JSONB_MIGRATION.md`](docs/KMS_JSONB_MIGRATION.md). Data historis tanpa metadata habitat administratif dialihkan ke antrean **karantina** (*quarantine*). Tabel historis legacy dilindungi oleh kebijakan **retensi** transisi minimal 30 hari tanpa perintah purge otomatis di kode produk.
+- **Status Aktivasi Konfigurasi**: Fitur penyimpanan dokumen JSONB dikendalikan oleh flag konfigurasi `kms_enabled` (atau variabel lingkungan `CABAI_KMS_ENABLED`). Secara default di lingkungan produksi, flag ini bernilai `false` (**nonaktif** / disabled) hingga seluruh gerbang pengujian formal (Gate 4) disetujui, memastikan kapabilitas yang telah teruji tidak diklaim aktif di produksi secara prematur.
+
 ## Peta dokumentasi
 
 | Dokumen | Isi |
 |---|---|
 | [Tech stack dan alur fitur](docs/TECH_STACK_AND_FLOWS.md) | Peta end-to-end setiap fitur, logika keputusan, komponen deterministik, embedding, serta LLM/model vision yang dipakai pada setiap step |
 | [Panduan lengkap proyek](docs/PROJECT_GUIDE.md) | Status implementasi, arsitektur, struktur file, kontrak data, alur, konfigurasi, penggunaan, testing, keterbatasan, dan pemeliharaan |
+| [Panduan migrasi dokumen JSONB](docs/KMS_JSONB_MIGRATION.md) | Panduan operasional migrasi data legacy ke dokumen JSONB, akuntansi rekonsiliasi, karantina data tanpa habitat, dan kebijakan retensi 30 hari |
 | [Runbook demo](docs/DEMO_RUNBOOK.md) | Checklist persiapan, alur demo langsung, dan fallback kegagalan |
 | [Penyiapan Google Drive](docs/DRIVE_SETUP.md) | Langkah service account dan akses folder |
 | [Keputusan desain](docs/DESIGN_DECISIONS.md) | Keputusan dan alasan; dibedakan dari implementasi yang sudah tersedia |
