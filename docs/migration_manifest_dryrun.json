@@ -1,0 +1,1031 @@
+{
+  "dry_run": true,
+  "summary": {
+    "total_legacy_rows": 78,
+    "mapped_count": 0,
+    "quarantine_count": 78,
+    "rejected_count": 0,
+    "mapped_documents_count": 0
+  },
+  "mapped_documents": [],
+  "quarantine_items": [
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "dd643355-3ed6-4459-b1c3-dd8939932d9d",
+      "canonical_key": "panjang_buah_muda",
+      "legacy_value_id": "0123f971-c399-4d8e-895e-88f4d2c28a99",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "8.6 cm",
+      "raw_source_value": [
+        "8,6 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "709c3b9f-369e-4c18-9fcf-49f904fffde0",
+      "canonical_key": "posisi_bunga",
+      "legacy_value_id": "07dadfe4-aa2b-422c-b576-0a4f949d4df5",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "menggantung",
+      "raw_source_value": [
+        "Menggantung"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "f158a9f6-217c-4316-972a-94c8a7812393",
+      "canonical_key": "warna_biji",
+      "legacy_value_id": "192fb987-0b07-4fd6-83ab-ad30dd97561e",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Krem",
+      "raw_source_value": [
+        "Krem"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "e71bd360-ad85-462f-830f-23bc71c6ee14",
+      "canonical_key": "tinggi_tanaman",
+      "legacy_value_id": "1becc8fb-74fa-4aac-9b80-789213dc6574",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "75 cm",
+      "raw_source_value": [
+        "75 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "638d735d-3d0d-48d0-83a4-e8b9dfe6c9d7",
+      "canonical_key": "habitus",
+      "legacy_value_id": "1d3cf5ec-0f63-4fbf-9a85-50256f9e2967",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Tegak",
+      "raw_source_value": [
+        "Tegak"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "866c1f4f-a997-4e39-92d8-9e3bd619118c",
+      "canonical_key": "bentuk_ujung_buah",
+      "legacy_value_id": "1f20ca58-3ed3-4896-bcc6-09b980bf06fb",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Runcing",
+      "raw_source_value": [
+        "Runcing"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "412c38f4-8e96-4042-a6da-91182b7a4780",
+      "canonical_key": "tekstur_daun",
+      "legacy_value_id": "1f30327d-3bf5-458a-877b-d8e8eef1f4ec",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "halus",
+      "raw_source_value": [
+        "Halus"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "412c38f4-8e96-4042-a6da-91182b7a4780",
+      "canonical_key": "tekstur_daun",
+      "legacy_value_id": "1ff7c96d-9007-483a-9f08-4c2450489467",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Agak kasar",
+      "raw_source_value": [
+        "Agak kasar"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "2c87470c-b8b7-4280-83ca-62d25883665e",
+      "canonical_key": "keliling_kelopak_buah_muda",
+      "legacy_value_id": "20a62b53-5972-495f-8dcd-028666d4cb01",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "2.8--3.4 cm",
+      "raw_source_value": [
+        "2,8\u20133,4 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "8554ea89-be19-4303-b8e1-77d5708f975e",
+      "canonical_key": "warna_buah_masak",
+      "legacy_value_id": "227378d7-6323-4777-a60e-0f798129973b",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Merah jingga",
+      "raw_source_value": [
+        "Merah jingga"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "f158a9f6-217c-4316-972a-94c8a7812393",
+      "canonical_key": "warna_biji",
+      "legacy_value_id": "2542c612-5a32-4f53-9e2f-4ebcb2a1a6e1",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Krem kekuningan",
+      "raw_source_value": [
+        "Krem kekuningan"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "97df043e-dc63-47c3-b1fd-0955627c0b31",
+      "canonical_key": "posisi_buah_masak",
+      "legacy_value_id": "29a0cdae-578b-4a5e-8a02-6ff05da9ed04",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "menggantung",
+      "raw_source_value": [
+        "Menggantung"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "638d735d-3d0d-48d0-83a4-e8b9dfe6c9d7",
+      "canonical_key": "habitus",
+      "legacy_value_id": "374bc067-c171-4b22-806d-1563efbd9784",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Tegak kompak",
+      "raw_source_value": [
+        "Tegak kompak"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "6fee085f-d507-479d-9627-a0e614cb502d",
+      "canonical_key": "panjang_daun",
+      "legacy_value_id": "39067faa-19d4-45a4-b3dd-a5d113e3170c",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "11.7 cm",
+      "raw_source_value": [
+        "11,7 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "dd643355-3ed6-4459-b1c3-dd8939932d9d",
+      "canonical_key": "panjang_buah_muda",
+      "legacy_value_id": "3fe9e3c2-2df2-45f8-9c98-6fe45a2c8e33",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "10.3--12.1 cm",
+      "raw_source_value": [
+        "10,3\u201312,1 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "1b8a10bc-c44f-43ca-b8dc-65d6ed40dc61",
+      "canonical_key": "jumlah_mahkota_bunga",
+      "legacy_value_id": "43d1fe93-86ce-4b2b-b089-0c29932d72d7",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "5",
+      "raw_source_value": [
+        "5"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "f158a9f6-217c-4316-972a-94c8a7812393",
+      "canonical_key": "warna_biji",
+      "legacy_value_id": "451dc8cf-513f-497c-8fbe-1fd8be9c3c9b",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Krem",
+      "raw_source_value": [
+        "Krem"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "f158a9f6-217c-4316-972a-94c8a7812393",
+      "canonical_key": "warna_biji",
+      "legacy_value_id": "47ab3338-10ca-48b5-b652-aa5acb0b3d96",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Kuning pucat",
+      "raw_source_value": [
+        "Kuning pucat"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "2da4f3f0-a3d1-4a76-85f3-ba7d35a463ce",
+      "canonical_key": "warna_daun",
+      "legacy_value_id": "48ce1f46-59fe-4bbc-ae02-e0fb067e8a49",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Hijau pekat",
+      "raw_source_value": [
+        "Hijau pekat"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "8554ea89-be19-4303-b8e1-77d5708f975e",
+      "canonical_key": "warna_buah_masak",
+      "legacy_value_id": "4a5122a4-5543-4ee0-8710-db39a52a9236",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "merah",
+      "raw_source_value": [
+        "Merah"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "e71bd360-ad85-462f-830f-23bc71c6ee14",
+      "canonical_key": "tinggi_tanaman",
+      "legacy_value_id": "4e07df5b-284b-49d0-a96d-cea199d0bfce",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "90--120 cm",
+      "raw_source_value": [
+        "90\u2013120 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "6fee085f-d507-479d-9627-a0e614cb502d",
+      "canonical_key": "panjang_daun",
+      "legacy_value_id": "4f798e75-10cc-4e67-b05e-99b7a12ee1b0",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "10.2--12.4 cm",
+      "raw_source_value": [
+        "10,2\u201312,4 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "1b8a10bc-c44f-43ca-b8dc-65d6ed40dc61",
+      "canonical_key": "jumlah_mahkota_bunga",
+      "legacy_value_id": "513150ff-1506-4a81-a671-e106e1b1e7ca",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "5",
+      "raw_source_value": [
+        "5"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "412c38f4-8e96-4042-a6da-91182b7a4780",
+      "canonical_key": "tekstur_daun",
+      "legacy_value_id": "523c0ca7-81bc-4799-bffd-39e9101afddb",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Kasar",
+      "raw_source_value": [
+        "Kasar"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "d6802ab4-b813-4fbe-9ffd-b62abcf64935",
+      "canonical_key": "lokasi",
+      "legacy_value_id": "5283a1ad-b4dd-4942-8646-58479d34a760",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Agam, Sumatera Barat",
+      "raw_source_value": [
+        "Agam, Sumatera Barat"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "f4b8103c-487d-4d00-982f-a4545ff7ef7e",
+      "canonical_key": "batang",
+      "legacy_value_id": "576f93e6-1e6b-4bea-944c-ae24c52626af",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Hampir tidak berbulu",
+      "raw_source_value": [
+        "Hampir tidak berbulu"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "f4b8103c-487d-4d00-982f-a4545ff7ef7e",
+      "canonical_key": "batang",
+      "legacy_value_id": "5e1e350c-7562-47d9-8f5e-5d987c218b28",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Berbulu halus",
+      "raw_source_value": [
+        "Berbulu halus"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "709c3b9f-369e-4c18-9fcf-49f904fffde0",
+      "canonical_key": "posisi_bunga",
+      "legacy_value_id": "619fd709-d5f6-4f2c-8bdb-87c0bd75d9e2",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "menggantung",
+      "raw_source_value": [
+        "Menggantung"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "77570c4b-1f5a-4ef2-830f-032eb81c7b5a",
+      "canonical_key": "adaptasi_ekologi",
+      "legacy_value_id": "63bb57e3-eb4b-40e2-be5c-d33b26d68721",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Dataran rendah lembap",
+      "raw_source_value": [
+        "Dataran rendah lembap"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "866c1f4f-a997-4e39-92d8-9e3bd619118c",
+      "canonical_key": "bentuk_ujung_buah",
+      "legacy_value_id": "660664da-5fa3-4365-b5fd-3f93e5cfe3a8",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "tumpul",
+      "raw_source_value": [
+        "Tumpul"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "0f787193-637a-420e-8c5c-5da2b69adb71",
+      "canonical_key": "umur",
+      "legacy_value_id": "67051ee0-6ba9-4928-88ae-ebbcd0c37d55",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "semusim",
+      "raw_source_value": [
+        "Semusim"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "709c3b9f-369e-4c18-9fcf-49f904fffde0",
+      "canonical_key": "posisi_bunga",
+      "legacy_value_id": "687329bd-5790-4bc0-b3f9-8cf1f864f685",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "tegak",
+      "raw_source_value": [
+        "Tegak"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "8554ea89-be19-4303-b8e1-77d5708f975e",
+      "canonical_key": "warna_buah_masak",
+      "legacy_value_id": "6ce39463-aeca-4dd0-9b8f-191eed20764a",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Merah cerah",
+      "raw_source_value": [
+        "Merah cerah"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "4c2f2b1f-f142-4d76-8c99-dc076fe20d64",
+      "canonical_key": "warna_mahkota",
+      "legacy_value_id": "6d50b788-bb04-4f2c-8aad-7b8fd3bc186c",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Ungu pucat",
+      "raw_source_value": [
+        "Ungu pucat"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "4c2f2b1f-f142-4d76-8c99-dc076fe20d64",
+      "canonical_key": "warna_mahkota",
+      "legacy_value_id": "6db7ef98-d99e-4bf6-93ab-9025595e041b",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Putih kehijauan",
+      "raw_source_value": [
+        "Putih kehijauan"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "77570c4b-1f5a-4ef2-830f-032eb81c7b5a",
+      "canonical_key": "adaptasi_ekologi",
+      "legacy_value_id": "6e51b448-3fb0-44a0-810d-f430ae4f4b41",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Dataran menengah",
+      "raw_source_value": [
+        "Dataran menengah"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "6fee085f-d507-479d-9627-a0e614cb502d",
+      "canonical_key": "panjang_daun",
+      "legacy_value_id": "72e18479-4918-4690-b88b-9bba6c5c1c5e",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "14.3--16.8 cm",
+      "raw_source_value": [
+        "14,3\u201316,8 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "97df043e-dc63-47c3-b1fd-0955627c0b31",
+      "canonical_key": "posisi_buah_masak",
+      "legacy_value_id": "776ce31c-89aa-4119-863c-831dc2468280",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Menyamping",
+      "raw_source_value": [
+        "Menyamping"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "0f787193-637a-420e-8c5c-5da2b69adb71",
+      "canonical_key": "umur",
+      "legacy_value_id": "78b23558-9258-478c-bc05-fd37f947a42e",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Tahunan",
+      "raw_source_value": [
+        "Tahunan"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "638d735d-3d0d-48d0-83a4-e8b9dfe6c9d7",
+      "canonical_key": "habitus",
+      "legacy_value_id": "7fcdae66-e2c6-44a1-b44e-5fe7ccdc7346",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "perdu",
+      "raw_source_value": [
+        "Perdu"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "e71bd360-ad85-462f-830f-23bc71c6ee14",
+      "canonical_key": "tinggi_tanaman",
+      "legacy_value_id": "85f1555c-439c-415f-9202-8a5c45f40c95",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": [
+        "\u02c3 100 cm",
+        "20 cm"
+      ],
+      "raw_source_value": [
+        "\u02c3 100 cm; 20 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "17836bdf-a058-423b-a47d-c5f47f13b33b",
+      "canonical_key": "jumlah_biji_buah_masak",
+      "legacy_value_id": "8a6ec37e-ae16-4dcd-ae0f-4b854f53800b",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "46",
+      "raw_source_value": [
+        "46"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "0f787193-637a-420e-8c5c-5da2b69adb71",
+      "canonical_key": "umur",
+      "legacy_value_id": "8b01d63e-8c45-44d4-bc68-682e472a17b0",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Tahunan",
+      "raw_source_value": [
+        "Tahunan"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "2c87470c-b8b7-4280-83ca-62d25883665e",
+      "canonical_key": "keliling_kelopak_buah_muda",
+      "legacy_value_id": "8e5fcd30-a9d0-4935-9d90-8e502c1baf80",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "4.8 cm",
+      "raw_source_value": [
+        "4,8 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "0f787193-637a-420e-8c5c-5da2b69adb71",
+      "canonical_key": "umur",
+      "legacy_value_id": "910c93d6-ef4a-4c7d-9b7d-2152f8d5c15f",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "semusim",
+      "raw_source_value": [
+        "Semusim"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "2da4f3f0-a3d1-4a76-85f3-ba7d35a463ce",
+      "canonical_key": "warna_daun",
+      "legacy_value_id": "9662bf68-bf9b-4f18-b3ed-ca6748983f90",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Hijau",
+      "raw_source_value": [
+        "Hijau"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "17836bdf-a058-423b-a47d-c5f47f13b33b",
+      "canonical_key": "jumlah_biji_buah_masak",
+      "legacy_value_id": "9dc89c9b-82cb-46c6-92aa-3c879e44a463",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "31",
+      "raw_source_value": [
+        "31"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "1b8a10bc-c44f-43ca-b8dc-65d6ed40dc61",
+      "canonical_key": "jumlah_mahkota_bunga",
+      "legacy_value_id": "a08e13bc-a632-48a5-9f44-d5a69b7a6485",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "6",
+      "raw_source_value": [
+        "6"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "dd643355-3ed6-4459-b1c3-dd8939932d9d",
+      "canonical_key": "panjang_buah_muda",
+      "legacy_value_id": "a6e1d346-93be-43bb-b087-0e7c10231aff",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "4.1 cm",
+      "raw_source_value": [
+        "4,1 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "d6802ab4-b813-4fbe-9ffd-b62abcf64935",
+      "canonical_key": "lokasi",
+      "legacy_value_id": "aa4a1258-4bb1-4343-8a3f-0aeb36eaffec",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Cisarua, Bandung Barat",
+      "raw_source_value": [
+        "Cisarua, Bandung Barat"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "d6802ab4-b813-4fbe-9ffd-b62abcf64935",
+      "canonical_key": "lokasi",
+      "legacy_value_id": "aa94fd47-4005-45c0-8dd6-effc0954ea66",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Garut, Jawa Barat",
+      "raw_source_value": [
+        "Garut, Jawa Barat"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "2c87470c-b8b7-4280-83ca-62d25883665e",
+      "canonical_key": "keliling_kelopak_buah_muda",
+      "legacy_value_id": "af73eca6-0b0b-4432-a215-f951ecff3474",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "5.1--6.0 cm",
+      "raw_source_value": [
+        "5,1\u20136,0 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "866c1f4f-a997-4e39-92d8-9e3bd619118c",
+      "canonical_key": "bentuk_ujung_buah",
+      "legacy_value_id": "afcf70f7-db22-4efd-83b9-337bd36890e5",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Runcing",
+      "raw_source_value": [
+        "Runcing"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "dd643355-3ed6-4459-b1c3-dd8939932d9d",
+      "canonical_key": "panjang_buah_muda",
+      "legacy_value_id": "b3709c46-ab66-4b06-9fd5-9946ebd1b014",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "5.8--7.2 cm",
+      "raw_source_value": [
+        "5,8\u20137,2 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "f4b8103c-487d-4d00-982f-a4545ff7ef7e",
+      "canonical_key": "batang",
+      "legacy_value_id": "b412fd8b-ecee-46d6-b6d4-f7e59560eba9",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Berbulu lebat",
+      "raw_source_value": [
+        "Berbulu lebat"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "17836bdf-a058-423b-a47d-c5f47f13b33b",
+      "canonical_key": "jumlah_biji_buah_masak",
+      "legacy_value_id": "bc2d679a-0190-4bca-a568-8561fe8478f6",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "26",
+      "raw_source_value": [
+        "26"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "2da4f3f0-a3d1-4a76-85f3-ba7d35a463ce",
+      "canonical_key": "warna_daun",
+      "legacy_value_id": "bc318c6a-3508-436a-a176-76948a21778e",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Hijau tua",
+      "raw_source_value": [
+        "Hijau tua"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "638d735d-3d0d-48d0-83a4-e8b9dfe6c9d7",
+      "canonical_key": "habitus",
+      "legacy_value_id": "bcf38db3-72a0-4a47-b745-dd5d5cf848ac",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Semak rapat",
+      "raw_source_value": [
+        "Semak rapat"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "4c2f2b1f-f142-4d76-8c99-dc076fe20d64",
+      "canonical_key": "warna_mahkota",
+      "legacy_value_id": "bd81779d-68c6-4cab-80bf-9548f3bd9f4d",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "ungu",
+      "raw_source_value": [
+        "Ungu"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "6fee085f-d507-479d-9627-a0e614cb502d",
+      "canonical_key": "panjang_daun",
+      "legacy_value_id": "c0b01f58-50b3-4d48-91da-3618de4efee7",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "12.2 cm",
+      "raw_source_value": [
+        "12,2 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "6c78ce61-791b-4b4e-b639-37720134e666",
+      "canonical_key": "lebar_daun",
+      "legacy_value_id": "c21e1c5a-37cf-40b8-bcf0-d2501d47e863",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "4.0--5.1 cm",
+      "raw_source_value": [
+        "4,0\u20135,1 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "d6802ab4-b813-4fbe-9ffd-b62abcf64935",
+      "canonical_key": "lokasi",
+      "legacy_value_id": "c22fb604-4f56-49fd-8d7e-9c8530e12e9c",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Toraja Utara, Sulawesi Selatan",
+      "raw_source_value": [
+        "Toraja Utara, Sulawesi Selatan"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "412c38f4-8e96-4042-a6da-91182b7a4780",
+      "canonical_key": "tekstur_daun",
+      "legacy_value_id": "c8e0bf43-53b5-4c19-97ba-16a48316afa1",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Licin",
+      "raw_source_value": [
+        "Licin"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "97df043e-dc63-47c3-b1fd-0955627c0b31",
+      "canonical_key": "posisi_buah_masak",
+      "legacy_value_id": "c9039679-d159-4006-9ba5-67825e9bd190",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "tegak",
+      "raw_source_value": [
+        "Tegak"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "77570c4b-1f5a-4ef2-830f-032eb81c7b5a",
+      "canonical_key": "adaptasi_ekologi",
+      "legacy_value_id": "cba41492-0186-4876-97a8-a3fbc406673a",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Dataran tinggi",
+      "raw_source_value": [
+        "Dataran tinggi"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "f4b8103c-487d-4d00-982f-a4545ff7ef7e",
+      "canonical_key": "batang",
+      "legacy_value_id": "cba53831-0534-4601-979f-40bacb3f4c4f",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Berbulu sedang",
+      "raw_source_value": [
+        "Berbulu sedang"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "6c78ce61-791b-4b4e-b639-37720134e666",
+      "canonical_key": "lebar_daun",
+      "legacy_value_id": "ce0ed707-019e-4d4a-bb8d-4e7754c35e86",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "6.4--7.1 cm",
+      "raw_source_value": [
+        "6,4\u20137,1 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "e71bd360-ad85-462f-830f-23bc71c6ee14",
+      "canonical_key": "tinggi_tanaman",
+      "legacy_value_id": "cf209ea4-06db-4295-9d43-89df67c65a5f",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "60--89 cm",
+      "raw_source_value": [
+        "60 - 89 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "866c1f4f-a997-4e39-92d8-9e3bd619118c",
+      "canonical_key": "bentuk_ujung_buah",
+      "legacy_value_id": "d55c5dea-6ef0-4b1b-801b-dceceb41daa1",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "meruncing",
+      "raw_source_value": [
+        "Meruncing"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "97df043e-dc63-47c3-b1fd-0955627c0b31",
+      "canonical_key": "posisi_buah_masak",
+      "legacy_value_id": "d924d373-3db0-46e1-9e52-e3784881d3f8",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "menggantung",
+      "raw_source_value": [
+        "Menggantung"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "709c3b9f-369e-4c18-9fcf-49f904fffde0",
+      "canonical_key": "posisi_bunga",
+      "legacy_value_id": "deb2424a-d615-4024-9798-6629df826d6d",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Menyamping",
+      "raw_source_value": [
+        "Menyamping"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "2da4f3f0-a3d1-4a76-85f3-ba7d35a463ce",
+      "canonical_key": "warna_daun",
+      "legacy_value_id": "ed9f577a-24b6-46b4-a89d-735cf862632c",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Hijau muda",
+      "raw_source_value": [
+        "Hijau muda"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "6c78ce61-791b-4b4e-b639-37720134e666",
+      "canonical_key": "lebar_daun",
+      "legacy_value_id": "f158ab38-9bd5-46d9-91d5-946f0e484838",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "5.8 cm",
+      "raw_source_value": [
+        "5,8 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "829609a5-cd28-48fe-b925-1f303ee784b1",
+      "characteristic_id": "77570c4b-1f5a-4ef2-830f-032eb81c7b5a",
+      "canonical_key": "adaptasi_ekologi",
+      "legacy_value_id": "f1637c6f-ad5b-4120-af05-dc87074a6177",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Dataran tinggi sejuk",
+      "raw_source_value": [
+        "Dataran tinggi sejuk"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6822d108-a56b-4050-a88a-a967740a8970",
+      "characteristic_id": "2c87470c-b8b7-4280-83ca-62d25883665e",
+      "canonical_key": "keliling_kelopak_buah_muda",
+      "legacy_value_id": "f4da9c03-f54d-430b-a10c-d9bb0836e928",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "3.1 cm",
+      "raw_source_value": [
+        "3,1 cm"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "090ab25c-7eec-466c-bd4f-cd5b7fe53eec",
+      "characteristic_id": "8554ea89-be19-4303-b8e1-77d5708f975e",
+      "canonical_key": "warna_buah_masak",
+      "legacy_value_id": "f62baf97-56c4-49f4-a133-c951e882bd93",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Merah tua",
+      "raw_source_value": [
+        "Merah tua"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "1b8a10bc-c44f-43ca-b8dc-65d6ed40dc61",
+      "canonical_key": "jumlah_mahkota_bunga",
+      "legacy_value_id": "f6e48315-92a1-4cf2-88dc-fb92a38d683d",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "5",
+      "raw_source_value": [
+        "5"
+      ],
+      "status": "QUARANTINE"
+    },
+    {
+      "variety_id": "6526a2d8-a435-471a-a5e2-4fc8473cf54a",
+      "characteristic_id": "4c2f2b1f-f142-4d76-8c99-dc076fe20d64",
+      "canonical_key": "warna_mahkota",
+      "legacy_value_id": "f82c4175-d37e-4436-8962-06915d7356d2",
+      "reason": "Unresolved location: missing or invalid administrative habitat provenance",
+      "raw_address": null,
+      "normalized_value": "Putih",
+      "raw_source_value": [
+        "Putih"
+      ],
+      "status": "QUARANTINE"
+    }
+  ],
+  "rejected_items": []
+}
