@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[2]
 MIGRATIONS = [
     ('0001', ROOT / 'schema.sql'),
     ('0002', ROOT / 'schema_0002_jsonb.sql'),
+    ('0003', ROOT / 'schema_0003_attribute_changes.sql'),
 ]
 
 
