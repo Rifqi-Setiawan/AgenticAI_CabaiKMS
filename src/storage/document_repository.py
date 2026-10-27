@@ -125,25 +125,21 @@ class DocumentRepository:
         actor: str,
     ) -> None:
         """Record attribute change to append-only kms.document_attribute_changes ledger."""
-        has_table = session.execute(
-            text("SELECT to_regclass('kms.document_attribute_changes') IS NOT NULL")
-        ).scalar()
-        if has_table:
-            session.execute(
-                text("""
-                    INSERT INTO kms.document_attribute_changes
-                    (doc_id, attribute_id, old_value, new_value, run_id, actor, created_at)
-                    VALUES (:doc_id, :attribute_id, CAST(:old_val AS jsonb), CAST(:new_val AS jsonb), :run_id, :actor, now())
-                """),
-                {
-                    "doc_id": doc_id,
-                    "attribute_id": attribute_id,
-                    "old_val": canonical_json(old_val),
-                    "new_val": canonical_json(new_val),
-                    "run_id": run_id,
-                    "actor": actor,
-                },
-            )
+        session.execute(
+            text("""
+                INSERT INTO kms.document_attribute_changes
+                (doc_id, attribute_id, old_value, new_value, run_id, actor)
+                VALUES (:doc_id, :attr_id, CAST(:old_val AS jsonb), CAST(:new_val AS jsonb), :run_id, :actor)
+            """),
+            {
+                "doc_id": doc_id,
+                "attr_id": attribute_id,
+                "old_val": canonical_json(old_val),
+                "new_val": canonical_json(new_val),
+                "run_id": run_id,
+                "actor": actor,
+            },
+        )
 
     def register_source(
         self, sha256: str, uri: str, size: int, *, actor: str

@@ -33,13 +33,23 @@ def migrate(admin_url: str) -> list[str]:
             ddl = path.read_text(encoding='utf-8')
             checksum = hashlib.sha256(ddl.encode()).hexdigest()
             previous = connection.execute('SELECT sha256 FROM kms.schema_migrations WHERE version=%s', (version,)).fetchone()
-            if previous:
+            table_missing = False
+            if version == '0003':
+                table_missing = bool(connection.execute("SELECT to_regclass('kms.document_attribute_changes') IS NULL").fetchone()[0])
+            elif version == '0002':
+                table_missing = bool(connection.execute("SELECT to_regclass('kms.knowledge_documents') IS NULL").fetchone()[0])
+
+            if previous and not table_missing:
                 if previous[0] != checksum:
                     raise RuntimeError(f'Migration {version} checksum mismatch; add a new migration, never edit applied DDL.')
                 continue
             # psycopg simple query supports the complete multi-statement migration.
             connection.execute(ddl, prepare=False)
-            connection.execute('INSERT INTO kms.schema_migrations(version,sha256) VALUES (%s,%s)', (version, checksum))
+            connection.execute(
+                '''INSERT INTO kms.schema_migrations(version,sha256) VALUES (%s,%s)
+                   ON CONFLICT (version) DO UPDATE SET sha256 = EXCLUDED.sha256, applied_at = now()''',
+                (version, checksum),
+            )
             applied.append(version)
     return applied
 

@@ -11,6 +11,7 @@ from uuid import UUID
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 from src.storage.config import Settings, get_settings
@@ -149,13 +150,31 @@ def create_app(
         # Do not log repr(error), SQL parameters, DSNs, tokens, or spreadsheet values.
         return JSONResponse({'detail': 'Database operation failed. No successful commit was acknowledged.'}, status_code=503)
 
+    @app.get('/livez')
     @app.get('/healthz')
-    def health():
+    def livez():
         return {'status': 'alive'}
 
     @app.get('/readyz')
-    def ready(principal: Annotated[Principal, Depends(authenticate)]):
-        return {'status': 'ready'} if injected else preflight(engine)
+    def ready():
+        required_tables = [
+            "kms.acquisition_runs",
+            "kms.source_artifacts",
+            "kms.knowledge_documents",
+            "kms.document_attribute_changes",
+        ]
+        target_engine = doc_repo.engine if doc_repo is not None else engine
+        if target_engine is None:
+            return JSONResponse({'status': 'not_ready', 'error': 'Database engine not initialized'}, status_code=503)
+        try:
+            with target_engine.connect() as conn:
+                for tbl in required_tables:
+                    exists = conn.scalar(text(f"SELECT to_regclass('{tbl}') IS NOT NULL"))
+                    if not exists:
+                        return JSONResponse({'status': 'not_ready', 'missing_table': tbl}, status_code=503)
+            return {'status': 'ready'}
+        except Exception as e:
+            return JSONResponse({'status': 'not_ready', 'error': f'{type(e).__name__}: {e}'}, status_code=503)
 
     @app.post('/runs/stage')
     def stage(request: StageRequest, principal: Annotated[Principal, Depends(writer)]):
