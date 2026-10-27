@@ -417,14 +417,18 @@ class DocumentRepository:
                         if attr_id in merged_attrs:
                             exist_dict = merged_attrs[attr_id]
                             is_approved_override = (doc_key, attr_id) in approved_overrides
-                            can_ow = is_approved_override
-                            if not can_ow:
-                                try:
-                                    exist_av = AttributeValue.model_validate(exist_dict)
-                                    inc_av = AttributeValue.model_validate(inc_dict)
-                                    can_ow = policy.can_overwrite(exist_av, inc_av)
-                                except Exception:
-                                    can_ow = True
+                            if is_approved_override:
+                                can_ow = True
+                            else:
+                                exist_av = AttributeValue.model_validate(exist_dict)
+                                inc_av = AttributeValue.model_validate(inc_dict)
+                                block_reason = policy.overwrite_block_reason(exist_av, inc_av)
+                                if block_reason is not None:
+                                    raise Conflict(
+                                        f"OVERWRITE_BLOCKED at commit for document '{doc_key}', attribute '{attr_id}': "
+                                        f"{block_reason}. Resolve review or re-stage draft."
+                                    )
+                                can_ow = True
 
                             if can_ow:
                                 if exist_dict != inc_dict:
