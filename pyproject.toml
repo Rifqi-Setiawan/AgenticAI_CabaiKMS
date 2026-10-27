@@ -5,4 +5,5 @@ markers = [
     "indexing: needs network on first run to download the HF embedding model (cached after that)",
     "llm_fallback_live: attempts a real localhost connection to a (non-running) Ollama server, ~15-20s",
     "ninerouter_live: opt-in live text and multimodal capability check against local 9Router",
+    "integration: integration tests requiring real PostgreSQL database",
 ]
