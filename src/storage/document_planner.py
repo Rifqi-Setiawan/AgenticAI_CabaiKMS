@@ -146,28 +146,22 @@ def parse_cell_value(
                 num_val = float(tokens[0])
                 found_unit = " ".join(tokens[1:]).strip()
                 norm_expected = unit.strip().lower() if unit else None
-                all_known_units = {
-                    "cm", "mm", "m", "meter", "centimeter", "millimeter",
-                    "kg", "g", "gram", "mg", "kilogram", "milligram",
-                    "%", "oc", "c", "celcius", "celsius", "°c", "spad",
-                    "mg/g", "ppm", "hari", "bulan", "minggu", "cm2", "buah"
-                }
-                if norm_expected is None or found_unit.lower() == norm_expected or found_unit.lower() in all_known_units:
+                if norm_expected is None or found_unit.lower() != norm_expected:
                     return ParsedCellValue(
                         value=num_val,
-                        value_type="number",
+                        value_type=expected_type or "number",
                         is_blank=False,
-                        is_valid=True,
+                        is_valid=False,
+                        review_category="VALUE_INVALID",
                         unit=found_unit,
+                        error=f"Unrecognized or mismatched measurement unit '{found_unit}'",
                     )
                 return ParsedCellValue(
                     value=num_val,
-                    value_type=expected_type or "number",
+                    value_type="number",
                     is_blank=False,
-                    is_valid=False,
-                    review_category="VALUE_INVALID",
-                    unit=found_unit,
-                    error=f"Unrecognized or mismatched measurement unit '{found_unit}'",
+                    is_valid=True,
+                    unit=unit,
                 )
             except ValueError:
                 pass
@@ -759,18 +753,56 @@ class DocumentPlanner:
                     )
 
                     if not parsed_cell.is_valid:
-                        reviews.append(
-                            DocumentReviewItem(
-                                item_id=f"rev_val_{uuid.uuid4().hex[:12]}",
-                                category="VALUE_INVALID",
-                                source_label=k,
-                                source_context=f"Row {row.get('_row', 'unknown')}: Invalid value '{v}' for attribute '{k}'",
-                                raw_values=[v],
-                                status="pending",
-                                run_id=run_id,
-                                notes=parsed_cell.error or "Invalid attribute value or unit mismatch",
+                        if (
+                            "unit" in (parsed_cell.error or "").lower()
+                            and attr_id in doc_attributes
+                        ):
+                            existing_attr = doc_attributes[attr_id]
+                            reviews.append(
+                                DocumentReviewItem(
+                                    item_id=f"rev_ow_{uuid.uuid4().hex[:12]}",
+                                    category="UNIT_MISMATCH",
+                                    source_label=k,
+                                    target_document_key=doc_key,
+                                    source_context=f"Row {row.get('_row', 'unknown')}: Attribute '{k}' unit mismatch",
+                                    raw_values=[
+                                        existing_attr.value,
+                                        parsed_cell.value if parsed_cell.value is not None else v,
+                                    ],
+                                    status="pending",
+                                    run_id=run_id,
+                                    notes=(
+                                        f"Unit mismatch for '{k}': existing unit={existing_attr.unit} "
+                                        f"vs incoming unit={parsed_cell.unit}"
+                                    ),
+                                    payload={
+                                        "attribute_id": attr_id,
+                                        "old_value": existing_attr.value,
+                                        "new_value": (
+                                            parsed_cell.value
+                                            if parsed_cell.value is not None
+                                            else v
+                                        ),
+                                        "old_unit": existing_attr.unit,
+                                        "new_unit": parsed_cell.unit,
+                                        "old_attribute": existing_attr.model_dump(mode="json"),
+                                        "raw_value": v,
+                                    },
+                                )
                             )
-                        )
+                        else:
+                            reviews.append(
+                                DocumentReviewItem(
+                                    item_id=f"rev_val_{uuid.uuid4().hex[:12]}",
+                                    category="VALUE_INVALID",
+                                    source_label=k,
+                                    source_context=f"Row {row.get('_row', 'unknown')}: Invalid value '{v}' for attribute '{k}'",
+                                    raw_values=[v],
+                                    status="pending",
+                                    run_id=run_id,
+                                    notes=parsed_cell.error or "Invalid attribute value or unit mismatch",
+                                )
+                            )
                         continue
 
                     if parsed_cell.is_blank:
