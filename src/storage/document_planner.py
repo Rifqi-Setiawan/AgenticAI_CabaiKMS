@@ -146,22 +146,28 @@ def parse_cell_value(
                 num_val = float(tokens[0])
                 found_unit = " ".join(tokens[1:]).strip()
                 norm_expected = unit.strip().lower() if unit else None
-                if norm_expected is None or found_unit.lower() != norm_expected:
+                all_known_units = {
+                    "cm", "mm", "m", "meter", "centimeter", "millimeter",
+                    "kg", "g", "gram", "mg", "kilogram", "milligram",
+                    "%", "oc", "c", "celcius", "celsius", "°c", "spad",
+                    "mg/g", "ppm", "hari", "bulan", "minggu", "cm2", "buah"
+                }
+                if norm_expected is None or found_unit.lower() == norm_expected or found_unit.lower() in all_known_units:
                     return ParsedCellValue(
                         value=num_val,
-                        value_type=expected_type or "number",
+                        value_type="number",
                         is_blank=False,
-                        is_valid=False,
-                        review_category="VALUE_INVALID",
+                        is_valid=True,
                         unit=found_unit,
-                        error=f"Unrecognized or mismatched measurement unit '{found_unit}'",
                     )
                 return ParsedCellValue(
                     value=num_val,
-                    value_type="number",
+                    value_type=expected_type or "number",
                     is_blank=False,
-                    is_valid=True,
-                    unit=unit,
+                    is_valid=False,
+                    review_category="VALUE_INVALID",
+                    unit=found_unit,
+                    error=f"Unrecognized or mismatched measurement unit '{found_unit}'",
                 )
             except ValueError:
                 pass
@@ -188,10 +194,10 @@ def parse_cell_value(
 
         return ParsedCellValue(
             value=stripped,
-            value_type=expected_type or "text",
+            value_type="text" if expected_type == "number" else (expected_type or "text"),
             is_blank=False,
             is_valid=True,
-            unit=unit,
+            unit=None if expected_type == "number" else unit,
         )
 
     return ParsedCellValue(
@@ -783,7 +789,7 @@ class DocumentPlanner:
                     row_idx = row.get("_row", 1) if isinstance(row.get("_row"), int) else 1
                     sheet_name = str(row.get("_sheet", "Resume Data"))
 
-                    doc_attributes[attr_id] = AttributeValue(
+                    incoming_attr = AttributeValue(
                         label=defn.label,
                         value=parsed_cell.value,
                         value_type=parsed_cell.value_type or defn.value_type,
@@ -798,6 +804,49 @@ class DocumentPlanner:
                             location_ref=loc_detail.location_ref,
                         ),
                     )
+
+                    if attr_id in doc_attributes:
+                        existing_attr = doc_attributes[attr_id]
+                        if not self.policy.can_overwrite(existing_attr, incoming_attr):
+                            category = (
+                                "UNIT_MISMATCH"
+                                if (
+                                    existing_attr.unit is not None
+                                    and incoming_attr.unit is not None
+                                    and not self.policy._units_compatible(
+                                        existing_attr.unit, incoming_attr.unit
+                                    )
+                                )
+                                else "OVERWRITE_BLOCKED"
+                            )
+                            reviews.append(
+                                DocumentReviewItem(
+                                    item_id=f"rev_ow_{uuid.uuid4().hex[:12]}",
+                                    category=category,
+                                    source_label=k,
+                                    target_document_key=doc_key,
+                                    source_context=f"Row {row.get('_row', 'unknown')}: Attribute '{k}' overwrite blocked",
+                                    raw_values=[existing_attr.value, incoming_attr.value],
+                                    status="pending",
+                                    run_id=run_id,
+                                    notes=(
+                                        f"Overwrite blocked for '{k}': existing value={existing_attr.value} "
+                                        f"(type={existing_attr.value_type}, unit={existing_attr.unit}) vs "
+                                        f"incoming value={incoming_attr.value} "
+                                        f"(type={incoming_attr.value_type}, unit={incoming_attr.unit})"
+                                    ),
+                                    payload={
+                                        "attribute_id": attr_id,
+                                        "old_value": existing_attr.value,
+                                        "new_value": incoming_attr.value,
+                                        "old_attribute": existing_attr.model_dump(mode="json"),
+                                        "new_attribute": incoming_attr.model_dump(mode="json"),
+                                    },
+                                )
+                            )
+                            continue
+
+                    doc_attributes[attr_id] = incoming_attr
 
             knowledge_doc = KnowledgeDocument(
                 schema_version="kms-document-v1",

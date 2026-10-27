@@ -377,6 +377,8 @@ class DocumentReviewItem(Contract):
         "LOW_CONFIDENCE_MATCH",
         "INTRA_WORKBOOK_CONFLICT",
         "UNRESOLVED_LOCATION",
+        "OVERWRITE_BLOCKED",
+        "UNIT_MISMATCH",
     ]
     target_document_key: str | None = None
     source_label: str = ""

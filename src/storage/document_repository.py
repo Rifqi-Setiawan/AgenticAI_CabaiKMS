@@ -14,6 +14,7 @@ from sqlalchemy.orm import Session
 from src.storage.contracts import canonical_json, digest_json
 from src.storage.db import transaction
 from src.storage.document_contracts import (
+    AttributeValue,
     CommitReceipt,
     DocumentDraft,
     HabitatIdentity,
@@ -23,6 +24,7 @@ from src.storage.document_contracts import (
     PlantIdentity,
     validate_document,
 )
+from src.storage.attribute_policy import AttributePolicy
 from src.storage.errors import Conflict, InvalidState, NotFound
 from src.storage.models import AcquisitionRun
 
@@ -79,6 +81,37 @@ class DocumentRepository:
             "payload_sha256": run.payload_sha256,
             "receipt": run.receipt,
         }
+
+    @staticmethod
+    def _record_attribute_change(
+        session: Session,
+        doc_id: str,
+        attribute_id: str,
+        old_val: Any,
+        new_val: Any,
+        run_id: str,
+        actor: str,
+    ) -> None:
+        """Record attribute change to append-only kms.document_attribute_changes ledger."""
+        has_table = session.execute(
+            text("SELECT to_regclass('kms.document_attribute_changes') IS NOT NULL")
+        ).scalar()
+        if has_table:
+            session.execute(
+                text("""
+                    INSERT INTO kms.document_attribute_changes
+                    (doc_id, attribute_id, old_value, new_value, run_id, actor, created_at)
+                    VALUES (:doc_id, :attribute_id, CAST(:old_val AS jsonb), CAST(:new_val AS jsonb), :run_id, :actor, now())
+                """),
+                {
+                    "doc_id": doc_id,
+                    "attribute_id": attribute_id,
+                    "old_val": canonical_json(old_val),
+                    "new_val": canonical_json(new_val),
+                    "run_id": run_id,
+                    "actor": actor,
+                },
+            )
 
     def register_source(
         self, sha256: str, uri: str, size: int, *, actor: str
@@ -337,9 +370,38 @@ class DocumentRepository:
                     existing_doc = row["document"]
                     new_ver = current_ver + 1
 
-                    # Merge attributes: incoming overwrites existing (A10)
+                    # Merge attributes: apply can_overwrite policy guard (A10)
                     merged_attrs = dict(existing_doc.get("attributes", {}))
-                    merged_attrs.update(incoming_dict.get("attributes", {}))
+                    policy = AttributePolicy()
+                    for attr_id, inc_dict in incoming_dict.get("attributes", {}).items():
+                        if attr_id in merged_attrs:
+                            exist_dict = merged_attrs[attr_id]
+                            can_ow = True
+                            try:
+                                exist_av = AttributeValue.model_validate(exist_dict)
+                                inc_av = AttributeValue.model_validate(inc_dict)
+                                can_ow = policy.can_overwrite(exist_av, inc_av)
+                            except Exception:
+                                can_ow = True
+
+                            if can_ow:
+                                if exist_dict != inc_dict:
+                                    self._record_attribute_change(
+                                        session,
+                                        doc_id=doc_key,
+                                        attribute_id=attr_id,
+                                        old_val=exist_dict,
+                                        new_val=inc_dict,
+                                        run_id=run_id,
+                                        actor=actor,
+                                    )
+                                merged_attrs[attr_id] = inc_dict
+                            else:
+                                # Guard: retain existing attribute intact
+                                pass
+                        else:
+                            # Additional new attribute on existing document
+                            merged_attrs[attr_id] = inc_dict
 
                     # Merge sampling locations
                     loc_map = {
