@@ -561,7 +561,7 @@ def test_a09_conflicting_organ_in_context_rejects_auto_accept():
 
 
 def test_auto_accept_overwrites_existing_human_review_value():
-    """Incoming AUTO_ACCEPT measurement overwrites existing HUMAN_REVIEW current value."""
+    """Incoming AUTO_ACCEPT cannot auto-overwrite protected existing HUMAN_REVIEW value (Decision D2)."""
     existing_val = _create_sample_attribute_value(
         label="tinggi tanaman",
         value=82.0,
@@ -579,9 +579,10 @@ def test_auto_accept_overwrites_existing_human_review_value():
 
     policy = AttributePolicy()
 
-    # PRD A10 / Decision #2: AUTO_ACCEPT is permitted to overwrite HUMAN_REVIEW
-    assert policy.can_overwrite(existing_val, incoming_val) is True
-    assert can_overwrite_attribute_value(existing_val, incoming_val, policy=policy) is True
+    # D2: HUMAN_REVIEW is protected; AUTO_ACCEPT is blocked with EXISTING_HUMAN_PROTECTED
+    assert policy.can_overwrite(existing_val, incoming_val) is False
+    assert policy.overwrite_block_reason(existing_val, incoming_val) == "EXISTING_HUMAN_PROTECTED"
+    assert can_overwrite_attribute_value(existing_val, incoming_val, policy=policy) is False
 
 
 def test_a10_auto_accept_overwrites_existing_auto_accept_value():
@@ -625,7 +626,7 @@ def test_a10_needs_review_incoming_cannot_overwrite_existing_value():
 
 
 def test_a10_trusted_alias_auto_accept_overwrites_existing_human_review():
-    """Incoming value mapped via trusted alias with AUTO_ACCEPT overwrites existing HUMAN_REVIEW."""
+    """Incoming value mapped via trusted alias with AUTO_ACCEPT cannot overwrite existing HUMAN_REVIEW without curator review (Decision D2)."""
     existing_val = _create_sample_attribute_value(
         label="tinggi tanaman",
         value=75.0,
@@ -640,7 +641,8 @@ def test_a10_trusted_alias_auto_accept_overwrites_existing_human_review():
     )
 
     policy = AttributePolicy()
-    assert policy.can_overwrite(existing_val, incoming_alias_val) is True
+    assert policy.can_overwrite(existing_val, incoming_alias_val) is False
+    assert policy.overwrite_block_reason(existing_val, incoming_alias_val) == "EXISTING_HUMAN_PROTECTED"
 
 
 def test_a10_incompatible_value_type_blocks_auto_overwrite():

@@ -667,22 +667,31 @@ class AttributePolicy:
 
         return best_attr
 
-    def can_overwrite(self, existing: AttributeValue, incoming: AttributeValue) -> bool:
-        """Evaluate whether incoming measurement can overwrite existing current value."""
+    def overwrite_block_reason(
+        self, existing: AttributeValue, incoming: AttributeValue
+    ) -> str | None:
+        """Evaluate why incoming measurement cannot overwrite existing current value."""
         if incoming.resolution != "AUTO_ACCEPT":
-            return False
+            return "INCOMING_NOT_AUTO_ACCEPT"
+
+        if existing.resolution != "AUTO_ACCEPT":
+            return "EXISTING_HUMAN_PROTECTED"
 
         if existing.value_type != incoming.value_type:
-            return False
+            return "TYPE_MISMATCH"
 
         if existing.unit is not None and incoming.unit is not None:
             if not self._units_compatible(existing.unit, incoming.unit):
-                return False
+                return "UNIT_INCOMPATIBLE"
 
         if not self._attributes_compatible(existing.label, incoming.label):
-            return False
+            return "LABEL_INCOMPATIBLE"
 
-        return True
+        return None
+
+    def can_overwrite(self, existing: AttributeValue, incoming: AttributeValue) -> bool:
+        """Evaluate whether incoming measurement can overwrite existing current value."""
+        return self.overwrite_block_reason(existing, incoming) is None
 
     @staticmethod
     def _units_compatible(u1: str, u2: str) -> bool:
@@ -730,3 +739,14 @@ def can_overwrite_attribute_value(
     if policy is None:
         policy = AttributePolicy()
     return policy.can_overwrite(existing, incoming)
+
+
+def overwrite_block_reason(
+    existing: AttributeValue,
+    incoming: AttributeValue,
+    policy: AttributePolicy | None = None,
+) -> str | None:
+    """Module-level function evaluating why incoming value cannot overwrite existing value."""
+    if policy is None:
+        policy = AttributePolicy()
+    return policy.overwrite_block_reason(existing, incoming)

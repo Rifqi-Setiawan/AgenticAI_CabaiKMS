@@ -839,16 +839,11 @@ class DocumentPlanner:
 
                     if attr_id in doc_attributes:
                         existing_attr = doc_attributes[attr_id]
-                        if not self.policy.can_overwrite(existing_attr, incoming_attr):
+                        block_reason = self.policy.overwrite_block_reason(existing_attr, incoming_attr)
+                        if block_reason is not None:
                             category = (
                                 "UNIT_MISMATCH"
-                                if (
-                                    existing_attr.unit is not None
-                                    and incoming_attr.unit is not None
-                                    and not self.policy._units_compatible(
-                                        existing_attr.unit, incoming_attr.unit
-                                    )
-                                )
+                                if block_reason == "UNIT_INCOMPATIBLE"
                                 else "OVERWRITE_BLOCKED"
                             )
                             reviews.append(
@@ -857,20 +852,23 @@ class DocumentPlanner:
                                     category=category,
                                     source_label=k,
                                     target_document_key=doc_key,
-                                    source_context=f"Row {row.get('_row', 'unknown')}: Attribute '{k}' overwrite blocked",
+                                    source_context=f"Row {row.get('_row', 'unknown')}: Attribute '{k}' overwrite blocked ({block_reason})",
                                     raw_values=[existing_attr.value, incoming_attr.value],
                                     status="pending",
                                     run_id=run_id,
                                     notes=(
-                                        f"Overwrite blocked for '{k}': existing value={existing_attr.value} "
-                                        f"(type={existing_attr.value_type}, unit={existing_attr.unit}) vs "
+                                        f"Overwrite blocked for '{k}' ({block_reason}): existing value={existing_attr.value} "
+                                        f"(type={existing_attr.value_type}, unit={existing_attr.unit}, res={existing_attr.resolution}) vs "
                                         f"incoming value={incoming_attr.value} "
-                                        f"(type={incoming_attr.value_type}, unit={incoming_attr.unit})"
+                                        f"(type={incoming_attr.value_type}, unit={incoming_attr.unit}, res={incoming_attr.resolution})"
                                     ),
                                     payload={
                                         "attribute_id": attr_id,
+                                        "reason_code": block_reason,
                                         "old_value": existing_attr.value,
                                         "new_value": incoming_attr.value,
+                                        "old_unit": existing_attr.unit,
+                                        "new_unit": incoming_attr.unit,
                                         "old_attribute": existing_attr.model_dump(mode="json"),
                                         "new_attribute": incoming_attr.model_dump(mode="json"),
                                     },
