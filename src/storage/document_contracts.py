@@ -360,6 +360,16 @@ class PhotoMismatchDecision(Contract):
     notes: str | None = None
 
 
+class OverwriteDecision(Contract):
+    """Curator decision for overwrite review resolution."""
+
+    action: Literal["KEEP_EXISTING", "APPLY_INCOMING", "REVISE"]
+    corrected_value: Any = None
+    corrected_unit: str | None = None
+    reason: str | None = None
+    notes: str | None = None
+
+
 class DocumentReviewItem(Contract):
     """Review item contract for document discrepancies."""
 
@@ -494,6 +504,7 @@ __all__ = [
     "MediaReference",
     "PhotoContextSignal",
     "PhotoMismatchDecision",
+    "OverwriteDecision",
     "PlantIdentity",
     "SamplingLocationDetail",
     "StageV2Request",

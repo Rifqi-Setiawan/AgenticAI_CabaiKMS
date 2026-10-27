@@ -158,7 +158,41 @@ def render_categorized_review_queue(
                 st.write(f"- Label Sumber: {item.source_label}")
                 st.write(f"- Konteks: {item.source_context}")
                 st.write(f"- Nilai Mentah: {item.raw_values}")
-                if item.status == "pending":
+
+                if cat in ("OVERWRITE_BLOCKED", "UNIT_MISMATCH"):
+                    payload = item.payload or {}
+                    st.write(f"- Nilai Lama: **{payload.get('old_value')}** {payload.get('old_unit') or ''}".strip())
+                    st.write(f"- Nilai Baru: **{payload.get('new_value')}** {payload.get('new_unit') or ''}".strip())
+                    st.write(f"- Kode Alasan: `{payload.get('reason_code') or 'UNKNOWN'}`")
+                    if item.status == "pending":
+                        col1, col2, col3 = st.columns(3)
+                        if col1.button("Pertahankan Lama", key=f"btn_keep_{item.item_id}"):
+                            resolve_review_item_v2(
+                                run_id=active_run_id,
+                                item_id=item.item_id,
+                                decision={"action": "KEEP_EXISTING"},
+                            )
+                            st.rerun()
+                        if col2.button("Terapkan Baru", key=f"btn_apply_{item.item_id}"):
+                            resolve_review_item_v2(
+                                run_id=active_run_id,
+                                item_id=item.item_id,
+                                decision={"action": "APPLY_INCOMING", "reason": "Curator approval"},
+                            )
+                            st.rerun()
+                        if col3.button("Koreksi", key=f"btn_revise_{item.item_id}"):
+                            resolve_review_item_v2(
+                                run_id=active_run_id,
+                                item_id=item.item_id,
+                                decision={
+                                    "action": "REVISE",
+                                    "corrected_value": payload.get("new_value"),
+                                    "corrected_unit": payload.get("old_unit") or payload.get("new_unit"),
+                                    "reason": "Curator correction",
+                                },
+                            )
+                            st.rerun()
+                elif item.status == "pending":
                     col1, col2 = st.columns(2)
                     if col1.button(
                         f"Setujui {item.item_id}", key=f"btn_app_{item.item_id}"

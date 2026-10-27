@@ -195,7 +195,7 @@ def create_app(
     def resolve_review_v2(run_id: str, item_id: str, decision: dict[str, Any], principal: Annotated[Principal, Depends(writer)]):
         if doc_repo is None:
             raise InvalidState('Document endpoints require a database.')
-        return doc_repo.resolve_review(run_id, item_id, decision, actor=principal.subject)
+        return doc_repo.resolve_review(run_id, item_id, decision, actor=principal.subject, actor_role=principal.role)
 
     @app.get('/documents')
     def list_documents(

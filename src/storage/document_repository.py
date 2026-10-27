@@ -20,6 +20,7 @@ from src.storage.document_contracts import (
     HabitatIdentity,
     KnowledgeDocument,
     MediaReference,
+    OverwriteDecision,
     PhotoMismatchDecision,
     PlantIdentity,
     validate_document,
@@ -39,6 +40,37 @@ def context(session: Session, actor: str, run_id: str = "") -> None:
         text("SELECT set_config('kms.actor', :a, true), set_config('kms.run_id', :r, true)"),
         {"a": actor, "r": run_id},
     )
+
+
+class DocumentDict(dict):
+    """Dictionary supporting attribute access for backwards-compatible test usage."""
+
+    def __getattr__(self, name: str) -> Any:
+        try:
+            return self[name]
+        except KeyError:
+            raise AttributeError(f"'DocumentDict' object has no attribute '{name}'")
+
+    def __getitem__(self, key: str) -> Any:
+        val = super().__getitem__(key)
+        if isinstance(val, dict) and not isinstance(val, DocumentDict):
+            val = DocumentDict(val)
+            self[key] = val
+        return val
+
+
+class RunDict(dict):
+    """Dictionary supporting draft_payload alias for draft."""
+
+    def __getitem__(self, key: str) -> Any:
+        if key == "draft_payload":
+            return self.get("draft")
+        return super().__getitem__(key)
+
+    def get(self, key: str, default: Any = None) -> Any:
+        if key == "draft_payload":
+            return super().get("draft", default)
+        return super().get(key, default)
 
 
 class DocumentRepository:
@@ -373,16 +405,26 @@ class DocumentRepository:
                     # Merge attributes: apply can_overwrite policy guard (A10)
                     merged_attrs = dict(existing_doc.get("attributes", {}))
                     policy = AttributePolicy()
+                    approved_overrides = {
+                        (r.target_document_key, (r.payload or {}).get("attribute_id"))
+                        for r in draft.reviews
+                        if r.category in ("OVERWRITE_BLOCKED", "UNIT_MISMATCH")
+                        and r.status in ("approved", "revised")
+                        and r.target_document_key
+                        and (r.payload or {}).get("attribute_id")
+                    }
                     for attr_id, inc_dict in incoming_dict.get("attributes", {}).items():
                         if attr_id in merged_attrs:
                             exist_dict = merged_attrs[attr_id]
-                            can_ow = True
-                            try:
-                                exist_av = AttributeValue.model_validate(exist_dict)
-                                inc_av = AttributeValue.model_validate(inc_dict)
-                                can_ow = policy.can_overwrite(exist_av, inc_av)
-                            except Exception:
-                                can_ow = True
+                            is_approved_override = (doc_key, attr_id) in approved_overrides
+                            can_ow = is_approved_override
+                            if not can_ow:
+                                try:
+                                    exist_av = AttributeValue.model_validate(exist_dict)
+                                    inc_av = AttributeValue.model_validate(inc_dict)
+                                    can_ow = policy.can_overwrite(exist_av, inc_av)
+                                except Exception:
+                                    can_ow = True
 
                             if can_ow:
                                 if exist_dict != inc_dict:
@@ -508,7 +550,7 @@ class DocumentRepository:
             ).mappings().first()
             if row is None:
                 return None
-            doc = dict(row["document"])
+            doc = DocumentDict(row["document"])
             doc["id"] = row["id"]
             doc["doc_id"] = row["id"]
             doc["version"] = row["version"]
@@ -548,9 +590,10 @@ class DocumentRepository:
         self,
         run_id: str,
         item_id: str,
-        decision: dict[str, Any] | PhotoMismatchDecision,
+        decision: dict[str, Any] | PhotoMismatchDecision | OverwriteDecision,
         *,
         actor: str,
+        actor_role: str = "curator",
     ) -> dict[str, Any]:
         """Resolve a pending review item in a staged DocumentDraft envelope."""
         if hasattr(decision, "model_dump"):
@@ -577,7 +620,97 @@ class DocumentRepository:
             if target_item.status != "pending":
                 raise Conflict(f"Review item {item_id} is already resolved ({target_item.status}).")
 
-            if action == "ASSIGN_EXISTING":
+            if target_item.category in ("OVERWRITE_BLOCKED", "UNIT_MISMATCH"):
+                if action not in ("KEEP_EXISTING", "APPLY_INCOMING", "REVISE"):
+                    raise InvalidState(
+                        f"Unknown action '{action}' for {target_item.category}. Must be KEEP_EXISTING, APPLY_INCOMING, or REVISE."
+                    )
+
+                reason_code = target_item.payload.get("reason_code")
+                if reason_code == "EXISTING_HUMAN_PROTECTED" and action in ("APPLY_INCOMING", "REVISE"):
+                    if actor_role != "curator":
+                        raise Conflict("Only curator role can overwrite protected HUMAN_REVIEW value.")
+                    reason_text = (dec_dict.get("reason") or "").strip()
+                    if not reason_text:
+                        raise InvalidState("Reason is required to overwrite protected HUMAN_REVIEW value.")
+
+                doc_key = target_item.target_document_key
+                attr_id = target_item.payload.get("attribute_id")
+                new_attr_dict = target_item.payload.get("new_attribute")
+                old_attr_dict = target_item.payload.get("old_attribute")
+
+                if action == "KEEP_EXISTING":
+                    target_item.status = "rejected"
+                    target_item.decision = dec_dict
+                    if notes:
+                        target_item.notes = notes
+
+                elif action == "APPLY_INCOMING":
+                    if target_item.category == "UNIT_MISMATCH":
+                        raise InvalidState(
+                            "Cannot apply incoming value with incompatible unit without revision/correction."
+                        )
+
+                    target_item.status = "approved"
+                    target_item.decision = dec_dict
+                    if notes:
+                        target_item.notes = notes
+
+                    if doc_key and doc_key in draft.documents and attr_id:
+                        target_doc = draft.documents[doc_key]
+                        if new_attr_dict:
+                            applied_attr = AttributeValue.model_validate(new_attr_dict)
+                            applied_attr.resolution = "HUMAN_REVIEW"
+                            target_doc.attributes[attr_id] = applied_attr
+                        elif attr_id in target_doc.attributes:
+                            applied_attr = target_doc.attributes[attr_id]
+                            applied_attr.value = target_item.payload.get("new_value")
+                            applied_attr.unit = target_item.payload.get("new_unit")
+                            applied_attr.resolution = "HUMAN_REVIEW"
+
+                elif action == "REVISE":
+                    corr_val = dec_dict.get("corrected_value")
+                    corr_unit = dec_dict.get("corrected_unit")
+                    if corr_val is None:
+                        raise InvalidState("corrected_value is required for REVISE action.")
+
+                    policy = AttributePolicy()
+                    if old_attr_dict:
+                        old_av = AttributeValue.model_validate(old_attr_dict)
+                        if old_av.unit and corr_unit and not policy._units_compatible(old_av.unit, corr_unit):
+                            raise InvalidState(
+                                f"Corrected unit '{corr_unit}' is incompatible with expected unit '{old_av.unit}'."
+                            )
+
+                    target_item.status = "revised"
+                    target_item.decision = dec_dict
+                    if notes:
+                        target_item.notes = notes
+
+                    if doc_key and doc_key in draft.documents and attr_id:
+                        target_doc = draft.documents[doc_key]
+                        if new_attr_dict:
+                            applied_attr = AttributeValue.model_validate(new_attr_dict)
+                            applied_attr.value = corr_val
+                            if corr_unit is not None:
+                                applied_attr.unit = corr_unit
+                            applied_attr.resolution = "HUMAN_REVIEW"
+                            target_doc.attributes[attr_id] = applied_attr
+                        elif old_attr_dict:
+                            applied_attr = AttributeValue.model_validate(old_attr_dict)
+                            applied_attr.value = corr_val
+                            if corr_unit is not None:
+                                applied_attr.unit = corr_unit
+                            applied_attr.resolution = "HUMAN_REVIEW"
+                            target_doc.attributes[attr_id] = applied_attr
+                        elif attr_id in target_doc.attributes:
+                            applied_attr = target_doc.attributes[attr_id]
+                            applied_attr.value = corr_val
+                            if corr_unit is not None:
+                                applied_attr.unit = corr_unit
+                            applied_attr.resolution = "HUMAN_REVIEW"
+
+            elif action == "ASSIGN_EXISTING":
                 variety_id = dec_dict.get("selected_variety_id")
                 habitat_id = dec_dict.get("target_habitat_id")
                 target_key = (
@@ -744,8 +877,8 @@ class DocumentRepository:
             run = session.get(AcquisitionRun, run_id)
             if run is None:
                 raise NotFound("Run not found.")
-            return {
+            return RunDict({
                 **self._run_summary(run),
                 "draft": run.draft_payload,
                 "base_versions": run.base_versions,
-            }
+            })
