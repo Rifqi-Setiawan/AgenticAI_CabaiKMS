@@ -112,3 +112,26 @@ Untuk memastikan kelancaran masa transisi arsitektur data:
 1. **Masa Transisi 30 Hari:** Seluruh tabel historis (`kms.variety_character_values`, `kms.value_observations`, `kms.draft_revisions`, `kms.acquisition_runs`) **dipertahankan berstatus read-only selama minimal 30 hari** terhitung sejak cutover resmi ke penyimpanan JSONB.
 2. **Larangan Purge Otomatis:** Kode produk dilarang keras memicu penghapusan otomatis data historis legacy.
 3. **Auditability & Traceability:** Seluruh mutasi dokumen JSONB dicatat secara transparan pada tabel `kms.audit_trace` dengan menyertakan identitas aktor pengubah (`kms.actor`), memastikan setiap langkah migrasi dan review dapat diaudit sepenuhnya.
+
+---
+
+## 7. Migrasi Aditif 0003 & Kebijakan Perlindungan Nilai Atribut (Decision D2)
+
+### 7.1 Migrasi 0003: Tabel Ledger `kms.document_attribute_changes`
+Untuk menjamin prinsip dokumen JSONB mutakhir tanpa array riwayat internal (*latest-only*), setiap perubahan atribut yang ditimpa pada saat `commit` wajib dicatat ke tabel ledger append-only terpisah melalui migrasi `0003` (`schema_0003_attribute_changes.sql`):
+- **Skema Tabel:** `kms.document_attribute_changes` (`doc_id`, `attribute_id`, `old_value`, `new_value`, `run_id`, `actor`, `created_at`).
+- **Integritas Imutabel:** Dilengkapi trigger `reject_mutation` yang menolak mutasi UPDATE, DELETE, dan TRUNCATE.
+- **Hak Akses Minimum:** Peran aplikasi `cabai_app` hanya diberikan hak SELECT dan INSERT.
+- **Kepatuhan Ketat:** Eksekusi commit memeriksa keberadaan tabel ini secara ketat tanpa silent fallback. Endpoint `/readyz` menolak (HTTP 503) apabila tabel ledger belum termigrasi.
+
+### 7.2 Kebijakan Penimpaan Atribut & Perlindungan HUMAN_REVIEW (Decision D2)
+Sesuai Keputusan D2 dan audit lanjutan:
+1. **Perlindungan HUMAN_REVIEW:** Nilai atribut dengan resolusi `HUMAN_REVIEW` berstatus dilindungi (`EXISTING_HUMAN_PROTECTED`). Pengukuran baru dengan `AUTO_ACCEPT` tidak dapat menimpa nilai tersebut secara otomatis.
+2. **Kategori Review Baru:**
+   - `OVERWRITE_BLOCKED`: Muncul apabila penimpaan terhalang oleh proteksi kurasi manusia (`EXISTING_HUMAN_PROTECTED`), ketidakcocokan tipe data (`TYPE_MISMATCH`), atau label tidak kompatibel (`LABEL_INCOMPATIBLE`).
+   - `UNIT_MISMATCH`: Muncul apabila satuan pengukuran yang masuk tidak kompatibel dengan dimensi satuan tersimpan (`UNIT_INCOMPATIBLE`).
+3. **Alur Resolusi Review:**
+   - `KEEP_EXISTING`: Menolak nilai baru, mempertahankan nilai lama (status `rejected`), commit tidak mencatat perubahan.
+   - `APPLY_INCOMING`: Menerapkan nilai baru dengan resolusi `HUMAN_REVIEW` (status `approved`), commit mencatat perubahan ke ledger `document_attribute_changes`. Wajib disetujui kurator dengan `reason` jika menyangkut nilai `EXISTING_HUMAN_PROTECTED`.
+   - `REVISE`: Memberikan nilai dan satuan hasil revisi validasi kurator (status `revised`).
+4. **Guard Commit:** Percobaan commit penimpaan langsung tanpa approved review override akan membatalkan transaksi dengan HTTP 409 `Conflict`.

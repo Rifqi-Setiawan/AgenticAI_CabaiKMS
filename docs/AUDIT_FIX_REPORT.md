@@ -234,3 +234,18 @@ Sesuai aturan keras, tindakan berikut **belum dijalankan pada lingkungan live** 
    ```
 4. **Implementasi Persistensi Katalog Atribut (Temuan 5):**
    Menunggu arahan apakah rancangan tabel `kms.catalog_attributes` disetujui.
+
+---
+
+## Addendum: Koreksi Rujukan Teknis
+
+Berikut adalah addendum perbaikan data dan rujukan audit tindak lanjut per 27 Oktober 2026:
+
+1. **Koreksi Ukuran Berkas Backup Live:**
+   - Pada Bagian 2 tercatat ukuran cadangan pg_dump live `cabai_kms_20261027_133741.sql` sebesar 2.059.573 byte.
+   - Ukuran fisik berkas riil yang diverifikasi pada disk adalah **2.078.582 byte**.
+   - Checksum integritas SHA-256 tetap cocok dan identik: `79baded1f052a32d5cc8d5a30d06805403b01f2f02bd9539da0700d719dfbb2f`.
+
+2. **Koreksi Rujukan Baris `resolve_review`:**
+   - Rujukan baris cabang resolusi review kategori `OVERWRITE_BLOCKED` dan `UNIT_MISMATCH` pada `src/storage/document_repository.py` yang sebelumnya tercatat di sekitar baris 638-644 telah bergeser ke baris ~578-668 / ~707-712 seiring penambahan blok kontrak dan penanganan spesifik.
+   - Alur resolusi kini mendukung 3 aksi terarah: `KEEP_EXISTING` (status rejected, nilai lama utuh), `APPLY_INCOMING` (status approved, resolusi HUMAN_REVIEW), dan `REVISE` (status revised, nilai/satuan terkoreksi). Nilai terlindungi `EXISTING_HUMAN_PROTECTED` wajib diselesaikan oleh peran `curator` disertai alasan (`reason`).

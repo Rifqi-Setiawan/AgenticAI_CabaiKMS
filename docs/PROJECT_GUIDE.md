@@ -331,6 +331,11 @@ KMS mengadopsi model penyimpanan terstruktur berbasis **JSONB** (`kms.knowledge_
   - `ASSIGN_EXISTING`: Menautkan foto ke dokumen varietas yang sudah ada pada habitat terkait dan melepaskan status review.
   - `CREATE_NEW_DOCUMENT`: Membentuk dokumen baru untuk varietas baru yang tervalidasi tanpa mengarang taksonomi artifisial.
   - `DISCARD`: Menolak foto secara non-destruktif tanpa menghapus blob fisik di storage CAS.
+- **Kategori Review Penimpaan Atribut & Resolusi (Decision D2 & Migrasi 0003)**:
+  - `OVERWRITE_BLOCKED`: Terjadi bila nilai baru terhalang aturan proteksi `HUMAN_REVIEW` (`EXISTING_HUMAN_PROTECTED`), perbedaan tipe data, atau ketidakcocokan label.
+  - `UNIT_MISMATCH`: Terjadi bila satuan nilai baru tidak kompatibel dengan dimensi satuan tersimpan (`UNIT_INCOMPATIBLE`).
+  - Aksi Resolusi: `KEEP_EXISTING` (status rejected, mempertahankan nilai lama), `APPLY_INCOMING` (status approved, menerapkan nilai baru berstatus HUMAN_REVIEW; wajib persetujuan kurator dengan reason jika menyangkut nilai terlindungi), `REVISE` (status revised, memasukkan nilai dan satuan terkoreksi).
+  - Audit Trail Perubahan: Setiap atribut yang berhasil ditimpa dicatat pada tabel append-only `kms.document_attribute_changes` via migrasi 0003. Guard commit membatalkan transaksi (`Conflict`) bila penimpaan tanpa izin dilakukan langsung.
 
 
 ## 7. Instalasi dan konfigurasi

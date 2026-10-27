@@ -85,7 +85,7 @@ Catalog default adalah text kecuali lokasi/gambar. `config/characteristics_overr
 2. Decision yang sudah final tidak dapat dikembalikan ke pending atau ditukar diam-diam. Set anggota review, identitas sumber/schema/config dan waktu run tidak boleh berubah.
 3. `commit` memeriksa run/revisi/digest, pending reviews, serta source archive. Semua write berada dalam satu `Session.begin()` dengan synchronous_commit on.
 4. Katalog diverifikasi, varieties di-upsert, observations ditambahkan, lalu current values diperiksa terhadap baseline. Pair locks diambil dalam urutan konsisten; `ON CONFLICT DO UPDATE ... WHERE version=expected` menjadi penjaga tambahan.
-5. Nilai HUMAN_REVIEW existing tidak diturunkan oleh AUTO_ACCEPT baru. Observasi baru tetap disimpan dan receipt melaporkan jumlah projection yang dilindungi.
+5. Nilai HUMAN_REVIEW existing tidak diturunkan oleh AUTO_ACCEPT baru (Decision D2: `EXISTING_HUMAN_PROTECTED`). Penimpaan otomatis ditolak dan menghasilkan review item `OVERWRITE_BLOCKED` atau `UNIT_MISMATCH`. Perubahan atribut yang disetujui kurator dicatat pada tabel append-only `kms.document_attribute_changes` melalui migrasi 0003 (`schema_0003_attribute_changes.sql`).
 6. Keputusan review, gold, plant-image links dan outbox dimasukkan. Status/receipt diubah menjadi COMMITTED. HTTP success terjadi setelah context transaksi berhasil commit.
 7. Retry request identik mengembalikan receipt dengan `replayed=true`. Konflik pair memerlukan inspect, curator rebase beralasan, dan commit ulang; histori lama tidak dibuang.
 
