@@ -52,6 +52,22 @@ def normalize_clean_string(text: str) -> str:
     return " ".join(tokens)
 
 
+_FILENAME_NOISE = {"img", "image", "pic", "photo", "foto", "dsc", "dscn", "p"}
+
+
+def exact_comparison_tokens(text: str) -> frozenset[str]:
+    """Tokens used to decide whether a filename names a variety EXACTLY.
+
+    Indices (digits only), camera prefixes (IMG/DSC...), plant-part words and generic
+    words (cabai/cabe) never discriminate between varieties, so they are ignored.
+    A discriminating alphabetic token (e.g. "merah") keeps the match non-exact.
+    """
+    return frozenset(
+        t for t in normalize_variety_tokens(text)
+        if not t.isdigit() and t not in _FILENAME_NOISE
+    )
+
+
 @dataclass(frozen=True)
 class VarietyEntry:
     canonical_name: str
@@ -153,12 +169,9 @@ class VarietyRegistry:
             cleaned_canonical = normalize_clean_string(name)
             canonical_tokens = set(normalize_variety_tokens(name))
 
-            c_query_norm = re.sub(r"\b(cabai|cabe)\b", "", cleaned_query).strip()
-            c_canon_norm = re.sub(r"\b(cabai|cabe)\b", "", cleaned_canonical).strip()
-            is_exact_canonical = bool(
-                cleaned_canonical
-                and (cleaned_query == cleaned_canonical or (c_query_norm and c_query_norm == c_canon_norm))
-            )
+            exact_query_tokens = exact_comparison_tokens(text)
+            exact_canon_tokens = exact_comparison_tokens(name)
+            is_exact_canonical = bool(exact_canon_tokens and exact_query_tokens == exact_canon_tokens)
 
             # 1. Check exact canonical match or token subset match
             if is_exact_canonical:
@@ -178,9 +191,9 @@ class VarietyRegistry:
             for alias in entry.aliases:
                 cleaned_alias = normalize_clean_string(alias)
                 alias_tokens = set(normalize_variety_tokens(alias))
-                c_alias_norm = re.sub(r"\b(cabai|cabe)\b", "", cleaned_alias).strip()
+                exact_alias_tokens = exact_comparison_tokens(alias)
 
-                if cleaned_alias and (cleaned_query == cleaned_alias or (c_query_norm and c_query_norm == c_alias_norm)):
+                if exact_alias_tokens and exact_query_tokens == exact_alias_tokens:
                     matched_alias = alias
                     alias_score = 0.98
                     alias_exact = True
