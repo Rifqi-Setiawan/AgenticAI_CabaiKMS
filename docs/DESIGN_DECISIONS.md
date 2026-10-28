@@ -306,3 +306,27 @@ mapping problems that sit above "which variant is this":
 - Penimpaan hanya boleh terjadi lewat peninjauan manusia oleh peran `curator` disertai alasan wajib (`reason`).
 - Keputusan ini resmi menggantikan kriteria PRD A10 / "Decision #2" (yang sebelumnya mengizinkan AUTO_ACCEPT menimpa HUMAN_REVIEW). Catatan historis A10 ditandai: *DIGANTIKAN oleh D2 (27 Okt 2026)*.
 
+## (f) D7: Kontrak Unwrap dan Jembatan UI-API Resolusi Review
+
+**[FINAL, 2026-10-28]** Kontrak payload endpoint `POST /runs/v2/{run_id}/reviews/{item_id}/resolve`:
+- Endpoint menerima payload datar maupun payload bersarang dengan tepat satu kunci `{"decision": {...}}` (seperti yang dikirim oleh antarmuka Streamlit dan modul review foto).
+- Fungsi internal API `_unwrap_decision` membuka payload bersarang tersebut dan menyalurkannya sebagai dictionary datar ke `DocumentRepository.resolve_review`. Payload ambigu atau kosong ditolak dengan HTTP 422.
+- Resolusi review wajib memuat aksi (`action`) atau status (`status`), mencegah resolusi no-op atau error parsing terselubung.
+
+## (g) D8: UI Interaktif Penyelesaian Review Anti Salah Satuan
+
+**[FINAL, 2026-10-28]** Perilaku antarmuka Streamlit untuk antrean review penimpaan dan ketidakcocokan satuan:
+- Seluruh teks alasan bawaan yang di-hardcode dihapuskan.
+- Kurator wajib menginput alasan peninjauan (minimal 10 karakter) sebelum aksi penimpaan (`APPLY_INCOMING`) atau koreksi (`REVISE`) dapat dieksekusi.
+- Pada item `UNIT_MISMATCH`, tombol aksi "Terapkan Baru" ditiadakan guna mencegah penyimpanan nilai tanpa penyesuaian satuan (anti-bug 85 kg menjadi 85 cm).
+- Aksi koreksi (`REVISE`) mewajibkan kurator memasukkan dan mengonfirmasi secara sadar nilai dan satuan terkoreksi yang kompatibel dengan tipe dan satuan ekspektasi atribut.
+
+## (h) D9: Readiness Probe Terotentikasi & Verifikasi Checksum Skema
+
+**[FINAL, 2026-10-28]** Standar endpoint kesiapan operasional (`/readyz`):
+- Endpoint `/readyz` dilindungi oleh autentikasi bearer (`Depends(authenticate)`), sementara `/livez` dan `/healthz` tetap terbuka untuk pemeriksaan liveness kontainer.
+- Kesiapan database diverifikasi secara deterministik terhadap keberadaan tabel wajib dan integritas tabel `kms.schema_migrations`.
+- Checksum setiap berkas migrasi disk diverifikasi terhadap rekaman sha256 di database; inkonsistensi versi atau checksum mengembalikan status 503 dengan daftar migrasi yang bermasalah.
+- Respons 503 disanitasi penuh sehingga tidak membocorkan traceback mentah, DSN, nama host, atau informasi rahasia server ke klien.
+
+

@@ -249,3 +249,37 @@ Berikut adalah addendum perbaikan data dan rujukan audit tindak lanjut per 27 Ok
 2. **Koreksi Rujukan Baris `resolve_review`:**
    - Rujukan baris cabang resolusi review kategori `OVERWRITE_BLOCKED` dan `UNIT_MISMATCH` pada `src/storage/document_repository.py` yang sebelumnya tercatat di sekitar baris 638-644 telah bergeser ke baris ~578-668 / ~707-712 seiring penambahan blok kontrak dan penanganan spesifik.
    - Alur resolusi kini mendukung 3 aksi terarah: `KEEP_EXISTING` (status rejected, nilai lama utuh), `APPLY_INCOMING` (status approved, resolusi HUMAN_REVIEW), dan `REVISE` (status revised, nilai/satuan terkoreksi). Nilai terlindungi `EXISTING_HUMAN_PROTECTED` wajib diselesaikan oleh peran `curator` disertai alasan (`reason`).
+
+---
+
+## Addendum 2: Perbaikan Audit Ulang Putaran 2 (28 Oktober 2026)
+
+Addendum ini merangkum perbaikan komprehensif atas temuan audit ulang putaran 2 (T-H1 s.d. T-H3 dan T-M1 s.d. T-M5) yang dikerjakan secara test-first di branch terisolasi `fix/audit-followup-2`:
+
+1. **Keputusan Formal D2 & Penggantian PRD A10:**
+   - Keputusan arsitektur formal D2 disahkan dan dicatat pada `/srv/hermes-control/decisions/2026-10-27-hr-value-protection-d2.md`.
+   - Atribut tersimpan dengan `resolution = "HUMAN_REVIEW"` dilindungi secara permanen (`EXISTING_HUMAN_PROTECTED`) dari penimpaan otomatis oleh `AUTO_ACCEPT`.
+   - Aturan historis PRD A10 ("AUTO_ACCEPT boleh menimpa HUMAN_REVIEW") resmi dinyatakan **DIGANTIKAN oleh D2 (27 Okt 2026)** pada seluruh dokumen spesifikasi tanpa menghapus teks historis.
+
+2. **Persetujuan Otoritas Akhir atas 4 Fungsi Tes Lama (Gerbang K1):**
+   - Perubahan 4 fungsi tes lama baseline diisolasi secara atomik pada commit `5f6022e`.
+   - Waktu Persetujuan: **28 Oktober 2026, 00:36 WIB**.
+   - Teks Persetujuan Rifqi: *"setuju gass"* (dan izin modifikasi sintaks tes: *"mengizinkan"*).
+
+3. **Ringkasan Remediasi Temuan Audit Putaran 2:**
+   - **T-H1 (Kontrak Jembatan UI -> API):** Menambahkan pembuka body `_unwrap_decision` pada `src/kms_api/app.py` sehingga body bersarang `{"decision": {...}}` dari UI Streamlit maupun photo review dapat diterima secara transparan dan diteruskan sebagai dictionary datar ke repository. Keputusan tanpa `action` dan tanpa `status` ditolak dengan error 422.
+   - **T-H2 (Interaktivitas UI Anti-Salah-Satuan):** Menghapus seluruh string alasan hardcode (`"Curator approval"` / `"Curator correction"`). Menambahkan form interaktif dengan input alasan wajib (minimal 10 karakter) serta input nilai dan satuan terkoreksi yang wajib dikonfirmasi kurator. Pada kategori `UNIT_MISMATCH`, tombol *"Terapkan Baru"* dihilangkan untuk mencegah bug fatal konversi satuan (misal "85 kg" menjadi "85 cm").
+   - **T-H3 (Pengesahan & Isolasi Tes D2):** Empat fungsi tes baseline lama (`test_attribute_policy.py`, `test_document_repository.py`, `test_document_e2e.py`) diisolasi dalam commit `5f6022e` dan disahkan melalui Gerbang K1.
+   - **T-M1 (Hardening Endpoint `/readyz`):** Mengembalikan proteksi autentikasi bearer (`Depends(authenticate)`), memvalidasi keberadaan tabel wajib dan memeriksa integritas checksum tabel migrasi terhadap berkas disk. Menyaring traceback dan pesan internal exception agar tidak bocor ke publik pada respons 503.
+   - **T-M2 (Restorasi Perilaku Runner `migrate.py`):** Mengembalikan perilaku kanonik runner migrasi. Menghapus klausa `ON CONFLICT DO UPDATE` dan pengecekan yang mengeksekusi ulang DDL secara diam-diam. Jika migrasi tercatat di DB namun tabel hilang, runner melempar `RuntimeError` eksplisit untuk intervensi manual.
+   - **T-M3 (Eliminasi Shim Berbahaya):** Menghapus kelas shim `DocumentDict` dan `RunDict` dari `src/storage/document_repository.py`. Mengubah parameter `resolve_review(..., actor_role=None)` sehingga nilai berstatus `EXISTING_HUMAN_PROTECTED` wajib diselesaikan oleh aktor berhak `curator`.
+   - **T-M4 (Validasi Ketat Resolusi Review):** Mencegah no-op diam-diam saat dokumen atau atribut target tidak ditemukan di draft, mewajibkan alasan pada aksi `APPLY_INCOMING` dan `REVISE`, memeriksa kompatibilitas satuan terkoreksi, serta memvalidasi tipe angka.
+   - **T-M5 (Tata Kelola Git):** Seluruh perbaikan putaran 2 dikerjakan di branch kerja baru `fix/audit-followup-2` dari base commit `a4bae14`. **Tidak ada commit langsung ke branch main.**
+
+4. **Verifikasi Integritas Checksum Database Live (`cabai_kms`):**
+   - Dilakukan pembacaan BACA-SAJA (read-only) pada database live `cabai_kms` (tabel `kms.schema_migrations`):
+     * Versi `0001`: `3be3cd5508a4a0f516abcb7e8e89c6af2e8fa413cf2918c03d2950a53e16b7f3` (Cocok 100% dengan berkas disk `schema.sql`)
+     * Versi `0002`: `1f8f4fac6cb8f2f0a5c5c430e2880aea8a942da7b46d0dd819b430e4eebcf84a` (Cocok 100% dengan berkas disk `schema_0002_jsonb.sql`)
+     * Versi `0003`: `3252f28a719ad1976eb3b00008fc333306d4493332fbdb2dcc0d2b8011a2224b` (Cocok 100% dengan berkas disk `schema_0003_attribute_changes.sql`)
+   - Kondisi STOP (d) tidak terpicu; integritas skema database live terbukti 100% valid dan konsisten.
+
