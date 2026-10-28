@@ -314,6 +314,43 @@ def create_app(
                 item["media_url"] = f"/media/{item['asset_id']}"
         return items
 
+    @app.post('/candidates')
+    def add_candidate_endpoint(
+        candidate_payload: dict[str, Any],
+        principal: Annotated[Principal, Depends(authenticate)] = None,
+    ):
+        if doc_repo is None:
+            raise InvalidState('Candidate endpoints require a database.')
+        actor = principal.subject if principal else "system"
+        return doc_repo.add_candidate(
+            asset_id=candidate_payload["asset_id"],
+            run_id=candidate_payload["run_id"],
+            source_filename=candidate_payload["source_filename"],
+            original_sha256=candidate_payload["original_sha256"],
+            organ_part=candidate_payload["organ_part"],
+            confidence=float(candidate_payload["confidence"]),
+            suggested_name=candidate_payload.get("suggested_name"),
+            visual_evidence=candidate_payload.get("visual_evidence"),
+            actor=actor,
+        )
+
+    @app.get('/discarded')
+    def list_discarded(
+        sha256: str | None = None,
+        principal: Annotated[Principal, Depends(authenticate)] = None,
+    ):
+        target_engine = doc_repo.engine if doc_repo is not None else engine
+        if target_engine is None:
+            return []
+        with Session(target_engine) as session:
+            query = "SELECT * FROM kms.discarded_images WHERE 1=1"
+            params: dict[str, Any] = {}
+            if sha256:
+                query += " AND original_sha256 = :s"
+                params["s"] = sha256
+            rows = session.execute(text(query), params).mappings().all()
+            return [dict(r) for r in rows]
+
     @app.get('/candidates/{candidate_id}')
     def get_candidate(
         candidate_id: str,
