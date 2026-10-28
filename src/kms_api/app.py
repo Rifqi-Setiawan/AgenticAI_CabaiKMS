@@ -177,6 +177,8 @@ def create_app(
             "kms.source_artifacts",
             "kms.knowledge_documents",
             "kms.document_attribute_changes",
+            "kms.image_candidates",
+            "kms.discarded_images",
         ]
         target_engine = doc_repo.engine if doc_repo is not None else engine
         if target_engine is None:

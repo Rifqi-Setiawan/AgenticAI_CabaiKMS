@@ -102,6 +102,21 @@ class HabitatIdentity(Contract):
         return data
 
 
+def make_unknown_habitat() -> HabitatIdentity:
+    """Return sentinel habitat identity for varieties discovered without location."""
+    return HabitatIdentity(
+        id="habitat_unknown",
+        definition="administrative_village_v1",
+        administrative_path=AdministrativePath(
+            province_name="Unknown",
+            regency_name="Unknown",
+            district_name="Unknown",
+            village_name="Unknown",
+        ),
+        label="Habitat Tidak Diketahui",
+    )
+
+
 class SamplingLocationDetail(Contract):
     """Sampling location metadata contract."""
 
@@ -260,6 +275,7 @@ class KnowledgeDocument(Contract):
     doc_id: str | None = None
     version: int = Field(default=1, ge=1)
     updated_at: datetime | None = None
+    habitat_unknown: bool = Field(default=False)
 
     @model_validator(mode="before")
     @classmethod

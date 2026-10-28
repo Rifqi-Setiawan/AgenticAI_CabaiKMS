@@ -5,6 +5,8 @@ from __future__ import annotations
 import copy
 from datetime import datetime, timezone
 import hashlib
+import json
+import re
 from typing import Any
 
 from sqlalchemy import select, text
@@ -23,6 +25,7 @@ from src.storage.document_contracts import (
     OverwriteDecision,
     PhotoMismatchDecision,
     PlantIdentity,
+    make_unknown_habitat,
     validate_document,
 )
 from src.storage.attribute_policy import AttributePolicy
@@ -545,6 +548,7 @@ class DocumentRepository:
         *,
         variety_id: str | None = None,
         habitat_id: str | None = None,
+        habitat_unknown: bool | None = None,
         limit: int = 100,
         offset: int = 0,
     ) -> list[dict[str, Any]]:
@@ -557,6 +561,11 @@ class DocumentRepository:
         if habitat_id:
             query += " AND habitat_id = :habitat_id"
             params["habitat_id"] = habitat_id
+        if habitat_unknown is not None:
+            if habitat_unknown:
+                query += " AND (document->>'habitat_unknown' = 'true' OR habitat_id = 'habitat_unknown')"
+            else:
+                query += " AND (document->>'habitat_unknown' IS NULL OR document->>'habitat_unknown' = 'false') AND habitat_id != 'habitat_unknown'"
         query += " ORDER BY id LIMIT :limit OFFSET :offset"
 
         with Session(self.engine) as session:
@@ -908,3 +917,384 @@ class DocumentRepository:
                 "draft": run.draft_payload,
                 "base_versions": run.base_versions,
             }
+
+    def add_candidate(
+        self,
+        *,
+        asset_id: str,
+        run_id: str,
+        source_filename: str,
+        original_sha256: str,
+        organ_part: str,
+        confidence: float,
+        suggested_name: str | None = None,
+        visual_evidence: dict[str, Any] | None = None,
+        actor: str = "system",
+    ) -> dict[str, Any] | None:
+        """Register a candidate image for human curation (idempotent)."""
+        import uuid
+
+        with transaction(self.engine) as session:
+            context(session, actor)
+            # Check if image was discarded
+            discarded = session.execute(
+                text("SELECT 1 FROM kms.discarded_images WHERE original_sha256 = :s"),
+                {"s": original_sha256},
+            ).first()
+            if discarded:
+                existing = session.execute(
+                    text("SELECT * FROM kms.image_candidates WHERE asset_id = :a"),
+                    {"a": asset_id},
+                ).mappings().first()
+                if existing:
+                    return dict(existing)
+                return None
+
+            # Check if already exists by asset_id (idempotent)
+            existing = session.execute(
+                text("SELECT * FROM kms.image_candidates WHERE asset_id = :a"),
+                {"a": asset_id},
+            ).mappings().first()
+            if existing:
+                return dict(existing)
+
+            cid = f"cand_{uuid.uuid4().hex[:16]}"
+            session.execute(
+                text(
+                    "INSERT INTO kms.image_candidates ("
+                    " candidate_id, asset_id, run_id, source_filename, original_sha256, organ_part,"
+                    " suggested_name, visual_evidence, confidence, status, created_at"
+                    ") VALUES ("
+                    " :cid, :aid, :rid, :fn, :sha, :part, :sname, :ev, :conf, 'CANDIDATE', now()"
+                    ")"
+                ),
+                {
+                    "cid": cid,
+                    "aid": asset_id,
+                    "rid": run_id,
+                    "fn": source_filename,
+                    "sha": original_sha256,
+                    "part": organ_part,
+                    "sname": suggested_name,
+                    "ev": json.dumps(visual_evidence or {}),
+                    "conf": float(confidence),
+                },
+            )
+            row = session.execute(
+                text("SELECT * FROM kms.image_candidates WHERE candidate_id = :cid"),
+                {"cid": cid},
+            ).mappings().one()
+            return dict(row)
+
+    def list_candidates(
+        self,
+        *,
+        status: str | None = None,
+        limit: int = 100,
+        offset: int = 0,
+    ) -> list[dict[str, Any]]:
+        """List image candidates with optional status filter."""
+        query = "SELECT * FROM kms.image_candidates WHERE 1=1"
+        params: dict[str, Any] = {"limit": limit, "offset": offset}
+        if status:
+            query += " AND status = :status"
+            params["status"] = status
+        query += " ORDER BY created_at ASC LIMIT :limit OFFSET :offset"
+        with Session(self.engine) as session:
+            rows = session.execute(text(query), params).mappings().all()
+            return [dict(r) for r in rows]
+
+    def get_candidate(self, candidate_id: str) -> dict[str, Any]:
+        """Get candidate by id."""
+        with Session(self.engine) as session:
+            row = session.execute(
+                text("SELECT * FROM kms.image_candidates WHERE candidate_id = :cid"),
+                {"cid": candidate_id},
+            ).mappings().first()
+            if row is None:
+                raise NotFound(f"Candidate '{candidate_id}' not found.")
+            return dict(row)
+
+    def resolve_candidate(
+        self,
+        candidate_id: str,
+        decision: dict[str, Any],
+        *,
+        actor: str,
+        actor_role: str | None = None,
+    ) -> dict[str, Any]:
+        """Resolve a candidate via PROMOTE, MERGE, or DISCARD."""
+        if actor_role != "curator":
+            raise Conflict("Only curator role can resolve image candidates.")
+
+        action = decision.get("action")
+        if action not in ("PROMOTE", "MERGE", "DISCARD"):
+            raise InvalidState(f"Unknown candidate action '{action}'. Must be PROMOTE, MERGE, or DISCARD.")
+
+        reason = (decision.get("reason") or "").strip()
+        if len(reason) < 10:
+            raise InvalidState("Reason is required and must be at least 10 characters.")
+
+        with transaction(self.engine) as session:
+            context(session, actor)
+            row = session.execute(
+                text("SELECT * FROM kms.image_candidates WHERE candidate_id = :cid FOR UPDATE"),
+                {"cid": candidate_id},
+            ).mappings().first()
+            if row is None:
+                raise NotFound(f"Candidate '{candidate_id}' not found.")
+            if row["status"] != "CANDIDATE":
+                raise Conflict(f"Candidate '{candidate_id}' is already decided (status={row['status']}).")
+
+            if action == "PROMOTE":
+                new_var_name = decision.get("new_variety_name")
+                if not new_var_name or not str(new_var_name).strip():
+                    raise InvalidState("new_variety_name is required for PROMOTE action.")
+                new_var_name = str(new_var_name).strip()
+                norm_id = re.sub(r"[^a-z0-9]+", "_", new_var_name.lower()).strip("_")
+                var_id = f"plant_{norm_id}"
+                plant = PlantIdentity(
+                    id=var_id,
+                    label=new_var_name,
+                    identity_level=decision.get("identity_level", "cultivar"),
+                )
+
+                hab_dict = decision.get("habitat")
+                if hab_dict and isinstance(hab_dict, dict):
+                    habitat = HabitatIdentity.model_validate(hab_dict)
+                    hab_unknown = False
+                elif decision.get("habitat_id") and decision.get("habitat_id") != "habitat_unknown":
+                    hab_id = decision.get("habitat_id")
+                    habitat = HabitatIdentity(
+                        id=hab_id,
+                        definition="administrative_village_v1",
+                        administrative_path=AdministrativePath(
+                            province_name="Unknown",
+                            regency_name="Unknown",
+                            district_name="Unknown",
+                            village_name="Unknown",
+                        ),
+                        label=hab_id,
+                    )
+                    hab_unknown = False
+                else:
+                    habitat = make_unknown_habitat()
+                    hab_unknown = True
+
+                doc_key = f"{plant.id}:{habitat.id}"
+                organ = row["organ_part"] if row["organ_part"] in ("habitus", "daun", "batang", "bunga", "buah", "biji") else "buah"
+                media_ref = MediaReference(
+                    asset_id=row["asset_id"],
+                    organ_part=organ,
+                    source_filename=row["source_filename"],
+                    provenance_run_id=row["run_id"],
+                    assigned_via="HITL_REVIEW",
+                    resolution_status="linked",
+                )
+                new_doc = KnowledgeDocument(
+                    variety=plant,
+                    habitat=habitat,
+                    attributes={},
+                    media_refs=[media_ref],
+                    updated_by_run=row["run_id"],
+                    doc_id=doc_key,
+                    version=1,
+                    habitat_unknown=hab_unknown,
+                )
+                session.execute(
+                    text(
+                        "INSERT INTO kms.knowledge_documents (id, variety_id, habitat_id, document, version, updated_at) "
+                        "VALUES (:id, :vid, :hid, :doc, 1, now()) "
+                        "ON CONFLICT (id) DO UPDATE SET document = EXCLUDED.document, version = kms.knowledge_documents.version + 1, updated_at = now()"
+                    ),
+                    {
+                        "id": doc_key,
+                        "vid": plant.id,
+                        "hid": habitat.id,
+                        "doc": json.dumps(new_doc.model_dump(mode="json")),
+                    },
+                )
+                new_status = "PROMOTED"
+
+            elif action == "MERGE":
+                target_doc_key = decision.get("target_doc_key")
+                if not target_doc_key:
+                    var_id = decision.get("variety_id")
+                    hab_id = decision.get("habitat_id")
+                    if var_id and hab_id:
+                        target_doc_key = f"{var_id}:{hab_id}"
+                if not target_doc_key:
+                    raise InvalidState("target_doc_key or (variety_id, habitat_id) is required for MERGE.")
+
+                target_row = session.execute(
+                    text("SELECT document, version FROM kms.knowledge_documents WHERE id = :id FOR UPDATE"),
+                    {"id": target_doc_key},
+                ).mappings().first()
+                if target_row is None:
+                    raise NotFound(f"Target document '{target_doc_key}' not found.")
+
+                doc_obj = KnowledgeDocument.model_validate(target_row["document"])
+                organ = row["organ_part"] if row["organ_part"] in ("habitus", "daun", "batang", "bunga", "buah", "biji") else "buah"
+                media_ref = MediaReference(
+                    asset_id=row["asset_id"],
+                    organ_part=organ,
+                    source_filename=row["source_filename"],
+                    provenance_run_id=row["run_id"],
+                    assigned_via="HITL_REVIEW",
+                    resolution_status="linked",
+                )
+                existing_aids = {m.asset_id for m in doc_obj.media_refs}
+                if media_ref.asset_id not in existing_aids:
+                    doc_obj.media_refs.append(media_ref)
+                doc_obj.version = target_row["version"] + 1
+
+                session.execute(
+                    text("UPDATE kms.knowledge_documents SET document = :doc, version = :v WHERE id = :id"),
+                    {
+                        "id": target_doc_key,
+                        "doc": json.dumps(doc_obj.model_dump(mode="json")),
+                        "v": doc_obj.version,
+                    },
+                )
+                new_status = "MERGED"
+
+            elif action == "DISCARD":
+                session.execute(
+                    text(
+                        "INSERT INTO kms.discarded_images (original_sha256, reason, decided_by, decided_at, asset_id, source_filename) "
+                        "VALUES (:s, :r, :a, now(), :aid, :fn) ON CONFLICT (original_sha256) DO UPDATE SET reason = EXCLUDED.reason"
+                    ),
+                    {
+                        "s": row["original_sha256"],
+                        "r": reason,
+                        "a": actor,
+                        "aid": row["asset_id"],
+                        "fn": row["source_filename"],
+                    },
+                )
+                new_status = "DISCARDED"
+
+            session.execute(
+                text(
+                    "UPDATE kms.image_candidates "
+                    "SET status = :st, resolution = :res, decided_by = :actor, decided_at = now() "
+                    "WHERE candidate_id = :cid"
+                ),
+                {
+                    "st": new_status,
+                    "res": json.dumps(decision),
+                    "actor": actor,
+                    "cid": candidate_id,
+                },
+            )
+            updated = session.execute(
+                text("SELECT * FROM kms.image_candidates WHERE candidate_id = :cid"),
+                {"cid": candidate_id},
+            ).mappings().one()
+            return dict(updated)
+
+    def set_document_habitat(
+        self,
+        doc_key: str,
+        new_habitat: HabitatIdentity | dict[str, Any],
+        *,
+        actor: str,
+        actor_role: str | None = None,
+    ) -> dict[str, Any]:
+        """Move or merge a document to a resolved habitat."""
+        if actor_role != "curator":
+            raise Conflict("Only curator role can set document habitat.")
+
+        if hasattr(new_habitat, "model_dump"):
+            hab_obj = new_habitat
+        else:
+            hab_obj = HabitatIdentity.model_validate(new_habitat)
+
+        with transaction(self.engine) as session:
+            context(session, actor)
+            src_row = session.execute(
+                text("SELECT id, document, version, variety_id, habitat_id FROM kms.knowledge_documents WHERE id = :id FOR UPDATE"),
+                {"id": doc_key},
+            ).mappings().first()
+            if src_row is None:
+                raise NotFound(f"Source document '{doc_key}' not found.")
+
+            src_doc = KnowledgeDocument.model_validate(src_row["document"])
+            dest_key = f"{src_doc.variety.id}:{hab_obj.id}"
+
+            dest_row = session.execute(
+                text("SELECT id, document, version FROM kms.knowledge_documents WHERE id = :id FOR UPDATE"),
+                {"id": dest_key},
+            ).mappings().first()
+
+            if dest_row is not None:
+                dest_doc = KnowledgeDocument.model_validate(dest_row["document"])
+                for aid, attr_val in src_doc.attributes.items():
+                    if aid not in dest_doc.attributes:
+                        dest_doc.attributes[aid] = attr_val
+                dest_aids = {m.asset_id for m in dest_doc.media_refs}
+                for m in src_doc.media_refs:
+                    if m.asset_id not in dest_aids:
+                        dest_doc.media_refs.append(m)
+                dest_doc.version = dest_row["version"] + 1
+                final_doc = dest_doc
+                session.execute(
+                    text("UPDATE kms.knowledge_documents SET document = :doc, version = :v WHERE id = :id"),
+                    {"id": dest_key, "doc": json.dumps(final_doc.model_dump(mode="json")), "v": final_doc.version},
+                )
+            else:
+                src_doc.habitat = hab_obj
+                src_doc.habitat_unknown = False
+                src_doc.doc_id = dest_key
+                src_doc.version = src_row["version"] + 1
+                final_doc = src_doc
+                session.execute(
+                    text(
+                        "INSERT INTO kms.knowledge_documents (id, variety_id, habitat_id, document, version, updated_at) "
+                        "VALUES (:id, :vid, :hid, :doc, :v, now())"
+                    ),
+                    {
+                        "id": dest_key,
+                        "vid": final_doc.variety.id,
+                        "hid": hab_obj.id,
+                        "doc": json.dumps(final_doc.model_dump(mode="json")),
+                        "v": final_doc.version,
+                    },
+                )
+
+            session.execute(
+                text("DELETE FROM kms.knowledge_documents WHERE id = :id"),
+                {"id": doc_key},
+            )
+            return final_doc.model_dump(mode="json")
+
+    def stage_direct_document(
+        self,
+        doc_key: str,
+        doc: KnowledgeDocument,
+        *,
+        run_id: str,
+        actor: str,
+    ) -> dict[str, Any]:
+        """Helper to stage a single document directly in a run."""
+        from src.storage.repository import KmsRepository
+
+        sha = hashlib.sha256(doc_key.encode()).hexdigest()
+        kms_repo = KmsRepository(self.engine)
+        kms_repo.register_source(sha, f"cas:///sources/{run_id}.xlsx", 1000, actor=actor)
+
+        draft = DocumentDraft(
+            run_id=run_id,
+            source_filename=f"{run_id}.xlsx",
+            file_sha256=sha,
+            source_uri=f"cas:///sources/{run_id}.xlsx",
+            source_scope="test",
+            schema_version="kms-document-v1",
+            template_hash="0" * 64,
+            config_fingerprint="cfg",
+            revision=1,
+            documents={doc_key: doc},
+            reviews=[],
+            base_versions={},
+        )
+        return self.stage(draft, expected_revision=0, actor=actor)
