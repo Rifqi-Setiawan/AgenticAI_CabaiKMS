@@ -602,7 +602,11 @@ class DocumentRepository:
             dec_dict = dict(decision)
 
         action = dec_dict.get("action")
+        status = dec_dict.get("status")
         notes = dec_dict.get("notes")
+
+        if not action and not status:
+            raise InvalidState("decision requires action or status")
 
         with transaction(self.engine) as session:
             context(session, actor, run_id)

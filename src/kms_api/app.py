@@ -80,6 +80,16 @@ def validate_xlsx(payload: bytes, limit: int) -> None:
         raise InvalidState('Invalid .xlsx archive.') from error
 
 
+def _unwrap_decision(body: dict[str, Any]) -> dict[str, Any]:
+    if not body or not isinstance(body, dict):
+        raise HTTPException(422, "Decision body must be a non-empty object.")
+    if "decision" in body:
+        if len(body) != 1 or not isinstance(body["decision"], dict) or not body["decision"]:
+            raise HTTPException(422, "Malformed decision payload.")
+        return body["decision"]
+    return body
+
+
 def create_app(
     settings: Settings | None = None,
     repository=None,
@@ -214,7 +224,8 @@ def create_app(
     def resolve_review_v2(run_id: str, item_id: str, decision: dict[str, Any], principal: Annotated[Principal, Depends(writer)]):
         if doc_repo is None:
             raise InvalidState('Document endpoints require a database.')
-        return doc_repo.resolve_review(run_id, item_id, decision, actor=principal.subject, actor_role=principal.role)
+        unwrapped = _unwrap_decision(decision)
+        return doc_repo.resolve_review(run_id, item_id, unwrapped, actor=principal.subject, actor_role=principal.role)
 
     @app.get('/documents')
     def list_documents(
