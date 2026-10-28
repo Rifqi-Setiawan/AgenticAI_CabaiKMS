@@ -166,7 +166,12 @@ def create_app(
         return {'status': 'alive'}
 
     @app.get('/readyz')
-    def ready():
+    def ready(principal: Annotated[Principal, Depends(authenticate)]):
+        import hashlib
+        import logging
+        from src.storage.migrate import MIGRATIONS
+
+        logger = logging.getLogger("kms_api.readyz")
         required_tables = [
             "kms.acquisition_runs",
             "kms.source_artifacts",
@@ -178,13 +183,38 @@ def create_app(
             return JSONResponse({'status': 'not_ready', 'error': 'Database engine not initialized'}, status_code=503)
         try:
             with target_engine.connect() as conn:
+                missing_tables = []
                 for tbl in required_tables:
                     exists = conn.scalar(text(f"SELECT to_regclass('{tbl}') IS NOT NULL"))
                     if not exists:
-                        return JSONResponse({'status': 'not_ready', 'missing_table': tbl}, status_code=503)
+                        missing_tables.append(tbl)
+                if missing_tables:
+                    return JSONResponse({'status': 'not_ready', 'missing_tables': missing_tables}, status_code=503)
+
+                db_rows = conn.execute(
+                    text("SELECT version, sha256 FROM kms.schema_migrations")
+                ).mappings().all()
+                db_migrations = {r["version"]: r["sha256"] for r in db_rows}
+
+                missing_migrations = []
+                checksum_mismatch = []
+                for version, path in MIGRATIONS:
+                    if version not in db_migrations:
+                        missing_migrations.append(version)
+                    else:
+                        file_sha = hashlib.sha256(path.read_text(encoding="utf-8").encode()).hexdigest()
+                        if db_migrations[version] != file_sha:
+                            checksum_mismatch.append(version)
+
+                if missing_migrations:
+                    return JSONResponse({'status': 'not_ready', 'missing_migrations': missing_migrations}, status_code=503)
+                if checksum_mismatch:
+                    return JSONResponse({'status': 'not_ready', 'checksum_mismatch': checksum_mismatch}, status_code=503)
+
             return {'status': 'ready'}
         except Exception as e:
-            return JSONResponse({'status': 'not_ready', 'error': f'{type(e).__name__}: {e}'}, status_code=503)
+            logger.error("Readiness check database failure: %s", type(e).__name__)
+            return JSONResponse({'status': 'not_ready', 'error': 'Database check failed'}, status_code=503)
 
     @app.post('/runs/stage')
     def stage(request: StageRequest, principal: Annotated[Principal, Depends(writer)]):
