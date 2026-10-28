@@ -96,6 +96,7 @@ KMS mengelola persistensi, proteksi kurasi manusia, dan integritas skema sebagai
   1. `0001` (`schema.sql`): Skema relasional dasar `kms` (`acquisition_runs`, `source_artifacts`, media, dan tabel operasional).
   2. `0002` (`schema_0002_jsonb.sql`): Kolom dokumen `JSONB` pada `kms.knowledge_documents` beserta indeks GIN dan metadata identitas.
   3. `0003` (`schema_0003_attribute_changes.sql`): Tabel ledger append-only `kms.document_attribute_changes` dengan trigger proteksi mutasi `reject_mutation`.
+  4. `0004` (`schema_0004_image_candidates.sql`): Tabel antrean kandidat citra varietas baru `kms.image_candidates` dan indeks penolakan `kms.discarded_images`.
   Penerapan migrasi berjalan sekuensial transaksional via `src/storage/migrate.py` yang memverifikasi sha256 checksum setiap berkas DDL terhadap rekaman di `kms.schema_migrations`.
 - **Perlindungan Nilai Human Review (Keputusan D2)**:
   Nilai tersimpan dengan `resolution = "HUMAN_REVIEW"` merupakan nilai hasil validasi kurator manusia dan berstatus dilindungi (`EXISTING_HUMAN_PROTECTED`). Penimpaan otomatis oleh `AUTO_ACCEPT` dilarang secara ketat. Upaya penimpaan otomatis akan dialihkan ke antrean review kurator dengan kategori `OVERWRITE_BLOCKED` atau `UNIT_MISMATCH`.
@@ -105,11 +106,13 @@ KMS mengelola persistensi, proteksi kurasi manusia, dan integritas skema sebagai
   - `APPLY_INCOMING`: Menerapkan nilai baru yang masuk (wajib disertai alasan kurasi minimal 10 karakter).
   - `REVISE`: Mengoreksi nilai dan satuan atribut (wajib alasan kurasi minimal 10 karakter, konfirmasi nilai serta satuan yang kompatibel).
   Pada kategori `UNIT_MISMATCH`, tombol langsung "Terapkan Baru" ditiadakan demi mencegah bug salah satuan (misal "85 kg" tertulis sebagai "85 cm").
+- **Antrean Kandidat Citra Varietas Baru & Penanda habitat_unknown (Ronde 3, D10–D13)**:
+  Citra yang diidentifikasi model visi sebagai varietas baru masuk ke status `CANDIDATE`. Kurator meninjau item per item melalui endpoint `/candidates` dan antarmuka Streamlit. Aksi `PROMOTE` diizinkan tanpa habitat administratif definitif menggunakan penanda `habitat_unknown` (D11), yang disajikan pada antrean "Dokumen Perlu Habitat" untuk direkonsiliasi kemudian.
 - **Kontrak API Resolusi Review**:
   Endpoint `POST /runs/v2/{run_id}/reviews/{item_id}/resolve` menerima payload datar maupun payload bersarang dengan tepat satu kunci `{"decision": {...}}` yang secara otomatis dibuka via `_unwrap_decision` dan divalidasi mewajibkan `action` atau `status`.
 - **Endpoint Health & Readiness**:
   - `/livez` dan `/healthz`: Endpoint publik tanpa autentikasi (mengembalikan 200 `{"status": "alive"}`).
-  - `/readyz`: Endpoint kesiapan operasional terotentikasi bearer token (`Depends(authenticate)`). Memverifikasi koneksi database, eksistensi tabel wajib, dan kecocokan checksum migrasi `0001`, `0002`, `0003`. Respons 503 disanitasi penuh tanpa membocorkan pesan error mentah atau informasi rahasia server.
+  - `/readyz`: Endpoint kesiapan operasional terotentikasi bearer token (`Depends(authenticate)`). Memverifikasi koneksi database, eksistensi tabel wajib, dan kecocokan checksum migrasi `0001`, `0002`, `0003`, `0004`. Respons 503 disanitasi penuh tanpa membocorkan pesan error mentah atau informasi rahasia server.
 
 ## Peta dokumentasi
 
@@ -117,6 +120,7 @@ KMS mengelola persistensi, proteksi kurasi manusia, dan integritas skema sebagai
 |---|---|
 | [Tech stack dan alur fitur](docs/TECH_STACK_AND_FLOWS.md) | Peta end-to-end setiap fitur, logika keputusan, komponen deterministik, embedding, serta LLM/model vision yang dipakai pada setiap step |
 | [Panduan lengkap proyek](docs/PROJECT_GUIDE.md) | Status implementasi, arsitektur, struktur file, kontrak data, alur, konfigurasi, penggunaan, testing, keterbatasan, dan pemeliharaan |
+| [Klasifikasi Citra & Antrean Kandidat](docs/IMAGE_CLASSIFICATION.md) | Alur fusi tiga sinyal, antrean kandidat varietas baru (CANDIDATE), dokumen habitat_unknown, dan harness evaluasi visi |
 | [Panduan migrasi dokumen JSONB](docs/KMS_JSONB_MIGRATION.md) | Panduan operasional migrasi data legacy ke dokumen JSONB, akuntansi rekonsiliasi, karantina data tanpa habitat, dan kebijakan retensi 30 hari |
 | [Runbook demo](docs/DEMO_RUNBOOK.md) | Checklist persiapan, alur demo langsung, dan fallback kegagalan |
 | [Penyiapan Google Drive](docs/DRIVE_SETUP.md) | Langkah service account dan akses folder |

@@ -156,3 +156,9 @@ Untuk portal SaaS, tambahkan workspace/tenant ID pada seluruh entitas, composite
 ### Keputusan D2 (27 Oktober 2026): Perlindungan Nilai HUMAN_REVIEW & Pembatalan PRD A10
 Nilai tersimpan dengan resolusi `HUMAN_REVIEW` berstatus dilindungi (`EXISTING_HUMAN_PROTECTED`). Pengukuran baru berstatus `AUTO_ACCEPT` tidak dapat menimpa nilai tersebut secara otomatis. Penimpaan hanya diizinkan melalui review manusia oleh peran `curator` dengan alasan tertulis wajib (`reason`). Aturan PRD A10 / "Decision #2" yang mengizinkan AUTO_ACCEPT menimpa HUMAN_REVIEW resmi **DIGANTIKAN oleh D2 (27 Okt 2026)**.
 
+### Migrasi 0004 (28 Oktober 2026): Antrean Kandidat Citra (kms.image_candidates) & Indeks Citra Ditolak (kms.discarded_images)
+Migrasi aditif `schema_0004_image_candidates.sql` memperkenalkan dua tabel baru untuk mendukung penanganan citra varietas baru tanpa pembuangan otomatis (Keputusan D10–D13):
+1. `kms.image_candidates`: Menyimpan entri citra berstatus `CANDIDATE` dengan referensi FK unik ke `kms.media_assets(id)`. Mendukung tiga aksi resolusi: `PROMOTE` (varietas baru dengan dukungan `habitat_unknown`), `MERGE` (tautkan ke dokumen aktif), dan `DISCARD`.
+2. `kms.discarded_images`: Mencatat `original_sha256` beserta alasan kurasi (`reason`) untuk mencegah citra yang sama diajukan kembali pada akuisisi berikutnya.
+Hak akses minimal `SELECT, INSERT, UPDATE` diberikan kepada role aplikasi `cabai_app`. Integritas checksum diverifikasi sekuensial oleh `migrate.py` dan dicek pada probe kesiapan `/readyz`.
+
