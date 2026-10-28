@@ -790,9 +790,12 @@ def test_a10_e2e_auto_accept_overwrites_existing_human_review(test_db: Engine):
     staged2 = repo.stage(draft_updated, expected_revision=0, actor="test-curator")
     rev2 = staged2["revision"] if isinstance(staged2, dict) else staged2.revision
     sha2 = staged2["payload_sha256"] if isinstance(staged2, dict) else staged2.payload_sha256
-    repo.commit(draft_updated.run_id, rev2, sha2, actor="test-curator")
+    # Decision D2 / L4: Direct commit of AUTO_ACCEPT over existing HUMAN_REVIEW raises Conflict
+    with pytest.raises(Conflict) as exc:
+        repo.commit(draft_updated.run_id, rev2, sha2, actor="test-curator")
+    assert "OVERWRITE_BLOCKED" in str(exc.value)
 
-    # Verify value was overwritten by AUTO_ACCEPT
+    # Verify original HUMAN_REVIEW value remains preserved intact in database
     with test_db.connect() as conn:
         row2 = conn.execute(
             text(
@@ -801,11 +804,9 @@ def test_a10_e2e_auto_accept_overwrites_existing_human_review(test_db: Engine):
             ),
             {"v_id": plant.id, "h_id": habitat.id},
         ).mappings().one()
-    assert row2["document"]["attributes"]["attr_klorofil_spad"]["resolution"] == "AUTO_ACCEPT", (
-        "Criterion A10 failure: AUTO_ACCEPT must overwrite previous HUMAN_REVIEW value."
-    )
-    assert row2["document"]["attributes"]["attr_klorofil_spad"]["value"] == pytest.approx(49.02)
-    assert row2["version"] == 2
+    assert row2["document"]["attributes"]["attr_klorofil_spad"]["resolution"] == "HUMAN_REVIEW"
+    assert row2["document"]["attributes"]["attr_klorofil_spad"]["value"] == pytest.approx(46.5417)
+    assert row2["version"] == 1
 
 
 # ============================================================================
