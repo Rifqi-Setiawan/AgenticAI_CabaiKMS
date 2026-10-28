@@ -388,6 +388,13 @@ Addendum ini merangkum penyelesaian temuan audit sisa Ronde 4 (G-1 s.d. G-8) yan
    - Berkas log mentah pengujian yang memuat artefak terminal shell telah dihapus dari pelacakan Git repositori.
    - Pengujian nyata `test_g8_app_test_mounts_three_tabs_and_panels` memverifikasi bahwa halaman `src/ui/pages/4_KMS.py` berhasil memuat modul dan merender ketiga tab antarmuka tanpa error.
 
+8. **V-D (Hasil Uji Manual Terpandu Alur Kandidat & Habitat pada DB Uji):**
+   - Skenario 1 (Kandidat -> PROMOTE tanpa habitat): Kandidat berhasil diangkat menjadi dokumen varietas berstatus `PROMOTED` dengan kunci `plant_cabai_pilot_...:habitat_unknown`.
+   - Skenario 2 (Verifikasi Dokumen Muncul di Daftar `habitat_unknown`): Terverifikasi dokumen muncul pada daftar hasil filter `GET /documents?habitat_unknown=true`.
+   - Skenario 3 (Atur Habitat Definitif via `SET_HABITAT`): Memanggil `POST /documents/{doc_key}/habitat` dengan 4 jenjang administratif (`Jawa Barat`, `Garut`, `Tarogong Kaler`, `Pananjung`). Dokumen berhasil dipindahkan ke kunci `plant_cabai_pilot_...:hab_garut_tarogong-kaler_pananjung` (`habitat_unknown=false`), baris lama terhapus, dan baris jejak `habitat_migration_relink` tercatat di `kms.document_attribute_changes`.
+   - Skenario 4 (Foto Kedua Varietas Sama -> MERGE): Kandidat kedua untuk varietas yang sama berhasil digabungkan ke dokumen definitif via aksi `MERGE` menyertakan `expected_version`. Dokumen kini memiliki tepat 2 referensi media (`buah` dan `daun`).
+
+
 
 
 
