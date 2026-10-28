@@ -329,4 +329,32 @@ mapping problems that sit above "which variant is this":
 - Checksum setiap berkas migrasi disk diverifikasi terhadap rekaman sha256 di database; inkonsistensi versi atau checksum mengembalikan status 503 dengan daftar migrasi yang bermasalah.
 - Respons 503 disanitasi penuh sehingga tidak membocorkan traceback mentah, DSN, nama host, atau informasi rahasia server ke klien.
 
+## (i) D10 (D-IMG-1): Antrean Kandidat untuk Citra Varietas Baru
+
+**[FINAL, 2026-10-28]** Pengelolaan citra varietas baru tanpa pembuangan otomatis:
+- Citra Google Drive yang diidentifikasi sebagai varietas baru (*OTHER*) oleh model visi tidak dibuang otomatis dan tidak langsung membentuk dokumen pengetahuan.
+- Citra masuk ke antrean terstruktur `kms.image_candidates` dengan status `CANDIDATE`.
+- Peneliti kurator menentukan nasib setiap kandidat: `PROMOTE` (varietas baru), `MERGE` (tautkan ke varietas terdaftar), atau `DISCARD` (tandai ditolak dan rekam sha256 ke `kms.discarded_images`).
+
+## (j) D11 (D-IMG-2): Aksi PROMOTE dengan Penanda Habitat Belum Diketahui
+
+**[FINAL, 2026-10-28]** Pengangkatan kandidat tanpa lokasi administratif awal:
+- Aksi `PROMOTE` diizinkan tanpa menyertakan `habitat_id` definitif.
+- Dokumen dibuat menggunakan habitat sentinel `habitat_unknown` dan diberi flag `habitat_unknown: true`.
+- Dokumen tersebut otomatis terdeteksi dan disajikan pada antarmuka "Dokumen Perlu Habitat", serta dapat dipindahkan ke habitat definitif via endpoint `POST /documents/{key}/habitat` (`SET_HABITAT`).
+
+## (k) D12 (D-IMG-3): Antrean Kandidat Persisten Tanpa Kedaluwarsa
+
+**[FINAL, 2026-10-28]** Masa aktif entri antrean kandidat:
+- Entri pada `kms.image_candidates` bersifat persisten tanpa batas waktu (tidak kedaluwarsa atau terhapus otomatis oleh sistem).
+- Setiap kandidat bertahan di antrean hingga kurator memberikan keputusan eksplisit.
+
+## (l) D13 (D-IMG-4): Review Granular Non-Kluster & Aturan Sinyal Fusi
+
+**[FINAL, 2026-10-28]** Standar evaluasi citra dan hierarki sinyal:
+- Peninjauan citra kandidat dilakukan secara granular satu per satu tanpa pengelompokan (*clustering*) otomatis.
+- Fusi sinyal memadukan nama file, registri varietas (spreadsheet + DB), dan model visi.
+- Aturan baku: **Sinyal citra visual menang atas nama file** (*visual wins over filename*). Konflik antara nama file dan bukti visual dialihkan ke peninjauan kurator (`REVIEW_MISMATCH`) dan tidak pernah ditulis otomatis.
+
+
 
