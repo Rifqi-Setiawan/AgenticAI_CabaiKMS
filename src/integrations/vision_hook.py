@@ -63,16 +63,19 @@ def vision_classification_with_storage(state: dict[str, Any], config: dict[str, 
         run_scope_varieties = extract_run_scope_varieties(workbook)
         db_varieties = []
         try:
-            doc_res = client.request('GET', '/documents?limit=100')
-            docs = doc_res.get('items', doc_res) if isinstance(doc_res, dict) else doc_res
-            for d in (docs or []):
-                v = d.get('variety')
-                if v:
-                    db_varieties.append(v)
-        except Exception:
-            pass
+            var_res = client.request('GET', '/varieties')
+            items = var_res.get('items', var_res) if isinstance(var_res, dict) else var_res
+            for item in (items or []):
+                if item:
+                    db_varieties.append(item)
+        except Exception as exc:
+            resources.on_progress(f"vision: Gagal mengambil varietas DB: {exc}")
+            raise RuntimeError(f"Failed to fetch DB varieties: {exc}") from exc
+
         registry = VarietyRegistry.build(spreadsheet_varieties=run_scope_varieties, db_varieties=db_varieties)
-        vision = vision_classification.VisionSession(run_scope_varieties=run_scope_varieties)
+        # F-6: Combined variety registry options provided to VisionSession
+        all_eval_options = registry.get_canonical_names()
+        vision = vision_classification.VisionSession(run_scope_varieties=all_eval_options)
 
         trace = {
             'error_trace': list(state.get('error_trace', [])),
@@ -97,8 +100,9 @@ def vision_classification_with_storage(state: dict[str, Any], config: dict[str, 
                 if disc_res and isinstance(disc_res, list) and len(disc_res) > 0:
                     is_discarded = True
                     discard_reason = disc_res[0].get('reason') or discard_reason
-            except Exception:
-                pass
+            except Exception as exc:
+                resources.on_progress(f"vision: Gagal memeriksa discarded images: {exc}")
+                raise RuntimeError(f"Failed to check discarded status for {image.filename}: {exc}") from exc
 
             if is_discarded:
                 resources.on_progress(f"vision [{idx}/{total_images}]: Melewati '{image.filename}' (telah ditolak/discarded)")
@@ -188,6 +192,8 @@ def vision_classification_with_storage(state: dict[str, Any], config: dict[str, 
                     client.request('POST', '/candidates', json=cand_payload)
                 except Exception as e:
                     trace['error_trace'].append(f"Failed to record candidate {image.filename}: {e}")
+                    status_to_report = "FAILED_CANDIDATE_RECORD"
+                    update.reason = f"FAILED_CANDIDATE_RECORD: {e}"
             else:  # REVIEW_MISMATCH or REVIEW_UNCERTAIN
                 review_item = vision.evaluate_photo_alignment(
                     image,
