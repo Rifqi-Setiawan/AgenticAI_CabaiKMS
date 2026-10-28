@@ -164,6 +164,7 @@ def extract_photo_context_signal(
     filename: str,
     caption: str | None = None,
     known_varieties: list[str] | None = None,
+    registry: Any | None = None,
 ) -> PhotoContextSignal:
     """A23: Extract structured context signal (Signal 2) from filename and caption."""
     stem = Path(filename).stem
@@ -177,49 +178,56 @@ def extract_photo_context_signal(
             break
 
     suggested_variety_hint = None
-    stop_words = {
-        "cabai",
-        "cabe",
-        "chili",
-        "pepper",
-        "tanaman",
-        "foto",
-        "daun",
-        "buah",
-        "batang",
-        "bunga",
-        "sample",
-        "lokasi",
-        "sp",
-        "l",
-    }
 
-    if known_varieties:
-        for variety in known_varieties:
-            v_low = variety.lower()
-            v_tokens = set(re.findall(r"[a-zA-Z0-9]+", v_low)) - stop_words
-            if any(tok in combined_text for tok in v_tokens):
-                suggested_variety_hint = variety
-                break
+    if registry is not None:
+        best = registry.best_match(combined_text, threshold=0.6)
+        if best is not None:
+            suggested_variety_hint = best.canonical_name
+    else:
+        # Legacy fallback behavior
+        stop_words = {
+            "cabai",
+            "cabe",
+            "chili",
+            "pepper",
+            "tanaman",
+            "foto",
+            "daun",
+            "buah",
+            "batang",
+            "bunga",
+            "sample",
+            "lokasi",
+            "sp",
+            "l",
+        }
 
-    if not suggested_variety_hint:
-        for word in re.findall(r"[a-zA-Z]+", combined_text):
-            if word in stop_words or len(word) < 4:
-                continue
-            if word in [
-                "rawit",
-                "keriting",
-                "habanero",
-                "katokkon",
-                "jalapeno",
-                "gendot",
-                "kopay",
-                "tanjung",
-                "domba",
-                "besar",
-            ]:
-                suggested_variety_hint = f"Cabai {word.title()}"
-                break
+        if known_varieties:
+            for variety in known_varieties:
+                v_low = variety.lower()
+                v_tokens = set(re.findall(r"[a-zA-Z0-9]+", v_low)) - stop_words
+                if any(tok in combined_text for tok in v_tokens):
+                    suggested_variety_hint = variety
+                    break
+
+        if not suggested_variety_hint:
+            for word in re.findall(r"[a-zA-Z]+", combined_text):
+                if word in stop_words or len(word) < 4:
+                    continue
+                if word in [
+                    "rawit",
+                    "keriting",
+                    "habanero",
+                    "katokkon",
+                    "jalapeno",
+                    "gendot",
+                    "kopay",
+                    "tanjung",
+                    "domba",
+                    "besar",
+                ]:
+                    suggested_variety_hint = f"Cabai {word.title()}"
+                    break
 
     return PhotoContextSignal(
         filename=filename,
