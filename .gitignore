@@ -1,0 +1,51 @@
+# Virtual environments
+.venv
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache / compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pyre/
+
+# Test / tooling cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+credentials.json
+*.pem
+*.key
+secrets/
+service-account*.json
+
+# Local data outputs
+data/.chroma/
+data/review/*.jsonl
+data/outputs/
+# New runtime checkpoints only; an already-tracked SQLite DB remains tracked.
+data/.checkpoints/
+
+# Editor / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+~$*
+
+.kms_backups/
+.env.kms.*
+!.env.kms.example
+.venv-kms/
+data/review/kms_runs/

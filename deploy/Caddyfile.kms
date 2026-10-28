@@ -1,0 +1,15 @@
+# A separate site block to MERGE into the existing Caddy configuration after review.
+# Caddy process must receive KMS_HOST, KMS_EDGE_USER, KMS_EDGE_PASSWORD_HASH.
+{$KMS_HOST} {
+    encode zstd gzip
+    basic_auth {
+        {$KMS_EDGE_USER} {$KMS_EDGE_PASSWORD_HASH}
+    }
+    header {
+        Referrer-Policy "no-referrer"
+        X-Content-Type-Options "nosniff"
+        -Server
+    }
+    reverse_proxy 127.0.0.1:8501
+}
+# Deliberately no public file_server, media directory root, public API or bucket URL.

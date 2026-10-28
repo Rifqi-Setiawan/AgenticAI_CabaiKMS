@@ -1,0 +1,48 @@
+{
+  "annotation_guideline": {
+    "path": "docs/HUMAN_ANNOTATION_GUIDE.md",
+    "sha256": "cbb34f4b00e999e9a9c8ca1ab96bde177fbbec71323b330f09c2c156a4963e6d",
+    "version": "human-schema-mapping-v1"
+  },
+  "annotation_round": 1,
+  "annotation_version": "schema-mapping-gold-v1",
+  "annotator_A_template": {
+    "path": "eval/campaigns/schema-mapping-pilot-v1/round1/annotator_A_round1.xlsx",
+    "sha256": "ba44eced4018b4e9258464098e7b78bac6e28cf2f588560510bd42e8addb275c"
+  },
+  "annotator_B_template": {
+    "path": "eval/campaigns/schema-mapping-pilot-v1/round1/annotator_B_round1.xlsx",
+    "sha256": "ba44eced4018b4e9258464098e7b78bac6e28cf2f588560510bd42e8addb275c"
+  },
+  "campaign_manifest": {
+    "path": "eval/campaigns/schema-mapping-pilot-v1/manifest.json",
+    "sha256": "78adf491894688ffc9c64dcb3cdcabbf0fd97f2feffcf4031654243154c6ac14"
+  },
+  "campaign_type": "pilot",
+  "campaign_version": "schema-mapping-pilot-v1",
+  "canonical_schema_version": "cabai-kms-canonical-v1",
+  "canonical_template": {
+    "path": "data/canonical/template_kanonik.xlsx",
+    "sha256": "ce20735de4eda597427a9671fb841f5193ab64ec18dafef2e659b0b05204f6c5"
+  },
+  "canonical_template_hash": "8ba7cf35b2de23dedad5d5b639f1cef06846c304f18809de8dfec34e0bf397d9",
+  "code_revision": "6ddac007461b494eeb11cafd1f7b3cd694e70fff",
+  "frozen_evaluation_config_fingerprint": "9bbc2b52332d585895eac0800e1fa1ebdbbc475fac4c30a7e2ee2c5d534fb0fb",
+  "generated_at_utc": "2026-09-07T06:26:57.008790+00:00",
+  "master_artifact": {
+    "path": "eval/campaigns/schema-mapping-pilot-v1/master/master_evaluation.xlsx",
+    "sha256": "05bbc00acb039a58c61372cb8b7297292854c97e19b0f9da89921e31aebe5aaa"
+  },
+  "prediction_blinded": true,
+  "readiness": {
+    "path": "eval/campaigns/schema-mapping-pilot-v1/readiness.json",
+    "sha256": "6c1c9c3e5a2289a9907061c0ec40781f43b9a56a4e46c0ed51d1684a9b8e8eb9"
+  },
+  "validation_workbooks": [
+    {
+      "entry_id": "validation-data-input-resume-data",
+      "path": "data/samples/data_input.xlsx",
+      "sha256": "71e86f98a416d2f269b873c3a2c96bc729837fac0b104a79089e9d70fd093056"
+    }
+  ]
+}

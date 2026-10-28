@@ -1,0 +1,123 @@
+[
+  {
+    "province_id": "prop_34",
+    "province_name": "Daerah Istimewa Yogyakarta",
+    "regency_id": "kab_3404",
+    "regency_name": "Kabupaten Sleman",
+    "district_id": "kec_3404070",
+    "district_name": "Kecamatan Pakem",
+    "village_id": "desa_3404070001",
+    "village_name": "Desa Hargobinangun",
+    "habitat_id": "hab_sleman_pakem_hargobinangun"
+  },
+  {
+    "province_id": "prop_34",
+    "province_name": "Daerah Istimewa Yogyakarta",
+    "regency_id": "kab_3404",
+    "regency_name": "Kabupaten Sleman",
+    "district_id": "kec_3404070",
+    "district_name": "Kecamatan Pakem",
+    "village_id": "desa_3404070002",
+    "village_name": "Desa Pakem",
+    "habitat_id": "hab_sleman_pakem_pakem"
+  },
+  {
+    "province_id": "prop_33",
+    "province_name": "Jawa Tengah",
+    "regency_id": "kab_3323",
+    "regency_name": "Kabupaten Temanggung",
+    "district_id": "kec_3323060",
+    "district_name": "Kecamatan Parakan",
+    "village_id": "desa_3323060001",
+    "village_name": "Desa Campursalam",
+    "habitat_id": "hab_temanggung_parakan_campursalam"
+  },
+  {
+    "province_id": "prop_33",
+    "province_name": "Jawa Tengah",
+    "regency_id": "kab_3323",
+    "regency_name": "Kabupaten Temanggung",
+    "district_id": "kec_3323050",
+    "district_name": "Kecamatan Kedu",
+    "village_id": "desa_3323050001",
+    "village_name": "Desa Kutoanyar",
+    "habitat_id": "hab_temanggung_kedu_kutoanyar"
+  },
+  {
+    "province_id": "prop_33",
+    "province_name": "Jawa Tengah",
+    "regency_id": "kab_3323",
+    "regency_name": "Kabupaten Temanggung",
+    "district_id": "kec_3323050",
+    "district_name": "Kecamatan Kedu",
+    "village_id": "desa_3323050002",
+    "village_name": "Desa Candimulyo",
+    "habitat_id": "hab_temanggung_kedu_candimulyo"
+  },
+  {
+    "province_id": "prop_33",
+    "province_name": "Jawa Tengah",
+    "regency_id": "kab_3323",
+    "regency_name": "Kabupaten Temanggung",
+    "district_id": "kec_3323040",
+    "district_name": "Kecamatan Bulu",
+    "village_id": "desa_3323040001",
+    "village_name": "Desa Gondosuli",
+    "habitat_id": "hab_temanggung_bulu_gondosuli"
+  },
+  {
+    "province_id": "prop_33",
+    "province_name": "Jawa Tengah",
+    "regency_id": "kab_3323",
+    "regency_name": "Kabupaten Temanggung",
+    "district_id": "kec_3323040",
+    "district_name": "Kecamatan Bulu",
+    "village_id": "desa_3323040002",
+    "village_name": "Desa Pengilon",
+    "habitat_id": "hab_temanggung_bulu_pengilon"
+  },
+  {
+    "province_id": "prop_33",
+    "province_name": "Jawa Tengah",
+    "regency_id": "kab_3323",
+    "regency_name": "Kabupaten Temanggung",
+    "district_id": "kec_3323040",
+    "district_name": "Kecamatan Bulu",
+    "village_id": "desa_3323040003",
+    "village_name": "Desa Bulu",
+    "habitat_id": "hab_temanggung_bulu_bulu"
+  },
+  {
+    "province_id": "prop_33",
+    "province_name": "Jawa Tengah",
+    "regency_id": "kab_3307",
+    "regency_name": "Kabupaten Wonosobo",
+    "district_id": "kec_3307040",
+    "district_name": "Kecamatan Kalikajar",
+    "village_id": "desa_3307040001",
+    "village_name": "Desa Lamuk",
+    "habitat_id": "hab_wonosobo_kalikajar_lamuk"
+  },
+  {
+    "province_id": "prop_33",
+    "province_name": "Jawa Tengah",
+    "regency_id": "kab_3303",
+    "regency_name": "Kabupaten Purbalingga",
+    "district_id": "kec_3303030",
+    "district_name": "Kecamatan Kejobong",
+    "village_id": "desa_3303030001",
+    "village_name": "Desa Lamuk",
+    "habitat_id": "hab_purbalingga_kejobong_lamuk"
+  },
+  {
+    "province_id": "prop_32",
+    "province_name": "Jawa Barat",
+    "regency_id": "kab_3210",
+    "regency_name": "Kabupaten Majalengka",
+    "district_id": "kec_3210080",
+    "district_name": "Kecamatan Argapura",
+    "village_id": "desa_3210080001",
+    "village_name": "Desa Argalingga",
+    "habitat_id": "hab_majalengka_argapura_argalingga"
+  }
+]

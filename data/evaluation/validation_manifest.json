@@ -1,0 +1,14 @@
+{
+  "manifest_version": "schema-mapping-eval-v1",
+  "workbooks": [
+    {
+      "source_file_name": "data_input.xlsx",
+      "source_file_sha256": "71e86f98a416d2f269b873c3a2c96bc729837fac0b104a79089e9d70fd093056",
+      "sheet": "Resume Data",
+      "source_format": "row-oriented",
+      "split": "validation",
+      "notes": "Only non-synthetic repository sample; frozen for human annotation round 1.",
+      "variation_tags": ["field-data", "hierarchical-header", "row-oriented"]
+    }
+  ]
+}
