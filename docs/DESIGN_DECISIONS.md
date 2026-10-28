@@ -297,3 +297,12 @@ mapping problems that sit above "which variant is this":
   data rather than parsing it back out of the composed string. Not built
   yet — no structured coordinate data exists to seed it with, and this
   belongs to the schema/ingestion fase, not Fase 0.
+
+## (e) Perlindungan Nilai Atribut Hasil Kurasi Manusia (Decision D2)
+
+**[FINAL, 2026-10-27]** Berdasarkan keputusan formal Rifqi (D2):
+- Atribut yang tersimpan di dokumen aktif dengan status `resolution = "HUMAN_REVIEW"` merupakan nilai yang telah divalidasi oleh kurator manusia dan berstatus dilindungi (`EXISTING_HUMAN_PROTECTED`).
+- Nilai otomatis baru (`AUTO_ACCEPT`) tidak diperbolehkan menimpa nilai terlindungi tersebut secara otomatis.
+- Penimpaan hanya boleh terjadi lewat peninjauan manusia oleh peran `curator` disertai alasan wajib (`reason`).
+- Keputusan ini resmi menggantikan kriteria PRD A10 / "Decision #2" (yang sebelumnya mengizinkan AUTO_ACCEPT menimpa HUMAN_REVIEW). Catatan historis A10 ditandai: *DIGANTIKAN oleh D2 (27 Okt 2026)*.
+

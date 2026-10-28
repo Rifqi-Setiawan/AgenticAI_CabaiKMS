@@ -150,3 +150,9 @@ FROM kms.outbox_events;
 ```
 
 Untuk portal SaaS, tambahkan workspace/tenant ID pada seluruh entitas, composite uniqueness, run scope, alias scope dan object namespace, kemudian buktikan isolasi melalui test lintas tenant. Paket ini sengaja **single trusted research workspace**, bukan implementasi SaaS multi-tenant yang sudah selesai.
+
+## Keputusan Arsitektur & Integritas Data
+
+### Keputusan D2 (27 Oktober 2026): Perlindungan Nilai HUMAN_REVIEW & Pembatalan PRD A10
+Nilai tersimpan dengan resolusi `HUMAN_REVIEW` berstatus dilindungi (`EXISTING_HUMAN_PROTECTED`). Pengukuran baru berstatus `AUTO_ACCEPT` tidak dapat menimpa nilai tersebut secara otomatis. Penimpaan hanya diizinkan melalui review manusia oleh peran `curator` dengan alasan tertulis wajib (`reason`). Aturan PRD A10 / "Decision #2" yang mengizinkan AUTO_ACCEPT menimpa HUMAN_REVIEW resmi **DIGANTIKAN oleh D2 (27 Okt 2026)**.
+
