@@ -1,0 +1,9 @@
+filename,true_label,kind,split
+rawit_daun_01.jpg,Cabai Rawit,KNOWN,val
+keriting_buah_01.jpg,Cabai Keriting,KNOWN,val
+varietas_x_01.jpg,Cabai Hiyung,OTHER,val
+buram_01.jpg,NONE,UNCERTAIN,val
+rawit_buah_02.jpg,Cabai Rawit,KNOWN,test
+keriting_daun_02.jpg,Cabai Keriting,KNOWN,test
+varietas_y_01.jpg,Cabai Katokkon,OTHER,test
+rusak_01.jpg,NONE,UNCERTAIN,test
