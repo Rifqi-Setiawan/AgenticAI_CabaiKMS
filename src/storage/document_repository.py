@@ -16,6 +16,7 @@ from sqlalchemy.orm import Session
 from src.storage.contracts import canonical_json, digest_json
 from src.storage.db import transaction
 from src.storage.document_contracts import (
+    AdministrativePath,
     AttributeValue,
     CommitReceipt,
     DocumentDraft,
@@ -1060,28 +1061,37 @@ class DocumentRepository:
                 )
 
                 hab_dict = decision.get("habitat")
+                hab_id_param = decision.get("habitat_id")
                 if hab_dict and isinstance(hab_dict, dict):
                     habitat = HabitatIdentity.model_validate(hab_dict)
                     hab_unknown = False
-                elif decision.get("habitat_id") and decision.get("habitat_id") != "habitat_unknown":
-                    hab_id = decision.get("habitat_id")
-                    habitat = HabitatIdentity(
-                        id=hab_id,
-                        definition="administrative_village_v1",
-                        administrative_path=AdministrativePath(
-                            province_name="Unknown",
-                            regency_name="Unknown",
-                            district_name="Unknown",
-                            village_name="Unknown",
-                        ),
-                        label=hab_id,
-                    )
+                elif hab_id_param and hab_id_param != "habitat_unknown":
+                    row_hab = session.execute(
+                        text("SELECT document->'habitat' AS hab FROM kms.knowledge_documents WHERE habitat_id = :hid LIMIT 1"),
+                        {"hid": hab_id_param},
+                    ).mappings().first()
+                    if row_hab is None:
+                        raise InvalidState(
+                            f"Habitat '{hab_id_param}' not found in registered documents; choose an existing habitat or leave empty for unknown habitat."
+                        )
+                    habitat = HabitatIdentity.model_validate(row_hab["hab"])
                     hab_unknown = False
                 else:
                     habitat = make_unknown_habitat()
                     hab_unknown = True
 
                 doc_key = f"{plant.id}:{habitat.id}"
+
+                # F-2: Reject if document already exists; forbid overwriting via PROMOTE
+                existing_doc = session.execute(
+                    text("SELECT id FROM kms.knowledge_documents WHERE id = :id"),
+                    {"id": doc_key},
+                ).mappings().first()
+                if existing_doc is not None:
+                    raise Conflict(
+                        f"Document '{doc_key}' already exists; use MERGE instead of PROMOTE to prevent overwriting."
+                    )
+
                 organ = row["organ_part"] if row["organ_part"] in ("habitus", "daun", "batang", "bunga", "buah", "biji") else "buah"
                 media_ref = MediaReference(
                     asset_id=row["asset_id"],
@@ -1103,9 +1113,8 @@ class DocumentRepository:
                 )
                 session.execute(
                     text(
-                        "INSERT INTO kms.knowledge_documents (id, variety_id, habitat_id, document, version, updated_at) "
-                        "VALUES (:id, :vid, :hid, :doc, 1, now()) "
-                        "ON CONFLICT (id) DO UPDATE SET document = EXCLUDED.document, version = kms.knowledge_documents.version + 1, updated_at = now()"
+                        "INSERT INTO kms.knowledge_documents (id, variety_id, habitat_id, document, version, created_at, updated_at) "
+                        "VALUES (:id, :vid, :hid, CAST(:doc AS jsonb), 1, now(), now())"
                     ),
                     {
                         "id": doc_key,
@@ -1133,6 +1142,12 @@ class DocumentRepository:
                 if target_row is None:
                     raise NotFound(f"Target document '{target_doc_key}' not found.")
 
+                expected_ver = decision.get("expected_version")
+                if expected_ver is not None and target_row["version"] != expected_ver:
+                    raise Conflict(
+                        f"Target document version mismatch: expected {expected_ver}, got {target_row['version']}."
+                    )
+
                 doc_obj = KnowledgeDocument.model_validate(target_row["document"])
                 organ = row["organ_part"] if row["organ_part"] in ("habitus", "daun", "batang", "bunga", "buah", "biji") else "buah"
                 media_ref = MediaReference(
@@ -1149,11 +1164,16 @@ class DocumentRepository:
                 doc_obj.version = target_row["version"] + 1
 
                 session.execute(
-                    text("UPDATE kms.knowledge_documents SET document = :doc, version = :v WHERE id = :id"),
+                    text(
+                        "UPDATE kms.knowledge_documents "
+                        "SET document = CAST(:doc AS jsonb), version = :v, updated_at = now() "
+                        "WHERE id = :id AND version = :prev_v"
+                    ),
                     {
                         "id": target_doc_key,
                         "doc": json.dumps(doc_obj.model_dump(mode="json")),
                         "v": doc_obj.version,
+                        "prev_v": target_row["version"],
                     },
                 )
                 new_status = "MERGED"
@@ -1162,7 +1182,7 @@ class DocumentRepository:
                 session.execute(
                     text(
                         "INSERT INTO kms.discarded_images (original_sha256, reason, decided_by, decided_at, asset_id, source_filename) "
-                        "VALUES (:s, :r, :a, now(), :aid, :fn) ON CONFLICT (original_sha256) DO UPDATE SET reason = EXCLUDED.reason"
+                        "VALUES (:s, :r, :a, now(), :aid, :fn) ON CONFLICT (original_sha256) DO NOTHING"
                     ),
                     {
                         "s": row["original_sha256"],
@@ -1205,6 +1225,9 @@ class DocumentRepository:
         if actor_role != "curator":
             raise Conflict("Only curator role can set document habitat.")
 
+        if isinstance(new_habitat, dict) and new_habitat.get("id") == "habitat_unknown":
+            raise InvalidState("Destination habitat cannot be habitat_unknown.")
+
         if hasattr(new_habitat, "model_dump"):
             hab_obj = new_habitat
         else:
@@ -1222,6 +1245,16 @@ class DocumentRepository:
             src_doc = KnowledgeDocument.model_validate(src_row["document"])
             dest_key = f"{src_doc.variety.id}:{hab_obj.id}"
 
+            # F-3: Validation checks
+            if dest_key == doc_key:
+                raise InvalidState("Destination habitat produces the same document key as source.")
+            if hab_obj.id == "habitat_unknown":
+                raise InvalidState("Destination habitat cannot be habitat_unknown.")
+            if not src_doc.habitat_unknown and src_doc.habitat.id != "habitat_unknown":
+                raise InvalidState(
+                    f"Source document '{doc_key}' already has a defined habitat; only habitat_unknown documents can be updated via set_document_habitat."
+                )
+
             dest_row = session.execute(
                 text("SELECT id, document, version FROM kms.knowledge_documents WHERE id = :id FOR UPDATE"),
                 {"id": dest_key},
@@ -1229,9 +1262,17 @@ class DocumentRepository:
 
             if dest_row is not None:
                 dest_doc = KnowledgeDocument.model_validate(dest_row["document"])
+                # F-3: Check attribute conflicts; do not drop silently
                 for aid, attr_val in src_doc.attributes.items():
-                    if aid not in dest_doc.attributes:
+                    if aid in dest_doc.attributes:
+                        dest_val = dest_doc.attributes[aid]
+                        if attr_val.value != dest_val.value:
+                            raise Conflict(
+                                f"Attribute conflict on '{aid}': source has '{attr_val.value}', destination has '{dest_val.value}'. Manual review required."
+                            )
+                    else:
                         dest_doc.attributes[aid] = attr_val
+
                 dest_aids = {m.asset_id for m in dest_doc.media_refs}
                 for m in src_doc.media_refs:
                     if m.asset_id not in dest_aids:
@@ -1239,8 +1280,12 @@ class DocumentRepository:
                 dest_doc.version = dest_row["version"] + 1
                 final_doc = dest_doc
                 session.execute(
-                    text("UPDATE kms.knowledge_documents SET document = :doc, version = :v WHERE id = :id"),
+                    text("UPDATE kms.knowledge_documents SET document = CAST(:doc AS jsonb), version = :v, updated_at = now() WHERE id = :id"),
                     {"id": dest_key, "doc": json.dumps(final_doc.model_dump(mode="json")), "v": final_doc.version},
+                )
+                session.execute(
+                    text("DELETE FROM kms.knowledge_documents WHERE id = :id"),
+                    {"id": doc_key},
                 )
             else:
                 src_doc.habitat = hab_obj
@@ -1248,24 +1293,23 @@ class DocumentRepository:
                 src_doc.doc_id = dest_key
                 src_doc.version = src_row["version"] + 1
                 final_doc = src_doc
+                # In-place UPDATE on source row! Changes id, habitat_id, document, version.
+                # Avoids delete+insert, requires only UPDATE privilege!
                 session.execute(
                     text(
-                        "INSERT INTO kms.knowledge_documents (id, variety_id, habitat_id, document, version, updated_at) "
-                        "VALUES (:id, :vid, :hid, :doc, :v, now())"
+                        "UPDATE kms.knowledge_documents "
+                        "SET id = :dest_key, habitat_id = :hid, document = CAST(:doc AS jsonb), version = :v, updated_at = now() "
+                        "WHERE id = :src_key"
                     ),
                     {
-                        "id": dest_key,
-                        "vid": final_doc.variety.id,
+                        "dest_key": dest_key,
+                        "src_key": doc_key,
                         "hid": hab_obj.id,
                         "doc": json.dumps(final_doc.model_dump(mode="json")),
                         "v": final_doc.version,
                     },
                 )
 
-            session.execute(
-                text("DELETE FROM kms.knowledge_documents WHERE id = :id"),
-                {"id": doc_key},
-            )
             return final_doc.model_dump(mode="json")
 
     def stage_direct_document(

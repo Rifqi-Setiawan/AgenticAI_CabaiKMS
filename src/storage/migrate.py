@@ -12,6 +12,7 @@ MIGRATIONS = [
     ('0002', ROOT / 'schema_0002_jsonb.sql'),
     ('0003', ROOT / 'schema_0003_attribute_changes.sql'),
     ('0004', ROOT / 'schema_0004_image_candidates.sql'),
+    ('0005', ROOT / 'schema_0005_app_grants.sql'),
 ]
 
 
