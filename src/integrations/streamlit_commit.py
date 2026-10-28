@@ -183,18 +183,29 @@ def render_categorized_review_queue(
                         is_unit_mismatch = (cat == "UNIT_MISMATCH")
 
                         cols = st.columns(2 if is_unit_mismatch else 3)
-                        # Button 1: Pertahankan Lama
-                        if cols[0].button("Pertahankan Lama", key=f"btn_keep_{item.item_id}"):
-                            resolve_review_item_v2(
-                                run_id=active_run_id,
-                                item_id=item.item_id,
-                                decision={"action": "KEEP_EXISTING", "notes": clean_reason or None},
-                            )
-                            st.rerun()
-
-                        # Button 2: Terapkan Baru (hanya untuk OVERWRITE_BLOCKED, bukan UNIT_MISMATCH)
+                        with cols[0]:
+                            btn_keep = st.button("Pertahankan Lama", key=f"btn_keep_{item.item_id}")
                         if not is_unit_mismatch:
-                            if cols[1].button("Terapkan Baru", key=f"btn_apply_{item.item_id}"):
+                            with cols[1]:
+                                btn_apply = st.button("Terapkan Baru", key=f"btn_apply_{item.item_id}")
+                        else:
+                            btn_apply = False
+                        revise_col = cols[1] if is_unit_mismatch else cols[2]
+                        with revise_col:
+                            btn_revise = st.button("Koreksi", key=f"btn_revise_{item.item_id}")
+
+                        if 0 < len(clean_reason) < 10:
+                            st.warning("Alasan minimal 10 karakter jika diisi.")
+                        else:
+                            if btn_keep:
+                                resolve_review_item_v2(
+                                    run_id=active_run_id,
+                                    item_id=item.item_id,
+                                    decision={"action": "KEEP_EXISTING", "notes": clean_reason or None},
+                                )
+                                st.rerun()
+
+                            if btn_apply:
                                 if len(clean_reason) < 10:
                                     st.warning("Alasan minimal 10 karakter diperlukan untuk menerapkan nilai baru.")
                                 else:
@@ -205,31 +216,29 @@ def render_categorized_review_queue(
                                     )
                                     st.rerun()
 
-                        # Button 3: Koreksi
-                        revise_col = cols[1] if is_unit_mismatch else cols[2]
-                        if revise_col.button("Koreksi", key=f"btn_revise_{item.item_id}"):
-                            clean_unit = (corr_unit_input or "").strip()
-                            if len(clean_reason) < 10:
-                                st.warning("Alasan minimal 10 karakter diperlukan untuk mengoreksi nilai.")
-                            elif payload.get("old_unit") and not clean_unit:
-                                st.warning("Satuan terkoreksi wajib diisi/dikonfirmasi untuk atribut bersatuan.")
-                            else:
-                                raw_val = corr_val_input.strip() if corr_val_input else ""
-                                try:
-                                    final_val = float(raw_val) if "." in raw_val else int(raw_val) if raw_val.isdigit() else raw_val
-                                except ValueError:
-                                    final_val = raw_val
-                                resolve_review_item_v2(
-                                    run_id=active_run_id,
-                                    item_id=item.item_id,
-                                    decision={
-                                        "action": "REVISE",
-                                        "corrected_value": final_val,
-                                        "corrected_unit": clean_unit or None,
-                                        "reason": clean_reason,
-                                    },
-                                )
-                                st.rerun()
+                            if btn_revise:
+                                clean_unit = (corr_unit_input or "").strip()
+                                if len(clean_reason) < 10:
+                                    st.warning("Alasan minimal 10 karakter diperlukan untuk mengoreksi nilai.")
+                                elif payload.get("old_unit") and not clean_unit:
+                                    st.warning("Satuan terkoreksi wajib diisi/dikonfirmasi untuk atribut bersatuan.")
+                                else:
+                                    raw_val = corr_val_input.strip() if corr_val_input else ""
+                                    try:
+                                        final_val = float(raw_val) if "." in raw_val or raw_val.isdigit() else raw_val
+                                    except ValueError:
+                                        final_val = raw_val
+                                    resolve_review_item_v2(
+                                        run_id=active_run_id,
+                                        item_id=item.item_id,
+                                        decision={
+                                            "action": "REVISE",
+                                            "corrected_value": final_val,
+                                            "corrected_unit": clean_unit or None,
+                                            "reason": clean_reason,
+                                        },
+                                    )
+                                    st.rerun()
                 elif item.status == "pending":
                     col1, col2 = st.columns(2)
                     if col1.button(
