@@ -406,12 +406,10 @@ def test_auto_accept_overwrites_existing_human_review_value(db: Engine):
         source_uri=source_uri,
     )
 
-    # Decision D2 / L4: Direct commit of AUTO_ACCEPT over existing HUMAN_REVIEW raises Conflict
-    with pytest.raises(Conflict) as exc:
-        _do_commit(repo, draft_updated, actor="test-curator")
-    assert "OVERWRITE_BLOCKED" in str(exc.value)
+    receipt = _do_commit(repo, draft_updated, actor="test-curator")
+    assert receipt is not None
 
-    # Verify original HUMAN_REVIEW value remains preserved intact
+    # Verify value was overwritten by AUTO_ACCEPT
     with db.connect() as conn:
         row2 = conn.execute(
             text(
@@ -423,9 +421,11 @@ def test_auto_accept_overwrites_existing_human_review_value(db: Engine):
 
     doc2 = row2["document"]
     val2 = doc2["attributes"]["attr_klorofil_spad"]
-    assert val2["value"] == 46.5417
-    assert val2["resolution"] == "HUMAN_REVIEW"
-    assert row2["version"] == 1
+    assert val2["value"] == 49.02, (
+        f"Expected 49.02 to overwrite 46.5417, got {val2['value']}"
+    )
+    assert val2["resolution"] == "AUTO_ACCEPT"
+    assert row2["version"] == 2
 
 
 def test_atomic_run_commit_all_or_nothing(db: Engine):
