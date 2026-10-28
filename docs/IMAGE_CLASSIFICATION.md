@@ -86,11 +86,13 @@ CREATE TABLE kms.image_candidates (
 
 ---
 
-## 4. Rekonsiliasi Dokumen `habitat_unknown` (`SET_HABITAT`)
+## 4. Rekonsiliasi Dokumen `habitat_unknown` (`SET_HABITAT`) & Jejak Relasional (G-6)
 
 Dokumen berstatus `habitat_unknown: true` dapat direkonsiliasi oleh kurator setelah data lokasi lapangan definitif tersedia:
 - Endpoint: `POST /documents/{doc_key}/habitat`
 - Aksi: Memindahkan atau menggabungkan dokumen ke kunci `variety_id:habitat_id` yang sebenarnya dalam satu transaksi atomik. Seluruh atribut pengukuran dan referensi media dipindahkan tanpa kehilangan data.
+- **Validasi Ketat Jalur Administratif (G-2):** Seluruh 4 jenjang wilayah administratif (`province_name`, `regency_name`, `district_name`, `village_name`) wajib valid dan tidak boleh bernilai kosong atau `'Unknown'`. ID habitat dibentuk secara deterministik menggunakan fungsi kanonik `compute_habitat_id()` menghasilkan format `hab_{regency}_{district}_{village}`.
+- **Jejak Relasional Ledger (G-6):** Perpindahan dokumen dari `doc_key` lama ke `dest_key` baru dicatat secara persisten pada tabel append-only `kms.document_attribute_changes` dengan penanda `attribute_id = 'habitat_migration_relink'`. Entri ini menyimpan `old_value` berisi kunci dokumen lama dan `new_value` berisi kunci dokumen baru, menjamin riwayat audit dokumen tetap dapat ditelusuri.
 
 ---
 

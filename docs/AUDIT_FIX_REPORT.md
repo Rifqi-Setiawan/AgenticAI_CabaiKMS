@@ -352,5 +352,42 @@ Addendum ini merangkum perbaikan komprehensif atas temuan audit Claude terhadap 
 7. **F-10 (Jejak Versi & Concurrency Guard):**
    - Aksi MERGE pada resolusi kandidat kini mendukung pemeriksaan versi optimistik (`expected_version`). Jika versi dokumen di database telah berubah, operasi dibatalkan dengan status `Conflict`.
 
+---
+
+## Addendum 5: Perbaikan Hasil Audit Ronde 4 (Ronde 5, 28 Oktober 2026)
+
+Addendum ini merangkum penyelesaian temuan audit sisa Ronde 4 (G-1 s.d. G-8) yang dikerjakan secara test-first di branch `fix/round5`:
+
+1. **G-1 (Koreksi HTTPX Kwarg & Penghapusan TypeError):**
+   - Mengganti parameter keliru `json_body=...` dengan keyword argument resmi HTTPX `json=...` pada `resolve_candidate_api` dan `set_document_habitat_api`.
+   - Menggunakan tanda tangan tegas `resolve_candidate_api(candidate_id, decision, *, client=None)` dan `set_document_habitat_api(doc_key, habitat_payload, *, client=None)` dengan pembungkus fleksibel untuk kompatibilitas ke belakang.
+   - Pengujian `tests/kms/test_round5_client_api_ui.py` memvalidasi operasi PROMOTE, MERGE, DISCARD, dan SET_HABITAT secara langsung menggunakan `KmsClient` asli dengan `httpx.Client` terotentikasi, membuktikan tidak ada lagi exception `TypeError: Client.request() got an unexpected keyword argument 'json_body'`.
+
+2. **G-2 (Standarisasi 4-Tingkat Jalur Administratif Habitat):**
+   - Server menolak permintaan `set_document_habitat` jika salah satu dari 4 jenjang wilayah administratif (`province_name`, `regency_name`, `district_name`, `village_name`) bernilai `'Unknown'`, tidak diketahui, atau kosong (`InvalidState`).
+   - ID habitat dihitung secara deterministik menggunakan fungsi kanonik `compute_habitat_id()` dari `src/storage/identity_resolution.py` mengikuti pola `hab_{regency}_{district}_{village}` yang identik dengan pipeline ekstraksi.
+
+3. **G-3 (Antarmuka PROMOTE/MERGE Bersahabat & Proteksi Versi):**
+   - Form PROMOTE menyediakan opsi dropdown dari habitat terdaftar (dengan opsi default `(Habitat Belum Diketahui - D11)`).
+   - Form MERGE menyediakan dropdown dokumen terdaftar dan secara otomatis menyertakan `expected_version` dokumen target saat submit. Bila versi dokumen target telah berubah bersamaan, transaksi dibatalkan dengan pesan konflik yang ramah bagi kurator.
+
+4. **G-4 (Pemisahan Petunjuk vs Kecocokan Eksak pada Fusi Sinyal):**
+   - Sinyal konteks nama file yang diperoleh dari token subset atau fuzzy matching diberi penanda `is_exact=False`.
+   - Pada status visual `OTHER` (model visi meyakini varietas baru), petunjuk non-eksak tidak lagi memicu `REVIEW_MISMATCH`, melainkan diperlakukan sebagai saran nama kandidat (`suggested_candidate_name`) pada antrean `CANDIDATE`. Hanya kecocokan eksak (nama kanonik atau alias terdaftar) yang memicu `REVIEW_MISMATCH` bila visual menyatakan varietas baru.
+   - Normalisasi awalan kata umum (`cabai`/`cabe`) pada pembandingan nama memastikan varietas seperti "Cabai Rawit" vs kanonik "Rawit" tetap dikenali sebagai kecocokan eksak (`AUTO_LINK`).
+
+5. **G-5 (Pencatatan Kelebihan Hak Akses pada Migrasi 0005):**
+   - Hak `GRANT UPDATE ON kms.discarded_images TO cabai_app;` pada `schema_0005_app_grants.sql` merupakan kelebihan hak akses yang tidak digunakan di runtime (karena operasi DISCARD telah disempurnakan menggunakan `ON CONFLICT (original_sha256) DO NOTHING` yang hanya membutuhkan hak `INSERT`). DDL migrasi 0005 tetap dipertahankan apa adanya di repositori guna menjamin kecocokan checksum dengan database live.
+   - Hak `GRANT DELETE ON kms.knowledge_documents TO cabai_app;` tetap sah dan mutlak diperlukan untuk menghapus baris dokumen sumber lama saat digabungkan ke dokumen tujuan pada alur `set_document_habitat`.
+
+6. **G-6 (Jejak Relasional Dokumen Berpindah):**
+   - Saat dokumen `habitat_unknown` dipindahkan ke habitat definitif via `set_document_habitat`, server mencatat satu entri jejak relasional pada tabel append-only `kms.document_attribute_changes` dengan penanda `attribute_id = 'habitat_migration_relink'`. Entri ini merekam keterhubungan kunci dokumen lama (`old_value`) ke kunci dokumen baru (`new_value`).
+   - Perilaku ini telah didokumentasikan pada `docs/IMAGE_CLASSIFICATION.md`.
+
+7. **G-7 & G-8 (Pembersihan Artefak Log & Pengujian Nyata Streamlit):**
+   - Berkas log mentah pengujian yang memuat artefak terminal shell telah dihapus dari pelacakan Git repositori.
+   - Pengujian nyata `test_g8_app_test_mounts_three_tabs_and_panels` memverifikasi bahwa halaman `src/ui/pages/4_KMS.py` berhasil memuat modul dan merender ketiga tab antarmuka tanpa error.
+
+
 
 
