@@ -95,6 +95,7 @@ def create_app(
     repository=None,
     blob_store=None,
     document_repository: DocumentRepository | None = None,
+    doc_repository: DocumentRepository | None = None,
 ) -> FastAPI:
     settings = settings or get_settings()
     principals = settings.principals()
@@ -105,7 +106,7 @@ def create_app(
     images = ImageStorageManager(store, max_bytes=settings.media_max_bytes, max_pixels=settings.media_max_pixels)
 
     doc_engine = getattr(repo, "engine", None) or engine
-    doc_repo = document_repository or (DocumentRepository(doc_engine) if doc_engine is not None else None)
+    doc_repo = document_repository or doc_repository or (DocumentRepository(doc_engine) if doc_engine is not None else None)
 
     @asynccontextmanager
     async def lifespan(app):
@@ -264,12 +265,13 @@ def create_app(
         principal: Annotated[Principal, Depends(authenticate)],
         variety_id: str | None = None,
         habitat_id: str | None = None,
+        habitat_unknown: bool | None = None,
         limit: int = Query(100, ge=1, le=1000),
         offset: int = Query(0, ge=0),
     ):
         if doc_repo is None:
             raise InvalidState('Document endpoints require a database.')
-        return {'items': doc_repo.list_documents(variety_id=variety_id, habitat_id=habitat_id, limit=limit, offset=offset)}
+        return {'items': doc_repo.list_documents(variety_id=variety_id, habitat_id=habitat_id, habitat_unknown=habitat_unknown, limit=limit, offset=offset)}
 
     @app.get('/documents/{doc_id}')
     def get_document(doc_id: str, principal: Annotated[Principal, Depends(authenticate)]):
@@ -279,6 +281,68 @@ def create_app(
         if doc is None:
             raise NotFound(f'Document {doc_id} not found.')
         return doc
+
+    @app.post('/documents/{key:path}/habitat')
+    def set_document_habitat(
+        key: str,
+        habitat_payload: dict[str, Any],
+        principal: Annotated[Principal, Depends(authenticate)],
+    ):
+        if doc_repo is None:
+            raise InvalidState('Document endpoints require a database.')
+        if principal.role != "curator":
+            raise HTTPException(403, "Curator role required to update document habitat.")
+        return doc_repo.set_document_habitat(
+            key,
+            habitat_payload,
+            actor=principal.subject,
+            actor_role=principal.role,
+        )
+
+    @app.get('/candidates')
+    def list_candidates(
+        principal: Annotated[Principal, Depends(authenticate)],
+        status: str | None = None,
+        limit: int = Query(100, ge=1, le=1000),
+        offset: int = Query(0, ge=0),
+    ):
+        if doc_repo is None:
+            raise InvalidState('Candidate endpoints require a database.')
+        items = doc_repo.list_candidates(status=status, limit=limit, offset=offset)
+        for item in items:
+            if "asset_id" in item:
+                item["media_url"] = f"/media/{item['asset_id']}"
+        return items
+
+    @app.get('/candidates/{candidate_id}')
+    def get_candidate(
+        candidate_id: str,
+        principal: Annotated[Principal, Depends(authenticate)],
+    ):
+        if doc_repo is None:
+            raise InvalidState('Candidate endpoints require a database.')
+        item = doc_repo.get_candidate(candidate_id)
+        if "asset_id" in item:
+            item["media_url"] = f"/media/{item['asset_id']}"
+        return item
+
+    @app.post('/candidates/{candidate_id}/resolve')
+    def resolve_candidate(
+        candidate_id: str,
+        decision: dict[str, Any],
+        principal: Annotated[Principal, Depends(authenticate)],
+    ):
+        if doc_repo is None:
+            raise InvalidState('Candidate endpoints require a database.')
+        if principal.role != "curator":
+            raise HTTPException(403, "Curator role required to resolve candidates.")
+        unwrapped = _unwrap_decision(decision)
+        return doc_repo.resolve_candidate(
+            candidate_id,
+            unwrapped,
+            actor=principal.subject,
+            actor_role=principal.role,
+        )
 
     @app.get('/values')
     def values(principal: Annotated[Principal, Depends(authenticate)], limit: int = Query(100, ge=1, le=1000), offset: int = Query(0, ge=0)):
