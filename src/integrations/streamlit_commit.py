@@ -165,33 +165,71 @@ def render_categorized_review_queue(
                     st.write(f"- Nilai Baru: **{payload.get('new_value')}** {payload.get('new_unit') or ''}".strip())
                     st.write(f"- Kode Alasan: `{payload.get('reason_code') or 'UNKNOWN'}`")
                     if item.status == "pending":
-                        col1, col2, col3 = st.columns(3)
-                        if col1.button("Pertahankan Lama", key=f"btn_keep_{item.item_id}"):
+                        reason_input = st.text_input(
+                            "Alasan kurasi (wajib, min 10 karakter)",
+                            key=f"reason_{item.item_id}",
+                        )
+                        corr_val_input = st.text_input(
+                            "Nilai terkoreksi (untuk aksi Koreksi)",
+                            value=str(payload.get("new_value") if payload.get("new_value") is not None else ""),
+                            key=f"corr_val_{item.item_id}",
+                        )
+                        corr_unit_input = st.text_input(
+                            "Satuan terkoreksi (untuk aksi Koreksi)",
+                            key=f"corr_unit_{item.item_id}",
+                        )
+
+                        clean_reason = (reason_input or "").strip()
+                        is_unit_mismatch = (cat == "UNIT_MISMATCH")
+
+                        cols = st.columns(2 if is_unit_mismatch else 3)
+                        # Button 1: Pertahankan Lama
+                        if cols[0].button("Pertahankan Lama", key=f"btn_keep_{item.item_id}"):
                             resolve_review_item_v2(
                                 run_id=active_run_id,
                                 item_id=item.item_id,
-                                decision={"action": "KEEP_EXISTING"},
+                                decision={"action": "KEEP_EXISTING", "notes": clean_reason or None},
                             )
                             st.rerun()
-                        if col2.button("Terapkan Baru", key=f"btn_apply_{item.item_id}"):
-                            resolve_review_item_v2(
-                                run_id=active_run_id,
-                                item_id=item.item_id,
-                                decision={"action": "APPLY_INCOMING", "reason": "Curator approval"},
-                            )
-                            st.rerun()
-                        if col3.button("Koreksi", key=f"btn_revise_{item.item_id}"):
-                            resolve_review_item_v2(
-                                run_id=active_run_id,
-                                item_id=item.item_id,
-                                decision={
-                                    "action": "REVISE",
-                                    "corrected_value": payload.get("new_value"),
-                                    "corrected_unit": payload.get("old_unit") or payload.get("new_unit"),
-                                    "reason": "Curator correction",
-                                },
-                            )
-                            st.rerun()
+
+                        # Button 2: Terapkan Baru (hanya untuk OVERWRITE_BLOCKED, bukan UNIT_MISMATCH)
+                        if not is_unit_mismatch:
+                            if cols[1].button("Terapkan Baru", key=f"btn_apply_{item.item_id}"):
+                                if len(clean_reason) < 10:
+                                    st.warning("Alasan minimal 10 karakter diperlukan untuk menerapkan nilai baru.")
+                                else:
+                                    resolve_review_item_v2(
+                                        run_id=active_run_id,
+                                        item_id=item.item_id,
+                                        decision={"action": "APPLY_INCOMING", "reason": clean_reason},
+                                    )
+                                    st.rerun()
+
+                        # Button 3: Koreksi
+                        revise_col = cols[1] if is_unit_mismatch else cols[2]
+                        if revise_col.button("Koreksi", key=f"btn_revise_{item.item_id}"):
+                            clean_unit = (corr_unit_input or "").strip()
+                            if len(clean_reason) < 10:
+                                st.warning("Alasan minimal 10 karakter diperlukan untuk mengoreksi nilai.")
+                            elif payload.get("old_unit") and not clean_unit:
+                                st.warning("Satuan terkoreksi wajib diisi/dikonfirmasi untuk atribut bersatuan.")
+                            else:
+                                raw_val = corr_val_input.strip() if corr_val_input else ""
+                                try:
+                                    final_val = float(raw_val) if "." in raw_val else int(raw_val) if raw_val.isdigit() else raw_val
+                                except ValueError:
+                                    final_val = raw_val
+                                resolve_review_item_v2(
+                                    run_id=active_run_id,
+                                    item_id=item.item_id,
+                                    decision={
+                                        "action": "REVISE",
+                                        "corrected_value": final_val,
+                                        "corrected_unit": clean_unit or None,
+                                        "reason": clean_reason,
+                                    },
+                                )
+                                st.rerun()
                 elif item.status == "pending":
                     col1, col2 = st.columns(2)
                     if col1.button(

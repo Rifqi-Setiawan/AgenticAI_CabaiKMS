@@ -313,7 +313,22 @@ class DocumentRepository:
                     return CommitReceipt.model_validate(receipt_dict)
                 return receipt_dict
 
-            draft = DocumentDraft.model_validate(run.draft_payload)
+            try:
+                draft = DocumentDraft.model_validate(run.draft_payload)
+            except Exception as e:
+                from pydantic import ValidationError
+                if isinstance(e, ValidationError):
+                    attr_err = ""
+                    for err in e.errors():
+                        loc_str = ".".join(str(x) for x in err.get("loc", []))
+                        if "attributes" in loc_str:
+                            segments = loc_str.split(".")
+                            idx = segments.index("attributes")
+                            if idx + 1 < len(segments):
+                                attr_err = f" in attribute '{segments[idx+1]}'"
+                                break
+                    raise InvalidState(f"Invalid draft payload{attr_err}: {e}")
+                raise
             if any(review.status == "pending" for review in draft.reviews):
                 raise Conflict("Resolve every pending review before committing.")
             if not draft.source_uri:
@@ -630,18 +645,26 @@ class DocumentRepository:
                         f"Unknown action '{action}' for {target_item.category}. Must be KEEP_EXISTING, APPLY_INCOMING, or REVISE."
                     )
 
-                reason_code = target_item.payload.get("reason_code")
-                if reason_code == "EXISTING_HUMAN_PROTECTED" and action in ("APPLY_INCOMING", "REVISE"):
-                    if actor_role != "curator":
-                        raise Conflict("Only curator role can overwrite protected HUMAN_REVIEW value.")
-                    reason_text = (dec_dict.get("reason") or "").strip()
-                    if not reason_text:
-                        raise InvalidState("Reason is required to overwrite protected HUMAN_REVIEW value.")
-
                 doc_key = target_item.target_document_key
                 attr_id = target_item.payload.get("attribute_id")
                 new_attr_dict = target_item.payload.get("new_attribute")
                 old_attr_dict = target_item.payload.get("old_attribute")
+
+                if action in ("APPLY_INCOMING", "REVISE"):
+                    reason_text = (dec_dict.get("reason") or "").strip()
+                    if not reason_text:
+                        raise InvalidState(f"Reason is required for {action} action.")
+
+                    reason_code = target_item.payload.get("reason_code")
+                    if reason_code == "EXISTING_HUMAN_PROTECTED":
+                        if actor_role != "curator":
+                            raise Conflict("Only curator role can overwrite protected HUMAN_REVIEW value.")
+
+                    if not doc_key or doc_key not in draft.documents:
+                        raise InvalidState(f"Target document '{doc_key}' not found in draft.")
+                    target_doc = draft.documents[doc_key]
+                    if not attr_id or (attr_id not in target_doc.attributes and not new_attr_dict and not old_attr_dict):
+                        raise InvalidState(f"Attribute '{attr_id}' not found in document '{doc_key}'.")
 
                 if action == "KEEP_EXISTING":
                     target_item.status = "rejected"
@@ -660,17 +683,16 @@ class DocumentRepository:
                     if notes:
                         target_item.notes = notes
 
-                    if doc_key and doc_key in draft.documents and attr_id:
-                        target_doc = draft.documents[doc_key]
-                        if new_attr_dict:
-                            applied_attr = AttributeValue.model_validate(new_attr_dict)
-                            applied_attr.resolution = "HUMAN_REVIEW"
-                            target_doc.attributes[attr_id] = applied_attr
-                        elif attr_id in target_doc.attributes:
-                            applied_attr = target_doc.attributes[attr_id]
-                            applied_attr.value = target_item.payload.get("new_value")
-                            applied_attr.unit = target_item.payload.get("new_unit")
-                            applied_attr.resolution = "HUMAN_REVIEW"
+                    target_doc = draft.documents[doc_key]
+                    if new_attr_dict:
+                        applied_attr = AttributeValue.model_validate(new_attr_dict)
+                        applied_attr.resolution = "HUMAN_REVIEW"
+                        target_doc.attributes[attr_id] = applied_attr
+                    elif attr_id in target_doc.attributes:
+                        applied_attr = target_doc.attributes[attr_id]
+                        applied_attr.value = target_item.payload.get("new_value")
+                        applied_attr.unit = target_item.payload.get("new_unit")
+                        applied_attr.resolution = "HUMAN_REVIEW"
 
                 elif action == "REVISE":
                     corr_val = dec_dict.get("corrected_value")
@@ -678,41 +700,67 @@ class DocumentRepository:
                     if corr_val is None:
                         raise InvalidState("corrected_value is required for REVISE action.")
 
-                    policy = AttributePolicy()
+                    target_doc = draft.documents[doc_key]
+                    expected_unit = None
+                    val_type = "text"
                     if old_attr_dict:
-                        old_av = AttributeValue.model_validate(old_attr_dict)
-                        if old_av.unit and corr_unit and not policy._units_compatible(old_av.unit, corr_unit):
+                        try:
+                            old_av = AttributeValue.model_validate(old_attr_dict)
+                            expected_unit = old_av.unit
+                            val_type = old_av.value_type
+                        except Exception:
+                            pass
+                    elif attr_id in target_doc.attributes:
+                        expected_unit = target_doc.attributes[attr_id].unit
+                        val_type = target_doc.attributes[attr_id].value_type
+
+                    if expected_unit is not None:
+                        if not corr_unit or not str(corr_unit).strip():
                             raise InvalidState(
-                                f"Corrected unit '{corr_unit}' is incompatible with expected unit '{old_av.unit}'."
+                                f"corrected_unit is required for attribute '{attr_id}' with expected unit '{expected_unit}'."
                             )
+                        policy = AttributePolicy()
+                        if not policy._units_compatible(expected_unit, str(corr_unit).strip()):
+                            raise InvalidState(
+                                f"Corrected unit '{corr_unit}' is incompatible with expected unit '{expected_unit}'."
+                            )
+
+                    if val_type == "number":
+                        try:
+                            if isinstance(corr_val, (int, float)):
+                                corr_val = float(corr_val)
+                            elif isinstance(corr_val, str) and corr_val.strip():
+                                corr_val = float(corr_val.strip())
+                            else:
+                                raise ValueError
+                        except (ValueError, TypeError):
+                            raise InvalidState(f"Value '{corr_val}' is not a valid number for value_type 'number'.")
 
                     target_item.status = "revised"
                     target_item.decision = dec_dict
                     if notes:
                         target_item.notes = notes
 
-                    if doc_key and doc_key in draft.documents and attr_id:
-                        target_doc = draft.documents[doc_key]
-                        if new_attr_dict:
-                            applied_attr = AttributeValue.model_validate(new_attr_dict)
-                            applied_attr.value = corr_val
-                            if corr_unit is not None:
-                                applied_attr.unit = corr_unit
-                            applied_attr.resolution = "HUMAN_REVIEW"
-                            target_doc.attributes[attr_id] = applied_attr
-                        elif old_attr_dict:
-                            applied_attr = AttributeValue.model_validate(old_attr_dict)
-                            applied_attr.value = corr_val
-                            if corr_unit is not None:
-                                applied_attr.unit = corr_unit
-                            applied_attr.resolution = "HUMAN_REVIEW"
-                            target_doc.attributes[attr_id] = applied_attr
-                        elif attr_id in target_doc.attributes:
-                            applied_attr = target_doc.attributes[attr_id]
-                            applied_attr.value = corr_val
-                            if corr_unit is not None:
-                                applied_attr.unit = corr_unit
-                            applied_attr.resolution = "HUMAN_REVIEW"
+                    if new_attr_dict:
+                        applied_attr = AttributeValue.model_validate(new_attr_dict)
+                        applied_attr.value = corr_val
+                        if corr_unit is not None:
+                            applied_attr.unit = str(corr_unit).strip()
+                        applied_attr.resolution = "HUMAN_REVIEW"
+                        target_doc.attributes[attr_id] = applied_attr
+                    elif old_attr_dict:
+                        applied_attr = AttributeValue.model_validate(old_attr_dict)
+                        applied_attr.value = corr_val
+                        if corr_unit is not None:
+                            applied_attr.unit = str(corr_unit).strip()
+                        applied_attr.resolution = "HUMAN_REVIEW"
+                        target_doc.attributes[attr_id] = applied_attr
+                    elif attr_id in target_doc.attributes:
+                        applied_attr = target_doc.attributes[attr_id]
+                        applied_attr.value = corr_val
+                        if corr_unit is not None:
+                            applied_attr.unit = str(corr_unit).strip()
+                        applied_attr.resolution = "HUMAN_REVIEW"
 
             elif action == "ASSIGN_EXISTING":
                 variety_id = dec_dict.get("selected_variety_id")
