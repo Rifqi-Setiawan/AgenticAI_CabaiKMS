@@ -210,10 +210,17 @@ def _payload(hab_id: str) -> dict:
     }
 
 
-def test_y1_client_supplied_mismatching_id_is_rejected(doc_repo_db):
-    key = _stage_unknown_doc(doc_repo_db, uuid.uuid4().hex[:8])
+def test_y1_registered_habitat_id_cannot_be_reused_for_another_path(doc_repo_db):
+    suffix = uuid.uuid4().hex[:8]
+    first = _stage_unknown_doc(doc_repo_db, suffix + "a")
+    hab_id = f"hab_r6_{suffix}"
+    doc_repo_db.set_document_habitat(first, _payload(hab_id), actor="curator-alice", actor_role="curator")
+
+    second = _stage_unknown_doc(doc_repo_db, suffix + "b")
+    other_path = _payload(hab_id)
+    other_path["administrative_path"]["village_name"] = "Desa Lain"
     with pytest.raises(InvalidState):
-        doc_repo_db.set_document_habitat(key, _payload("hab_asal_asalan"), actor="curator-alice", actor_role="curator")
+        doc_repo_db.set_document_habitat(second, other_path, actor="curator-alice", actor_role="curator")
 
 
 def test_y2_matching_id_is_accepted():
