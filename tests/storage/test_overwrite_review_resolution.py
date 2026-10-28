@@ -184,7 +184,7 @@ def test_t13_keep_existing_rejects_review_and_preserves_old(db: Engine):
 
     # Verify doc value intact (80.0)
     updated_doc = repo.get_document(doc_key)
-    assert updated_doc.attributes["attr_tinggi_tanaman"].value == 80.0
+    assert updated_doc["attributes"]["attr_tinggi_tanaman"]["value"] == 80.0
 
     # 0 rows in ledger
     with db.connect() as conn:
@@ -245,9 +245,9 @@ def test_t14_apply_incoming_updates_draft_and_writes_ledger(db: Engine):
 
     # Verify doc has new value and resolution HUMAN_REVIEW
     updated_doc = repo.get_document(doc_key)
-    attr = updated_doc.attributes["attr_tinggi_tanaman"]
-    assert attr.value == "tinggi_moderat"
-    assert attr.resolution == "HUMAN_REVIEW"
+    attr = updated_doc["attributes"]["attr_tinggi_tanaman"]
+    assert attr["value"] == "tinggi_moderat"
+    assert attr["resolution"] == "HUMAN_REVIEW"
 
     # Exactly 1 row in ledger
     with db.connect() as conn:
@@ -359,10 +359,10 @@ def test_t16_unit_mismatch_revise_applies_compatible_correction(db: Engine):
     repo.commit("run_t16", run["revision"], run["payload_sha256"], actor="curator-1")
 
     updated_doc = repo.get_document(doc_key)
-    attr = updated_doc.attributes["attr_tinggi_tanaman"]
-    assert attr.value == 85.0
-    assert attr.unit == "cm"
-    assert attr.resolution == "HUMAN_REVIEW"
+    attr = updated_doc["attributes"]["attr_tinggi_tanaman"]
+    assert attr["value"] == 85.0
+    assert attr["unit"] == "cm"
+    assert attr["resolution"] == "HUMAN_REVIEW"
 
 
 def test_t17_unknown_action_raises_invalid_state(db: Engine):
@@ -409,7 +409,7 @@ def test_t17_unknown_action_raises_invalid_state(db: Engine):
 
     # Item stays pending
     run = repo.get_run("run_t17")
-    r_item = next(r for r in run["draft_payload"]["reviews"] if r["item_id"] == rev_id)
+    r_item = next(r for r in run["draft"]["reviews"] if r["item_id"] == rev_id)
     assert r_item["status"] == "pending"
 
 

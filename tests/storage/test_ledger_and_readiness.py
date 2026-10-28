@@ -150,7 +150,7 @@ def test_t30_dropped_ledger_table_fails_commit(db: Engine):
         # Document remains at version 1 with original value 80.0
         doc_after = repo.get_document(doc_key)
         assert doc_after["version"] == 1
-        assert doc_after.attributes["attr_tinggi_tanaman"].value == 80.0
+        assert doc_after["attributes"]["attr_tinggi_tanaman"]["value"] == 80.0
     finally:
         # Restore schema
         migrate(admin_url)

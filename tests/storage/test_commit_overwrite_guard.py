@@ -157,7 +157,7 @@ def test_t24_corrupt_attribute_payload_fails_commit(db: Engine):
     # Document remains unchanged at version 1
     doc_after = repo.get_document(doc_key)
     assert doc_after["version"] == 1
-    assert doc_after.attributes["attr_tinggi_tanaman"].value == 80.0
+    assert doc_after["attributes"]["attr_tinggi_tanaman"]["value"] == 80.0
 
 
 def test_t25_incompatible_unit_direct_draft_raises_conflict(db: Engine):
@@ -206,7 +206,7 @@ def test_t25_incompatible_unit_direct_draft_raises_conflict(db: Engine):
 
     doc_after = repo.get_document(doc_key)
     assert doc_after["version"] == 1
-    assert doc_after.attributes["attr_tinggi_tanaman"].unit == "cm"
+    assert doc_after["attributes"]["attr_tinggi_tanaman"]["unit"] == "cm"
 
 
 def test_t26_incompatible_type_direct_draft_raises_conflict(db: Engine):
@@ -255,7 +255,7 @@ def test_t26_incompatible_type_direct_draft_raises_conflict(db: Engine):
 
     doc_after = repo.get_document(doc_key)
     assert doc_after["version"] == 1
-    assert doc_after.attributes["attr_tinggi_tanaman"].value_type == "number"
+    assert doc_after["attributes"]["attr_tinggi_tanaman"]["value_type"] == "number"
 
 
 def test_t27_incompatible_label_direct_draft_raises_conflict(db: Engine):
@@ -404,5 +404,5 @@ def test_t29_valid_update_and_adapter_draft_commit_smoothly(db: Engine):
 
     doc_after = repo.get_document(doc_key)
     assert doc_after["version"] == 2
-    assert doc_after.attributes["attr_tinggi_tanaman"].value == 85.0
-    assert doc_after.attributes["attr_lebar_kanopi"].value == 60.0
+    assert doc_after["attributes"]["attr_tinggi_tanaman"]["value"] == 85.0
+    assert doc_after["attributes"]["attr_lebar_kanopi"]["value"] == 60.0

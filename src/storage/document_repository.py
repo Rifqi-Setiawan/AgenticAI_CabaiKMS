@@ -42,37 +42,6 @@ def context(session: Session, actor: str, run_id: str = "") -> None:
     )
 
 
-class DocumentDict(dict):
-    """Dictionary supporting attribute access for backwards-compatible test usage."""
-
-    def __getattr__(self, name: str) -> Any:
-        try:
-            return self[name]
-        except KeyError:
-            raise AttributeError(f"'DocumentDict' object has no attribute '{name}'")
-
-    def __getitem__(self, key: str) -> Any:
-        val = super().__getitem__(key)
-        if isinstance(val, dict) and not isinstance(val, DocumentDict):
-            val = DocumentDict(val)
-            self[key] = val
-        return val
-
-
-class RunDict(dict):
-    """Dictionary supporting draft_payload alias for draft."""
-
-    def __getitem__(self, key: str) -> Any:
-        if key == "draft_payload":
-            return self.get("draft")
-        return super().__getitem__(key)
-
-    def get(self, key: str, default: Any = None) -> Any:
-        if key == "draft_payload":
-            return super().get("draft", default)
-        return super().get(key, default)
-
-
 class DocumentRepository:
     """Repository managing dynamic JSONB documents, staging, and optimistic atomic commit."""
 
@@ -565,7 +534,7 @@ class DocumentRepository:
             ).mappings().first()
             if row is None:
                 return None
-            doc = DocumentDict(row["document"])
+            doc = dict(row["document"])
             doc["id"] = row["id"]
             doc["doc_id"] = row["id"]
             doc["version"] = row["version"]
@@ -608,7 +577,7 @@ class DocumentRepository:
         decision: dict[str, Any] | PhotoMismatchDecision | OverwriteDecision,
         *,
         actor: str,
-        actor_role: str = "curator",
+        actor_role: str | None = None,
     ) -> dict[str, Any]:
         """Resolve a pending review item in a staged DocumentDraft envelope."""
         if hasattr(decision, "model_dump"):
@@ -651,6 +620,11 @@ class DocumentRepository:
                 old_attr_dict = target_item.payload.get("old_attribute")
 
                 if action in ("APPLY_INCOMING", "REVISE"):
+                    if action == "APPLY_INCOMING" and target_item.category == "UNIT_MISMATCH":
+                        raise InvalidState(
+                            "Cannot apply incoming value with incompatible unit without revision/correction."
+                        )
+
                     reason_text = (dec_dict.get("reason") or "").strip()
                     if not reason_text:
                         raise InvalidState(f"Reason is required for {action} action.")
@@ -929,8 +903,8 @@ class DocumentRepository:
             run = session.get(AcquisitionRun, run_id)
             if run is None:
                 raise NotFound("Run not found.")
-            return RunDict({
+            return {
                 **self._run_summary(run),
                 "draft": run.draft_payload,
                 "base_versions": run.base_versions,
-            })
+            }
