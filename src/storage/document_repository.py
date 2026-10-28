@@ -1225,13 +1225,33 @@ class DocumentRepository:
         if actor_role != "curator":
             raise Conflict("Only curator role can set document habitat.")
 
-        if isinstance(new_habitat, dict) and new_habitat.get("id") == "habitat_unknown":
+        target_id = new_habitat.get("id") if isinstance(new_habitat, dict) else getattr(new_habitat, "id", None)
+        if target_id == "habitat_unknown":
             raise InvalidState("Destination habitat cannot be habitat_unknown.")
 
         if hasattr(new_habitat, "model_dump"):
             hab_obj = new_habitat
         else:
             hab_obj = HabitatIdentity.model_validate(new_habitat)
+
+        from src.storage.identity_resolution import compute_habitat_id
+
+        # G-2: Server rejects administrative_path with 'Unknown' or empty tiers
+        path = hab_obj.administrative_path
+        if path:
+            for tier_name, tier_val in [
+                ("province", path.province_name),
+                ("regency", path.regency_name),
+                ("district", path.district_name),
+                ("village", path.village_name),
+            ]:
+                if not tier_val or tier_val.strip().lower() in ("unknown", "", "tidak diketahui"):
+                    raise InvalidState(
+                        f"All administrative path tiers must be valid; '{tier_name}' cannot be empty or 'Unknown'."
+                    )
+
+            if not hab_obj.id or hab_obj.id == "habitat_unknown":
+                hab_obj.id = compute_habitat_id(path)
 
         with transaction(self.engine) as session:
             context(session, actor)
@@ -1309,6 +1329,21 @@ class DocumentRepository:
                         "v": final_doc.version,
                     },
                 )
+
+            # G-6: Write relational audit trace entry linking old doc_key to new dest_key
+            session.execute(
+                text(
+                    "INSERT INTO kms.document_attribute_changes (doc_id, attribute_id, old_value, new_value, run_id, actor, created_at) "
+                    "VALUES (:doc, 'habitat_migration_relink', :old_val, :new_val, :run, :actor, now())"
+                ),
+                {
+                    "doc": doc_key,
+                    "old_val": json.dumps({"doc_id": doc_key, "habitat_id": src_doc.habitat.id}),
+                    "new_val": json.dumps({"doc_id": dest_key, "habitat_id": hab_obj.id}),
+                    "run": src_row["document"].get("updated_by_run") or "set_document_habitat",
+                    "actor": actor,
+                },
+            )
 
             return final_doc.model_dump(mode="json")
 

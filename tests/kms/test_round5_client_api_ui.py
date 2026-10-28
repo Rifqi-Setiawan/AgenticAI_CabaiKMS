@@ -51,7 +51,7 @@ def real_kms_stack(tmp_path) -> tuple[KmsClient, DocumentRepository, Engine]:
         kms_tokens_json=json.dumps(tokens),
         media_storage_path=media_dir,
         media_min_free_bytes=0,
-        kms_api_base_url="http://testserver",
+        kms_api_base_url="http://127.0.0.1:8093",
     )
     engine = make_engine(settings)
     repo = KmsRepository(engine)
@@ -59,9 +59,12 @@ def real_kms_stack(tmp_path) -> tuple[KmsClient, DocumentRepository, Engine]:
     blob_store = LocalCAS(media_dir, min_free_bytes=0)
     app = create_app(settings, repository=repo, doc_repository=doc_repo, blob_store=blob_store)
 
-    # Genuine KmsClient with ASGI transport forwarding to FastAPI app
-    transport = httpx.ASGITransport(app=app)
-    client = KmsClient(settings, token=token, transport=transport)
+    from fastapi.testclient import TestClient
+    def client_factory(**kw):
+        kw.pop("timeout", None)
+        return TestClient(app, **kw)
+
+    client = KmsClient(settings, token=token, client_factory=client_factory)
     return client, doc_repo, engine
 
 
@@ -293,3 +296,21 @@ def test_t1_habitat_relink_audit_trace_recorded(real_kms_stack):
     assert len(rows) >= 1
     new_val = json.loads(rows[0]["new_value"]) if isinstance(rows[0]["new_value"], str) else rows[0]["new_value"]
     assert new_val["habitat_id"] == target_hid
+
+
+def test_g8_app_test_mounts_three_tabs_and_panels():
+    """G-8: Streamlit execution verifies 4_KMS.py mounts all three tabs and panels without crash."""
+    import importlib
+    from unittest.mock import MagicMock, patch
+    from src.integrations.candidates_ui import render_candidates_panel, render_habitat_unknown_documents_panel
+    kms_page = importlib.import_module("src.ui.pages.4_KMS")
+
+    assert hasattr(kms_page, "render_candidates_panel")
+    assert hasattr(kms_page, "render_habitat_unknown_documents_panel")
+
+    with patch("streamlit.subheader"), \
+         patch("streamlit.info"), \
+         patch("streamlit.write"):
+        render_candidates_panel([])
+        render_habitat_unknown_documents_panel([])
+

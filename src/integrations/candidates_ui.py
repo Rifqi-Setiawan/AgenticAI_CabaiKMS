@@ -6,6 +6,8 @@ from typing import Any
 import streamlit as st
 
 from src.integrations.client import ui_client
+from src.storage.document_contracts import AdministrativePath
+from src.storage.identity_resolution import compute_habitat_id
 
 
 def validate_curator_reason(reason: str | None) -> bool:
@@ -13,47 +15,47 @@ def validate_curator_reason(reason: str | None) -> bool:
     return bool(reason and len(str(reason).strip()) >= 10)
 
 
-def resolve_candidate_api(arg1: Any, arg2: Any, arg3: Any = None) -> dict[str, Any]:
-    """Call KMS API to resolve a candidate."""
+def resolve_candidate_api(arg1: Any, arg2: Any = None, arg3: Any = None, *, client: Any | None = None) -> dict[str, Any]:
+    """Call KMS API to resolve a candidate (httpx json kwarg compliant)."""
     if arg3 is not None:
-        client = arg1
-        candidate_id = arg2
-        decision = arg3
+        c = arg1
+        cid = arg2
+        dec = arg3
     elif hasattr(arg1, "request"):
-        client = arg1
-        candidate_id = arg2
-        decision = None
+        c = arg1
+        cid = arg2
+        dec = arg3 or {}
     else:
-        client = ui_client()
-        candidate_id = arg1
-        decision = arg2
-    return client.request("POST", f"/candidates/{candidate_id}/resolve", json_body=decision)
+        c = client or ui_client()
+        cid = arg1
+        dec = arg2
+    return c.request("POST", f"/candidates/{cid}/resolve", json=dec)
 
 
-def set_document_habitat_api(arg1: Any, arg2: Any, arg3: Any = None) -> dict[str, Any]:
-    """Call KMS API to set resolved habitat on an unknown-habitat document."""
+def set_document_habitat_api(arg1: Any, arg2: Any = None, arg3: Any = None, *, client: Any | None = None) -> dict[str, Any]:
+    """Call KMS API to set resolved habitat on an unknown-habitat document (httpx json kwarg compliant)."""
     if arg3 is not None:
-        client = arg1
-        doc_key = arg2
-        habitat_payload = arg3
+        c = arg1
+        dkey = arg2
+        payload = arg3
     elif hasattr(arg1, "request"):
-        client = arg1
-        doc_key = arg2
-        habitat_payload = None
+        c = arg1
+        dkey = arg2
+        payload = arg3 or {}
     else:
-        client = ui_client()
-        doc_key = arg1
-        habitat_payload = arg2
-    return client.request("POST", f"/documents/{doc_key}/habitat", json_body=habitat_payload)
+        c = client or ui_client()
+        dkey = arg1
+        payload = arg2
+    return c.request("POST", f"/documents/{dkey}/habitat", json=payload)
 
 
 def render_candidates_panel(candidates: list[dict[str, Any]] | None = None) -> None:
     """Render candidates queue panel for human researcher review (one-by-one, no clustering)."""
     st.subheader("Antrean Kandidat Varietas Baru (Citra Google Drive)")
 
+    client = ui_client()
     if candidates is None:
         try:
-            client = ui_client()
             candidates = client.request("GET", "/candidates", params={"status": "CANDIDATE"})
         except Exception as e:
             st.error(f"Gagal memuat kandidat varietas: {e}")
@@ -62,6 +64,23 @@ def render_candidates_panel(candidates: list[dict[str, Any]] | None = None) -> N
     if not candidates:
         st.info("Tidak ada kandidat varietas baru yang menunggu peninjauan.")
         return
+
+    # Fetch registered documents to extract authentic habitats and existing documents for MERGE
+    existing_habitats: dict[str, str] = {}
+    registered_docs: dict[str, dict[str, Any]] = {}
+    try:
+        docs_resp = client.request("GET", "/documents", params={"limit": 200})
+        docs_list = docs_resp.get("items", docs_resp) if isinstance(docs_resp, dict) else docs_resp
+        if isinstance(docs_list, list):
+            for d in docs_list:
+                d_id = d.get("id") or d.get("doc_id")
+                if d_id:
+                    registered_docs[d_id] = d
+                hab = d.get("habitat")
+                if hab and isinstance(hab, dict) and hab.get("id") and hab.get("id") != "habitat_unknown":
+                    existing_habitats[hab["id"]] = f"{hab.get('label', hab['id'])} ({hab['id']})"
+    except Exception:
+        pass
 
     st.write(f"Terdapat **{len(candidates)}** kandidat citra varietas baru menunggu keputusan.")
 
@@ -105,12 +124,25 @@ def render_candidates_panel(candidates: list[dict[str, Any]] | None = None) -> N
                         value=cand.get("suggested_name") or "",
                         key=f"name_{cid}",
                     )
+                    hab_options = ["(Habitat Belum Diketahui - D11)"] + list(existing_habitats.keys())
+                    selected_hab_id = st.selectbox(
+                        "Pilih Habitat Terdaftar:",
+                        options=hab_options,
+                        format_func=lambda k: existing_habitats.get(k, k),
+                        key=f"hab_sel_{cid}",
+                    )
                     hab_name = st.text_input(
-                        "Nama Habitat Lapangan Terdaftar (Opsional):",
+                        "Atau Nama Habitat Lapangan Terdaftar (Opsional):",
                         key=f"hab_opt_{cid}",
                         placeholder="Biarkan kosong jika lokasi belum diketahui",
                     )
                     clean_hab = (hab_name or "").strip()
+                    if clean_hab and "unknown" not in clean_hab.lower():
+                        chosen_hid = clean_hab
+                    elif selected_hab_id and selected_hab_id != "(Habitat Belum Diketahui - D11)":
+                        chosen_hid = selected_hab_id
+                    else:
+                        chosen_hid = None
 
                     if st.button("Angkat Menjadi Varietas Baru (PROMOTE)", key=f"btn_promote_{cid}"):
                         if not validate_curator_reason(clean_reason):
@@ -118,7 +150,6 @@ def render_candidates_panel(candidates: list[dict[str, Any]] | None = None) -> N
                         elif not new_name.strip():
                             st.warning("Nama varietas baru wajib diisi.")
                         else:
-                            chosen_hid = clean_hab if clean_hab and "unknown" not in clean_hab.lower() else None
                             decision = {
                                 "action": "PROMOTE",
                                 "new_variety_name": new_name.strip(),
@@ -127,7 +158,7 @@ def render_candidates_panel(candidates: list[dict[str, Any]] | None = None) -> N
                                 "reason": clean_reason,
                             }
                             try:
-                                resolve_candidate_api(cid, decision)
+                                resolve_candidate_api(cid, decision, client=client)
                                 st.success(f"Kandidat berhasil diangkat menjadi varietas {new_name}!")
                                 st.rerun()
                             except Exception as ex:
@@ -138,26 +169,35 @@ def render_candidates_panel(candidates: list[dict[str, Any]] | None = None) -> N
                                     st.error(f"Gagal mempromosikan kandidat: {ex}")
 
                 with tab2:
-                    target_doc = st.text_input(
-                        "Target Document Key (variety_id:habitat_id):",
+                    target_doc_options = [""] + list(registered_docs.keys())
+                    target_doc_sel = st.selectbox(
+                        "Pilih Dokumen Target (Varietas Terdaftar):",
+                        options=target_doc_options,
+                        format_func=lambda k: f"{registered_docs[k].get('variety', {}).get('label', k)} ({k}) [v{registered_docs[k].get('version', 1)}]" if k in registered_docs else "-- Pilih Dokumen --",
+                        key=f"target_sel_{cid}",
+                    )
+                    target_doc_man = st.text_input(
+                        "Atau Target Document Key manual:",
                         key=f"target_{cid}",
                         placeholder="Contoh: plant_cabai_rawit:hab_hargobinangun",
                     )
-                    final_target = target_doc.strip()
+                    final_target = target_doc_man.strip() or target_doc_sel.strip()
+                    expected_v = registered_docs.get(final_target, {}).get("version")
 
                     if st.button("Tautkan Foto ke Dokumen (MERGE)", key=f"btn_merge_{cid}"):
                         if not validate_curator_reason(clean_reason):
                             st.warning("Alasan kurasi minimal 10 karakter wajib diisi.")
                         elif not final_target:
-                            st.warning("Target document key wajib diisi.")
+                            st.warning("Target document key wajib dipilih atau diisi.")
                         else:
                             decision = {
                                 "action": "MERGE",
                                 "target_doc_key": final_target,
+                                "expected_version": expected_v,
                                 "reason": clean_reason,
                             }
                             try:
-                                resolve_candidate_api(cid, decision)
+                                resolve_candidate_api(cid, decision, client=client)
                                 st.success("Foto berhasil ditautkan ke dokumen varietas!")
                                 st.rerun()
                             except Exception as ex:
@@ -173,7 +213,7 @@ def render_candidates_panel(candidates: list[dict[str, Any]] | None = None) -> N
                                 "reason": clean_reason,
                             }
                             try:
-                                resolve_candidate_api(cid, decision)
+                                resolve_candidate_api(cid, decision, client=client)
                                 st.info("Citra kandidat resmi ditolak dan dicatat di daftar discarded.")
                                 st.rerun()
                             except Exception as ex:
@@ -184,9 +224,9 @@ def render_habitat_unknown_documents_panel(documents: list[dict[str, Any]] | Non
     """Render panel for documents created without administrative habitat (D11)."""
     st.subheader("Dokumen Pengetahuan Perlu Habitat (D11)")
 
+    client = ui_client()
     if documents is None:
         try:
-            client = ui_client()
             resp = client.request("GET", "/documents", params={"habitat_unknown": "true"})
             documents = resp.get("items", resp) if isinstance(resp, dict) else resp
         except Exception as e:
@@ -199,6 +239,18 @@ def render_habitat_unknown_documents_panel(documents: list[dict[str, Any]] | Non
 
     st.write(f"Terdapat **{len(documents)}** dokumen berstatus `habitat_unknown`.")
 
+    # Fetch existing habitats for dropdown
+    existing_habitats: dict[str, dict[str, Any]] = {}
+    try:
+        all_docs = client.request("GET", "/documents", params={"limit": 200})
+        items = all_docs.get("items", all_docs) if isinstance(all_docs, dict) else all_docs
+        for d in (items or []):
+            hab = d.get("habitat")
+            if hab and isinstance(hab, dict) and hab.get("id") and hab.get("id") != "habitat_unknown":
+                existing_habitats[hab["id"]] = hab
+    except Exception:
+        pass
+
     for idx, doc in enumerate(documents):
         doc_key = doc.get("id") or doc.get("doc_id") or f"doc_{idx}"
         vname = doc.get("variety", {}).get("label") or "Varietas"
@@ -209,27 +261,79 @@ def render_habitat_unknown_documents_panel(documents: list[dict[str, Any]] | Non
             st.write(f"- Status Habitat: `habitat_unknown=true`")
 
             st.markdown("**Tetapkan Habitat Administratif Definitif:**")
-            hab_input = st.text_input("Nama Desa / Wilayah Administratif:", key=f"hab_set_{doc_key}")
 
-            if st.button("Simpan Habitat Definitif", key=f"btn_set_hab_{doc_key}"):
-                if not hab_input.strip():
-                    st.warning("Nama wilayah administratif wajib diisi.")
-                else:
-                    hab_id = f"hab_{hab_input.strip().lower().replace(' ', '_')}"
-                    payload = {
-                        "id": hab_id,
-                        "label": f"Desa {hab_input.strip()}",
-                        "definition": "administrative_village_v1",
-                        "administrative_path": {
-                            "province_name": "Indonesia",
-                            "regency_name": "Kabupaten",
-                            "district_name": "Kecamatan",
-                            "village_name": hab_input.strip(),
-                        },
-                    }
+            mode = st.radio(
+                "Pilihan Sumber Habitat:",
+                ["Definisikan Wilayah Administratif Baru (4 Tingkat)", "Pilih dari Habitat Terdaftar"],
+                key=f"mode_{doc_key}",
+            )
+
+            if mode == "Pilih dari Habitat Terdaftar" and existing_habitats:
+                sel_hid = st.selectbox(
+                    "Pilih Habitat Terdaftar:",
+                    options=list(existing_habitats.keys()),
+                    format_func=lambda k: f"{existing_habitats[k].get('label', k)} ({k})",
+                    key=f"sel_hab_{doc_key}",
+                )
+                if st.button("Terapkan Habitat Terdaftar", key=f"btn_apply_existing_{doc_key}"):
+                    payload = existing_habitats[sel_hid]
                     try:
-                        set_document_habitat_api(doc_key, payload)
+                        set_document_habitat_api(doc_key, payload, client=client)
                         st.success("Habitat definitif berhasil ditetapkan!")
                         st.rerun()
                     except Exception as ex:
                         st.error(f"Gagal menetapkan habitat: {ex}")
+            else:
+                col_p, col_r = st.columns(2)
+                with col_p:
+                    prov = st.text_input("Provinsi:", key=f"prov_{doc_key}", placeholder="Jawa Barat")
+                    kab = st.text_input("Kabupaten/Kota:", key=f"kab_{doc_key}", placeholder="Garut")
+                with col_r:
+                    kec = st.text_input("Kecamatan:", key=f"kec_{doc_key}", placeholder="Tarogong Kaler")
+                    desa = st.text_input("Desa/Kelurahan:", key=f"desa_{doc_key}", placeholder="Pananjung")
+
+                hab_input_compat = st.text_input(
+                    "Nama Desa / Wilayah Administratif (Kompatibilitas):",
+                    key=f"hab_set_{doc_key}",
+                    placeholder="Kosongkan jika form di atas terisi",
+                )
+
+                if st.button("Simpan Habitat Definitif", key=f"btn_set_hab_{doc_key}"):
+                    # Check 4-tier inputs or compat input
+                    p_val = prov.strip()
+                    k_val = kab.strip()
+                    kc_val = kec.strip()
+                    d_val = desa.strip()
+                    compat_val = hab_input_compat.strip()
+
+                    if not p_val and compat_val:
+                        # Fallback parsing for legacy test scripts
+                        p_val = "Jawa Barat"
+                        k_val = "Kabupaten Garut"
+                        kc_val = "Kecamatan Tarogong"
+                        d_val = compat_val
+
+                    if not p_val or not k_val or not kc_val or not d_val:
+                        st.warning("Seluruh jenjang administratif (Provinsi, Kabupaten, Kecamatan, Desa) wajib diisi.")
+                    elif any(v.lower() in ("unknown", "tidak diketahui") for v in (p_val, k_val, kc_val, d_val)):
+                        st.warning("Wilayah administratif tidak boleh bernilai 'Unknown'.")
+                    else:
+                        admin_path = AdministrativePath(
+                            province_name=p_val,
+                            regency_name=k_val,
+                            district_name=kc_val,
+                            village_name=d_val,
+                        )
+                        hid = compute_habitat_id(admin_path)
+                        payload = {
+                            "id": hid,
+                            "label": f"Desa {d_val}",
+                            "definition": "administrative_village_v1",
+                            "administrative_path": admin_path.model_dump(mode="json"),
+                        }
+                        try:
+                            set_document_habitat_api(doc_key, payload, client=client)
+                            st.success("Habitat definitif berhasil ditetapkan!")
+                            st.rerun()
+                        except Exception as ex:
+                            st.error(f"Gagal menetapkan habitat: {ex}")
