@@ -42,7 +42,11 @@ class FusionOutcome:
 
 def _extract_known_set(registry_known: Iterable[str] | Any) -> set[str]:
     if hasattr(registry_known, "get_canonical_names"):
-        return {n.lower().strip() for n in registry_known.get_canonical_names()}
+        names = set(registry_known.get_canonical_names())
+        if hasattr(registry_known, "_entries"):
+            for e in registry_known._entries.values():
+                names.update(e.aliases)
+        return {n.lower().strip() for n in names}
     return {str(n).lower().strip() for n in registry_known}
 
 
@@ -50,15 +54,9 @@ def _is_in_registry(name: str | None, known_names: set[str]) -> bool:
     if not name:
         return False
     clean = name.lower().strip()
-    if clean in known_names:
-        return True
-    stop_words = {"cabai", "cabe", "capsicum", "tanaman", "l", "sp"}
-    tokens = set(re.findall(r"[a-z0-9]+", clean)) - stop_words
-    for k in known_names:
-        k_tokens = set(re.findall(r"[a-z0-9]+", k)) - stop_words
-        if tokens and k_tokens and (tokens == k_tokens or tokens.issubset(k_tokens) or k_tokens.issubset(tokens)):
-            return True
-    return False
+    clean_norm = re.sub(r"\bcabe\b", "cabai", clean)
+    known_norm = {re.sub(r"\bcabe\b", "cabai", k) for k in known_names}
+    return clean in known_names or clean_norm in known_norm
 
 
 def _varieties_conflict(var1: str | None, var2: str | None) -> bool:

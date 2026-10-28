@@ -41,7 +41,7 @@ def test_m1_token_subset_does_not_match_in_fusion():
         visual_result=vis_res,
     )
     assert outcome.action == FusionAction.CANDIDATE
-    assert outcome.matched_variety == "Cabai Rawit Merah"
+    assert outcome.suggested_candidate_name == "Cabai Rawit Merah"
 
 
 def test_m2_exact_alias_is_recognized():
