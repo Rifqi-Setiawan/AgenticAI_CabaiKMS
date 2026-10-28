@@ -325,8 +325,10 @@ KMS mengadopsi model penyimpanan terstruktur berbasis **JSONB** (`kms.knowledge_
 - **Endpoint API V2**:
   - `POST /runs/v2/stage`: Melakukan *staging* `DocumentDraft` yang memuat usulan dokumen dan review item.
   - `POST /runs/v2/{id}/commit`: Melakukan *commit* transaksional all-or-nothing setelah seluruh pending review terselesaikan.
-  - `POST /runs/v2/{id}/reviews/{item_id}/resolve`: Menyelesaikan item review kurasi.
+  - `POST /runs/v2/{id}/reviews/{item_id}/resolve`: Menyelesaikan item review kurasi. Menerima payload datar maupun payload dibungkus dengan satu kunci `{"decision": {...}}` (otomatis dibuka lewat `_unwrap_decision`). Wajib memuat kunci `action` atau `status`.
   - `GET /documents`: Melakukan kueri pencarian dokumen pengetahuan aktif.
+  - `GET /readyz`: Pemeriksaan kesiapan operasional terotentikasi (`Depends(authenticate)`). Memverifikasi koneksi database, eksistensi 4 tabel wajib, dan validasi checksum migrasi (`0001`, `0002`, `0003`). Respons 503 tersanitasi tanpa membocorkan pesan exception mentah.
+  - `GET /livez` & `GET /healthz`: Pemeriksaan liveness kontainer tanpa autentikasi (200 OK `{"status": "alive"}`).
 - **Tiga Aksi Resolusi Review Foto**:
   - `ASSIGN_EXISTING`: Menautkan foto ke dokumen varietas yang sudah ada pada habitat terkait dan melepaskan status review.
   - `CREATE_NEW_DOCUMENT`: Membentuk dokumen baru untuk varietas baru yang tervalidasi tanpa mengarang taksonomi artifisial.

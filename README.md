@@ -89,6 +89,28 @@ KMS mengimplementasikan model penyimpanan dokumen pengetahuan berbasis **JSONB**
 - **Migrasi Data Legacy & Kebijakan Retensi**: Migrasi dari skema relasional lama diatur melalui panduan operasional di [`docs/KMS_JSONB_MIGRATION.md`](docs/KMS_JSONB_MIGRATION.md). Data historis tanpa metadata habitat administratif dialihkan ke antrean **karantina** (*quarantine*). Tabel historis legacy dilindungi oleh kebijakan **retensi** transisi minimal 30 hari tanpa perintah purge otomatis di kode produk.
 - **Status Aktivasi Konfigurasi**: Fitur penyimpanan dokumen JSONB dikendalikan oleh flag konfigurasi `kms_enabled` (atau variabel lingkungan `CABAI_KMS_ENABLED`). Secara default di lingkungan produksi, flag ini bernilai `false` (**nonaktif** / disabled) hingga seluruh gerbang pengujian formal (Gate 4) disetujui, memastikan kapabilitas yang telah teruji tidak diklaim aktif di produksi secara prematur.
 
+## Siklus Hidup Dokumen Pengetahuan, Migrasi & Integritas (KMS V2)
+
+KMS mengelola persistensi, proteksi kurasi manusia, dan integritas skema sebagai berikut:
+- **Urutan Migrasi Skema DDL**:
+  1. `0001` (`schema.sql`): Skema relasional dasar `kms` (`acquisition_runs`, `source_artifacts`, media, dan tabel operasional).
+  2. `0002` (`schema_0002_jsonb.sql`): Kolom dokumen `JSONB` pada `kms.knowledge_documents` beserta indeks GIN dan metadata identitas.
+  3. `0003` (`schema_0003_attribute_changes.sql`): Tabel ledger append-only `kms.document_attribute_changes` dengan trigger proteksi mutasi `reject_mutation`.
+  Penerapan migrasi berjalan sekuensial transaksional via `src/storage/migrate.py` yang memverifikasi sha256 checksum setiap berkas DDL terhadap rekaman di `kms.schema_migrations`.
+- **Perlindungan Nilai Human Review (Keputusan D2)**:
+  Nilai tersimpan dengan `resolution = "HUMAN_REVIEW"` merupakan nilai hasil validasi kurator manusia dan berstatus dilindungi (`EXISTING_HUMAN_PROTECTED`). Penimpaan otomatis oleh `AUTO_ACCEPT` dilarang secara ketat. Upaya penimpaan otomatis akan dialihkan ke antrean review kurator dengan kategori `OVERWRITE_BLOCKED` atau `UNIT_MISMATCH`.
+- **Antrean Review & Resolusi**:
+  Kurator menyelesaikan review melalui tiga aksi terarah:
+  - `KEEP_EXISTING`: Mempertahankan nilai lama yang dilindungi.
+  - `APPLY_INCOMING`: Menerapkan nilai baru yang masuk (wajib disertai alasan kurasi minimal 10 karakter).
+  - `REVISE`: Mengoreksi nilai dan satuan atribut (wajib alasan kurasi minimal 10 karakter, konfirmasi nilai serta satuan yang kompatibel).
+  Pada kategori `UNIT_MISMATCH`, tombol langsung "Terapkan Baru" ditiadakan demi mencegah bug salah satuan (misal "85 kg" tertulis sebagai "85 cm").
+- **Kontrak API Resolusi Review**:
+  Endpoint `POST /runs/v2/{run_id}/reviews/{item_id}/resolve` menerima payload datar maupun payload bersarang dengan tepat satu kunci `{"decision": {...}}` yang secara otomatis dibuka via `_unwrap_decision` dan divalidasi mewajibkan `action` atau `status`.
+- **Endpoint Health & Readiness**:
+  - `/livez` dan `/healthz`: Endpoint publik tanpa autentikasi (mengembalikan 200 `{"status": "alive"}`).
+  - `/readyz`: Endpoint kesiapan operasional terotentikasi bearer token (`Depends(authenticate)`). Memverifikasi koneksi database, eksistensi tabel wajib, dan kecocokan checksum migrasi `0001`, `0002`, `0003`. Respons 503 disanitasi penuh tanpa membocorkan pesan error mentah atau informasi rahasia server.
+
 ## Peta dokumentasi
 
 | Dokumen | Isi |

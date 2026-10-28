@@ -283,3 +283,33 @@ Addendum ini merangkum perbaikan komprehensif atas temuan audit ulang putaran 2 
      * Versi `0003`: `3252f28a719ad1976eb3b00008fc333306d4493332fbdb2dcc0d2b8011a2224b` (Cocok 100% dengan berkas disk `schema_0003_attribute_changes.sql`)
    - Kondisi STOP (d) tidak terpicu; integritas skema database live terbukti 100% valid dan konsisten.
 
+---
+
+## Addendum 3: Koreksi Tata Kelola Git, Pengesahan Tes Ronde 2, dan Peluncuran Ronde 3 (28 Oktober 2026)
+
+Addendum ini mencatat koreksi faktual tata kelola Git, inventarisasi lengkap adaptasi berkas tes lama, pengesahan formal otoritas akhir, serta cakupan kerja Ronde 3:
+
+1. **Koreksi Faktual Tata Kelola Git (Putaran 2):**
+   - Pada Addendum 2 butir 3 (T-M5) tertulis kalimat *"Tidak ada commit langsung ke branch main"*.
+   - **Koreksi Faktual:** Seluruh commit pengembangan putaran 2 memang dibuat dan diuji secara terisolasi pada branch kerja `fix/audit-followup-2`. Namun, setelah verifikasi Sentinel dinyatakan PASS (`deleg_9ba70538`), branch `fix/audit-followup-2` digabungkan ke `main` melalui **fast-forward merge** (`a4bae14..d0f981b`) dan di-push ke `origin/main` atas persetujuan eksplisit Rifqi (*"setuju gas"*). Layanan systemd produksi kemudian di-restart pada pukul 10:24 WIB (PID 3435596 dan 3435597).
+
+2. **Daftar Hunk Adaptasi Tes Lama di Luar 4 Fungsi D2 & Pengesahan Resmi:**
+   Dalam rangka implementasi L3 (penghapusan kelas shim `DocumentDict`/`RunDict`) dan L4 (pengembalian autentikasi `/readyz` dan restorasi tabel via DDL murni), dilakukan adaptasi sintaksis pada tiga berkas tes putaran 1 tanpa melemahkan asersi bisnis:
+   - `tests/storage/test_overwrite_review_resolution.py`:
+     * Baris 187, 248, 362: Mengubah akses properti `.attributes[...]` menjadi standard dictionary indexing `["attributes"][...]`.
+     * Baris 412: Mengubah alias kunci `["draft_payload"]` menjadi `["draft"]`.
+   - `tests/storage/test_commit_overwrite_guard.py`:
+     * Baris 160, 209, 258, 407, 408: Mengubah akses properti `.attributes[...]` menjadi dictionary indexing `["attributes"][...]`.
+   - `tests/storage/test_ledger_and_readiness.py`:
+     * Baris 153: Mengubah akses properti `.attributes[...]` menjadi dictionary indexing `["attributes"][...]`.
+     * Baris 156 & 247: Memulihkan tabel `kms.document_attribute_changes` langsung menggunakan eksekusi raw DDL `schema_0003_attribute_changes.sql`, bukan memanggil runner `migrate(admin_url)` (karena runner kanonik kini menolak eksekusi ulang DDL bila versi sudah tercatat).
+     * Baris 240 & 273: Menambahkan header `Authorization: Bearer <token>` pada pemanggilan endpoint `/readyz` menyusul pengembalian proteksi autentikasi bearer.
+   - **Pernyataan Pengesahan Resmi Otoritas Akhir (28 Oktober 2026):**
+     > *"Rifqi menyetujui dan mengesahkan seluruh perubahan pada ketiga berkas tes tersebut sebagaimana tercermin pada commit HEAD `d0f981b` sebagai konsekuensi teknis langsung dari penghapusan shim dan pengembalian autentikasi /readyz tanpa pengurangan kekuatan asersi."*
+
+3. **Ruang Lingkup dan Peluncuran Ronde 3:**
+   - Menyempurnakan paritas dokumentasi publik (`README.md`, `PROJECT_GUIDE.md`, `KMS_JSONB_MIGRATION.md`).
+   - Menerapkan Keputusan Formal D10–D13 terkait sistem klasifikasi gambar varietas baru dengan Antrean Kandidat (`CANDIDATE`).
+   - Mengembangkan registri varietas dinamis, fusi sinyal nama file dan visual, migrasi skema aditif `0004` (`kms.image_candidates` & `kms.discarded_images`), API kandidat terotentikasi, antarmuka Streamlit "Kandidat Varietas" & "Dokumen Perlu Habitat", serta harness evaluasi visi.
+
+

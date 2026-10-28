@@ -135,3 +135,8 @@ Sesuai Keputusan D2 dan audit lanjutan:
    - `APPLY_INCOMING`: Menerapkan nilai baru dengan resolusi `HUMAN_REVIEW` (status `approved`), commit mencatat perubahan ke ledger `document_attribute_changes`. Wajib disetujui kurator dengan `reason` jika menyangkut nilai `EXISTING_HUMAN_PROTECTED`.
    - `REVISE`: Memberikan nilai dan satuan hasil revisi validasi kurator (status `revised`).
 4. **Guard Commit:** Percobaan commit penimpaan langsung tanpa approved review override akan membatalkan transaksi dengan HTTP 409 `Conflict`.
+
+### 7.3 Integritas Runner Migrasi & Verifikasi Checksum (Decision D9 & Temuan T-M2)
+Runner migrasi database (`src/storage/migrate.py`) menegakkan aturan imutabilitas DDL dan integritas skema:
+1. **Verifikasi Checksum Berkas:** Setiap berkas DDL pada `MIGRATIONS` (`0001`, `0002`, `0003`) dihitung sha256 checksum-nya dan diverifikasi terhadap rekaman di tabel `kms.schema_migrations`. Jika berkas DDL yang telah diterapkan mengalami perubahan, runner menolak proses dengan melempar `RuntimeError: Migration <version> checksum mismatch; add a new migration, never edit applied DDL.`
+2. **Perilaku Gagal Keras Bila Objek Hilang (Recorded but Object Missing):** Jika suatu versi migrasi tercatat di `kms.schema_migrations` namun tabel objek terkait tidak ditemukan di database, runner dilarang mengeksekusi ulang DDL secara diam-diam atau menimpa checksum (`ON CONFLICT DO UPDATE`). Sebaliknya, runner gagal keras dengan pesan eksplisit: `RuntimeError: Migration <version> recorded but object <table_name> missing; manual intervention required.` Hal ini menghindarkan perubahan skema tak terduga dan menuntut intervensi administratif yang terkontrol.
