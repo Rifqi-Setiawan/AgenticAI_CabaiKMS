@@ -34,8 +34,8 @@ def test_f1_auto_link_consistent_known(registry_known):
     vis = VisionClassificationResult(
         classification_status="KNOWN",
         matched_variety="Cabai Rawit",
-        confidence=0.92,
-        identified_part="buah",
+        visual_confidence=0.92,
+        identified_part="BUAH",
         visual_evidence="Buah tegak merah kecil",
     )
     outcome = fuse_photo_signals(
@@ -54,8 +54,8 @@ def test_f2_review_mismatch_adversarial_filename(registry_known):
     vis = VisionClassificationResult(
         classification_status="KNOWN",
         matched_variety="Cabai Keriting",
-        confidence=0.90,
-        identified_part="buah",
+        visual_confidence=0.90,
+        identified_part="BUAH",
         visual_evidence="Buah bergelombang panjang ramping",
     )
     outcome = fuse_photo_signals(
@@ -73,8 +73,8 @@ def test_f3_review_mismatch_variety_outside_registry(registry_known):
     vis = VisionClassificationResult(
         classification_status="KNOWN",
         matched_variety="Cabai Jalapeno",  # not in registry_known
-        confidence=0.88,
-        identified_part="buah",
+        visual_confidence=0.88,
+        identified_part="BUAH",
         visual_evidence="Buah bulat tumpul tebal",
     )
     outcome = fuse_photo_signals(
@@ -91,8 +91,8 @@ def test_f4_candidate_on_high_confidence_other(registry_known):
     vis = VisionClassificationResult(
         classification_status="OTHER",
         matched_variety=None,
-        confidence=0.85,
-        identified_part="buah",
+        visual_confidence=0.85,
+        identified_part="BUAH",
         visual_evidence="Karakteristik buah unik tidak cocok dengan varietas terdaftar",
     )
     outcome = fuse_photo_signals(
@@ -110,8 +110,8 @@ def test_f5_review_mismatch_other_conflicts_with_registered_filename(registry_kn
     vis = VisionClassificationResult(
         classification_status="OTHER",
         matched_variety=None,
-        confidence=0.85,
-        identified_part="buah",
+        visual_confidence=0.85,
+        identified_part="BUAH",
         visual_evidence="Morfologi varietas baru",
     )
     outcome = fuse_photo_signals(
@@ -128,8 +128,8 @@ def test_f6_review_uncertain_status(registry_known):
     vis = VisionClassificationResult(
         classification_status="UNCERTAIN",
         matched_variety=None,
-        confidence=0.60,
-        identified_part="daun",
+        visual_confidence=0.60,
+        identified_part="DAUN",
         visual_evidence="Citra buram",
     )
     outcome = fuse_photo_signals(
@@ -146,8 +146,8 @@ def test_f7_review_uncertain_known_low_confidence(registry_known):
     vis = VisionClassificationResult(
         classification_status="KNOWN",
         matched_variety="Cabai Rawit",
-        confidence=0.84,  # below 0.85
-        identified_part="buah",
+        visual_confidence=0.84,  # below 0.85
+        identified_part="BUAH",
         visual_evidence="Mirip rawit tapi keyakinan rendah",
     )
     outcome = fuse_photo_signals(
@@ -163,8 +163,8 @@ def test_f8_review_uncertain_other_low_confidence(registry_known):
     vis = VisionClassificationResult(
         classification_status="OTHER",
         matched_variety=None,
-        confidence=0.79,  # below 0.80
-        identified_part="buah",
+        visual_confidence=0.79,  # below 0.80
+        identified_part="BUAH",
         visual_evidence="Kemungkinan varietas lain tapi ragu",
     )
     outcome = fuse_photo_signals(
