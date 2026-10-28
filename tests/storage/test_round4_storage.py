@@ -55,12 +55,12 @@ def admin_engine() -> Engine:
     return make_engine(Settings(_env_file=None, database_url=admin_url))
 
 
-def _register_asset(admin_engine: Engine, asset_id: str, sha: str):
+def _register_asset(admin_engine: Engine, asset_id: str, sha: str, profile: str = "primary"):
     repo = KmsRepository(admin_engine)
     asset = {
         "id": asset_id,
         "original_sha256": sha,
-        "transform_profile": "primary",
+        "transform_profile": profile,
         "original_uri": f"cas:///orig/{asset_id}",
         "storage_uri": f"cas:///media/{asset_id}",
         "thumbnail_uri": f"cas:///thumb/{asset_id}",
@@ -142,12 +142,16 @@ def test_h2_discard_duplicate_sha_idempotent_with_cabai_app_role(app_role_db: En
     aid2 = hashlib.sha256(f"aid2_{suffix}".encode()).hexdigest()
     sha = hashlib.sha256(f"sha_shared_{suffix}".encode()).hexdigest()
 
-    _register_asset(admin_engine, aid1, sha)
-    _register_asset(admin_engine, aid2, sha)
+    _register_asset(admin_engine, aid1, sha, profile="primary")
+    _register_asset(admin_engine, aid2, sha, profile="archive")
 
     c1 = repo.add_candidate(
         asset_id=aid1, run_id=f"run_{suffix}", source_filename="f1.png", original_sha256=sha, organ_part="buah", confidence=0.85
     )
+    c2 = repo.add_candidate(
+        asset_id=aid2, run_id=f"run_{suffix}", source_filename="f2.png", original_sha256=sha, organ_part="daun", confidence=0.85
+    )
+
     # First discard
     res1 = repo.resolve_candidate(
         c1["candidate_id"],
@@ -157,19 +161,9 @@ def test_h2_discard_duplicate_sha_idempotent_with_cabai_app_role(app_role_db: En
     )
     assert res1["status"] == "DISCARDED"
 
-    # Second candidate with same sha
-    with app_role_db.begin() as conn:
-        conn.execute(
-            text(
-                "INSERT INTO kms.image_candidates (candidate_id, asset_id, run_id, source_filename, original_sha256, organ_part, confidence, status, created_at) "
-                "VALUES (:cid, :aid, :rid, 'f2.png', :sha, 'buah', 0.85, 'CANDIDATE', now())"
-            ),
-            {"cid": f"cand_dup_{suffix}", "aid": aid2, "rid": f"run_{suffix}", "sha": sha},
-        )
-
     # Second discard on same sha must NOT fail with permission denied on ON CONFLICT DO UPDATE
     res2 = repo.resolve_candidate(
-        f"cand_dup_{suffix}",
+        c2["candidate_id"],
         {"action": "DISCARD", "reason": "Bukan cabai valid 10 char kedua"},
         actor="curator-1",
         actor_role="curator",
@@ -231,7 +225,7 @@ def test_g2_promote_on_existing_document_with_attributes_raises_conflict(app_rol
     suffix = uuid.uuid4().hex[:8]
 
     # Pre-create document with attributes
-    plant = PlantIdentity(id=f"plant_g2_{suffix}", label=f"Cabai G2 {suffix}", identity_level="cultivar")
+    plant = PlantIdentity(id=f"plant_cabai_g2_{suffix}", label=f"Cabai G2 {suffix}", identity_level="cultivar")
     unknown_hab = HabitatIdentity(
         id="habitat_unknown",
         definition="administrative_village_v1",
@@ -496,7 +490,7 @@ def test_j2_promote_with_valid_existing_habitat_id_uses_real_habitat(app_role_db
     # Now promote candidate targeting that real habitat_id
     aid = hashlib.sha256(f"j2_a_{suffix}".encode()).hexdigest()
     sha = hashlib.sha256(f"j2_s_{suffix}".encode()).hexdigest()
-    _register_asset(app_role_db, aid, sha)
+    _register_asset(admin_engine, aid, sha)
     cand = repo.add_candidate(
         asset_id=aid, run_id=f"run_j2_{suffix}", source_filename="f.png", original_sha256=sha, organ_part="buah", confidence=0.90
     )
