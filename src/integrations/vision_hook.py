@@ -163,6 +163,8 @@ def vision_classification_with_storage(state: dict[str, Any], config: dict[str, 
                 filename_match=photo_signal.suggested_variety_hint,
                 registry_known=registry,
                 visual_result=result,
+                is_exact_hint=getattr(photo_signal, "is_exact_hint", True),
+                raw_filename=image.filename,
             )
 
             review_item = None

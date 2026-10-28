@@ -73,6 +73,8 @@ def fuse_photo_signals(
     registry_known: Iterable[str] | Any,
     visual_result: Any | None,
     thresholds: FusionThresholds | None = None,
+    is_exact_hint: bool = True,
+    raw_filename: str | None = None,
 ) -> FusionOutcome:
     """Evaluate alignment across filename, registry, and visual model inference."""
     thresholds = thresholds or FusionThresholds()
@@ -117,22 +119,32 @@ def fuse_photo_signals(
                 reason=f"OTHER confidence {conf:.2f} below threshold {thresholds.other_threshold:.2f}",
                 signals_consistent=True,
             )
-        # Check if filename claims an existing registered variety
+        # Check if filename claims an existing registered variety with an EXACT match
         if filename_match and _is_in_registry(filename_match, known_names):
-            return FusionOutcome(
-                action=FusionAction.REVIEW_MISMATCH,
-                matched_variety=None,
-                confidence=conf,
-                reason=f"Visual classified as OTHER new variety but filename claims '{filename_match}'",
-                signals_consistent=False,
-            )
+            if is_exact_hint:
+                return FusionOutcome(
+                    action=FusionAction.REVIEW_MISMATCH,
+                    matched_variety=None,
+                    confidence=conf,
+                    reason=f"Visual classified as OTHER new variety but filename claims '{filename_match}'",
+                    signals_consistent=False,
+                )
+
+        # Non-exact hint or unknown variety: treat as candidate suggestion, NOT as conflict!
+        cand_name = None
+        if raw_filename:
+            stem = re.sub(r"\.[a-zA-Z0-9]+$", "", raw_filename)
+            cand_name = re.sub(r"[_\-]+", " ", stem).strip()
+        elif filename_match:
+            cand_name = filename_match
+
         return FusionOutcome(
             action=FusionAction.CANDIDATE,
             matched_variety=None,
             confidence=conf,
             reason=f"Visual classified as OTHER new variety with confidence {conf:.2f}",
             signals_consistent=True,
-            suggested_candidate_name=filename_match,
+            suggested_candidate_name=cand_name,
         )
 
     # 3. KNOWN status
