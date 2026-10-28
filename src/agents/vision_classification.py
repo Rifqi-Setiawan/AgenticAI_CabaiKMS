@@ -178,11 +178,13 @@ def extract_photo_context_signal(
             break
 
     suggested_variety_hint = None
+    is_exact_hint = True
 
     if registry is not None:
         best = registry.best_match(combined_text, threshold=0.6)
         if best is not None:
             suggested_variety_hint = best.canonical_name
+            is_exact_hint = getattr(best, "is_exact", False)
     else:
         # Legacy fallback behavior
         stop_words = {
@@ -234,6 +236,7 @@ def extract_photo_context_signal(
         caption=caption,
         extracted_part=extracted_part,
         suggested_variety_hint=suggested_variety_hint,
+        is_exact_hint=is_exact_hint,
         raw_tokens=raw_tokens,
         extracted_variety_hints=[suggested_variety_hint] if suggested_variety_hint else [],
     )

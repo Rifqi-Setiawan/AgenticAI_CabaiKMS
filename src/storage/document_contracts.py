@@ -306,6 +306,7 @@ class PhotoContextSignal(Contract):
     caption: str | None = None
     extracted_part: Literal["DAUN", "BATANG", "BUAH", "BUNGA"] | None = None
     suggested_variety_hint: str | None = None
+    is_exact_hint: bool = True
     raw_tokens: list[str] = Field(default_factory=list)
     extracted_organ: str | None = None
     extracted_variety_hints: list[str] = Field(default_factory=list)

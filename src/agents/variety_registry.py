@@ -65,6 +65,7 @@ class VarietyMatchResult:
     canonical_name: str
     score: float
     reason: str
+    is_exact: bool = False
 
 
 class VarietyRegistry:
@@ -152,38 +153,58 @@ class VarietyRegistry:
             cleaned_canonical = normalize_clean_string(name)
             canonical_tokens = set(normalize_variety_tokens(name))
 
+            c_query_norm = re.sub(r"\b(cabai|cabe)\b", "", cleaned_query).strip()
+            c_canon_norm = re.sub(r"\b(cabai|cabe)\b", "", cleaned_canonical).strip()
+            is_exact_canonical = bool(
+                cleaned_canonical
+                and (cleaned_query == cleaned_canonical or (c_query_norm and c_query_norm == c_canon_norm))
+            )
+
             # 1. Check exact canonical match or token subset match
+            if is_exact_canonical:
+                results.append(VarietyMatchResult(canonical_name=name, score=1.0, reason="Exact canonical name match", is_exact=True))
+                continue
             if cleaned_canonical and cleaned_canonical in cleaned_query:
-                results.append(VarietyMatchResult(canonical_name=name, score=1.0, reason="Exact canonical name match"))
+                results.append(VarietyMatchResult(canonical_name=name, score=0.96, reason="Substring canonical match", is_exact=False))
                 continue
             if canonical_tokens and canonical_tokens.issubset(query_tokens):
-                results.append(VarietyMatchResult(canonical_name=name, score=0.95, reason="Canonical token subset match"))
+                results.append(VarietyMatchResult(canonical_name=name, score=0.95, reason="Canonical token subset match", is_exact=False))
                 continue
 
             # 2. Check alias matches
             matched_alias = None
             alias_score = 0.0
+            alias_exact = False
             for alias in entry.aliases:
                 cleaned_alias = normalize_clean_string(alias)
                 alias_tokens = set(normalize_variety_tokens(alias))
+                c_alias_norm = re.sub(r"\b(cabai|cabe)\b", "", cleaned_alias).strip()
+
+                if cleaned_alias and (cleaned_query == cleaned_alias or (c_query_norm and c_query_norm == c_alias_norm)):
+                    matched_alias = alias
+                    alias_score = 0.98
+                    alias_exact = True
+                    break
                 if cleaned_alias and (cleaned_alias in cleaned_query or alias.lower() in lowered_text):
                     matched_alias = alias
                     alias_score = 0.95
+                    alias_exact = False
                     break
                 if alias_tokens and alias_tokens.issubset(query_tokens):
                     matched_alias = alias
                     alias_score = 0.90
+                    alias_exact = False
                     break
 
             if matched_alias:
-                results.append(VarietyMatchResult(canonical_name=name, score=alias_score, reason=f"Matched alias '{matched_alias}'"))
+                results.append(VarietyMatchResult(canonical_name=name, score=alias_score, reason=f"Matched alias '{matched_alias}'", is_exact=alias_exact))
                 continue
 
             # 3. Fuzzy matching against canonical name and aliases
             if cleaned_query and cleaned_canonical:
                 sim = difflib.SequenceMatcher(None, cleaned_query, cleaned_canonical).ratio()
                 if sim >= threshold:
-                    results.append(VarietyMatchResult(canonical_name=name, score=round(sim, 3), reason=f"Fuzzy canonical match ({sim:.2f})"))
+                    results.append(VarietyMatchResult(canonical_name=name, score=round(sim, 3), reason=f"Fuzzy canonical match ({sim:.2f})", is_exact=False))
                     continue
 
             for alias in entry.aliases:
@@ -191,7 +212,7 @@ class VarietyRegistry:
                 if cleaned_query and c_alias:
                     sim = difflib.SequenceMatcher(None, cleaned_query, c_alias).ratio()
                     if sim >= threshold:
-                        results.append(VarietyMatchResult(canonical_name=name, score=round(sim, 3), reason=f"Fuzzy alias match '{alias}' ({sim:.2f})"))
+                        results.append(VarietyMatchResult(canonical_name=name, score=round(sim, 3), reason=f"Fuzzy alias match '{alias}' ({sim:.2f})", is_exact=False))
                         break
 
         # Deterministic sort: score descending, then canonical_name ascending
