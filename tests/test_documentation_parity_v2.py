@@ -59,3 +59,48 @@ def test_d03_no_todo_or_fixme_in_touched_docs():
             text = p.read_text(encoding="utf-8")
             assert "TODO" not in text, f"Found TODO in {p.name}"
             assert "FIXME" not in text, f"Found FIXME in {p.name}"
+
+
+def test_d04_readme_parity_markers():
+    """D-04: README.md contains required Round 2 / L6 markers."""
+    readme_path = REPO_ROOT / "README.md"
+    assert readme_path.is_file(), "README.md missing"
+    content = readme_path.read_text(encoding="utf-8")
+
+    required_markers = [
+        "D2",
+        "EXISTING_HUMAN_PROTECTED",
+        "KEEP_EXISTING",
+        "APPLY_INCOMING",
+        "REVISE",
+        "OVERWRITE_BLOCKED",
+        "UNIT_MISMATCH",
+        "/readyz",
+        "/livez",
+        "0001",
+        "0002",
+        "0003",
+        "decision",
+    ]
+    for m in required_markers:
+        assert m in content, f"Missing required marker '{m}' in README.md"
+
+    # Also verify DESIGN_DECISIONS.md explicitly contains D2
+    dec_path = REPO_ROOT / "docs" / "DESIGN_DECISIONS.md"
+    assert "D2" in dec_path.read_text(encoding="utf-8"), "Missing D2 in DESIGN_DECISIONS.md"
+
+
+def test_d05_project_guide_and_migration_parity():
+    """D-05: PROJECT_GUIDE.md and KMS_JSONB_MIGRATION.md reflect L1-L5 contracts."""
+    guide_path = REPO_ROOT / "docs" / "PROJECT_GUIDE.md"
+    assert guide_path.is_file()
+    guide_content = guide_path.read_text(encoding="utf-8")
+    assert "/readyz" in guide_content, "Missing /readyz in PROJECT_GUIDE.md"
+    assert "resolve" in guide_content, "Missing resolve in PROJECT_GUIDE.md"
+
+    mig_path = REPO_ROOT / "docs" / "KMS_JSONB_MIGRATION.md"
+    assert mig_path.is_file()
+    mig_content = mig_path.read_text(encoding="utf-8")
+    assert "checksum" in mig_content, "Missing checksum in KMS_JSONB_MIGRATION.md"
+    assert "missing" in mig_content.lower(), "Missing 'missing' in KMS_JSONB_MIGRATION.md"
+
