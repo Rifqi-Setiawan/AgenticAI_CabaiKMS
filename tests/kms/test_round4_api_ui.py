@@ -128,15 +128,25 @@ def test_u1_ui_bridge_uses_client_request(api_client):
     # 1. Add candidate directly
     aid = hashlib.sha256(uuid.uuid4().bytes).hexdigest()
     sha = hashlib.sha256(uuid.uuid4().bytes).hexdigest()
-    with repo.engine.begin() as conn:
-        from sqlalchemy import text
-        conn.execute(
-            text(
-                "INSERT INTO kms.media_assets (id, original_sha256, transform_profile, original_uri, storage_uri, thumbnail_uri, image_sha256, thumbnail_sha256, mime_type, file_size, original_size, thumbnail_size, width, height) "
-                "VALUES (:id, :sha, 'primary', 'cas:///o', 'cas:///s', 'cas:///t', :sha, :sha, 'image/webp', 1000, 1000, 200, 100, 100) ON CONFLICT DO NOTHING"
-            ),
-            {"id": aid, "sha": sha},
-        )
+    from src.storage.repository import KmsRepository
+    kms_repo = KmsRepository(repo.engine)
+    asset = {
+        "id": aid,
+        "original_sha256": sha,
+        "transform_profile": "primary",
+        "original_uri": f"cas:///orig/{aid}",
+        "storage_uri": f"cas:///media/{aid}",
+        "thumbnail_uri": f"cas:///thumb/{aid}",
+        "image_sha256": sha,
+        "thumbnail_sha256": sha,
+        "mime_type": "image/webp",
+        "file_size": 1000,
+        "original_size": 1000,
+        "thumbnail_size": 200,
+        "width": 100,
+        "height": 100,
+    }
+    kms_repo.register_asset(asset, actor="curator-alice")
     cand = repo.add_candidate(asset_id=aid, run_id="r1", source_filename="f.png", original_sha256=sha, organ_part="buah", confidence=0.9)
 
     # 2. Call resolve_candidate_api

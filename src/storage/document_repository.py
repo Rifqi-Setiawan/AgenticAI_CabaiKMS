@@ -1312,6 +1312,18 @@ class DocumentRepository:
 
             return final_doc.model_dump(mode="json")
 
+    def list_distinct_varieties(self) -> list[str]:
+        """List distinct canonical variety names from all persistent knowledge documents."""
+        with transaction(self.engine) as session:
+            rows = session.execute(
+                text(
+                    "SELECT DISTINCT document->'variety'->>'label' AS name "
+                    "FROM kms.knowledge_documents "
+                    "WHERE document->'variety'->>'label' IS NOT NULL"
+                )
+            ).scalars().all()
+            return sorted(r for r in rows if r)
+
     def stage_direct_document(
         self,
         doc_key: str,

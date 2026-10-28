@@ -8,6 +8,8 @@ from dataclasses import dataclass
 from typing import Annotated, Any, Literal
 from uuid import UUID
 
+from pydantic import BaseModel, Field
+
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -29,6 +31,17 @@ from src.storage.repository import KmsRepository
 class Principal:
     subject: str
     role: str
+
+
+class CandidateCreateRequest(BaseModel):
+    asset_id: str = Field(pattern=r"^[a-f0-9]{64}$")
+    run_id: str = Field(min_length=1)
+    source_filename: str = Field(min_length=1)
+    original_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
+    organ_part: Literal["habitus", "daun", "batang", "bunga", "buah", "biji"]
+    confidence: float = Field(ge=0.0, le=1.0)
+    suggested_name: str | None = None
+    visual_evidence: dict[str, Any] | None = None
 
 
 class BoundedBodyMiddleware:
@@ -316,23 +329,28 @@ def create_app(
 
     @app.post('/candidates')
     def add_candidate_endpoint(
-        candidate_payload: dict[str, Any],
-        principal: Annotated[Principal, Depends(authenticate)] = None,
+        candidate_payload: CandidateCreateRequest,
+        principal: Annotated[Principal, Depends(writer)],
     ):
         if doc_repo is None:
-            raise InvalidState('Candidate endpoints require a database.')
-        actor = principal.subject if principal else "system"
+            raise HTTPException(503, 'Candidate endpoints require a database.')
         return doc_repo.add_candidate(
-            asset_id=candidate_payload["asset_id"],
-            run_id=candidate_payload["run_id"],
-            source_filename=candidate_payload["source_filename"],
-            original_sha256=candidate_payload["original_sha256"],
-            organ_part=candidate_payload["organ_part"],
-            confidence=float(candidate_payload["confidence"]),
-            suggested_name=candidate_payload.get("suggested_name"),
-            visual_evidence=candidate_payload.get("visual_evidence"),
-            actor=actor,
+            asset_id=candidate_payload.asset_id,
+            run_id=candidate_payload.run_id,
+            source_filename=candidate_payload.source_filename,
+            original_sha256=candidate_payload.original_sha256,
+            organ_part=candidate_payload.organ_part,
+            confidence=candidate_payload.confidence,
+            suggested_name=candidate_payload.suggested_name,
+            visual_evidence=candidate_payload.visual_evidence,
+            actor=principal.subject,
         )
+
+    @app.get('/varieties')
+    def list_varieties(principal: Annotated[Principal, Depends(authenticate)]):
+        if doc_repo is None:
+            raise HTTPException(503, 'Document endpoints require a database.')
+        return {'items': doc_repo.list_distinct_varieties()}
 
     @app.get('/discarded')
     def list_discarded(
