@@ -97,6 +97,7 @@ KMS mengelola persistensi, proteksi kurasi manusia, dan integritas skema sebagai
   2. `0002` (`schema_0002_jsonb.sql`): Kolom dokumen `JSONB` pada `kms.knowledge_documents` beserta indeks GIN dan metadata identitas.
   3. `0003` (`schema_0003_attribute_changes.sql`): Tabel ledger append-only `kms.document_attribute_changes` dengan trigger proteksi mutasi `reject_mutation`.
   4. `0004` (`schema_0004_image_candidates.sql`): Tabel antrean kandidat citra varietas baru `kms.image_candidates` dan indeks penolakan `kms.discarded_images`.
+  5. `0005` (`schema_0005_app_grants.sql`): Izin akses aditif hak minimal role aplikasi `cabai_app` (`DELETE` pada `knowledge_documents` dan `UPDATE` pada `discarded_images`).
   Penerapan migrasi berjalan sekuensial transaksional via `src/storage/migrate.py` yang memverifikasi sha256 checksum setiap berkas DDL terhadap rekaman di `kms.schema_migrations`.
 - **Perlindungan Nilai Human Review (Keputusan D2)**:
   Nilai tersimpan dengan `resolution = "HUMAN_REVIEW"` merupakan nilai hasil validasi kurator manusia dan berstatus dilindungi (`EXISTING_HUMAN_PROTECTED`). Penimpaan otomatis oleh `AUTO_ACCEPT` dilarang secara ketat. Upaya penimpaan otomatis akan dialihkan ke antrean review kurator dengan kategori `OVERWRITE_BLOCKED` atau `UNIT_MISMATCH`.
@@ -112,7 +113,8 @@ KMS mengelola persistensi, proteksi kurasi manusia, dan integritas skema sebagai
   Endpoint `POST /runs/v2/{run_id}/reviews/{item_id}/resolve` menerima payload datar maupun payload bersarang dengan tepat satu kunci `{"decision": {...}}` yang secara otomatis dibuka via `_unwrap_decision` dan divalidasi mewajibkan `action` atau `status`.
 - **Endpoint Health & Readiness**:
   - `/livez` dan `/healthz`: Endpoint publik tanpa autentikasi (mengembalikan 200 `{"status": "alive"}`).
-  - `/readyz`: Endpoint kesiapan operasional terotentikasi bearer token (`Depends(authenticate)`). Memverifikasi koneksi database, eksistensi tabel wajib, dan kecocokan checksum migrasi `0001`, `0002`, `0003`, `0004`. Respons 503 disanitasi penuh tanpa membocorkan pesan error mentah atau informasi rahasia server.
+  - `/readyz`: Endpoint kesiapan operasional terotentikasi bearer token (`Depends(authenticate)`). Memverifikasi koneksi database, eksistensi tabel wajib, dan kecocokan checksum migrasi `0001`, `0002`, `0003`, `0004`, `0005`. Respons 503 disanitasi penuh tanpa membocorkan pesan error mentah atau informasi rahasia server.
+  - `/varieties`: Endpoint daftar varietas unik terdaftar dari seluruh dokumen KMS.
 
 ## Peta dokumentasi
 
