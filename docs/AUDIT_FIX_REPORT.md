@@ -312,4 +312,45 @@ Addendum ini mencatat koreksi faktual tata kelola Git, inventarisasi lengkap ada
    - Menerapkan Keputusan Formal D10–D13 terkait sistem klasifikasi gambar varietas baru dengan Antrean Kandidat (`CANDIDATE`).
    - Mengembangkan registri varietas dinamis, fusi sinyal nama file dan visual, migrasi skema aditif `0004` (`kms.image_candidates` & `kms.discarded_images`), API kandidat terotentikasi, antarmuka Streamlit "Kandidat Varietas" & "Dokumen Perlu Habitat", serta harness evaluasi visi.
 
+---
+
+## Addendum 4: Perbaikan Hasil Audit Ronde 3 (Ronde 4, 28 Oktober 2026)
+
+Addendum ini merangkum perbaikan komprehensif atas temuan audit Claude terhadap commit HEAD `dd3a3f2` (F-1 s.d. F-10) yang diselesaikan secara test-first di branch kerja `fix/round4`:
+
+1. **F-1 & F-11 (Hak Akses Role Aplikasi Minimal `cabai_app`):**
+   - Dibuat migrasi aditif baru `0005` (`schema_0005_app_grants.sql`) yang memberikan `GRANT DELETE ON kms.knowledge_documents TO cabai_app;` dan `GRANT UPDATE ON kms.discarded_images TO cabai_app;`. Checksum migrasi `0001`–`0004` tetap utuh.
+   - Pada `DocumentRepository.resolve_candidate` untuk aksi DISCARD, diubah menjadi `INSERT ... ON CONFLICT (original_sha256) DO NOTHING`.
+   - Pada `set_document_habitat`, jika dokumen tujuan belum ada, dilakukan pembaruan in-place (`UPDATE kms.knowledge_documents SET id = :dest_key, habitat_id = :hid, ... WHERE id = :src_key`), menghindari delete+insert dan memerlukan hak `UPDATE` saja.
+   - Dibuat fixture pengujian khusus `app_role_db` yang terhubung langsung menggunakan role berhak minimal `cabai_app` untuk memastikan tidak ada perintah SQL yang gagal dengan `permission denied` di lingkungan produksi.
+
+2. **F-2 (Proteksi Anti-Penimpaan Dokumen pada PROMOTE):**
+   - Klausa `ON CONFLICT (id) DO UPDATE SET document = EXCLUDED.document` dihapus sepenuhnya dari `resolve_candidate`.
+   - Jika dokumen dengan `id = doc_key` sudah terdaftar, server melempar exception `Conflict` eksplisit: *"dokumen sudah ada; gunakan MERGE"*.
+   - Dokumen lama beserta atributnya dijamin 100% utuh. Peneliti diarahkan menggunakan MERGE untuk foto varietas yang sama.
+
+3. **F-3 (Pencegahan Penghapusan & Kehilangan Data pada `set_document_habitat`):**
+   - Menolak permintaan jika habitat tujuan menghasilkan kunci dokumen yang sama atau bernilai `habitat_unknown` (`InvalidState`).
+   - Memvalidasi bahwa dokumen sumber memang berstatus `habitat_unknown = True`.
+   - Memeriksa potensi konflik nilai atribut antara dokumen sumber dan tujuan saat proses penggabungan. Jika terjadi pertentangan nilai atribut, operasi ditolak dengan `Conflict` (mewajibkan resolusi kurator manual, tidak dibuang diam-diam).
+
+4. **F-4 & F-9 (Perbaikan API & Pemasangan Antarmuka UI):**
+   - Seluruh pemanggilan method privat `client._post` dan `client._get` pada `src/integrations/candidates_ui.py` diganti dengan method resmi `client.request()`.
+   - Panel antarmuka `render_candidates_panel` dan `render_habitat_unknown_documents_panel` dipasang secara resmi sebagai tab utama pada `src/ui/pages/4_KMS.py`.
+   - Form PROMOTE hanya memperbolehkan pemilihan habitat yang benar-benar terdaftar di database (diambil dari `/documents`) atau sentinel habitat belum diketahui (D11); form teks bebas yang mengarang habitat dieliminasi.
+   - Pada endpoint `POST /candidates`, dipasang model Pydantic `CandidateCreateRequest` (otomatis menghasilkan status 422 jika format sha256 64-hex atau organ_part tidak valid) serta dependensi otorisasi `writer` (otomatis menghasilkan 403 Forbidden bagi peran tanpa hak seperti `reader`).
+   - Ditambahkan endpoint publik terotentikasi `GET /varieties` yang mengembalikan daftar seluruh nama varietas kanonik terdaftar secara cepat dan akurat.
+
+5. **F-5 (Eliminasi Habitat Karangan):**
+   - Pada `resolve_candidate` aksi PROMOTE, jika `habitat_id` diberikan, sistem memverifikasi keberadaannya di tabel `kms.knowledge_documents`. Jika tidak ditemukan, melempar `InvalidState`. Jika tidak diisi, dokumen otomatis memakai identitas unknown resmi (`make_unknown_habitat()`).
+
+6. **F-6, F-7, F-8 (Penyempurnaan Vision Hook & Fusi Tiga Sinyal):**
+   - **F-6:** Sesi klasifikasi visual multimodal `VisionSession` kini diberikan opsi lengkap dari registri varietas gabungan (`registry.get_canonical_names()`), sehingga varietas yang baru terdaftar di database tetap dikenali oleh model visi.
+   - **F-7:** Seluruh blok `except Exception: pass` pada pengambilan varietas DB dan pengecekan `/discarded` dihapus; kegagalan kini menimbulkan error terlihat. Kegagalan saat memanggil `POST /candidates` mencatat status eksplisit `FAILED_CANDIDATE_RECORD` pada rekaman foto.
+   - **F-8:** Logika pengenalan varietas pada `signal_fusion._is_in_registry` diperketat: menghapus pemeriksaan token subset (`tokens.issubset`) dan fuzzy matching. Sinyal hanya mengakui varietas yang cocok persis (exact normalized) dengan nama kanonik atau alias terdaftar.
+
+7. **F-10 (Jejak Versi & Concurrency Guard):**
+   - Aksi MERGE pada resolusi kandidat kini mendukung pemeriksaan versi optimistik (`expected_version`). Jika versi dokumen di database telah berubah, operasi dibatalkan dengan status `Conflict`.
+
+
 
