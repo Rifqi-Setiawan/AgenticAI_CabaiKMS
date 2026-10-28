@@ -33,23 +33,27 @@ def migrate(admin_url: str) -> list[str]:
             ddl = path.read_text(encoding='utf-8')
             checksum = hashlib.sha256(ddl.encode()).hexdigest()
             previous = connection.execute('SELECT sha256 FROM kms.schema_migrations WHERE version=%s', (version,)).fetchone()
-            table_missing = False
-            if version == '0003':
-                table_missing = bool(connection.execute("SELECT to_regclass('kms.document_attribute_changes') IS NULL").fetchone()[0])
-            elif version == '0002':
-                table_missing = bool(connection.execute("SELECT to_regclass('kms.knowledge_documents') IS NULL").fetchone()[0])
-
-            if previous and not table_missing:
+            if previous:
                 if previous[0] != checksum:
                     raise RuntimeError(f'Migration {version} checksum mismatch; add a new migration, never edit applied DDL.')
+                table_to_check = None
+                if version == '0003':
+                    table_to_check = 'kms.document_attribute_changes'
+                elif version == '0002':
+                    table_to_check = 'kms.knowledge_documents'
+                elif version == '0001':
+                    table_to_check = 'kms.acquisition_runs'
+
+                if table_to_check:
+                    missing = bool(connection.execute('SELECT to_regclass(%s) IS NULL', (table_to_check,)).fetchone()[0])
+                    if missing:
+                        raise RuntimeError(
+                            f'Migration {version} recorded but object {table_to_check} missing; manual intervention required.'
+                        )
                 continue
             # psycopg simple query supports the complete multi-statement migration.
             connection.execute(ddl, prepare=False)
-            connection.execute(
-                '''INSERT INTO kms.schema_migrations(version,sha256) VALUES (%s,%s)
-                   ON CONFLICT (version) DO UPDATE SET sha256 = EXCLUDED.sha256, applied_at = now()''',
-                (version, checksum),
-            )
+            connection.execute('INSERT INTO kms.schema_migrations(version,sha256) VALUES (%s,%s)', (version, checksum))
             applied.append(version)
     return applied
 

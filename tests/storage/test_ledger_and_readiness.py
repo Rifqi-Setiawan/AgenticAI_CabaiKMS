@@ -152,8 +152,11 @@ def test_t30_dropped_ledger_table_fails_commit(db: Engine):
         assert doc_after["version"] == 1
         assert doc_after["attributes"]["attr_tinggi_tanaman"]["value"] == 80.0
     finally:
-        # Restore schema
-        migrate(admin_url)
+        # Restore schema via raw DDL
+        m0003_path = Path(__file__).resolve().parents[2] / "schema_0003_attribute_changes.sql"
+        ddl = m0003_path.read_text(encoding="utf-8")
+        with admin_engine.begin() as conn:
+            conn.execute(text(ddl))
 
 
 def test_t31_fully_migrated_db_writes_ledger_row(db: Engine):
@@ -237,10 +240,14 @@ def test_t32_readyz_on_unmigrated_db_returns_503(tmp_path):
 
     try:
         with TestClient(app) as client:
-            resp = client.get("/readyz")
+            resp = client.get("/readyz", headers={"Authorization": "Bearer " + "c" * 40})
             assert resp.status_code == 503
     finally:
-        migrate(admin_url)
+        # Restore schema via raw DDL
+        m0003_path = Path(__file__).resolve().parents[2] / "schema_0003_attribute_changes.sql"
+        ddl = m0003_path.read_text(encoding="utf-8")
+        with admin_engine.begin() as conn:
+            conn.execute(text(ddl))
 
 
 def test_t33_readyz_on_fully_migrated_db_returns_200(tmp_path):
@@ -266,7 +273,7 @@ def test_t33_readyz_on_fully_migrated_db_returns_200(tmp_path):
     app = create_app(settings, repository=repo, blob_store=blob_store)
 
     with TestClient(app) as client:
-        resp = client.get("/readyz")
+        resp = client.get("/readyz", headers={"Authorization": "Bearer " + "c" * 40})
         assert resp.status_code == 200
         assert resp.json()["status"] == "ready"
 
