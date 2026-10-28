@@ -16,16 +16,18 @@ def enabled() -> bool:
 
 
 class KmsClient:
-    def __init__(self, settings: Settings, token: str | None = None):
+    def __init__(self, settings: Settings, token: str | None = None, client_factory: Any = None):
         self.settings = settings
         self.token = token or (settings.kms_api_token.get_secret_value() if settings.kms_api_token else '')
+        self.client_factory = client_factory or httpx.Client
         if not self.token:
             raise InvalidState('Configure a server-side KMS_API_TOKEN or enter a reviewer token.')
 
     def request(self, method: str, path: str, **kwargs) -> Any:
-        with httpx.Client(base_url=self.settings.kms_api_base_url,
-                          headers={'Authorization': 'Bearer ' + self.token},
-                          timeout=httpx.Timeout(120, connect=8), follow_redirects=False) as client:
+        with self.client_factory(base_url=self.settings.kms_api_base_url,
+                                 headers={'Authorization': 'Bearer ' + self.token},
+                                 timeout=httpx.Timeout(120, connect=8),
+                                 follow_redirects=False) as client:
             response = client.request(method, path, **kwargs)
         if response.status_code >= 400:
             try:

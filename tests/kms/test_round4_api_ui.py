@@ -97,24 +97,20 @@ def test_n2_candidates_post_with_invalid_payload_returns_422(api_client):
     assert resp.status_code == 422
 
 
-class FakeKmsClient:
-    """Mock KmsClient that adheres to client.request() protocol."""
+class StrictHttpxForwarderClient:
+    """Mock KmsClient that forwards strictly using httpx kwargs without accepting json_body."""
     def __init__(self, test_client: TestClient, token: str):
         self.test_client = test_client
         self.token = token
         self.recorded_calls = []
 
-    def request(self, method: str, path: str, json_body: dict | None = None, params: dict | None = None):
-        self.recorded_calls.append({"method": method, "path": path, "body": json_body, "params": params})
-        headers = {"Authorization": f"Bearer {self.token}"}
-        if method.upper() == "GET":
-            resp = self.test_client.get(path, params=params, headers=headers)
-        elif method.upper() == "POST":
-            resp = self.test_client.post(path, json=json_body, headers=headers)
-        elif method.upper() == "PUT":
-            resp = self.test_client.put(path, json=json_body, headers=headers)
-        else:
-            raise NotImplementedError(method)
+    def request(self, method: str, path: str, **kwargs):
+        if "json_body" in kwargs:
+            raise TypeError("Client.request() got an unexpected keyword argument 'json_body'")
+        self.recorded_calls.append({"method": method, "path": path, "kwargs": kwargs})
+        headers = dict(kwargs.pop("headers", {}))
+        headers["Authorization"] = f"Bearer {self.token}"
+        resp = self.test_client.request(method, path, headers=headers, **kwargs)
         if resp.status_code >= 400:
             raise RuntimeError(f"HTTP {resp.status_code}: {resp.text}")
         return resp.json()
@@ -123,7 +119,7 @@ class FakeKmsClient:
 def test_u1_ui_bridge_uses_client_request(api_client):
     """U1: resolve_candidate_api and set_document_habitat_api use client.request()."""
     client, repo, tokens = api_client
-    fake_client = FakeKmsClient(client, tokens["curator"])
+    strict_client = StrictHttpxForwarderClient(client, tokens["curator"])
 
     # 1. Add candidate directly
     aid = hashlib.sha256(uuid.uuid4().bytes).hexdigest()
@@ -155,9 +151,9 @@ def test_u1_ui_bridge_uses_client_request(api_client):
         "new_variety_name": f"Cabai U1 {uuid.uuid4().hex[:6]}",
         "reason": "Alasan valid promosi lebih dari 10 karakter",
     }
-    res = resolve_candidate_api(fake_client, cand["candidate_id"], decision)
+    res = resolve_candidate_api(cand["candidate_id"], decision, client=strict_client)
     assert res.get("status") == "PROMOTED"
-    assert any(c["method"] == "POST" and f"/candidates/{cand['candidate_id']}/resolve" in c["path"] for c in fake_client.recorded_calls)
+    assert any(c["method"] == "POST" and f"/candidates/{cand['candidate_id']}/resolve" in c["path"] for c in strict_client.recorded_calls)
 
 
 def test_u2_pages_kms_mounts_candidate_and_unknown_habitat_panels():

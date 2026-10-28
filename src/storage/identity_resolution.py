@@ -784,3 +784,20 @@ def build_document_identity(
 
     hab_slug = f"{reg_slug}-{dist_slug}-{vill_slug}"
     return f"doc_{var_slug}_{hab_slug}"
+
+
+def compute_habitat_id(path: AdministrativePath) -> str:
+    """Compute deterministic canonical habitat ID from administrative path."""
+    reg_clean = re.sub(
+        r"^(?:kabupaten|kota)\s+", "", path.regency_name, flags=re.IGNORECASE
+    )
+    dist_clean = re.sub(
+        r"^(?:kecamatan)\s+", "", path.district_name, flags=re.IGNORECASE
+    )
+    vill_clean = re.sub(
+        r"^(?:desa|kelurahan)\s+", "", path.village_name, flags=re.IGNORECASE
+    )
+    reg_slug = _slugify(reg_clean)
+    dist_slug = _slugify(dist_clean)
+    vill_slug = _slugify(vill_clean)
+    return f"hab_{reg_slug}_{dist_slug}_{vill_slug}"
