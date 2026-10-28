@@ -15,38 +15,32 @@ def validate_curator_reason(reason: str | None) -> bool:
     return bool(reason and len(str(reason).strip()) >= 10)
 
 
-def resolve_candidate_api(arg1: Any, arg2: Any = None, arg3: Any = None, *, client: Any | None = None) -> dict[str, Any]:
-    """Call KMS API to resolve a candidate (httpx json kwarg compliant)."""
-    if arg3 is not None:
-        c = arg1
-        cid = arg2
-        dec = arg3
-    elif hasattr(arg1, "request"):
-        c = arg1
-        cid = arg2
-        dec = arg3 or {}
-    else:
-        c = client or ui_client()
-        cid = arg1
-        dec = arg2
-    return c.request("POST", f"/candidates/{cid}/resolve", json=dec)
+def resolve_candidate_api(candidate_id: str, decision: dict[str, Any], *, client: Any | None = None) -> dict[str, Any]:
+    """Call KMS API to resolve a candidate (httpx ``json`` kwarg)."""
+    c = client or ui_client()
+    return c.request("POST", f"/candidates/{candidate_id}/resolve", json=decision)
 
 
-def set_document_habitat_api(arg1: Any, arg2: Any = None, arg3: Any = None, *, client: Any | None = None) -> dict[str, Any]:
-    """Call KMS API to set resolved habitat on an unknown-habitat document (httpx json kwarg compliant)."""
-    if arg3 is not None:
-        c = arg1
-        dkey = arg2
-        payload = arg3
-    elif hasattr(arg1, "request"):
-        c = arg1
-        dkey = arg2
-        payload = arg3 or {}
-    else:
-        c = client or ui_client()
-        dkey = arg1
-        payload = arg2
-    return c.request("POST", f"/documents/{dkey}/habitat", json=payload)
+def set_document_habitat_api(doc_key: str, habitat_payload: dict[str, Any], *, client: Any | None = None) -> dict[str, Any]:
+    """Call KMS API to set the resolved habitat of an unknown-habitat document (httpx ``json`` kwarg)."""
+    c = client or ui_client()
+    return c.request("POST", f"/documents/{doc_key}/habitat", json=habitat_payload)
+
+
+def load_all_documents(client: Any, page_size: int = 200, **params: Any) -> list[dict[str, Any]]:
+    """Load every committed document page by page; raises on failure (callers must surface it)."""
+    items: list[dict[str, Any]] = []
+    offset = 0
+    while True:
+        resp = client.request("GET", "/documents", params={**params, "limit": page_size, "offset": offset})
+        page = resp.get("items", resp) if isinstance(resp, dict) else resp
+        if not isinstance(page, list):
+            break
+        items.extend(page)
+        if len(page) < page_size:
+            break
+        offset += page_size
+    return items
 
 
 def render_candidates_panel(candidates: list[dict[str, Any]] | None = None) -> None:
@@ -69,18 +63,16 @@ def render_candidates_panel(candidates: list[dict[str, Any]] | None = None) -> N
     existing_habitats: dict[str, str] = {}
     registered_docs: dict[str, dict[str, Any]] = {}
     try:
-        docs_resp = client.request("GET", "/documents", params={"limit": 200})
-        docs_list = docs_resp.get("items", docs_resp) if isinstance(docs_resp, dict) else docs_resp
-        if isinstance(docs_list, list):
-            for d in docs_list:
-                d_id = d.get("id") or d.get("doc_id")
-                if d_id:
-                    registered_docs[d_id] = d
-                hab = d.get("habitat")
-                if hab and isinstance(hab, dict) and hab.get("id") and hab.get("id") != "habitat_unknown":
-                    existing_habitats[hab["id"]] = f"{hab.get('label', hab['id'])} ({hab['id']})"
-    except Exception:
-        pass
+        for d in load_all_documents(client):
+            d_id = d.get("id") or d.get("doc_id")
+            if d_id:
+                registered_docs[d_id] = d
+            hab = d.get("habitat")
+            if hab and isinstance(hab, dict) and hab.get("id") and hab.get("id") != "habitat_unknown":
+                existing_habitats[hab["id"]] = f"{hab.get('label', hab['id'])} ({hab['id']})"
+        st.caption(f"{len(registered_docs)} dokumen terdaftar dimuat untuk pilihan habitat dan MERGE.")
+    except Exception as exc:
+        st.warning(f"Daftar dokumen/habitat gagal dimuat; pilihan habitat dan MERGE tidak lengkap: {exc}")
 
     st.write(f"Terdapat **{len(candidates)}** kandidat citra varietas baru menunggu keputusan.")
 
@@ -242,14 +234,12 @@ def render_habitat_unknown_documents_panel(documents: list[dict[str, Any]] | Non
     # Fetch existing habitats for dropdown
     existing_habitats: dict[str, dict[str, Any]] = {}
     try:
-        all_docs = client.request("GET", "/documents", params={"limit": 200})
-        items = all_docs.get("items", all_docs) if isinstance(all_docs, dict) else all_docs
-        for d in (items or []):
+        for d in load_all_documents(client):
             hab = d.get("habitat")
             if hab and isinstance(hab, dict) and hab.get("id") and hab.get("id") != "habitat_unknown":
                 existing_habitats[hab["id"]] = hab
-    except Exception:
-        pass
+    except Exception as exc:
+        st.warning(f"Daftar habitat terdaftar gagal dimuat; hanya input 4 tingkat yang tersedia: {exc}")
 
     for idx, doc in enumerate(documents):
         doc_key = doc.get("id") or doc.get("doc_id") or f"doc_{idx}"
@@ -286,32 +276,18 @@ def render_habitat_unknown_documents_panel(documents: list[dict[str, Any]] | Non
             else:
                 col_p, col_r = st.columns(2)
                 with col_p:
-                    prov = st.text_input("Provinsi:", key=f"prov_{doc_key}", placeholder="Jawa Barat")
-                    kab = st.text_input("Kabupaten/Kota:", key=f"kab_{doc_key}", placeholder="Garut")
+                    prov = st.text_input("Provinsi:", key=f"prov_{doc_key}", placeholder="Nama provinsi")
+                    kab = st.text_input("Kabupaten/Kota:", key=f"kab_{doc_key}", placeholder="Nama kabupaten/kota")
                 with col_r:
-                    kec = st.text_input("Kecamatan:", key=f"kec_{doc_key}", placeholder="Tarogong Kaler")
+                    kec = st.text_input("Kecamatan:", key=f"kec_{doc_key}", placeholder="Nama kecamatan")
                     desa = st.text_input("Desa/Kelurahan:", key=f"desa_{doc_key}", placeholder="Pananjung")
 
-                hab_input_compat = st.text_input(
-                    "Nama Desa / Wilayah Administratif (Kompatibilitas):",
-                    key=f"hab_set_{doc_key}",
-                    placeholder="Kosongkan jika form di atas terisi",
-                )
-
                 if st.button("Simpan Habitat Definitif", key=f"btn_set_hab_{doc_key}"):
-                    # Check 4-tier inputs or compat input
+                    # All four administrative tiers come from the curator; nothing is defaulted.
                     p_val = prov.strip()
                     k_val = kab.strip()
                     kc_val = kec.strip()
                     d_val = desa.strip()
-                    compat_val = hab_input_compat.strip()
-
-                    if not p_val and compat_val:
-                        # Fallback parsing for legacy test scripts
-                        p_val = "Jawa Barat"
-                        k_val = "Kabupaten Garut"
-                        kc_val = "Kecamatan Tarogong"
-                        d_val = compat_val
 
                     if not p_val or not k_val or not kc_val or not d_val:
                         st.warning("Seluruh jenjang administratif (Provinsi, Kabupaten, Kecamatan, Desa) wajib diisi.")

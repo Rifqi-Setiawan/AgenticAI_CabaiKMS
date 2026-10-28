@@ -1250,8 +1250,26 @@ class DocumentRepository:
                         f"All administrative path tiers must be valid; '{tier_name}' cannot be empty or 'Unknown'."
                     )
 
+            computed_id = compute_habitat_id(path)
             if not hab_obj.id or hab_obj.id == "habitat_unknown":
-                hab_obj.id = compute_habitat_id(path)
+                hab_obj.id = computed_id
+            elif hab_obj.id != computed_id:
+                # A client-supplied id is only trusted when it names a habitat already registered in
+                # persistent documents with exactly the same administrative path.
+                with transaction(self.engine) as chk:
+                    reg_row = chk.execute(
+                        text("SELECT document->'habitat'->'administrative_path' AS p FROM kms.knowledge_documents WHERE habitat_id = :h LIMIT 1"),
+                        {"h": hab_obj.id},
+                    ).mappings().first()
+                registered = reg_row["p"] if reg_row and reg_row["p"] else None
+                same_path = bool(registered) and all(
+                    str(registered.get(k) or "").strip().lower() == str(getattr(path, k) or "").strip().lower()
+                    for k in ("province_name", "regency_name", "district_name", "village_name")
+                )
+                if not same_path:
+                    raise InvalidState(
+                        f"Habitat id '{hab_obj.id}' does not match its administrative path (expected '{computed_id}')."
+                    )
 
         with transaction(self.engine) as session:
             context(session, actor)

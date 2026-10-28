@@ -68,6 +68,23 @@ def _varieties_conflict(var1: str | None, var2: str | None) -> bool:
     return bool(toks1 and toks2 and not (toks1 & toks2))
 
 
+_CANDIDATE_NAME_NOISE = {
+    "img", "image", "pic", "photo", "foto", "dsc", "dscn", "p",
+    "daun", "batang", "buah", "bunga", "biji", "habitus",
+    "jpg", "jpeg", "png", "webp",
+}
+
+
+def _clean_candidate_name(raw_filename: str) -> str | None:
+    """Suggest a human-readable variety name from a filename (no indices, camera prefixes or organ words)."""
+    stem = re.sub(r"\.[a-zA-Z0-9]+$", "", raw_filename)
+    tokens = [
+        t for t in re.findall(r"[a-zA-Z0-9]+", stem.lower())
+        if not t.isdigit() and t not in _CANDIDATE_NAME_NOISE and len(t) > 1
+    ]
+    return " ".join(tokens) or None
+
+
 def fuse_photo_signals(
     filename_match: str | None,
     registry_known: Iterable[str] | Any,
@@ -131,11 +148,8 @@ def fuse_photo_signals(
                 )
 
         # Non-exact hint or unknown variety: treat as candidate suggestion, NOT as conflict!
-        cand_name = None
-        if raw_filename:
-            stem = re.sub(r"\.[a-zA-Z0-9]+$", "", raw_filename)
-            cand_name = re.sub(r"[_\-]+", " ", stem).strip()
-        elif filename_match:
+        cand_name = _clean_candidate_name(raw_filename) if raw_filename else None
+        if not cand_name and filename_match:
             cand_name = filename_match
 
         return FusionOutcome(
