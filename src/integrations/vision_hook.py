@@ -9,6 +9,8 @@ import openpyxl
 
 from .client import KmsClient
 from src.agents import vision_classification
+from src.agents.signal_fusion import FusionAction, fuse_photo_signals
+from src.agents.variety_registry import VarietyRegistry
 from src.schema.contracts import ImageMetadata
 from src.storage.config import get_settings
 from src.storage.errors import InvalidState
@@ -59,6 +61,17 @@ def vision_classification_with_storage(state: dict[str, Any], config: dict[str, 
             worksheet = workbook.active
 
         run_scope_varieties = extract_run_scope_varieties(workbook)
+        db_varieties = []
+        try:
+            doc_res = client.request('GET', '/documents?limit=100')
+            docs = doc_res.get('items', doc_res) if isinstance(doc_res, dict) else doc_res
+            for d in (docs or []):
+                v = d.get('variety')
+                if v:
+                    db_varieties.append(v)
+        except Exception:
+            pass
+        registry = VarietyRegistry.build(spreadsheet_varieties=run_scope_varieties, db_varieties=db_varieties)
         vision = vision_classification.VisionSession(run_scope_varieties=run_scope_varieties)
 
         trace = {
@@ -75,6 +88,33 @@ def vision_classification_with_storage(state: dict[str, Any], config: dict[str, 
             resources.on_progress(f"vision [{idx}/{total_images}]: Mengunduh '{image.filename}' ke CAS storage...")
             # Failure is visible as a failed node; never silently persist a DB reference to a missing file.
             asset = client.request('POST', '/assets/drive/' + image.file_id)
+
+            # Check if asset original_sha256 was previously discarded
+            is_discarded = False
+            discard_reason = "Image previously discarded by curator."
+            try:
+                disc_res = client.request('GET', f"/discarded?sha256={asset.get('original_sha256', '')}")
+                if disc_res and isinstance(disc_res, list) and len(disc_res) > 0:
+                    is_discarded = True
+                    discard_reason = disc_res[0].get('reason') or discard_reason
+            except Exception:
+                pass
+
+            if is_discarded:
+                resources.on_progress(f"vision [{idx}/{total_images}]: Melewati '{image.filename}' (telah ditolak/discarded)")
+                rows.append({
+                    'filename': image.filename,
+                    'file_id': image.file_id,
+                    'asset_id': asset['id'],
+                    'status': 'DISCARDED',
+                    'write_applied': False,
+                    'write_reason': f"Discarded image: {discard_reason}",
+                    'options_evaluated': run_scope_varieties,
+                    'signals_consistent': False,
+                    'original_sha256': asset['original_sha256'],
+                })
+                continue
+
             image_bytes = client.request('GET', f"/media/{asset['id']}/image")
             actual_sha = hashlib.sha256(image_bytes).hexdigest()
             expected_sha = asset.get('image_sha256')
@@ -87,6 +127,7 @@ def vision_classification_with_storage(state: dict[str, Any], config: dict[str, 
             photo_signal = vision_classification.extract_photo_context_signal(
                 image.filename,
                 known_varieties=run_scope_varieties,
+                registry=registry,
             )
 
             try:
@@ -113,24 +154,63 @@ def vision_classification_with_storage(state: dict[str, Any], config: dict[str, 
                 })
                 continue
 
-            # Evaluate photo alignment against 3 signals
-            review_item = vision.evaluate_photo_alignment(
-                image,
-                photo_signal=photo_signal,
+            # Signal fusion logic
+            outcome = fuse_photo_signals(
+                filename_match=photo_signal.suggested_variety_hint,
+                registry_known=registry,
                 visual_result=result,
             )
 
-            if review_item is not None:
-                review_items.append(review_item)
-                update = types.SimpleNamespace(
-                    applied=False,
-                    reason="PHOTO_VARIETY_MISMATCH: unassigned, pending curator review",
-                )
-            else:
+            review_item = None
+            if outcome.action == FusionAction.AUTO_LINK:
                 try:
                     update = runner.apply_vision_result_to_worksheet(worksheet, image, result)
                 except Exception as exc:
                     update = types.SimpleNamespace(applied=False, reason=str(exc))
+                status_to_report = result.classification_status
+            elif outcome.action == FusionAction.CANDIDATE:
+                update = types.SimpleNamespace(
+                    applied=False,
+                    reason=f"CANDIDATE: {outcome.reason}",
+                )
+                status_to_report = "CANDIDATE"
+                cand_payload = {
+                    "asset_id": asset['id'],
+                    "run_id": state.get('run_id') or "current_run",
+                    "source_filename": image.filename,
+                    "original_sha256": asset['original_sha256'],
+                    "organ_part": (result.identified_part or "buah").lower(),
+                    "confidence": float(getattr(result, "visual_confidence", getattr(result, "confidence", 0.0))),
+                    "suggested_name": outcome.suggested_candidate_name,
+                    "visual_evidence": {"evidence": result.visual_evidence},
+                }
+                try:
+                    client.request('POST', '/candidates', json=cand_payload)
+                except Exception as e:
+                    trace['error_trace'].append(f"Failed to record candidate {image.filename}: {e}")
+            else:  # REVIEW_MISMATCH or REVIEW_UNCERTAIN
+                review_item = vision.evaluate_photo_alignment(
+                    image,
+                    photo_signal=photo_signal,
+                    visual_result=result,
+                )
+                if review_item is None:
+                    review_item = vision_classification.create_photo_mismatch_review_item(
+                        filename=image.filename,
+                        suggested_hint=photo_signal.suggested_variety_hint,
+                        visual_evidence=result.visual_evidence,
+                        options_evaluated=run_scope_varieties,
+                        caption=photo_signal.caption,
+                        identified_part=result.identified_part,
+                        confidence=getattr(result, 'confidence', 0.0),
+                        source_context=outcome.reason,
+                    )
+                review_items.append(review_item)
+                update = types.SimpleNamespace(
+                    applied=False,
+                    reason=f"PHOTO_VARIETY_MISMATCH: {outcome.reason}",
+                )
+                status_to_report = result.classification_status
 
             written += int(update.applied)
             write_status = (
@@ -140,13 +220,13 @@ def vision_classification_with_storage(state: dict[str, Any], config: dict[str, 
             )
             resources.on_progress(
                 f"vision [{idx}/{total_images}]: '{image.filename}' -> "
-                f"{result.classification_status} [{result.identified_part}, {result.matched_variety}] ({write_status})"
+                f"{status_to_report} [{result.identified_part}, {result.matched_variety}] ({write_status})"
             )
 
             rows.append({
                 'filename': image.filename,
                 'file_id': image.file_id,
-                'status': result.classification_status,
+                'status': status_to_report,
                 'matched_variety': result.matched_variety,
                 'identified_part': result.identified_part,
                 'confidence': getattr(result, 'confidence', 0.0),
