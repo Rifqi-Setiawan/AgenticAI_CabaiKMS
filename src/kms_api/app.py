@@ -15,6 +15,7 @@ from fastapi.responses import JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
 
 from src.storage.config import Settings, get_settings
 from src.storage.contracts import CommitRequest, PromoteAliasRequest, RebaseRequest, StageRequest
