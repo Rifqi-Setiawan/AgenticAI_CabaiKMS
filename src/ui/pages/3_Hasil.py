@@ -30,6 +30,15 @@ from src.ui.theme import apply_theme
 
 st.set_page_config(page_title="CABAI-KMS — Hasil", page_icon="🌶️", layout="wide")
 apply_theme()
+def _csv_bytes(frame: pd.DataFrame) -> bytes:
+    """CSV UTF-8 (BOM) dengan kolom berisi list digabung '|'; tombol unduh ini tidak bergantung pada toolbar tabel."""
+    export = frame.copy()
+    for column in export.columns:
+        export[column] = export[column].map(
+            lambda value: "|".join(map(str, value)) if isinstance(value, (list, tuple)) else value
+        )
+    return export.to_csv(index=False).encode("utf-8-sig")
+
 st.title("Halaman 3: Inspektor Hasil")
 
 if not state.has_result():
@@ -274,6 +283,24 @@ st.download_button(
     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     type="secondary" if corrected_result is not None else "primary",
 )
+
+# Tabel CSV lengkap (untuk evaluasi): tombol biasa agar tidak bergantung pada toolbar tabel (showSaveFilePicker).
+if not result.mapping_df.empty:
+    st.download_button(
+        "Unduh pemetaan lengkap (CSV)",
+        data=_csv_bytes(result.mapping_df),
+        file_name=f"mapping_{result.run_id or 'run'}.csv",
+        mime="text/csv",
+        key="download_mapping_csv",
+    )
+if drive_requested and result.vision_rows:
+    st.download_button(
+        "Unduh hasil multimodal lengkap (CSV)",
+        data=_csv_bytes(pd.DataFrame(result.vision_rows)),
+        file_name=f"vision_{result.run_id or 'run'}.csv",
+        mime="text/csv",
+        key="download_vision_csv",
+    )
 
 # CABAI_KMS_EXTENSION_V1
 from src.integrations.streamlit_commit import render_commit_panel
