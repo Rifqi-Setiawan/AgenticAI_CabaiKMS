@@ -38,7 +38,7 @@ def extract_run_scope_varieties(workbook: openpyxl.Workbook) -> list[str]:
     if "Sheet1" in workbook.sheetnames:
         ws = workbook["Sheet1"]
         row1 = [ws.cell(1, c).value for c in range(1, ws.max_column + 1)]
-        if len(row1) > 2 and row1[1] and "karakteristik" in str(row1[1]).lower():
+        if len(row1) > 2 and row1[1] and "karakter" in str(row1[1]).lower():  # template memakai "Karakter"; "karakter" juga cocok dengan "Karakteristik"
             for v in row1[2:]:
                 if v and str(v).strip() and str(v).strip() not in varieties:
                     varieties.append(str(v).strip())
