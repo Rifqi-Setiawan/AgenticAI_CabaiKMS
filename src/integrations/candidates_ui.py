@@ -85,11 +85,18 @@ def render_candidates_panel(candidates: list[dict[str, Any]] | None = None) -> N
         with st.expander(f"Kandidat #{idx+1}: {fname} (Keyakinan: {conf:.2f})", expanded=True):
             cols = st.columns([1, 2])
             with cols[0]:
-                media_url = cand.get("media_url")
-                if media_url:
-                    st.image(media_url, caption=fname, use_container_width=True)
+                asset_id = cand.get("asset_id")
+                image_bytes = None
+                if asset_id:
+                    try:
+                        # media_url dari API berupa path relatif tanpa varian dan perlu token; ambil bytes lewat client.
+                        image_bytes = client.request("GET", f"/media/{asset_id}/image")
+                    except Exception as exc:
+                        st.warning(f"Gambar kandidat gagal dimuat: {exc}")
+                if image_bytes:
+                    st.image(image_bytes, caption=fname, use_container_width=True)
                 else:
-                    st.write(f"Asset ID: `{cand.get('asset_id')}`")
+                    st.write(f"Asset ID: `{asset_id}`")
                 st.write(f"- Organ: **{cand.get('organ_part')}**")
                 st.write(f"- Status: `{cand.get('status')}`")
 
