@@ -67,7 +67,7 @@ def test_synonyms_in_one_run_become_one_row_and_existing_meaning_is_not_duplicat
         _item(0, "Kadar capsaicin", group=1), _item(1, "Kadar capsaicin", group=1), _item(2, "Aroma buah", group=2),
         _item(3, "Tinggi tanaman", group=3, domain="vegetatif", same="r_5"), _item(4, "Catatan", group=4, ok=False),
     ])
-    monkeypatch.setattr(acquisition, "plan", lambda c, llm_call=None: plan)
+    monkeypatch.setattr(acquisition, "plan", lambda c, llm_call=None, catalog=(): plan)
     store = _FakeStore()
     out = acquisition.acquire(cands, existing_row_ids={"r_5"}, acquire_call=store, run_id="run_t", source_sha256="a" * 64)
     assert [o.status for o in out] == ["NEW_ROW", "NEW_ROW", "NEW_ROW", "DUPLICATE_OF", "NOT_CHARACTERISTIC"]
@@ -79,7 +79,7 @@ def test_synonyms_in_one_run_become_one_row_and_existing_meaning_is_not_duplicat
 
 def test_known_label_from_an_earlier_run_is_reported_as_duplicate_not_recreated(monkeypatch):
     store = _FakeStore()
-    monkeypatch.setattr(acquisition, "plan", lambda c, llm_call=None: AcquisitionPlan(items=[_item(0, "Aroma buah", 1)]))
+    monkeypatch.setattr(acquisition, "plan", lambda c, llm_call=None, catalog=(): AcquisitionPlan(items=[_item(0, "Aroma buah", 1)]))
     first = acquisition.acquire([_cand(0, "Aroma")], existing_row_ids=set(), acquire_call=store, run_id="r1", source_sha256="a" * 64)
     second = acquisition.acquire([_cand(0, "Aroma")], existing_row_ids=set(), acquire_call=store, run_id="r2", source_sha256="a" * 64)
     assert first[0].status == "NEW_ROW" and second[0].status == "DUPLICATE_OF"
@@ -87,7 +87,7 @@ def test_known_label_from_an_earlier_run_is_reported_as_duplicate_not_recreated(
 
 
 def test_judge_failure_never_aborts_and_creates_nothing(monkeypatch):
-    def boom(c, llm_call=None):
+    def boom(c, llm_call=None, catalog=()):
         raise RuntimeError("model down")
 
     monkeypatch.setattr(acquisition, "plan", boom)
@@ -112,7 +112,7 @@ def test_pipeline_stage_adds_rows_to_excel_without_touching_template_rows(monkey
 
     monkeypatch.setattr(pr, "safe_rerank", null_rerank)
 
-    def judge(cands, llm_call=None):
+    def judge(cands, llm_call=None, catalog=()):
         return AcquisitionPlan(items=[_item(c.index, f"Atribut Uji {c.index}", group=c.index, domain="vegetatif") for c in cands])
 
     monkeypatch.setattr(acquisition, "plan", judge)
@@ -186,3 +186,36 @@ def test_aliases_are_stored_and_make_a_later_label_a_duplicate(db: Engine):
     later = repo.acquire(label=f"BITTER CONTENT {tag}", domain="buah", examples=[], source_label="y", run_id="r2",
                          source_sha256=None, actor="t", reason="uji alias")
     assert not later["created"] and later["duplicate_of"] == first["row"]["canonical_key"]
+
+
+def test_prompt_carries_the_full_row_listing_and_the_merge_rule():
+    msgs = acquisition.build_messages([_cand(0, "Mahkota")], ["r_23: warna mahkota (bunga)", "r_5: panjang daun (daun)"])
+    assert "DAFTAR SELURUH BARIS" in msgs[1]["content"] and "r_23: warna mahkota (bunga)" in msgs[1]["content"]
+    assert "ATRIBUT TANPA PADANAN" in msgs[1]["content"]
+    assert "HANYA untuk atribut yang benar-benar tidak ada padanannya" in msgs[0]["content"]
+
+
+def test_duplicate_of_existing_row_writes_into_that_row_instead_of_dropping_the_value(monkeypatch, tmp_path):
+    """The judge says 'same as r_N': the value lands in that row (status MERGED_TO), no new row is created."""
+    from src.ui import pipeline_runner as pr
+
+    monkeypatch.setenv("KMS_DYNAMIC_SCHEMA", "true")
+    store = _FakeStore()
+    monkeypatch.setattr(pr, "_make_acquire_call", lambda: store)
+    base = CanonicalSchema.from_template()
+    target = next(r for r in base.rows if r.label == "bentuk buah")
+
+    def null_rerank(profile, retrieved, state, **kwargs):
+        return SchemaMapping(source_attribute=profile.attribute_name, source_context=profile.structural_context,
+                             source_format="row-oriented", target_canonical_row=NULL_ROW, confidence=0.1,
+                             reasoning="uji", normalization_required=False), {}
+
+    monkeypatch.setattr(pr, "safe_rerank", null_rerank)
+    monkeypatch.setattr(acquisition, "plan", lambda cands, llm_call=None, catalog=(): AcquisitionPlan(
+        items=[_item(c.index, "bentuk buah", group=c.index, same=target.id) for c in cands]))
+    result = pr._run_tabular_stage_impl(SAMPLE, source_format="row-oriented", sheet_name="Resume Data",
+                                        retrieval_backend="exact", review_queue_path=tmp_path / "queue.jsonl")
+    assert not store.rows and result.extension_rows == ()
+    merged = result.mapping_df[result.mapping_df["acquisition_status"] == f"MERGED_TO:{target.canonical_key}"]
+    assert len(merged) >= 1 and set(merged["proposed_target_canonical_key"]) == {target.canonical_key}
+    assert result.canonical_df.shape[0] == len(base.rows)

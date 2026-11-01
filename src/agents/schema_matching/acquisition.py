@@ -74,8 +74,10 @@ SYSTEM_PROMPT = (
     "tanggal, atau catatan bebas); (2) pilih domain dari {biji, buah, bunga, daun, vegetatif} (pakai 'vegetatif' untuk "
     "karakter tanaman keseluruhan atau lingkungan); (3) tulis label kanonik ringkas berbahasa Indonesia; (4) beri nomor "
     "group yang SAMA untuk atribut yang bermakna sama (sinonim, beda bahasa, beda satuan); (5) bila atribut bermakna "
-    "sama dengan salah satu baris yang ada pada daftar 'terdekat', isi same_as_existing dengan id barisnya, selain itu NULL. "
-    "Jangan membuat atribut baru bila sudah ada baris yang bermakna sama."
+    "sama dengan salah satu baris pada DAFTAR SELURUH BARIS yang ada (bukan hanya yang terdekat), isi same_as_existing dengan id barisnya, selain itu NULL. "
+    "Anggap bermakna sama bila hanya beda bahasa, ejaan, satuan, atau kata penghubung (mis. 'warna mahkota bunga' sama dengan 'warna mahkota'; "
+    "'berat per buah' sama dengan 'bobot per buah'), dan bila atribut sumber lebih umum daripada baris yang ada untuk hal yang sama. "
+    "Buat baris baru HANYA untuk atribut yang benar-benar tidak ada padanannya; jangan membuat varian dari baris yang sudah ada."
 )
 
 
@@ -97,7 +99,7 @@ class Outcome:
     note: str = ""
 
 
-def build_messages(candidates: list[Candidate]) -> list[dict]:
+def build_messages(candidates: list[Candidate], catalog: list[str] | tuple[str, ...] = ()) -> list[dict]:
     lines = []
     for c in candidates:
         near = "; ".join(c.nearest) if c.nearest else "-"
@@ -105,11 +107,13 @@ def build_messages(candidates: list[Candidate]) -> list[dict]:
             f"[{c.index}] label=\"{c.display_name}\" konteks=\"{c.context or '-'}\" "
             f"contoh_nilai={c.samples[:5]} terdekat=[{near}]"
         )
-    return [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": "\n".join(lines)}]
+    listing = ("DAFTAR SELURUH BARIS yang ada:\n" + "\n".join(catalog) + "\n\n") if catalog else ""
+    return [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": listing + "ATRIBUT TANPA PADANAN:\n" + "\n".join(lines)}]
 
 
-def plan(candidates: list[Candidate], llm_call: Callable[..., AcquisitionPlan] = call_with_fallback) -> AcquisitionPlan:
-    result = llm_call(response_model=AcquisitionPlan, messages=build_messages(candidates))
+def plan(candidates: list[Candidate], llm_call: Callable[..., AcquisitionPlan] = call_with_fallback,
+         catalog: list[str] | tuple[str, ...] = ()) -> AcquisitionPlan:
+    result = llm_call(response_model=AcquisitionPlan, messages=build_messages(candidates, catalog))
     if not isinstance(result, AcquisitionPlan):
         raise TypeError("llm_call must return an AcquisitionPlan")
     return result
@@ -123,12 +127,13 @@ def acquire(
     run_id: str,
     source_sha256: str,
     llm_call: Callable[..., AcquisitionPlan] = call_with_fallback,
+    catalog: list[str] | tuple[str, ...] = (),
 ) -> list[Outcome]:
     """Judge, group and acquire. Never raises for judgement problems: failures become FAILED outcomes."""
     if not candidates:
         return []
     try:
-        decided = {item.index: item for item in plan(candidates, llm_call).items}
+        decided = {item.index: item for item in plan(candidates, llm_call, catalog).items}
     except Exception as exc:  # noqa: BLE001 - acquisition must never abort the mapping run
         return [Outcome(c.index, "FAILED", note=f"penilai akuisisi gagal: {type(exc).__name__}") for c in candidates]
 

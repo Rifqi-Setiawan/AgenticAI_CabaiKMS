@@ -729,6 +729,8 @@ def _run_tabular_stage_impl(
         outcomes = acquisition.acquire(
             acq_candidates, existing_row_ids=set(schema.row_ids), acquire_call=_make_acquire_call(),
             run_id=run_id, source_sha256=source_hash,
+            catalog=[f"{r.id}: {r.label} ({r.domain})" for r in schema.rows
+                     if r.domain != "lokasi" and not r.label.lower().startswith("gambar")],
         )
         new_rows = {o.row.canonical_key: o.row for o in outcomes if o.status == "NEW_ROW" and o.row is not None}
         if new_rows:
@@ -747,19 +749,26 @@ def _run_tabular_stage_impl(
             attr = info["attr"]
             detail = outcome.status + (f":{outcome.duplicate_of}" if outcome.duplicate_of else "")
             mapping_row["acquisition_status"] = detail
-            if outcome.status != "NEW_ROW" or outcome.row is None:
+            target_row = None
+            if outcome.status == "NEW_ROW" and outcome.row is not None:
+                target_row = schema.row_by_key(outcome.row.canonical_key)
+                reason_text = "ACQUIRED_NEW_ROW (provisional)"
+            elif outcome.status == "DUPLICATE_OF" and outcome.duplicate_of:
+                target_row = schema.row_by_id(outcome.duplicate_of) or schema.row_by_key(outcome.duplicate_of)
+                if target_row is not None and target_row.domain == "lokasi":
+                    target_row = None
+                if target_row is not None:
+                    mapping_row["acquisition_status"] = f"MERGED_TO:{target_row.canonical_key}"
+                reason_text = "ACQUIRED_DUPLICATE_OF_EXISTING (provisional)"
+            if target_row is None:
                 if outcome.note:
                     state.update(review_queue.append_error_trace(state, f"akuisisi {attr.display_name!r}: {outcome.status} {outcome.note}"))
-                continue
-            target_row = schema.row_by_key(outcome.row.canonical_key)
-            if target_row is None:
-                mapping_row["acquisition_status"] = "FAILED:row_conflict"
                 continue
             mapping_row.update({
                 "predicted_row": target_row.id, "proposed_target_canonical_key": target_row.canonical_key,
                 "predicted_label": target_row.label, "target_domain": target_row.domain,
                 "acceptance_status": AcceptanceStatus.AUTO_ACCEPT.value,
-                "acceptance_reason": "ACQUIRED_NEW_ROW (provisional)", "canonical_write": False,
+                "acceptance_reason": reason_text, "canonical_write": False,
             })
             wrote = False
             for variety_name, contributions in info["grouped"].items():
@@ -780,7 +789,7 @@ def _run_tabular_stage_impl(
                         canonical_label=target_row.label, canonical_domain=target_row.domain, raw_value=combined,
                         normalized_value=normalized.value, normalization_required=False, normalization_note=normalized.note,
                         mapping_confidence=0.0, acceptance_status=AcceptanceStatus.AUTO_ACCEPT.value,
-                        acceptance_reason="ACQUIRED_NEW_ROW (provisional)", schema_version=schema.schema_version,
+                        acceptance_reason=reason_text, schema_version=schema.schema_version,
                         template_hash=schema.template_hash, mapping_method="retrieve_rerank",
                         verifier_status="REVIEW", verifier_hard_issues=[],
                     ))
