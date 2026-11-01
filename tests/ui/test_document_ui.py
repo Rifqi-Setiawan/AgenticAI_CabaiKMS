@@ -710,6 +710,9 @@ def test_regression_pipeline_media_and_excel_export(
         "filename": "data_input.xlsx",
         "sheet_name": "Resume Data",
         "drive_url": "",
+        "source_bytes": __import__("pathlib").Path(__file__).resolve().parents[2].joinpath(
+            "data", "samples", "data_input.xlsx"
+        ).read_bytes(),
     }
     at.session_state["kms_reviewer_token"] = "w" * 40
     at.run()

@@ -20,7 +20,7 @@ from src.storage.document_contracts import (
     KnowledgeDocument,
     PlantIdentity,
 )
-from src.storage.errors import Conflict, InvalidState
+from src.storage.errors import Conflict, InvalidState, KmsError
 from .adapter import build_draft, clean_json, load_overrides, snapshot_result
 from .client import enabled, ui_client
 
@@ -606,81 +606,56 @@ def render_inspector() -> None:
 # ============================================================================
 
 
+class DraftUnavailable(KmsError):
+    """The KMS document draft cannot be derived honestly from the current run."""
+
+
 def get_or_create_draft(
     original: Any,
     schema: Any,
     current_run_items: list[Any],
     last_inputs: dict[str, Any] | None,
 ) -> DocumentDraft:
-    """Extract or plan a DocumentDraft envelope from active pipeline run result."""
+    """Plan the DocumentDraft from the workbook uploaded for the CURRENT run.
+
+    The draft is cached per (run, source workbook); it is never borrowed from a sample file or invented.
+    """
     import streamlit as st
-    from src.storage.identity_resolution import resolve_plant_identity
 
-    if "kms_document_draft" in st.session_state and isinstance(
-        st.session_state["kms_document_draft"], DocumentDraft
-    ):
-        return st.session_state["kms_document_draft"]
+    last = last_inputs or {}
+    source = last.get("source_bytes") or b""
+    run_id = getattr(original, "run_id", "") or "run_s7_default"
+    cache_key = hashlib.sha256(run_id.encode("utf-8") + b"|" + source).hexdigest()
+    cached = st.session_state.get("kms_document_draft")
+    if isinstance(cached, DocumentDraft) and st.session_state.get("kms_document_draft_key") == cache_key:
+        return cached
 
-    filename = (last_inputs or {}).get("filename")
-    possible_paths: list[Path] = []
-    if filename:
-        possible_paths.append(Path(filename))
-        possible_paths.append(Path("data/samples") / Path(filename).name)
-    possible_paths.append(Path("data/samples/data_input.xlsx"))
+    if not source:
+        raise DraftUnavailable(
+            "Berkas sumber run ini tidak tersedia pada sesi, jadi draf dokumen KMS tidak dapat disusun. "
+            "Jalankan ulang pipeline dari halaman Input."
+        )
 
-    run_id = getattr(original, "run_id", "run_s7_default")
+    import tempfile
 
-    for p in possible_paths:
-        if p.exists() and p.is_file():
-            try:
-                from src.storage.document_planner import DocumentPlanner
+    from src.storage.document_planner import DocumentPlanner
 
-                planner = DocumentPlanner(extensions=fetch_catalog_extensions())
-                draft = planner.plan_workbook(p, run_id=run_id)
-                st.session_state["kms_document_draft"] = draft
-                return draft
-            except Exception:
-                pass
-
-    sample_habitat = HabitatIdentity(
-        id="hab_wonosobo_kalikajar_lamuk",
-        label="Desa Lamuk, Wonosobo",
-        administrative_path=AdministrativePath(
-            province_name="Jawa Tengah",
-            regency_name="Wonosobo",
-            district_name="Kalikajar",
-            village_name="Lamuk",
-        ),
-    )
-    sample_plant = PlantIdentity(
-        id="cabai_rawit",
-        label="Cabai rawit (Capsicum frutescens L)",
-        identity_level="source_category",
-        scientific_name="Capsicum frutescens L",
-        source_category="cabai_rawit",
-    )
-    wb_bytes = getattr(original, "workbook_bytes", b"")
-    file_sha = hashlib.sha256(wb_bytes).hexdigest() if wb_bytes else "a" * 64
-    doc_key = f"{sample_plant.id}:{sample_habitat.id}"
-    doc = KnowledgeDocument(
-        variety=sample_plant,
-        habitat=sample_habitat,
-        attributes={},
-        updated_by_run=run_id,
-    )
-    draft = DocumentDraft(
-        run_id=run_id,
-        source_filename=filename or "data_input.xlsx",
-        file_sha256=file_sha,
-        source_scope="cabai-research",
-        schema_version=getattr(original, "schema_version", "kms-document-v1"),
-        template_hash=getattr(original, "template_hash", "b" * 64),
-        config_fingerprint="kms-planner-v1",
-        revision=1,
-        documents={doc_key: doc},
-        reviews=[],
-    )
+    name = Path(str(last.get("filename") or "sumber.xlsx")).name
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / name
+        path.write_bytes(source)
+        draft = DocumentPlanner(extensions=fetch_catalog_extensions()).plan_workbook(path, run_id=run_id)
+    if not draft.documents:
+        kinds: dict[str, int] = {}
+        for review in draft.reviews:
+            kinds[review.category] = kinds.get(review.category, 0) + 1
+        raise DraftUnavailable(
+            f"Tata letak workbook '{name}' belum didukung untuk penulisan dokumen varietas-lokasi "
+            f"(0 dokumen terbentuk; review tak terselesaikan: {kinds or 'tidak ada'}). "
+            "Hasil pemetaan atribut tetap tersedia di halaman ini."
+        )
     st.session_state["kms_document_draft"] = draft
+    st.session_state["kms_document_draft_key"] = cache_key
     return draft
 
 
@@ -762,6 +737,8 @@ def render_commit_panel(
                 st.write(f"**Dokumen:** `{doc_key}`")
                 render_jsonb_viewer(doc)
 
+    except DraftUnavailable as unavailable:
+        st.info(str(unavailable))
     except Exception as error:
         from src.storage.errors import KmsError
 

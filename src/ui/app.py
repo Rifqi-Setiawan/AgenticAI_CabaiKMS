@@ -126,7 +126,10 @@ if run_clicked:
         state.set_last_inputs(
             filename=uploaded_file.name, source_format=source_format, drive_url=drive_url,
             header_rows=header_rows, sheet_name=selected_sheet, max_images=int(max_images),
+            source_bytes=uploaded_bytes,
         )
+        for stale in ("kms_document_draft", "kms_document_draft_key", "kms_commit_receipt"):
+            st.session_state.pop(stale, None)
 
         suffix = Path(uploaded_file.name).suffix or ".xlsx"
         with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
