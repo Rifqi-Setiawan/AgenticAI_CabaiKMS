@@ -177,3 +177,10 @@ Model embedding berjalan melalui sentence-transformers pada runtime lokal setela
 | Kontrak data | `src/schema/contracts.py`, `src/schema/state.py` |
 
 Untuk konfigurasi, batas input, cara menjalankan UI, review, evaluasi, dan troubleshooting, lanjutkan ke [PROJECT_GUIDE.md](PROJECT_GUIDE.md). Untuk operasi demo 9Router, lihat [DEMO_RUNBOOK.md](DEMO_RUNBOOK.md).
+
+## Skema kanonik dinamis dan katalog atribut (opsional)
+
+- **Alur (saklar `KMS_DYNAMIC_SCHEMA` hidup):** pemetaan seperti biasa terhadap template ditambah baris akuisisi yang dimuat dari API (`GET /attributes/schema-rows`) lalu atribut tanpa padanan dinilai satu kali oleh model teks (`src/agents/schema_matching/acquisition.py`), dikelompokkan menurut makna, dan dikirim ke `POST /attributes/schema-rows` (idempoten). Baris baru masuk ke keluaran Excel dan pemetaan run berikutnya.
+- **Endpoint baru:** `GET /attributes/catalog`; `GET`, `POST /attributes/schema-rows`; `GET /attributes/schema-rows/all`; `POST /attributes/schema-rows/{key}/{approve|discard|merge}` (curator).
+- **Lokasi implementasi:** `src/schema/dynamic.py` (skema ekstensi, id, alias), `src/storage/schema_rows.py` (repositori), `src/storage/attribute_policy.py` (katalog persisten untuk lapisan dokumen), `src/integrations/schema_rows_ui.py` (panel kurator), `src/ui/output_builder.py` (baris tambahan pada Excel).
+- **Batas:** penulisan ke dokumen KMS (PostgreSQL JSONB) hanya untuk tata letak survei lapangan "Resume Data".

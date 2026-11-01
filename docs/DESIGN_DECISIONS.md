@@ -356,5 +356,24 @@ mapping problems that sit above "which variant is this":
 - Fusi sinyal memadukan nama file, registri varietas (spreadsheet + DB), dan model visi.
 - Aturan baku: **Sinyal citra visual menang atas nama file** (*visual wins over filename*). Konflik antara nama file dan bukti visual dialihkan ke peninjauan kurator (`REVIEW_MISMATCH`) dan tidak pernah ditulis otomatis.
 
+## (m) D14: Katalog Atribut Persisten dan Aksi Kurator pada NEW_ATTRIBUTE
 
+- **Masalah:** atribut yang tidak ada di katalog hanya membuat item review `NEW_ATTRIBUTE`; tombol "Setujui" mengubah status item tanpa mendaftarkan atribut atau menulis nilainya, sehingga atribut hilang setelah review.
+- **Keputusan:** tiga aksi khusus kurator (`REGISTER_NEW`, `MAP_TO_EXISTING`, `REJECT`, alasan minimal 10 karakter) berlaku untuk semua sel berlabel sama dalam satu draf; katalog ditulis atomik bersama commit dokumen; planner memuat katalog persisten (`GET /attributes/catalog`).
+  Bila satu dokumen punya beberapa baris dengan nilai berbeda untuk atribut baru, tidak ada nilai ditulis (mengikuti aturan konflik planner).
 
+## (n) D15: Draf KMS Berasal dari Workbook Run, Bukan Berkas Contoh
+
+- **Masalah:** `get_or_create_draft` jatuh ke `data/samples/data_input.xlsx` atau draf placeholder dan menyimpannya lintas run karena berkas unggahan hanya berupa berkas sementara yang dihapus.
+- **Keputusan:** byte workbook disimpan di sesi, draf di-cache per run dan sumber, dan tata letak yang tidak didukung (bukan "Resume Data") atau sumber yang hilang dilaporkan, bukan diganti. Penulisan dokumen varietas-lokasi dibatasi pada tata letak survei lapangan.
+
+## (o) D16: Ekspor CSV Lengkap dan Daftar Varietas Run untuk Foto
+
+- Tombol unduh biasa "Unduh pemetaan lengkap (CSV)" dan "Unduh hasil multimodal lengkap (CSV)" pada halaman Hasil menggantikan ketergantungan pada ikon toolbar tabel (`showSaveFilePicker` tidak menghasilkan unduhan di browser tanpa kepala).
+- `extract_run_scope_varieties` mencari header `"karakter"` (bukan hanya `"karakteristik"`) sehingga daftar varietas spreadsheet sampai ke klasifikasi foto; sebelumnya daftar selalu kosong dan semua foto menjadi kandidat varietas baru.
+
+## (p) D17: Skema Kanonik Dinamis (opsional)
+
+- **Keputusan:** baris kanonik tambahan hasil akuisisi ditambahkan setelah baris template dengan id `r_{60 + seq}` (stabil terhadap penggabungan dan pembuangan), disimpan di `kms.schema_rows_ext`, dan dimuat ke `CanonicalSchema` per run bila `KMS_DYNAMIC_SCHEMA` hidup. `schema_version` memuat hash ekstensi (`...+ext.<hash12>`), koleksi Chroma terpisah per skema, dan keluaran Excel menambah baris di bawah template.
+  Dengan saklar mati, `schema_version`, fingerprint, pemetaan, dan Excel identik dengan sebelumnya (diuji regresi). Penggabungan menjadikan label dan alias baris yang kalah alias baris tujuan (template atau akuisisi) tanpa mengubah id.
+- **Batasan:** domain baris akuisisi dibatasi pada biji, buah, bunga, daun, dan vegetatif (lapisan KMS lama menolak domain lain); atribut lingkungan masuk ke vegetatif. Review `NULL_TARGET` dari pemeta tetap tersisa di antrean untuk atribut yang diakuisisi.

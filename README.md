@@ -98,6 +98,8 @@ KMS mengelola persistensi, proteksi kurasi manusia, dan integritas skema sebagai
   3. `0003` (`schema_0003_attribute_changes.sql`): Tabel ledger append-only `kms.document_attribute_changes` dengan trigger proteksi mutasi `reject_mutation`.
   4. `0004` (`schema_0004_image_candidates.sql`): Tabel antrean kandidat citra varietas baru `kms.image_candidates` dan indeks penolakan `kms.discarded_images`.
   5. `0005` (`schema_0005_app_grants.sql`): Izin akses aditif hak minimal role aplikasi `cabai_app` (`DELETE` pada `knowledge_documents` dan `UPDATE` pada `discarded_images`).
+  6. `0006` (`schema_0006_attribute_catalog_ext.sql`): Katalog atribut persisten append-only (`kms.attribute_catalog_ext`, `kms.attribute_alias_ext`, `kms.attribute_rejections`) untuk atribut baru yang disetujui kurator pada lapisan dokumen KMS.
+  7. `0007` (`schema_0007_schema_rows_ext.sql`): Baris kanonik hasil akuisisi (`kms.schema_rows_ext`, hanya status dan alias yang dapat berubah, dijaga trigger), alias penggabungan (`kms.schema_aliases_ext`), dan jejak peristiwa (`kms.schema_row_events`).
   Penerapan migrasi berjalan sekuensial transaksional via `src/storage/migrate.py` yang memverifikasi sha256 checksum setiap berkas DDL terhadap rekaman di `kms.schema_migrations`.
 - **Perlindungan Nilai Human Review (Keputusan D2)**:
   Nilai tersimpan dengan `resolution = "HUMAN_REVIEW"` merupakan nilai hasil validasi kurator manusia dan berstatus dilindungi (`EXISTING_HUMAN_PROTECTED`). Penimpaan otomatis oleh `AUTO_ACCEPT` dilarang secara ketat. Upaya penimpaan otomatis akan dialihkan ke antrean review kurator dengan kategori `OVERWRITE_BLOCKED` atau `UNIT_MISMATCH`.
@@ -131,3 +133,10 @@ KMS mengelola persistensi, proteksi kurasi manusia, dan integritas skema sebagai
 | [Konvensi kontribusi](CLAUDE.md) | Ringkasan aturan proyek untuk kontributor/asisten |
 
 Jangan hapus template, sampel, label review, atau kredensial hanya karena tidak diimpor langsung oleh Python. File tersebut merupakan aset atau konfigurasi proyek.
+
+## Skema Kanonik Dinamis (opsional, mati secara bawaan)
+
+Saklar lingkungan `KMS_DYNAMIC_SCHEMA=true` mengaktifkan akuisisi atribut: atribut sumber yang tidak menemukan padanan pada 60 baris kanonik template dinilai satu kali per run oleh model teks
+(karakter tanaman atau bukan, domain, label ringkas, kelompok sinonim, sama dengan baris yang ada atau tidak). Tiap kelompok sinonim menjadi paling banyak satu baris kanonik tambahan (`r_61` dan seterusnya, id mengikuti nomor urut tersimpan)
+melalui endpoint idempoten `POST /attributes/schema-rows`; label atau alias yang sudah dikenal tidak pernah dibuat ulang. Baris baru berstatus `provisional`, ikut ke keluaran Excel di bawah 60 baris template, dan dapat disetujui, digabung (menjadi alias), atau dibuang
+oleh kurator lewat panel di halaman KMS. Dengan saklar mati, keluaran sistem identik dengan versi tanpa fitur ini. Rancangan dan evaluasi: `docs/RANCANGAN_KANONIK_DINAMIS.md`, `docs/SKENARIO_EKSPERIMEN.md` bagian 14.
