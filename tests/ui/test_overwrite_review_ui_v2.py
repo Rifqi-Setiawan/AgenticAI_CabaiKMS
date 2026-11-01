@@ -256,10 +256,10 @@ def test_u04_scenario_85kg_vs_80cm_cannot_send_85cm_without_confirmation():
 
 
 def test_u05_other_categories_remain_unchanged():
-    """U-05: Other categories (e.g. NEW_ATTRIBUTE) retain default 2-button (Approve/Reject) controls."""
+    """U-05: Other categories (e.g. VALUE_INVALID) retain default 2-button (Approve/Reject) controls."""
     rev_other = DocumentReviewItem(
         item_id="rev_other_u05",
-        category="NEW_ATTRIBUTE",
+        category="VALUE_INVALID",
         source_label="aroma buah",
         source_context="row 5",
         raw_values=["harum"],

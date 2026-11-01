@@ -134,6 +134,63 @@ def resolve_review_item_v2(
     )
 
 
+def fetch_catalog_extensions(client: Any | None = None) -> Any:
+    """Load persisted catalog extensions from the KMS API; empty extensions on any failure."""
+    from src.storage.attribute_policy import CatalogExtensions
+
+    try:
+        client = client or ui_client()
+        return CatalogExtensions.model_validate(client.request("GET", "/attributes/catalog"))
+    except Exception:  # noqa: BLE001 - planning must keep working with the template catalog alone
+        return CatalogExtensions()
+
+
+def _render_new_attribute_item(st: Any, item: Any, items: list[Any], run_id: str, seen: set[str]) -> None:
+    """One curator form per distinct novel label; the decision resolves every cell with that label."""
+    from src.storage.attribute_policy import AttributeCatalog, apply_catalog_extensions, normalize_label
+
+    norm = normalize_label(item.source_label)
+    if norm in seen:
+        return
+    seen.add(norm)
+    group = [i for i in items if normalize_label(i.source_label) == norm]
+    docs = sorted({i.target_document_key for i in group if i.target_document_key})
+    st.write(f"- Sel dengan label ini: {len(group)} pada {len(docs)} dokumen")
+    st.write(f"- Contoh nilai: {[g.raw_values[0] if g.raw_values else None for g in group[:3]]}")
+    if item.status != "pending":
+        st.write(f"- Keputusan: `{(item.decision or {}).get('action', item.status)}`")
+        return
+    similar = (item.payload or {}).get("similar_attributes") or []
+    if similar:
+        st.warning("Mirip dengan atribut yang sudah ada: " + "; ".join(f"{x['label']} ({x['similarity']})" for x in similar))
+    key = hashlib.sha256(norm.encode("utf-8")).hexdigest()[:10]
+    reason = st.text_input("Alasan kurasi (wajib, min 10 karakter)", key=f"na_reason_{key}")
+    clean_reason = (reason or "").strip()
+    with st.expander("Daftarkan sebagai atribut kanonik baru", expanded=False):
+        label = st.text_input("Label kanonik", value=item.source_label.strip(), key=f"na_label_{key}")
+        organ = st.selectbox("Organ", ["habitus", "daun", "batang", "bunga", "buah", "biji", "tanah", "iklim", "lainnya"],
+                             key=f"na_organ_{key}")
+        value_type = st.selectbox("Tipe nilai", ["text", "number", "range", "boolean", "list"], key=f"na_vt_{key}")
+        unit = st.text_input("Satuan (opsional)", key=f"na_unit_{key}")
+        if st.button("Daftarkan atribut baru", key=f"na_reg_{key}", disabled=len(clean_reason) < 10):
+            resolve_review_item_v2(run_id=run_id, item_id=item.item_id, decision={
+                "action": "REGISTER_NEW", "reason": clean_reason, "label": label, "organ": organ,
+                "value_type": value_type, "unit": unit or None})
+            st.rerun()
+    with st.expander("Petakan ke atribut yang sudah ada (jadikan alias)", expanded=False):
+        catalog = AttributeCatalog()
+        apply_catalog_extensions(catalog, fetch_catalog_extensions())
+        options = {f"{d.label} [{d.attribute_id}]": d.attribute_id for d in sorted(catalog, key=lambda d: d.label)}
+        picked = st.selectbox("Atribut tujuan", list(options), key=f"na_map_{key}")
+        if st.button("Petakan sebagai alias", key=f"na_alias_{key}", disabled=len(clean_reason) < 10):
+            resolve_review_item_v2(run_id=run_id, item_id=item.item_id, decision={
+                "action": "MAP_TO_EXISTING", "reason": clean_reason, "attribute_id": options[picked]})
+            st.rerun()
+    if st.button("Tolak dan ingat", key=f"na_rej_{key}", disabled=len(clean_reason) < 10):
+        resolve_review_item_v2(run_id=run_id, item_id=item.item_id, decision={"action": "REJECT", "reason": clean_reason})
+        st.rerun()
+
+
 def render_categorized_review_queue(
     draft: DocumentDraft,
     run_id: str | None = None,
@@ -148,6 +205,7 @@ def render_categorized_review_queue(
         return
 
     active_run_id = run_id or draft.run_id
+    new_attr_seen: set[str] = set()
     for cat, items in grouped.items():
         with st.expander(
             f"Kategori: {cat} ({len(items)} item)",
@@ -239,6 +297,8 @@ def render_categorized_review_queue(
                                         },
                                     )
                                     st.rerun()
+                elif cat == "NEW_ATTRIBUTE":
+                    _render_new_attribute_item(st, item, items, active_run_id, new_attr_seen)
                 elif item.status == "pending":
                     col1, col2 = st.columns(2)
                     if col1.button(
@@ -575,7 +635,7 @@ def get_or_create_draft(
             try:
                 from src.storage.document_planner import DocumentPlanner
 
-                planner = DocumentPlanner()
+                planner = DocumentPlanner(extensions=fetch_catalog_extensions())
                 draft = planner.plan_workbook(p, run_id=run_id)
                 st.session_state["kms_document_draft"] = draft
                 return draft

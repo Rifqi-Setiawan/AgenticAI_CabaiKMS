@@ -29,7 +29,11 @@ from src.storage.attribute_policy import (
     AttributeCatalog,
     AttributeDefinition,
     AttributePolicy,
+    CatalogExtensions,
+    apply_catalog_extensions,
+    normalize_label,
     resolve_attribute,
+    similar_attributes,
 )
 from src.storage.identity_resolution import (
     AdministrativeRegistry,
@@ -469,8 +473,12 @@ class DocumentPlanner:
         policy: AttributePolicy | None = None,
         location_registry: AdministrativeRegistry | None = None,
         plant_catalog: PlantCatalog | None = None,
+        extensions: CatalogExtensions | None = None,
     ) -> None:
         self.catalog = catalog or AttributeCatalog()
+        if extensions is not None:
+            apply_catalog_extensions(self.catalog, extensions)
+        self.rejected_labels = {normalize_label(x) for x in (extensions.rejected if extensions else [])}
         self.policy = policy or AttributePolicy(catalog=self.catalog)
         self.location_registry = location_registry
         self.plant_catalog = plant_catalog
@@ -710,6 +718,7 @@ class DocumentPlanner:
 
             conflicts_for_doc = conflicting_attrs_by_doc.get(doc_key, set())
 
+            similar_cache: dict[str, list[dict[str, Any]]] = {}
             ignore_keys = {
                 "lokasi sampling", "lokasi_sampling", "alamat", "location", "address",
                 "varietas", "jenis cabai", "jenis_cabai", "plant", "variety",
@@ -730,16 +739,35 @@ class DocumentPlanner:
                             defn = self.catalog.lookup(eval_res.attribute_id)
 
                     if defn is None:
+                        if normalize_label(k) in self.rejected_labels:
+                            continue
+                        novel_cell = (
+                            row.get(f"_cell_{k}")
+                            or row.get("_cell")
+                            or (f"row_{row.get('_row')}" if row.get("_row") else "A1")
+                        )
+                        if normalize_label(k) not in similar_cache:
+                            similar_cache[normalize_label(k)] = similar_attributes(k, self.catalog)
                         reviews.append(
                             DocumentReviewItem(
                                 item_id=f"rev_attr_{uuid.uuid4().hex[:12]}",
                                 category="NEW_ATTRIBUTE",
                                 source_label=k,
+                                target_document_key=doc_key,
                                 source_context=f"Row {row.get('_row', 'unknown')}: Novel attribute '{k}'",
                                 raw_values=[v],
                                 status="pending",
                                 run_id=run_id,
                                 notes=f"Novel attribute '{k}' not registered in catalog",
+                                payload={
+                                    "raw_value": v,
+                                    "source_ref": source_filename,
+                                    "sheet": str(row.get("_sheet", "Resume Data")),
+                                    "row": row.get("_row", 1) if isinstance(row.get("_row"), int) else 1,
+                                    "cell": str(novel_cell),
+                                    "location_ref": loc_detail.location_ref,
+                                    "similar_attributes": similar_cache[normalize_label(k)],
+                                },
                             )
                         )
                         continue

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import copy
+import difflib
+import unicodedata
 from datetime import datetime, timezone
 import math
 import re
@@ -266,6 +268,58 @@ class AttributeCatalog:
             target.aliases.append(alias.strip())
 
         self._by_alias[norm_alias] = target
+
+
+def normalize_label(text: str) -> str:
+    """Public normalization shared with persistence (lowercase, collapsed whitespace)."""
+    return _normalize_text(text)
+
+
+def slugify_attribute_key(label: str) -> str:
+    """Derive a canonical_key slug from a label; parenthesised unit hints are dropped."""
+    folded = unicodedata.normalize("NFKD", re.sub(r"\([^)]*\)", " ", label))
+    ascii_text = folded.encode("ascii", "ignore").decode("ascii").lower()
+    slug = re.sub(r"[^a-z0-9]+", "_", ascii_text).strip("_")
+    return slug[:56]
+
+
+def similar_attributes(label: str, catalog: "AttributeCatalog", limit: int = 3, cutoff: float = 0.72) -> list[dict[str, Any]]:
+    """Closest existing labels/aliases to a novel label (shown to the curator to prevent duplicates)."""
+    target = _normalize_text(label)
+    scored: dict[str, tuple[float, AttributeDefinition]] = {}
+    for defn in catalog:
+        for name in [defn.label, *defn.aliases]:
+            ratio = difflib.SequenceMatcher(None, target, _normalize_text(name)).ratio()
+            if ratio >= cutoff and ratio > scored.get(defn.attribute_id, (0.0, defn))[0]:
+                scored[defn.attribute_id] = (ratio, defn)
+    ranked = sorted(scored.values(), key=lambda item: (-item[0], item[1].attribute_id))[:limit]
+    return [
+        {"attribute_id": d.attribute_id, "canonical_key": d.canonical_key, "label": d.label,
+         "organ": d.organ, "similarity": round(r, 3)}
+        for r, d in ranked
+    ]
+
+
+class CatalogExtensions(Contract):
+    """Persistent additions to the template catalog: approved attributes, aliases and remembered rejections."""
+
+    attributes: list[AttributeDefinition] = Field(default_factory=list)
+    aliases: list[dict[str, str]] = Field(default_factory=list)
+    rejected: list[str] = Field(default_factory=list)
+
+
+def apply_catalog_extensions(catalog: "AttributeCatalog", extensions: CatalogExtensions) -> None:
+    """Register persisted extensions into an in-memory catalog; conflicting rows are skipped, never raised."""
+    for defn in extensions.attributes:
+        try:
+            catalog.register_attribute(defn)
+        except ValueError:
+            continue
+    for row in extensions.aliases:
+        try:
+            catalog.add_alias(row["attribute_id"], row["alias"])
+        except (ValueError, KeyError):
+            continue
 
 
 def resolve_attribute(

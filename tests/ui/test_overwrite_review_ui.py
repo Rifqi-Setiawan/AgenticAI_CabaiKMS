@@ -142,10 +142,12 @@ def test_t22_render_overwrite_and_unit_mismatch_categories():
 
 
 def test_t23_other_categories_remain_unchanged():
-    """T-23: Standard review categories like NEW_ATTRIBUTE retain default 2-button action layout."""
+    """T-23: Standard review categories (e.g. VALUE_INVALID) retain default 2-button action layout.
+
+    NEW_ATTRIBUTE now has its own curator controls; see tests/storage/test_new_attribute_catalog.py."""
     rev_attr = DocumentReviewItem(
         item_id="rev_attr_01",
-        category="NEW_ATTRIBUTE",
+        category="VALUE_INVALID",
         source_label="aroma buah",
         source_context="Row 4: novel attribute",
         raw_values=["harum"],

@@ -370,6 +370,13 @@ def create_app(
             rows = session.execute(text(query), params).mappings().all()
             return [dict(r) for r in rows]
 
+    @app.get('/attributes/catalog')
+    def attribute_catalog(principal: Annotated[Principal, Depends(authenticate)]):
+        """Persisted catalog extensions: approved attributes, aliases and remembered rejections."""
+        if doc_repo is None:
+            return {'attributes': [], 'aliases': [], 'rejected': []}
+        return doc_repo.get_catalog_extensions().model_dump(mode='json')
+
     @app.get('/candidates/{candidate_id}')
     def get_candidate(
         candidate_id: str,

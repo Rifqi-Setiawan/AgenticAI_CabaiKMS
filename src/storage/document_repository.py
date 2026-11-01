@@ -19,6 +19,7 @@ from src.storage.document_contracts import (
     AdministrativePath,
     AttributeValue,
     CommitReceipt,
+    CurrentSourceReference,
     DocumentDraft,
     HabitatIdentity,
     KnowledgeDocument,
@@ -29,7 +30,17 @@ from src.storage.document_contracts import (
     make_unknown_habitat,
     validate_document,
 )
-from src.storage.attribute_policy import AttributePolicy
+from sqlalchemy.exc import IntegrityError
+
+from src.storage.attribute_policy import (
+    AttributeCatalog,
+    AttributeDefinition,
+    AttributePolicy,
+    CatalogExtensions,
+    apply_catalog_extensions,
+    normalize_label,
+    slugify_attribute_key,
+)
 from src.storage.errors import Conflict, InvalidState, NotFound
 from src.storage.models import AcquisitionRun
 
@@ -307,6 +318,8 @@ class DocumentRepository:
             if not draft.source_uri:
                 raise InvalidState("Archive the original source before committing a new run.")
 
+            self._persist_catalog_decisions(session, draft, actor=actor, run_id=run_id)
+
             sorted_keys = sorted(draft.documents.keys())
 
             # Advisory lock per document to serialize concurrent writers deterministically
@@ -529,6 +542,203 @@ class DocumentRepository:
             session.flush()
             return receipt
 
+    # ------------------------------------------------------------------ catalog extensions (phase 1)
+    _VALUE_TYPES = {"text", "number", "range", "boolean", "list"}
+
+    @staticmethod
+    def _read_catalog_extensions(session: Session) -> CatalogExtensions:
+        attrs = session.execute(text(
+            "SELECT attribute_id, canonical_key, label, organ, value_type, unit, description, development_stage "
+            "FROM kms.attribute_catalog_ext ORDER BY created_at, attribute_id")).mappings().all()
+        aliases = session.execute(text(
+            "SELECT alias, attribute_id FROM kms.attribute_alias_ext ORDER BY created_at, alias_norm")).mappings().all()
+        rejected = session.execute(text("SELECT label_norm FROM kms.attribute_rejections ORDER BY label_norm")).scalars().all()
+        return CatalogExtensions(
+            attributes=[AttributeDefinition(**dict(r)) for r in attrs],
+            aliases=[{"alias": r["alias"], "attribute_id": r["attribute_id"]} for r in aliases],
+            rejected=list(rejected),
+        )
+
+    def get_catalog_extensions(self) -> CatalogExtensions:
+        """Persisted approved attributes, aliases and remembered rejections (read-only)."""
+        with Session(self.engine) as session:
+            return self._read_catalog_extensions(session)
+
+    def _effective_catalog(self, session: Session) -> AttributeCatalog:
+        catalog = AttributeCatalog()
+        apply_catalog_extensions(catalog, self._read_catalog_extensions(session))
+        return catalog
+
+    def _resolve_new_attribute(
+        self, session: Session, draft: DocumentDraft, item: Any, dec: dict[str, Any], action: str,
+        *, actor_role: str | None,
+    ) -> None:
+        """Curator decision for a NEW_ATTRIBUTE review: register, alias to an existing attribute, or reject.
+
+        The decision applies to every pending item with the same normalized source label in the draft.
+        Catalog rows are written at commit (same transaction as the documents), never here.
+        """
+        from src.storage.document_planner import parse_cell_value
+
+        if actor_role != "curator":
+            raise Conflict("Only curator role can register, alias or reject new attributes.")
+        reason = (dec.get("reason") or "").strip()
+        if len(reason) < 10:
+            raise InvalidState("Reason (min 10 characters) is required for new attribute decisions.")
+
+        label_norm = normalize_label(item.source_label)
+        siblings = [
+            r for r in draft.reviews
+            if r.category == "NEW_ATTRIBUTE" and r.status == "pending" and normalize_label(r.source_label) == label_norm
+        ]
+        catalog = self._effective_catalog(session)
+        defn: AttributeDefinition | None = None
+        decision: dict[str, Any] = {"action": action, "reason": reason, "label_norm": label_norm,
+                                    "source_label": item.source_label.strip()}
+
+        if action == "MAP_TO_EXISTING":
+            defn = catalog.get(str(dec.get("attribute_id") or ""))
+            if defn is None:
+                raise InvalidState("MAP_TO_EXISTING requires an attribute_id that exists in the catalog.")
+            if catalog.lookup(item.source_label) is not None:
+                raise InvalidState(f"Label '{item.source_label}' is already known to the catalog.")
+            decision.update(attribute_id=defn.attribute_id, alias=item.source_label.strip())
+        elif action == "REGISTER_NEW":
+            label = (dec.get("label") or item.source_label).strip()
+            organ = (dec.get("organ") or "").strip().lower()
+            value_type = (dec.get("value_type") or "text").strip().lower()
+            if not label or not organ:
+                raise InvalidState("REGISTER_NEW requires label and organ.")
+            if value_type not in self._VALUE_TYPES:
+                raise InvalidState(f"value_type must be one of {sorted(self._VALUE_TYPES)}.")
+            key = slugify_attribute_key(dec.get("canonical_key") or label)
+            if not key:
+                raise InvalidState("Cannot derive a canonical_key from the label.")
+            attr_id = f"attr_{key}"
+            if (
+                catalog.lookup(label) is not None
+                or catalog.lookup(item.source_label) is not None
+                or catalog.has_attribute(attr_id)
+                or any(d.canonical_key == key for d in catalog)
+            ):
+                raise InvalidState(
+                    f"Attribute '{label}' collides with an existing label, alias or key; use MAP_TO_EXISTING instead."
+                )
+            defn = AttributeDefinition(
+                attribute_id=attr_id, canonical_key=key, label=label, organ=organ, value_type=value_type,
+                unit=(dec.get("unit") or None), description=(dec.get("description") or None),
+            )
+            decision["definition"] = defn.model_dump(mode="json")
+            if normalize_label(label) != label_norm:
+                decision["alias"] = item.source_label.strip()
+
+        conflicting_docs: set[str] = set()
+        if defn is not None:  # same document, several rows, different values: write none (mirrors planner conflict rule)
+            seen_values: dict[str, set[str]] = {}
+            for sib in siblings:
+                pl = sib.payload or {}
+                parsed_pre = parse_cell_value(pl.get("raw_value", sib.raw_values[0] if sib.raw_values else None),
+                                              expected_type=defn.value_type, unit=defn.unit)
+                if parsed_pre.is_valid and not parsed_pre.is_blank and sib.target_document_key:
+                    seen_values.setdefault(sib.target_document_key, set()).add(json.dumps(parsed_pre.value, sort_keys=True, default=str))
+            conflicting_docs = {k for k, v in seen_values.items() if len(v) > 1}
+
+        for sib in siblings:
+            applied, note = False, None
+            if defn is None:  # REJECT
+                sib.status = "rejected"
+            else:
+                payload = sib.payload or {}
+                doc = draft.documents.get(sib.target_document_key or "")
+                raw = payload.get("raw_value", sib.raw_values[0] if sib.raw_values else None)
+                parsed = parse_cell_value(raw, expected_type=defn.value_type, unit=defn.unit)
+                if doc is None:
+                    sib.status, note = "rejected", "target document not found in draft"
+                elif sib.target_document_key in conflicting_docs:
+                    sib.status, note = "rejected", "conflicting values across rows of the same document; nothing written"
+                elif parsed.is_blank:
+                    sib.status, note = "approved", "blank cell; nothing to write"
+                elif not parsed.is_valid:
+                    sib.status, note = "rejected", f"value not valid for {defn.value_type}: {parsed.error}"
+                elif defn.attribute_id in doc.attributes and doc.attributes[defn.attribute_id].value != parsed.value:
+                    sib.status, note = "rejected", "attribute already has a different value; resolve through the overwrite flow"
+                else:
+                    doc.attributes[defn.attribute_id] = AttributeValue(
+                        label=defn.label,
+                        value=parsed.value,
+                        value_type=parsed.value_type or defn.value_type,
+                        unit=parsed.unit or defn.unit,
+                        resolution="HUMAN_REVIEW",
+                        mapping_policy_version="curator-catalog-v1",
+                        attribute_id=defn.attribute_id,
+                        current_source=CurrentSourceReference(
+                            source_ref=payload.get("source_ref") or draft.source_filename,
+                            sheet=str(payload.get("sheet") or "Resume Data"),
+                            row=int(payload.get("row") or 1),
+                            cell=str(payload.get("cell") or "A1"),
+                            location_ref=payload.get("location_ref") or "",
+                        ),
+                    )
+                    sib.status, applied = "approved", True
+            sib.decision = {**decision, "applied": applied}
+            if note:
+                sib.notes = note
+
+    def _persist_catalog_decisions(self, session: Session, draft: DocumentDraft, *, actor: str, run_id: str) -> None:
+        """Write curator catalog decisions of a draft; idempotent, serialized and atomic with the commit."""
+        defs: dict[str, dict[str, Any]] = {}
+        aliases: dict[str, dict[str, Any]] = {}
+        rejects: dict[str, dict[str, Any]] = {}
+        for r in draft.reviews:
+            d = r.decision or {}
+            if r.category != "NEW_ATTRIBUTE" or not d:
+                continue
+            if r.status == "approved" and d.get("action") == "REGISTER_NEW" and d.get("definition"):
+                defs[d["definition"]["attribute_id"]] = d
+                if d.get("alias"):
+                    aliases[normalize_label(d["alias"])] = {**d, "attribute_id": d["definition"]["attribute_id"]}
+            elif r.status == "approved" and d.get("action") == "MAP_TO_EXISTING":
+                aliases[normalize_label(d["alias"])] = d
+            elif r.status == "rejected" and d.get("action") == "REJECT":
+                rejects[d["label_norm"]] = d
+        if not (defs or aliases or rejects):
+            return
+        session.execute(text("SELECT pg_advisory_xact_lock(hashtextextended('catalog:ext', 0))"))
+        try:
+            for attr_id, d in defs.items():
+                df = d["definition"]
+                session.execute(text(
+                    "INSERT INTO kms.attribute_catalog_ext (attribute_id, canonical_key, label, label_norm, organ, value_type, "
+                    "unit, description, development_stage, source_label, created_from_run, created_by, reason) "
+                    "VALUES (:id, :key, :label, :norm, :organ, :vt, :unit, :desc, :stage, :src, :run, :actor, :reason) "
+                    "ON CONFLICT (attribute_id) DO NOTHING"),
+                    {"id": attr_id, "key": df["canonical_key"], "label": df["label"], "norm": normalize_label(df["label"]),
+                     "organ": df["organ"], "vt": df["value_type"], "unit": df.get("unit"), "desc": df.get("description"),
+                     "stage": df.get("development_stage"), "src": d.get("source_label"), "run": run_id, "actor": actor,
+                     "reason": d["reason"]})
+                stored = session.execute(text(
+                    "SELECT label_norm, canonical_key FROM kms.attribute_catalog_ext WHERE attribute_id = :id"),
+                    {"id": attr_id}).mappings().one()
+                if stored["label_norm"] != normalize_label(df["label"]) or stored["canonical_key"] != df["canonical_key"]:
+                    raise Conflict(f"Attribute '{attr_id}' already registered with a different definition.")
+            for alias_norm, d in aliases.items():
+                session.execute(text(
+                    "INSERT INTO kms.attribute_alias_ext (alias_norm, alias, attribute_id, created_from_run, created_by, reason) "
+                    "VALUES (:n, :alias, :id, :run, :actor, :reason) ON CONFLICT (alias_norm) DO NOTHING"),
+                    {"n": alias_norm, "alias": d["alias"], "id": d["attribute_id"], "run": run_id, "actor": actor,
+                     "reason": d["reason"]})
+                stored = session.execute(text(
+                    "SELECT attribute_id FROM kms.attribute_alias_ext WHERE alias_norm = :n"), {"n": alias_norm}).scalar_one()
+                if stored != d["attribute_id"]:
+                    raise Conflict(f"Alias '{d['alias']}' already points to attribute '{stored}'.")
+            for label_norm, d in rejects.items():
+                session.execute(text(
+                    "INSERT INTO kms.attribute_rejections (label_norm, source_label, created_from_run, created_by, reason) "
+                    "VALUES (:n, :src, :run, :actor, :reason) ON CONFLICT (label_norm) DO NOTHING"),
+                    {"n": label_norm, "src": d["source_label"], "run": run_id, "actor": actor, "reason": d["reason"]})
+        except IntegrityError as error:
+            raise Conflict("Catalog decision conflicts with an existing label or key.") from error
+
     def get_document(self, doc_id: str) -> dict[str, Any] | None:
         """Retrieve a KnowledgeDocument row by deterministic document key."""
         with Session(self.engine) as session:
@@ -745,6 +955,11 @@ class DocumentRepository:
                         if corr_unit is not None:
                             applied_attr.unit = str(corr_unit).strip()
                         applied_attr.resolution = "HUMAN_REVIEW"
+
+            elif target_item.category == "NEW_ATTRIBUTE" and action in ("REGISTER_NEW", "MAP_TO_EXISTING", "REJECT"):
+                self._resolve_new_attribute(session, draft, target_item, dec_dict, action, actor_role=actor_role)
+                if notes:
+                    target_item.notes = notes
 
             elif action == "ASSIGN_EXISTING":
                 variety_id = dec_dict.get("selected_variety_id")
