@@ -43,7 +43,8 @@ def run_pipeline_with_kms(file_path, *, kms_source_filename=None, **kwargs):
     from src.agents.schema_matching import review_queue
     from .adapter import build_draft, load_overrides
     from .streamlit_commit import image_links
-    draft = build_draft(result, result, CanonicalSchema.from_template(),
+    from src.schema.dynamic import schema_for_result
+    draft = build_draft(result, result, schema_for_result(result),
                         review_queue.list_for_run(result.run_id, result.review_queue_path),
                         source_filename=kms_source_filename or path.name,
                         source_scope=os.getenv('KMS_SOURCE_SCOPE', 'cabai-research'),

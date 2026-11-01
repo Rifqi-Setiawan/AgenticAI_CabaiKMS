@@ -47,7 +47,9 @@ if not state.has_result():
 
 result = state.get_result()
 corrected_result = state.get_corrected_result()
-schema = CanonicalSchema.from_template()
+from src.schema.dynamic import schema_for_result  # noqa: E402
+
+schema = schema_for_result(result)
 current_run_items = (
     review_queue.list_for_run(result.run_id, result.review_queue_path)
     if result.run_id and result.review_queue_path else []

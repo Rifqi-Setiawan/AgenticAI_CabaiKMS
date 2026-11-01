@@ -78,6 +78,16 @@ class CanonicalOutputBuilder:
         ws = wb[SHEET_NAME]
 
         n_rows = len(self.schema.rows)
+        template_rows = max(0, ws.max_row - 1)
+        if n_rows > template_rows:
+            # acquired rows (dynamic schema) go below the template rows, styled like the last template row
+            last = template_rows + 1
+            for idx in range(template_rows, n_rows):
+                r = idx + 2
+                for col in range(1, max(ws.max_column, 2 + len(self.variety_names)) + 1):
+                    ws.cell(row=r, column=col)._style = ws.cell(row=last, column=col)._style
+                ws.cell(row=r, column=1).value = idx + 1
+                ws.cell(row=r, column=2).value = self.schema.rows[idx].label
         max_col = max(ws.max_column, 2 + len(self.variety_names))
         for col in range(3, max_col + 1):
             for row in range(1, n_rows + 2):

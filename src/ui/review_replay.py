@@ -25,7 +25,9 @@ def apply_review_corrections(
     schema: CanonicalSchema | None = None,
 ) -> PipelineRunResult:
     """Rebuild corrected output from the immutable original result and event log."""
-    schema = schema or CanonicalSchema.from_template()
+    from src.schema.dynamic import schema_for_result
+
+    schema = schema or schema_for_result(original)
     if not original.run_id:
         raise ValueError("pipeline result has no run_id; deterministic review replay is unavailable")
     if original.schema_version != schema.schema_version or original.template_hash != schema.template_hash:

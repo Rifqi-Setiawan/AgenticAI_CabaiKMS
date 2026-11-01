@@ -54,12 +54,13 @@ def get_collection(
     client: chromadb.ClientAPI | None = None,
     *,
     persist_dir: Path | str = DEFAULT_CHROMA_DIR,
+    collection_name: str = COLLECTION_NAME,
 ) -> chromadb.api.models.Collection.Collection:
     client = client or get_client(persist_dir)
     # hnsw:space="cosine" so Fase 3b's ANN query is cosine similarity, not
     # chromadb's default (L2). collection.modify() REPLACES metadata rather
     # than merging it, so every modify() call below re-asserts this too.
-    return client.get_or_create_collection(COLLECTION_NAME, metadata={"hnsw:space": "cosine"})
+    return client.get_or_create_collection(collection_name, metadata={"hnsw:space": "cosine"})
 
 
 def _representation_hash(schema: CanonicalSchema) -> str:
@@ -97,12 +98,13 @@ def ensure_indexed(
     persist_dir: Path | str = DEFAULT_CHROMA_DIR,
     model_name: str = EMBEDDING_MODEL_NAME,
     force: bool = False,
+    collection_name: str = COLLECTION_NAME,
 ) -> chromadb.api.models.Collection.Collection:
     """Index every canonical row exactly once. Safe to call on every process
     startup: it re-embeds only if the collection is missing rows, stale
     (template drifted), or `force=True`."""
     schema = schema or CanonicalSchema.from_template()
-    collection = get_collection(client, persist_dir=persist_dir)
+    collection = get_collection(client, persist_dir=persist_dir, collection_name=collection_name)
 
     if not force and _is_up_to_date(collection, schema):
         return collection

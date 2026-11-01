@@ -33,8 +33,12 @@ def clear_default_schema_cache() -> None:
 
 
 def valid_row_ids(schema: CanonicalSchema | None = None) -> frozenset[str]:
-    schema = schema or _default_schema()
-    return schema.row_ids | {NULL_ROW}
+    if schema is not None:
+        return schema.row_ids | {NULL_ROW}
+    from .dynamic import known_extension_row_ids
+
+    # acquired rows (r_61+) seen by this process are valid targets in addition to the template rows
+    return _default_schema().row_ids | known_extension_row_ids() | {NULL_ROW}
 
 
 class SchemaMapping(BaseModel):

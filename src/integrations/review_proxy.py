@@ -22,6 +22,7 @@ class ReviewQueueProxy:
             import fcntl
             from src.ui import state
             from src.schema.canonical import CanonicalSchema
+            from src.schema.dynamic import schema_for_result
             from .streamlit_commit import persist_current_draft
             original = state.get_result()
             destination = Path(kwargs.get('queue_path') or original.review_queue_path)
@@ -31,7 +32,7 @@ class ReviewQueueProxy:
                 temporary.write_text(''.join(item.model_dump_json() + '\n' for item in items), encoding='utf-8')
                 resolved = function(*args, **{**kwargs, 'queue_path': temporary})
                 new_items = original_queue.list_for_run(original.run_id, temporary)
-                persist_current_draft(original, CanonicalSchema.from_template(), new_items, state.get_last_inputs(), queue_path=temporary)
+                persist_current_draft(original, schema_for_result(original), new_items, state.get_last_inputs(), queue_path=temporary)
             # A crash after DB commit is recoverable from the saved revision, even before this projection.
             destination.parent.mkdir(mode=0o750, parents=True, exist_ok=True)
             fd = os.open(destination, os.O_CREAT | os.O_WRONLY | os.O_APPEND | getattr(os, 'O_NOFOLLOW', 0), 0o600)

@@ -28,6 +28,7 @@ class RuntimeGraphState(TypedDict, total=False):
     enable_structure_shadow: bool; embedding_model_name: str | None
     mapping_verification_version: str
     prepared_source_bundle: Any
+    extension_rows: list[dict[str, Any]]
 
 @dataclass
 class RuntimeResources:
@@ -94,7 +95,8 @@ def schema_matching_tabular(state, config):
         structure_llm_call=resources.structure_llm_call, source_backend=state["source_backend"],
         retrieval_backend=state["retrieval_backend"], embedding_encode_call=resources.embedding_encode_call,
         review_queue_path=state["review_queue_path"], text_rate_limiter=resources.text_rate_limiter,
-        _prepared_source_bundle=resources.prepared_source_bundle, _run_id=state["run_id"])
+        _prepared_source_bundle=resources.prepared_source_bundle, _run_id=state["run_id"],
+        extension_rows=state.get("extension_rows", []))
     status = dict(state.get("agent_status", {})); status.update(result.agent_status)
     status["orchestrator"] = "schema/tabular selesai; checkpoint LangGraph"
     return {"mapping_json": result.mapping_df.to_json(orient="table"), "workbook_bytes": result.workbook_bytes,
@@ -103,7 +105,8 @@ def schema_matching_tabular(state, config):
         "mapping_verifications": [x.model_dump(mode="json") for x in result.mapping_verifications],
         "error_trace": list(result.error_trace), "provider_trace": list(result.provider_trace), "agent_status": status,
         "structure_shadow": result.structure_shadow.model_dump(mode="json") if result.structure_shadow else None,
-        "source_ir_version": result.source_ir_version}
+        "source_ir_version": result.source_ir_version,
+        "extension_rows": r._rows_to_state(result.extension_rows)}
 
 def route_after_tabular(state): return "drive" if state.get("drive_folder_id", "").strip() else "finalize"
 

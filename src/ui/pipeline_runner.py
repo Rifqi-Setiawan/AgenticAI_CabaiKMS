@@ -27,7 +27,7 @@ import uuid
 import zipfile
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable, Literal
+from typing import Any, Callable, Literal
 
 import openpyxl
 import pandas as pd
@@ -74,6 +74,13 @@ from src.reliability.rate_limit import (
 )
 from src.reliability.wrappers import safe_classify_image, safe_rerank
 from src.schema.canonical import CanonicalSchema
+from src.schema.dynamic import (
+    ExtensionRow,
+    build_run_schema,
+    collection_name_for,
+    dynamic_schema_enabled,
+    fetch_extension_rows,
+)
 from src.schema.contracts import NULL_ROW
 from src.schema.evaluation_config import EvaluationRunConfig
 from src.schema.gold_mapping import build_mapping_item_identities
@@ -153,10 +160,33 @@ class PipelineRunResult:
     evaluation_config_fingerprint: str = ""
     run_id: str = ""
     review_queue_path: str = ""
+    extension_rows: tuple = ()
 
 
 def _noop(_: str) -> None:
     return None
+
+
+def _rows_from_state(items: Any) -> tuple[ExtensionRow, ...]:
+    return tuple(ExtensionRow.from_mapping(x) if isinstance(x, dict) else x for x in (items or ()))
+
+
+def _rows_to_state(rows: Any) -> list[dict]:
+    return [
+        {"canonical_key": r.canonical_key, "label": r.label, "domain": r.domain, "seq": r.seq,
+         "contoh_nilai": list(r.contoh_nilai), "alt_labels": list(r.alt_labels), "status": r.status}
+        for r in (rows or ())
+    ]
+
+
+def _load_extension_rows_for_run() -> tuple[tuple[ExtensionRow, ...], str | None]:
+    """Acquired rows for this run; empty (template-only) unless KMS_DYNAMIC_SCHEMA is on. Never raises."""
+    if not dynamic_schema_enabled():
+        return (), None
+    try:
+        return tuple(fetch_extension_rows()), None
+    except Exception as exc:  # noqa: BLE001 - degrade to the template, but say so
+        return (), f"PERINGATAN: baris skema dinamis tidak dapat dimuat ({type(exc).__name__}); memakai template saja"
 
 
 def _retrieve_with_header_fallback(
@@ -245,6 +275,7 @@ def _run_tabular_stage_impl(
     text_rate_limiter: RateLimiter | None = None,
     _prepared_source_bundle=None,
     _run_id: str | None = None,
+    extension_rows: Any = (),
 ) -> PipelineRunResult:
     if source_backend not in {"legacy", "source-ir-gated"}:
         raise ValueError(
@@ -337,7 +368,8 @@ def _run_tabular_stage_impl(
         agent_status["structure_shadow"] = structure_shadow.summary
         on_progress(f"structure_shadow: {structure_shadow.summary}")
 
-    schema = CanonicalSchema.from_template()
+    ext_rows = _rows_from_state(extension_rows)
+    schema = build_run_schema(ext_rows)
     evaluation_config = EvaluationRunConfig(
         source_backend=source_backend,
         retrieval_backend=retrieval_backend,
@@ -406,7 +438,7 @@ def _run_tabular_stage_impl(
             if not retrieval_initialized:
                 if retrieval_backend == "chroma":
                     on_progress("Memastikan indeks ChromaDB (idempoten)...")
-                    retrieval_resource = ensure_indexed(schema)
+                    retrieval_resource = ensure_indexed(schema, collection_name=collection_name_for(schema))
                     agent_status["retrieval"] = f"chroma — HNSW cosine, k={k}"
                 elif retrieval_backend == "exact":
                     on_progress("Menyiapkan indeks exact cosine dalam memori...")
@@ -698,6 +730,7 @@ def _run_tabular_stage_impl(
         evaluation_config_fingerprint=evaluation_config.fingerprint,
         run_id=run_id, review_queue_path=str(review_queue_path),
         source_ir_version=(source_bundle.source_ir.ir_version if source_bundle.source_ir else None),
+        extension_rows=tuple(ext_rows),
     )
 
 
@@ -719,7 +752,8 @@ def _runtime_initial_state(
     if source_backend not in {"legacy", "source-ir-gated"}:
         raise ValueError(f"unknown source backend {source_backend!r}; expected one of: legacy, source-ir-gated")
     validate_retrieval_backend(retrieval_backend)
-    schema = CanonicalSchema.from_template()
+    ext_rows, ext_warning = _load_extension_rows_for_run()
+    schema = build_run_schema(ext_rows)
     resolved_sheet = sheet_name or _first_sheet(file_path)
     evaluation = EvaluationRunConfig(
         source_backend=source_backend, retrieval_backend=retrieval_backend, retrieval_k=k,
@@ -741,7 +775,10 @@ def _runtime_initial_state(
         "mapping_verification_version": MAPPING_VERIFICATION_VERSION,
         "embedding_model_name": EMBEDDING_MODEL_NAME,
         "review_queue_path": str(review_queue_path), "error_trace": [], "provider_trace": [], "agent_status": {},
+        "extension_rows": _rows_to_state(ext_rows),
     }
+    if ext_warning:
+        state["error_trace"].append(ext_warning)
     state["runtime_identity"] = runtime_identity(state)
     return state
 
@@ -750,7 +787,8 @@ def _result_from_runtime_state(state: dict) -> PipelineRunResult:
     from src.schema.shadow_parity import ShadowParityReport
 
     mapping_df = pd.read_json(io.StringIO(state["mapping_json"]), orient="table")
-    schema = CanonicalSchema.from_template()
+    ext_rows = _rows_from_state(state.get("extension_rows"))
+    schema = build_run_schema(ext_rows)
     workbook = openpyxl.load_workbook(io.BytesIO(state["workbook_bytes"]))
     canonical_df = worksheet_to_dataframe(workbook[SHEET_NAME], schema, state["variety_names"])
     workbook.close()
@@ -770,6 +808,7 @@ def _result_from_runtime_state(state: dict) -> PipelineRunResult:
         embedding_model_name=state["embedding_model_name"],
         evaluation_config_fingerprint=state["evaluation_config_fingerprint"], run_id=state["run_id"],
         review_queue_path=state["review_queue_path"], source_ir_version=state.get("source_ir_version"),
+        extension_rows=tuple(ext_rows),
     )
 
 

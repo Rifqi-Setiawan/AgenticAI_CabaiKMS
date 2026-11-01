@@ -26,6 +26,7 @@ from src.storage.errors import Conflict, InvalidState, KmsError, NotFound
 from src.storage.image_storage import ImageStorageManager, MediaError, make_blob_store
 from src.storage.learning import LearningRepository
 from src.storage.repository import KmsRepository
+from src.storage.schema_rows import SchemaRowRepository
 
 
 @dataclass(frozen=True)
@@ -369,6 +370,31 @@ def create_app(
                 params["s"] = sha256
             rows = session.execute(text(query), params).mappings().all()
             return [dict(r) for r in rows]
+
+    schema_rows = SchemaRowRepository(doc_engine) if doc_engine is not None else None
+
+    @app.get('/attributes/schema-rows')
+    def schema_rows_list(principal: Annotated[Principal, Depends(authenticate)]):
+        """Acquired canonical rows (provisional or approved) and merge aliases for the dynamic schema."""
+        if schema_rows is None:
+            return {'rows': [], 'aliases': []}
+        return schema_rows.list_rows()
+
+    @app.post('/attributes/schema-rows')
+    def schema_rows_acquire(body: dict[str, Any], principal: Annotated[Principal, Depends(writer)]):
+        """Idempotent acquisition: an existing meaning (label or alias) returns duplicate_of instead of a new row."""
+        if schema_rows is None:
+            raise HTTPException(503, 'Schema rows require a database.')
+        try:
+            return schema_rows.acquire(
+                label=str(body.get('label') or ''), domain=str(body.get('domain') or ''),
+                examples=[str(x) for x in (body.get('examples') or [])],
+                source_label=body.get('source_label'), run_id=str(body.get('run_id') or ''),
+                source_sha256=body.get('source_sha256'), actor=principal.subject,
+                reason=str(body.get('reason') or 'acquired from run'),
+            )
+        except InvalidState as error:
+            raise HTTPException(422, str(error)) from error
 
     @app.get('/attributes/catalog')
     def attribute_catalog(principal: Annotated[Principal, Depends(authenticate)]):

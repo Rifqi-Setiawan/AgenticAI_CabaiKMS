@@ -14,6 +14,7 @@ MIGRATIONS = [
     ('0004', ROOT / 'schema_0004_image_candidates.sql'),
     ('0005', ROOT / 'schema_0005_app_grants.sql'),
     ('0006', ROOT / 'schema_0006_attribute_catalog_ext.sql'),
+    ('0007', ROOT / 'schema_0007_schema_rows_ext.sql'),
 ]
 
 
@@ -40,7 +41,9 @@ def migrate(admin_url: str) -> list[str]:
                 if previous[0] != checksum:
                     raise RuntimeError(f'Migration {version} checksum mismatch; add a new migration, never edit applied DDL.')
                 table_to_check = None
-                if version == '0006':
+                if version == '0007':
+                    table_to_check = 'kms.schema_rows_ext'
+                elif version == '0006':
                     table_to_check = 'kms.attribute_catalog_ext'
                 elif version == '0004':
                     table_to_check = 'kms.image_candidates'
