@@ -731,6 +731,7 @@ def _run_tabular_stage_impl(
             run_id=run_id, source_sha256=source_hash,
             catalog=[f"{r.id}: {r.label} ({r.domain})" for r in schema.rows
                      if r.domain != "lokasi" and not r.label.lower().startswith("gambar")],
+            row_id_of=lambda row: f"r_{len(CanonicalSchema.from_template().rows) + row.seq}",
         )
         new_rows = {o.row.canonical_key: o.row for o in outcomes if o.status == "NEW_ROW" and o.row is not None}
         if new_rows:

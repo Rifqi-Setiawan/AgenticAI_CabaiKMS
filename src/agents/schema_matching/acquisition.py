@@ -12,6 +12,7 @@ Flow per run (only when KMS_DYNAMIC_SCHEMA is on):
 from __future__ import annotations
 
 import re
+import time
 from dataclasses import dataclass, field
 from typing import Any, Callable, Literal
 
@@ -60,7 +61,7 @@ class AcquisitionItem(BaseModel):
     domain: Literal["biji", "buah", "bunga", "daun", "vegetatif"]
     group: int = Field(description="Items with the same group number have the same meaning")
     same_as_existing: str = Field(default=NULL_REF, description="Row id (e.g. r_12) of an existing row with the same meaning, else NULL")
-    reasoning: str = ""
+    reasoning: str = Field(default="", description="Satu kalimat pendek (maksimal 15 kata)")
 
 
 class AcquisitionPlan(BaseModel):
@@ -119,6 +120,23 @@ def plan(candidates: list[Candidate], llm_call: Callable[..., AcquisitionPlan] =
     return result
 
 
+BATCH_SIZE = 12
+ATTEMPTS = 3
+
+
+def _plan_with_retry(batch, llm_call, catalog, retry_delay):
+    last: Exception | None = None
+    for attempt in range(ATTEMPTS):
+        try:
+            return plan(batch, llm_call, catalog)
+        except Exception as exc:  # noqa: BLE001 - timeouts and malformed output are retried, then reported
+            last = exc
+            if attempt + 1 < ATTEMPTS and retry_delay:
+                time.sleep(retry_delay * (attempt + 1))
+    assert last is not None
+    raise last
+
+
 def acquire(
     candidates: list[Candidate],
     *,
@@ -128,54 +146,69 @@ def acquire(
     source_sha256: str,
     llm_call: Callable[..., AcquisitionPlan] = call_with_fallback,
     catalog: list[str] | tuple[str, ...] = (),
+    row_id_of: Callable[[ExtensionRow], str] | None = None,
+    retry_delay: float = 3.0,
 ) -> list[Outcome]:
-    """Judge, group and acquire. Never raises for judgement problems: failures become FAILED outcomes."""
+    """Judge in small batches (each retried), group synonyms, acquire. Never raises for judgement problems.
+
+    Batches keep each model call short (a single call for ~50 attributes took over two minutes and often timed out);
+    rows acquired by an earlier batch are appended to the listing the next batch sees, so synonyms across batches
+    are still unified.
+    """
     if not candidates:
         return []
-    try:
-        decided = {item.index: item for item in plan(candidates, llm_call, catalog).items}
-    except Exception as exc:  # noqa: BLE001 - acquisition must never abort the mapping run
-        return [Outcome(c.index, "FAILED", note=f"penilai akuisisi gagal: {type(exc).__name__}") for c in candidates]
-
+    catalog_lines = list(catalog)
+    known_ids = set(existing_row_ids)
     outcomes: dict[int, Outcome] = {}
-    groups: dict[int, list[Candidate]] = {}
-    for c in candidates:
-        item = decided.get(c.index)
-        if item is None:
-            outcomes[c.index] = Outcome(c.index, "FAILED", note="tidak dinilai")
-        elif not item.is_characteristic:
-            outcomes[c.index] = Outcome(c.index, "NOT_CHARACTERISTIC", note=item.reasoning[:200])
-        elif item.same_as_existing != NULL_REF and item.same_as_existing in existing_row_ids:
-            outcomes[c.index] = Outcome(c.index, "DUPLICATE_OF", duplicate_of=item.same_as_existing, note=item.reasoning[:200])
-        else:
-            groups.setdefault(item.group, []).append(c)
-
-    for members in groups.values():
-        lead = decided[members[0].index]
-        payload = {
-            "label": lead.canonical_label.strip() or members[0].display_name,
-            "domain": lead.domain,
-            "examples": [s for m in members for s in m.samples[:2]][:5],
-            "aliases": sorted({m.display_name for m in members if _norm(m.display_name) != _norm(lead.canonical_label)}),
-            "source_label": members[0].display_name,
-            "run_id": run_id,
-            "source_sha256": source_sha256,
-            "reason": f"akuisisi otomatis: {lead.reasoning[:160]}" if lead.reasoning else "akuisisi otomatis",
-        }
+    for start in range(0, len(candidates), BATCH_SIZE):
+        batch = candidates[start:start + BATCH_SIZE]
         try:
-            answer = acquire_call(payload)
-        except Exception as exc:  # noqa: BLE001
-            for m in members:
-                outcomes[m.index] = Outcome(m.index, "FAILED", note=f"akuisisi gagal: {type(exc).__name__}")
+            decided = {item.index: item for item in _plan_with_retry(batch, llm_call, catalog_lines, retry_delay).items}
+        except Exception as exc:  # noqa: BLE001 - acquisition must never abort the mapping run
+            for c in batch:
+                outcomes[c.index] = Outcome(c.index, "FAILED", note=f"penilai akuisisi gagal: {type(exc).__name__}: {str(exc)[:140]}")
             continue
-        if answer.get("rejected"):
-            for m in members:
-                outcomes[m.index] = Outcome(m.index, "REJECTED_BEFORE", note="label dibuang kurator sebelumnya")
-        elif answer.get("created") and answer.get("row"):
-            row = ExtensionRow.from_mapping(answer["row"])
-            for m in members:
-                outcomes[m.index] = Outcome(m.index, "NEW_ROW", row=row)
-        else:
-            for m in members:
-                outcomes[m.index] = Outcome(m.index, "DUPLICATE_OF", duplicate_of=answer.get("duplicate_of"))
+        groups: dict[int, list[Candidate]] = {}
+        for c in batch:
+            item = decided.get(c.index)
+            if item is None:
+                outcomes[c.index] = Outcome(c.index, "FAILED", note="tidak dinilai")
+            elif not item.is_characteristic:
+                outcomes[c.index] = Outcome(c.index, "NOT_CHARACTERISTIC", note=item.reasoning[:200])
+            elif item.same_as_existing != NULL_REF and item.same_as_existing in known_ids:
+                outcomes[c.index] = Outcome(c.index, "DUPLICATE_OF", duplicate_of=item.same_as_existing, note=item.reasoning[:200])
+            else:
+                groups.setdefault(item.group, []).append(c)
+        for members in groups.values():
+            lead = decided[members[0].index]
+            payload = {
+                "label": lead.canonical_label.strip() or members[0].display_name,
+                "domain": lead.domain,
+                "examples": [s for m in members for s in m.samples[:2]][:5],
+                "aliases": sorted({m.display_name for m in members if _norm(m.display_name) != _norm(lead.canonical_label)}),
+                "source_label": members[0].display_name,
+                "run_id": run_id,
+                "source_sha256": source_sha256,
+                "reason": f"akuisisi otomatis: {lead.reasoning[:160]}" if lead.reasoning else "akuisisi otomatis",
+            }
+            try:
+                answer = acquire_call(payload)
+            except Exception as exc:  # noqa: BLE001
+                for m in members:
+                    outcomes[m.index] = Outcome(m.index, "FAILED", note=f"akuisisi gagal: {type(exc).__name__}")
+                continue
+            if answer.get("rejected"):
+                for m in members:
+                    outcomes[m.index] = Outcome(m.index, "REJECTED_BEFORE", note="label dibuang kurator sebelumnya")
+            elif answer.get("created") and answer.get("row"):
+                row = ExtensionRow.from_mapping(answer["row"])
+                if row_id_of is not None:
+                    new_id = row_id_of(row)
+                    known_ids.add(new_id)
+                    catalog_lines.append(f"{new_id}: {row.label} ({row.domain})")
+                for m in members:
+                    outcomes[m.index] = Outcome(m.index, "NEW_ROW", row=row)
+            else:
+                for m in members:
+                    outcomes[m.index] = Outcome(m.index, "DUPLICATE_OF", duplicate_of=answer.get("duplicate_of"))
     return [outcomes[c.index] for c in candidates]

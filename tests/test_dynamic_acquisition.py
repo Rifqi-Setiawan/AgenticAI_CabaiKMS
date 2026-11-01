@@ -219,3 +219,38 @@ def test_duplicate_of_existing_row_writes_into_that_row_instead_of_dropping_the_
     merged = result.mapping_df[result.mapping_df["acquisition_status"] == f"MERGED_TO:{target.canonical_key}"]
     assert len(merged) >= 1 and set(merged["proposed_target_canonical_key"]) == {target.canonical_key}
     assert result.canonical_df.shape[0] == len(base.rows)
+
+
+def test_candidates_are_judged_in_small_batches_with_retry_and_growing_listing(monkeypatch):
+    seen_catalogs, calls = [], {"n": 0}
+
+    def flaky_plan(cands, llm_call=None, catalog=()):
+        calls["n"] += 1
+        seen_catalogs.append(list(catalog))
+        if calls["n"] == 1:
+            raise RuntimeError("request timed out")  # first attempt of the first batch fails and is retried
+        return AcquisitionPlan(items=[_item(c.index, f"Atribut {c.index}", group=c.index) for c in cands])
+
+    monkeypatch.setattr(acquisition, "plan", flaky_plan)
+    store = _FakeStore()
+    cands = [_cand(i, f"Sumber {i}") for i in range(acquisition.BATCH_SIZE + 3)]
+    out = acquisition.acquire(cands, existing_row_ids=set(), acquire_call=store, run_id="r", source_sha256="a" * 64,
+                              catalog=["r_1: habitus (vegetatif)"], row_id_of=lambda row: f"r_{100 + row.seq}", retry_delay=0)
+    assert all(o.status == "NEW_ROW" for o in out) and len(store.rows) == len(cands)
+    assert calls["n"] == 3  # one retry + two batches
+    assert any(line.startswith("r_101: ") for line in seen_catalogs[-1])  # second batch sees rows acquired by the first
+
+
+def test_a_batch_that_keeps_failing_is_reported_but_other_batches_still_run(monkeypatch):
+    def plan_fn(cands, llm_call=None, catalog=()):
+        if cands[0].index == 0:
+            raise RuntimeError("model unavailable")
+        return AcquisitionPlan(items=[_item(c.index, f"Atribut {c.index}", group=c.index) for c in cands])
+
+    monkeypatch.setattr(acquisition, "plan", plan_fn)
+    store = _FakeStore()
+    cands = [_cand(i, f"Sumber {i}") for i in range(acquisition.BATCH_SIZE + 2)]
+    out = acquisition.acquire(cands, existing_row_ids=set(), acquire_call=store, run_id="r", source_sha256="a" * 64, retry_delay=0)
+    assert [o.status for o in out[:acquisition.BATCH_SIZE]] == ["FAILED"] * acquisition.BATCH_SIZE
+    assert "model unavailable" in out[0].note
+    assert [o.status for o in out[acquisition.BATCH_SIZE:]] == ["NEW_ROW", "NEW_ROW"]
