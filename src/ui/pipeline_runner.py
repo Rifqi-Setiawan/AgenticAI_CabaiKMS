@@ -76,11 +76,12 @@ from src.reliability.wrappers import safe_classify_image, safe_rerank
 from src.schema.canonical import CanonicalSchema
 from src.agents.schema_matching import acquisition
 from src.schema.dynamic import (
+    ExtensionAlias,
     ExtensionRow,
     build_run_schema,
     collection_name_for,
     dynamic_schema_enabled,
-    fetch_extension_rows,
+    fetch_extension,
 )
 from src.schema.contracts import NULL_ROW
 from src.schema.evaluation_config import EvaluationRunConfig
@@ -162,6 +163,7 @@ class PipelineRunResult:
     run_id: str = ""
     review_queue_path: str = ""
     extension_rows: tuple = ()
+    extension_aliases: tuple = ()
 
 
 def _noop(_: str) -> None:
@@ -188,14 +190,23 @@ def _make_acquire_call() -> Callable[[dict], dict]:
     return lambda payload: client.request("POST", "/attributes/schema-rows", json=payload)
 
 
-def _load_extension_rows_for_run() -> tuple[tuple[ExtensionRow, ...], str | None]:
+def _aliases_from_state(items: Any) -> tuple[ExtensionAlias, ...]:
+    return tuple(ExtensionAlias.from_mapping(x) if isinstance(x, dict) else x for x in (items or ()))
+
+
+def _aliases_to_state(aliases: Any) -> list[dict]:
+    return [{"target_key": a.target_key, "alias": a.alias} for a in (aliases or ())]
+
+
+def _load_extension_rows_for_run() -> tuple[tuple[ExtensionRow, ...], tuple[ExtensionAlias, ...], str | None]:
     """Acquired rows for this run; empty (template-only) unless KMS_DYNAMIC_SCHEMA is on. Never raises."""
     if not dynamic_schema_enabled():
-        return (), None
+        return (), (), None
     try:
-        return tuple(fetch_extension_rows()), None
+        rows, aliases = fetch_extension()
+        return tuple(rows), tuple(aliases), None
     except Exception as exc:  # noqa: BLE001 - degrade to the template, but say so
-        return (), f"PERINGATAN: baris skema dinamis tidak dapat dimuat ({type(exc).__name__}); memakai template saja"
+        return (), (), f"PERINGATAN: baris skema dinamis tidak dapat dimuat ({type(exc).__name__}); memakai template saja"
 
 
 def _retrieve_with_header_fallback(
@@ -285,6 +296,7 @@ def _run_tabular_stage_impl(
     _prepared_source_bundle=None,
     _run_id: str | None = None,
     extension_rows: Any = (),
+    extension_aliases: Any = (),
 ) -> PipelineRunResult:
     if source_backend not in {"legacy", "source-ir-gated"}:
         raise ValueError(
@@ -378,7 +390,8 @@ def _run_tabular_stage_impl(
         on_progress(f"structure_shadow: {structure_shadow.summary}")
 
     ext_rows = _rows_from_state(extension_rows)
-    schema = build_run_schema(ext_rows)
+    ext_aliases = _aliases_from_state(extension_aliases)
+    schema = build_run_schema(ext_rows, ext_aliases)
     evaluation_config = EvaluationRunConfig(
         source_backend=source_backend,
         retrieval_backend=retrieval_backend,
@@ -720,7 +733,7 @@ def _run_tabular_stage_impl(
         new_rows = {o.row.canonical_key: o.row for o in outcomes if o.status == "NEW_ROW" and o.row is not None}
         if new_rows:
             ext_rows = tuple(sorted({r.canonical_key: r for r in (*ext_rows, *new_rows.values())}.values(), key=lambda r: r.seq))
-            schema = build_run_schema(ext_rows)
+            schema = build_run_schema(ext_rows, ext_aliases)
             builder.schema = schema
             evaluation_config = EvaluationRunConfig(
                 source_backend=source_backend, retrieval_backend=retrieval_backend, retrieval_k=k,
@@ -778,7 +791,7 @@ def _run_tabular_stage_impl(
         n_auto_accept += n_acquired
         agent_status["acquisition"] = f"{len(acq_candidates)} kandidat: " + ", ".join(
             f"{status}={sum(o.status == status for o in outcomes)}"
-            for status in ("NEW_ROW", "DUPLICATE_OF", "NOT_CHARACTERISTIC", "FAILED")
+            for status in ("NEW_ROW", "DUPLICATE_OF", "REJECTED_BEFORE", "NOT_CHARACTERISTIC", "FAILED")
         )
 
     agent_status["schema_matching"] = (
@@ -832,6 +845,7 @@ def _run_tabular_stage_impl(
         run_id=run_id, review_queue_path=str(review_queue_path),
         source_ir_version=(source_bundle.source_ir.ir_version if source_bundle.source_ir else None),
         extension_rows=tuple(ext_rows),
+        extension_aliases=tuple(ext_aliases),
     )
 
 
@@ -853,8 +867,8 @@ def _runtime_initial_state(
     if source_backend not in {"legacy", "source-ir-gated"}:
         raise ValueError(f"unknown source backend {source_backend!r}; expected one of: legacy, source-ir-gated")
     validate_retrieval_backend(retrieval_backend)
-    ext_rows, ext_warning = _load_extension_rows_for_run()
-    schema = build_run_schema(ext_rows)
+    ext_rows, ext_aliases, ext_warning = _load_extension_rows_for_run()
+    schema = build_run_schema(ext_rows, ext_aliases)
     resolved_sheet = sheet_name or _first_sheet(file_path)
     evaluation = EvaluationRunConfig(
         source_backend=source_backend, retrieval_backend=retrieval_backend, retrieval_k=k,
@@ -877,6 +891,7 @@ def _runtime_initial_state(
         "embedding_model_name": EMBEDDING_MODEL_NAME,
         "review_queue_path": str(review_queue_path), "error_trace": [], "provider_trace": [], "agent_status": {},
         "extension_rows": _rows_to_state(ext_rows),
+        "extension_aliases": _aliases_to_state(ext_aliases),
     }
     if ext_warning:
         state["error_trace"].append(ext_warning)
@@ -889,7 +904,8 @@ def _result_from_runtime_state(state: dict) -> PipelineRunResult:
 
     mapping_df = pd.read_json(io.StringIO(state["mapping_json"]), orient="table")
     ext_rows = _rows_from_state(state.get("extension_rows"))
-    schema = build_run_schema(ext_rows)
+    ext_aliases = _aliases_from_state(state.get("extension_aliases"))
+    schema = build_run_schema(ext_rows, ext_aliases)
     fingerprint = state["evaluation_config_fingerprint"]
     if schema.schema_version != state["schema_version"]:  # rows were acquired during this run
         fingerprint = EvaluationRunConfig(
@@ -919,6 +935,7 @@ def _result_from_runtime_state(state: dict) -> PipelineRunResult:
         evaluation_config_fingerprint=fingerprint, run_id=state["run_id"],
         review_queue_path=state["review_queue_path"], source_ir_version=state.get("source_ir_version"),
         extension_rows=tuple(ext_rows),
+        extension_aliases=tuple(ext_aliases),
     )
 
 

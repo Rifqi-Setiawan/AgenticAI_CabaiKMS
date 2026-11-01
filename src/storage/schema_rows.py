@@ -38,6 +38,84 @@ class SchemaRowRepository:
                 "SELECT alias, target_key FROM kms.schema_aliases_ext ORDER BY created_at, alias_norm")).mappings().all()
         return {"rows": [dict(r) for r in rows], "aliases": [dict(a) for a in aliases]}
 
+
+    # ------------------------------------------------------------------ curation
+    def _event(self, session: Session, key: str, event: str, actor: str, run_id: str, detail: dict[str, Any]) -> None:
+        session.execute(text(
+            "INSERT INTO kms.schema_row_events (canonical_key, event, actor, run_id, detail) "
+            "VALUES (:k, :e, :a, :r, CAST(:d AS jsonb))"),
+            {"k": key, "e": event, "a": actor, "r": run_id or None, "d": json.dumps(detail, ensure_ascii=False)})
+
+    def _active(self, session: Session, key: str) -> dict[str, Any]:
+        row = session.execute(text(
+            "SELECT seq, canonical_key, label, label_norm, aliases, status FROM kms.schema_rows_ext WHERE canonical_key = :k"),
+            {"k": key}).mappings().first()
+        if row is None:
+            raise InvalidState(f"Unknown acquired row '{key}'.")
+        if row["status"] not in ACTIVE_STATUSES:
+            raise InvalidState(f"Row '{key}' is already {row['status']}.")
+        return dict(row)
+
+    @staticmethod
+    def _need_reason(reason: str) -> str:
+        reason = (reason or "").strip()
+        if len(reason) < 10:
+            raise InvalidState("Reason (min 10 characters) is required.")
+        return reason
+
+    def set_status(self, key: str, status: str, *, actor: str, reason: str) -> dict[str, Any]:
+        """approve (provisional to approved) or discard (row leaves the schema and its label is remembered)."""
+        if status not in ("approved", "discarded"):
+            raise InvalidState("status must be approved or discarded")
+        reason = self._need_reason(reason)
+        with transaction(self.engine) as session:
+            context(session, actor, "")
+            session.execute(text("SELECT pg_advisory_xact_lock(hashtextextended('schema:rows', 0))"))
+            row = self._active(session, key)
+            if status == "approved" and row["status"] == "approved":
+                raise InvalidState(f"Row '{key}' is already approved.")
+            session.execute(text(
+                "UPDATE kms.schema_rows_ext SET status = :s, updated_by = :a, updated_at = now() WHERE canonical_key = :k"),
+                {"s": status, "a": actor, "k": key})
+            self._event(session, key, status.upper(), actor, "", {"reason": reason})
+        return {"canonical_key": key, "status": status}
+
+    def merge(self, key: str, into_key: str, *, actor: str, reason: str) -> dict[str, Any]:
+        """Merge a duplicate into another row (template or acquired); its label and aliases become aliases of the target."""
+        reason = self._need_reason(reason)
+        if key == into_key:
+            raise InvalidState("A row cannot be merged into itself.")
+        template_keys = {r.canonical_key for r in CanonicalSchema.from_template().rows}
+        with transaction(self.engine) as session:
+            context(session, actor, "")
+            session.execute(text("SELECT pg_advisory_xact_lock(hashtextextended('schema:rows', 0))"))
+            row = self._active(session, key)
+            if into_key not in template_keys:
+                self._active(session, into_key)
+            names = {row["label_norm"], *[str(a) for a in row["aliases"]]}
+            for name in sorted(names):
+                display = row["label"] if name == row["label_norm"] else name
+                session.execute(text(
+                    "INSERT INTO kms.schema_aliases_ext (alias_norm, alias, target_key, created_from_run, created_by, reason) "
+                    "VALUES (:n, :a, :t, :r, :actor, :reason) ON CONFLICT (alias_norm) DO NOTHING"),
+                    {"n": name, "a": display, "t": into_key, "r": "curation", "actor": actor, "reason": reason})
+                stored = session.execute(text("SELECT target_key FROM kms.schema_aliases_ext WHERE alias_norm = :n"), {"n": name}).scalar_one()
+                if stored != into_key:
+                    raise Conflict(f"Alias '{display}' already points to '{stored}'.")
+            session.execute(text(
+                "UPDATE kms.schema_rows_ext SET status = 'merged', merged_into_key = :t, updated_by = :a, updated_at = now() "
+                "WHERE canonical_key = :k"), {"t": into_key, "a": actor, "k": key})
+            self._event(session, key, "MERGED", actor, "", {"into": into_key, "reason": reason})
+        return {"canonical_key": key, "status": "merged", "merged_into_key": into_key}
+
+    def list_all(self) -> list[dict[str, Any]]:
+        """Every acquired row with its status (for the curator panel)."""
+        with Session(self.engine) as session:
+            rows = session.execute(text(
+                "SELECT seq, canonical_key, label, domain, examples, aliases, status, merged_into_key, source_label, "
+                "created_from_run, created_by, reason, created_at FROM kms.schema_rows_ext ORDER BY seq")).mappings().all()
+        return [{**dict(r), "created_at": r["created_at"].isoformat()} for r in rows]
+
     # ------------------------------------------------------------------ acquisition
     def acquire(
         self, *, label: str, domain: str, examples: list[str] | None, source_label: str | None,
@@ -63,6 +141,11 @@ class SchemaRowRepository:
         with transaction(self.engine) as session:
             context(session, actor, run_id)
             session.execute(text("SELECT pg_advisory_xact_lock(hashtextextended('schema:rows', 0))"))
+            discarded = session.execute(text(
+                "SELECT canonical_key FROM kms.schema_rows_ext WHERE status = 'discarded' AND label_norm = :n"),
+                {"n": label_norm}).scalar()
+            if discarded is not None:
+                return {"created": False, "duplicate_of": None, "rejected": True, "row": None}
             hit = session.execute(text(
                 "SELECT canonical_key FROM kms.schema_rows_ext WHERE status IN ('provisional','approved') AND "
                 "(label_norm = :n OR aliases @> CAST(:nj AS jsonb))"),

@@ -397,6 +397,27 @@ def create_app(
         except InvalidState as error:
             raise HTTPException(422, str(error)) from error
 
+    @app.get('/attributes/schema-rows/all')
+    def schema_rows_all(principal: Annotated[Principal, Depends(authenticate)]):
+        """All acquired rows with status, for the curator panel."""
+        if schema_rows is None:
+            return {'rows': []}
+        return {'rows': schema_rows.list_all()}
+
+    @app.post('/attributes/schema-rows/{canonical_key}/{action}')
+    def schema_rows_curate(canonical_key: str, action: Literal['approve', 'discard', 'merge'], body: dict[str, Any],
+                           principal: Annotated[Principal, Depends(curator)]):
+        if schema_rows is None:
+            raise HTTPException(503, 'Schema rows require a database.')
+        try:
+            if action == 'merge':
+                return schema_rows.merge(canonical_key, str(body.get('into_key') or ''), actor=principal.subject,
+                                         reason=str(body.get('reason') or ''))
+            return schema_rows.set_status(canonical_key, 'approved' if action == 'approve' else 'discarded',
+                                          actor=principal.subject, reason=str(body.get('reason') or ''))
+        except InvalidState as error:
+            raise HTTPException(422, str(error)) from error
+
     @app.get('/attributes/catalog')
     def attribute_catalog(principal: Annotated[Principal, Depends(authenticate)]):
         """Persisted catalog extensions: approved attributes, aliases and remembered rejections."""

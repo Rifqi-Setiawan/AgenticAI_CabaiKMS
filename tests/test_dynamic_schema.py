@@ -97,7 +97,7 @@ def test_flag_off_by_default(monkeypatch):
     assert dynamic_schema_enabled() is False
     from src.ui.pipeline_runner import _load_extension_rows_for_run
 
-    assert _load_extension_rows_for_run() == ((), None)
+    assert _load_extension_rows_for_run() == ((), (), None)
     monkeypatch.setenv("KMS_DYNAMIC_SCHEMA", "true")
     assert dynamic_schema_enabled() is True
 

@@ -163,7 +163,10 @@ def acquire(
             for m in members:
                 outcomes[m.index] = Outcome(m.index, "FAILED", note=f"akuisisi gagal: {type(exc).__name__}")
             continue
-        if answer.get("created") and answer.get("row"):
+        if answer.get("rejected"):
+            for m in members:
+                outcomes[m.index] = Outcome(m.index, "REJECTED_BEFORE", note="label dibuang kurator sebelumnya")
+        elif answer.get("created") and answer.get("row"):
             row = ExtensionRow.from_mapping(answer["row"])
             for m in members:
                 outcomes[m.index] = Outcome(m.index, "NEW_ROW", row=row)

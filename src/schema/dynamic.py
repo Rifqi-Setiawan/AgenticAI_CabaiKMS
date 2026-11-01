@@ -1,11 +1,13 @@
 """Dynamic canonical schema: the template rows plus acquired rows appended after them.
 
-Acquired rows never change an existing row id or order (ids continue r_{N+1}, r_{N+2}, ... by acquisition order),
-so template-only outputs stay identical. The feature is off unless KMS_DYNAMIC_SCHEMA is set.
+Acquired rows never change an existing row id or order. A row's id is derived from its stored sequence number
+(`r_{template rows + seq}`), so merging or discarding one row never renumbers the others. Merge aliases are applied
+to the target row's alternative labels. The feature is off unless KMS_DYNAMIC_SCHEMA is set.
 """
 
 from __future__ import annotations
 
+import dataclasses
 import hashlib
 import os
 import re
@@ -46,40 +48,64 @@ class ExtensionRow:
         )
 
 
-def extension_hash(rows: list[ExtensionRow] | tuple[ExtensionRow, ...]) -> str:
-    if not rows:
+@dataclass(frozen=True)
+class ExtensionAlias:
+    """A merged label that now resolves to `target_key` (a template or an acquired row)."""
+
+    target_key: str
+    alias: str
+
+    @classmethod
+    def from_mapping(cls, data: dict[str, Any]) -> "ExtensionAlias":
+        return cls(target_key=str(data["target_key"]), alias=str(data["alias"]).strip())
+
+
+def extension_hash(rows, aliases=()) -> str:
+    if not rows and not aliases:
         return ""
     source = "\n".join(
-        f"{r.seq}|{r.canonical_key}|{r.label}|{r.domain}|{','.join(r.contoh_nilai)}|{','.join(r.alt_labels)}"
-        for r in sorted(rows, key=lambda r: r.seq)
+        [f"{r.seq}|{r.canonical_key}|{r.label}|{r.domain}|{','.join(r.contoh_nilai)}|{','.join(r.alt_labels)}"
+         for r in sorted(rows, key=lambda r: r.seq)]
+        + sorted(f"alias|{a.target_key}|{a.alias.lower()}" for a in aliases)
     )
     return hashlib.sha256(source.encode("utf-8")).hexdigest()
 
 
-def extend_schema(base: CanonicalSchema, rows: list[ExtensionRow] | tuple[ExtensionRow, ...]) -> CanonicalSchema:
-    """Return base + acquired rows. With no rows the base schema is returned unchanged (same object)."""
+def extend_schema(base: CanonicalSchema, rows=(), aliases=()) -> CanonicalSchema:
+    """Return base + acquired rows (+ merge aliases). Nothing to add: the base schema object itself."""
     rows = sorted(rows, key=lambda r: r.seq)
-    if not rows:
-        return base
+    n = len(base.rows)
     taken_keys = {r.canonical_key for r in base.rows}
     taken_labels = {r.label.strip().lower() for r in base.rows}
     extra: list[CanonicalRow] = []
-    for position, ext in enumerate(rows, start=len(base.rows) + 1):
+    for ext in rows:
         if not CANONICAL_KEY_RE.fullmatch(ext.canonical_key) or ext.canonical_key in taken_keys:
-            continue  # defensive: a conflicting stored row is skipped, never allowed to shadow a template row
+            continue  # defensive: a conflicting stored row never shadows an existing row
         if ext.label.strip().lower() in taken_labels:
             continue
         taken_keys.add(ext.canonical_key)
         taken_labels.add(ext.label.strip().lower())
         extra.append(CanonicalRow(
-            id=f"r_{position}", canonical_key=ext.canonical_key, label=ext.label.strip(), domain=ext.domain,
+            id=f"r_{n + ext.seq}", canonical_key=ext.canonical_key, label=ext.label.strip(), domain=ext.domain,
             contoh_nilai=ext.contoh_nilai, alt_labels=ext.alt_labels,
         ))
-    if not extra:
+    all_rows = [*base.rows, *extra]
+    by_key = {r.canonical_key: i for i, r in enumerate(all_rows)}
+    applied = False
+    for alias in sorted(aliases, key=lambda a: (a.target_key, a.alias.lower())):
+        index = by_key.get(alias.target_key)
+        if index is None:
+            continue
+        row = all_rows[index]
+        if alias.alias.strip().lower() in {x.lower() for x in (row.label, *row.alt_labels)}:
+            continue
+        all_rows[index] = dataclasses.replace(row, alt_labels=(*row.alt_labels, alias.alias.strip()))
+        applied = True
+    if not extra and not applied:
         return base
-    digest = extension_hash(rows)[:12]
+    digest = extension_hash(rows, aliases)[:12]
     return CanonicalSchema(
-        rows=[*base.rows, *extra],
+        rows=all_rows,
         template_hash=base.template_hash,
         template_path=base.template_path,
         schema_version=f"{base.schema_version}+ext.{digest}",
@@ -102,34 +128,38 @@ _KNOWN_EXTRA_IDS: set[str] = set()
 
 
 def known_extension_row_ids() -> frozenset[str]:
-    """Row ids of acquired rows seen by this process (grows only; used so SchemaMapping accepts r_61+)."""
+    """Row ids of acquired rows seen by this process (grows only; lets SchemaMapping accept r_61+)."""
     return frozenset(_KNOWN_EXTRA_IDS)
 
 
-def remember_extension_ids(schema: CanonicalSchema, base_rows: int) -> None:
-    for row in schema.rows[base_rows:]:
-        _KNOWN_EXTRA_IDS.add(row.id)
-
-
-def fetch_extension_rows(client: Any | None = None) -> list[ExtensionRow]:
-    """Read acquired rows (not merged) from the KMS API; raises on failure so callers can decide how to degrade."""
+def fetch_extension(client: Any | None = None) -> tuple[list[ExtensionRow], list[ExtensionAlias]]:
+    """Read active acquired rows and merge aliases from the KMS API; raises so callers decide how to degrade."""
     if client is None:
         from src.integrations.client import KmsClient
         from src.storage.config import get_settings
 
         client = KmsClient(get_settings())
     payload = client.request("GET", "/attributes/schema-rows")
-    return [ExtensionRow.from_mapping(item) for item in payload.get("rows", [])]
+    return (
+        [ExtensionRow.from_mapping(item) for item in payload.get("rows", [])],
+        [ExtensionAlias.from_mapping(item) for item in payload.get("aliases", [])],
+    )
 
 
-def build_run_schema(rows: list[ExtensionRow] | tuple[ExtensionRow, ...] = ()) -> CanonicalSchema:
+def fetch_extension_rows(client: Any | None = None) -> list[ExtensionRow]:
+    return fetch_extension(client)[0]
+
+
+def build_run_schema(rows=(), aliases=()) -> CanonicalSchema:
     base = CanonicalSchema.from_template()
-    schema = extend_schema(base, rows)
+    schema = extend_schema(base, rows, aliases)
     if schema is not base:
-        remember_extension_ids(schema, len(base.rows))
+        template_ids = base.row_ids
+        _KNOWN_EXTRA_IDS.update(row.id for row in schema.rows if row.id not in template_ids)
     return schema
 
 
 def schema_for_result(result: Any) -> CanonicalSchema:
-    """Schema of a finished run: template + the extension rows recorded on the result."""
-    return build_run_schema(tuple(getattr(result, "extension_rows", ()) or ()))
+    """Schema of a finished run: template + the extension rows and aliases recorded on the result."""
+    return build_run_schema(tuple(getattr(result, "extension_rows", ()) or ()),
+                            tuple(getattr(result, "extension_aliases", ()) or ()))

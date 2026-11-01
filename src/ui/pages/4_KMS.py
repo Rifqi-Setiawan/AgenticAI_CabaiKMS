@@ -9,6 +9,7 @@ if str(ROOT) not in sys.path:
 
 from src.integrations.streamlit_commit import render_inspector
 from src.integrations.candidates_ui import render_candidates_panel, render_habitat_unknown_documents_panel
+from src.integrations.schema_rows_ui import render_schema_rows_panel
 from src.ui.theme import apply_theme
 
 apply_theme()
@@ -27,3 +28,6 @@ with tab_cand:
 
 with tab_nohab:
     render_habitat_unknown_documents_panel()
+
+st.divider()
+render_schema_rows_panel()
