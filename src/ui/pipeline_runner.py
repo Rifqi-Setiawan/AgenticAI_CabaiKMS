@@ -74,6 +74,7 @@ from src.reliability.rate_limit import (
 )
 from src.reliability.wrappers import safe_classify_image, safe_rerank
 from src.schema.canonical import CanonicalSchema
+from src.agents.schema_matching import acquisition
 from src.schema.dynamic import (
     ExtensionRow,
     build_run_schema,
@@ -177,6 +178,14 @@ def _rows_to_state(rows: Any) -> list[dict]:
          "contoh_nilai": list(r.contoh_nilai), "alt_labels": list(r.alt_labels), "status": r.status}
         for r in (rows or ())
     ]
+
+
+def _make_acquire_call() -> Callable[[dict], dict]:
+    from src.integrations.client import KmsClient
+    from src.storage.config import get_settings
+
+    client = KmsClient(get_settings())
+    return lambda payload: client.request("POST", "/attributes/schema-rows", json=payload)
 
 
 def _load_extension_rows_for_run() -> tuple[tuple[ExtensionRow, ...], str | None]:
@@ -397,6 +406,9 @@ def _run_tabular_stage_impl(
     n_retrieve_rerank = 0
     verifier_counts = {status: 0 for status in MappingVerificationStatus}
     n_hard_blocked = 0
+    acquire_enabled = dynamic_schema_enabled()
+    acq_candidates: list[acquisition.Candidate] = []
+    acq_info: dict[int, dict] = {}
 
     mapping_identities = build_mapping_item_identities(
         source_file_sha256=source_hash,
@@ -564,9 +576,26 @@ def _run_tabular_stage_impl(
             "acceptance_reason": acceptance.reason,
             "canonical_write": False,
         }
+        if acquire_enabled:
+            mapping_row["acquisition_status"] = ""
         mapping_rows.append(mapping_row)
 
         grouped = group_attribute_contributions_by_variety(attr, position_to_variety)
+        if (
+            acquire_enabled
+            and mapping_method == "retrieve_rerank"
+            and mapping is not None
+            and mapping.target_canonical_row == NULL_ROW
+            and acquisition.passes_guard(attr.display_name, [str(v) for v in attr.sample_values])
+        ):
+            index = len(acq_candidates)
+            acq_candidates.append(acquisition.Candidate(
+                index=index, display_name=attr.display_name, context=attr.structural_context or "",
+                samples=[str(v) for v in attr.sample_values[:5]],
+                nearest=[f"{h.row_id}: {schema.row_by_id(h.row_id).label}" for h in (retrieved or [])[:4]
+                         if schema.row_by_id(h.row_id) is not None],
+            ))
+            acq_info[index] = {"attr": attr, "grouped": grouped, "mapping_row": mapping_row, "mapping_item_id": mapping_item_id}
         if acceptance.status is AcceptanceStatus.REVIEW and mapping is not None:
             review_item = review_queue.enqueue(
                 mapping,
@@ -682,6 +711,76 @@ def _run_tabular_stage_impl(
                     )
                 )
 
+    if acq_candidates:
+        on_progress(f"akuisisi: {len(acq_candidates)} atribut tanpa padanan dinilai untuk baris kanonik baru...")
+        outcomes = acquisition.acquire(
+            acq_candidates, existing_row_ids=set(schema.row_ids), acquire_call=_make_acquire_call(),
+            run_id=run_id, source_sha256=source_hash,
+        )
+        new_rows = {o.row.canonical_key: o.row for o in outcomes if o.status == "NEW_ROW" and o.row is not None}
+        if new_rows:
+            ext_rows = tuple(sorted({r.canonical_key: r for r in (*ext_rows, *new_rows.values())}.values(), key=lambda r: r.seq))
+            schema = build_run_schema(ext_rows)
+            builder.schema = schema
+            evaluation_config = EvaluationRunConfig(
+                source_backend=source_backend, retrieval_backend=retrieval_backend, retrieval_k=k,
+                canonical_schema_version=schema.schema_version, canonical_template_hash=schema.template_hash,
+                mapping_verification_version=MAPPING_VERIFICATION_VERSION, embedding_model_name=EMBEDDING_MODEL_NAME,
+            )
+        n_acquired = 0
+        for outcome in outcomes:
+            info = acq_info[outcome.index]
+            mapping_row = info["mapping_row"]
+            attr = info["attr"]
+            detail = outcome.status + (f":{outcome.duplicate_of}" if outcome.duplicate_of else "")
+            mapping_row["acquisition_status"] = detail
+            if outcome.status != "NEW_ROW" or outcome.row is None:
+                if outcome.note:
+                    state.update(review_queue.append_error_trace(state, f"akuisisi {attr.display_name!r}: {outcome.status} {outcome.note}"))
+                continue
+            target_row = schema.row_by_key(outcome.row.canonical_key)
+            if target_row is None:
+                mapping_row["acquisition_status"] = "FAILED:row_conflict"
+                continue
+            mapping_row.update({
+                "predicted_row": target_row.id, "proposed_target_canonical_key": target_row.canonical_key,
+                "predicted_label": target_row.label, "target_domain": target_row.domain,
+                "acceptance_status": AcceptanceStatus.AUTO_ACCEPT.value,
+                "acceptance_reason": "ACQUIRED_NEW_ROW (provisional)", "canonical_write": False,
+            })
+            wrote = False
+            for variety_name, contributions in info["grouped"].items():
+                combined = combine_multi_value([item.raw_value for item in contributions])
+                if combined is None:
+                    continue
+                normalized = normalize(combined, target_row)
+                if builder.set_cell(target_row.id, variety_name, normalized.value):
+                    wrote = True
+                    provenance_records.append(CellProvenanceRecord(
+                        run_id=run_id, source_file_name=file_path.name, source_file_sha256=source_hash,
+                        source_sheet=resolved_sheet_name, source_attribute=attr.attribute_name,
+                        source_context=attr.structural_context, source_attribute_display=attr.display_name,
+                        source_cells=physical_source_cells(contributions), source_attribute_id=attr.source_attribute_id,
+                        source_header_cells=list(attr.header_cells),
+                        source_ir_version=(source_bundle.source_ir.ir_version if source_bundle.source_ir is not None else None),
+                        variety=variety_name, canonical_row_id=target_row.id, canonical_key=target_row.canonical_key,
+                        canonical_label=target_row.label, canonical_domain=target_row.domain, raw_value=combined,
+                        normalized_value=normalized.value, normalization_required=False, normalization_note=normalized.note,
+                        mapping_confidence=0.0, acceptance_status=AcceptanceStatus.AUTO_ACCEPT.value,
+                        acceptance_reason="ACQUIRED_NEW_ROW (provisional)", schema_version=schema.schema_version,
+                        template_hash=schema.template_hash, mapping_method="retrieve_rerank",
+                        verifier_status="REVIEW", verifier_hard_issues=[],
+                    ))
+            mapping_row["canonical_write"] = wrote
+            if wrote:
+                n_acquired += 1
+        n_no_write -= n_acquired
+        n_auto_accept += n_acquired
+        agent_status["acquisition"] = f"{len(acq_candidates)} kandidat: " + ", ".join(
+            f"{status}={sum(o.status == status for o in outcomes)}"
+            for status in ("NEW_ROW", "DUPLICATE_OF", "NOT_CHARACTERISTIC", "FAILED")
+        )
+
     agent_status["schema_matching"] = (
         f"selesai — {len(mapping_rows)} atribut: {n_auto_accept} AUTO_ACCEPT, "
         f"{n_review} REVIEW, {n_no_write} NO_WRITE; methods: "
@@ -698,7 +797,9 @@ def _run_tabular_stage_impl(
         f"hard-blocked={n_hard_blocked}"
     )
 
-    mapping_df = pd.DataFrame(mapping_rows, columns=MAPPING_COLUMNS)
+    mapping_df = pd.DataFrame(
+        mapping_rows, columns=MAPPING_COLUMNS + (["acquisition_status"] if acquire_enabled else []),
+    )
     if not mapping_df.empty:
         mapping_df = mapping_df.sort_values("confidence", ascending=True, kind="stable").reset_index(drop=True)
 
@@ -789,6 +890,15 @@ def _result_from_runtime_state(state: dict) -> PipelineRunResult:
     mapping_df = pd.read_json(io.StringIO(state["mapping_json"]), orient="table")
     ext_rows = _rows_from_state(state.get("extension_rows"))
     schema = build_run_schema(ext_rows)
+    fingerprint = state["evaluation_config_fingerprint"]
+    if schema.schema_version != state["schema_version"]:  # rows were acquired during this run
+        fingerprint = EvaluationRunConfig(
+            source_backend=state["source_backend"], retrieval_backend=state["retrieval_backend"],
+            retrieval_k=state["retrieval_k"], canonical_schema_version=schema.schema_version,
+            canonical_template_hash=state["template_hash"],
+            mapping_verification_version=state["mapping_verification_version"],
+            embedding_model_name=state["embedding_model_name"],
+        ).fingerprint
     workbook = openpyxl.load_workbook(io.BytesIO(state["workbook_bytes"]))
     canonical_df = worksheet_to_dataframe(workbook[SHEET_NAME], schema, state["variety_names"])
     workbook.close()
@@ -803,10 +913,10 @@ def _result_from_runtime_state(state: dict) -> PipelineRunResult:
         structure_shadow=(ShadowParityReport.model_validate(state["structure_shadow"]) if state.get("structure_shadow") else None),
         source_backend=state["source_backend"], retrieval_backend=state["retrieval_backend"],
         mapping_verifications=[MappingVerificationResult.model_validate(x) for x in state.get("mapping_verifications", [])],
-        schema_version=state["schema_version"], template_hash=state["template_hash"],
+        schema_version=schema.schema_version, template_hash=state["template_hash"],
         retrieval_k=state["retrieval_k"], mapping_verification_version=state["mapping_verification_version"],
         embedding_model_name=state["embedding_model_name"],
-        evaluation_config_fingerprint=state["evaluation_config_fingerprint"], run_id=state["run_id"],
+        evaluation_config_fingerprint=fingerprint, run_id=state["run_id"],
         review_queue_path=state["review_queue_path"], source_ir_version=state.get("source_ir_version"),
         extension_rows=tuple(ext_rows),
     )

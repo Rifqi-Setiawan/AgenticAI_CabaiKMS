@@ -42,7 +42,7 @@ class SchemaRowRepository:
     def acquire(
         self, *, label: str, domain: str, examples: list[str] | None, source_label: str | None,
         run_id: str, source_sha256: str | None, actor: str, reason: str,
-        allowed_domains: frozenset[str] | None = None,
+        allowed_domains: frozenset[str] | None = None, aliases: list[str] | None = None,
     ) -> dict[str, Any]:
         """Create a provisional row unless the meaning already exists. Returns {created, row, duplicate_of}."""
         label = (label or "").strip()
@@ -73,6 +73,12 @@ class SchemaRowRepository:
             if hit is not None:
                 return {"created": False, "duplicate_of": hit, "row": None}
             keys_taken |= set(session.execute(text("SELECT canonical_key FROM kms.schema_rows_ext")).scalars().all())
+            known_names = {normalize_label(n) for r in template.rows for n in (r.label, *r.alt_labels)}
+            for stored_label, stored_aliases in session.execute(text(
+                    "SELECT label_norm, aliases FROM kms.schema_rows_ext WHERE status IN ('provisional','approved')")).all():
+                known_names |= {stored_label, *stored_aliases}
+            known_names |= set(session.execute(text("SELECT alias_norm FROM kms.schema_aliases_ext")).scalars().all())
+            alias_norms = sorted({normalize_label(a) for a in (aliases or []) if normalize_label(a)} - {label_norm} - known_names)
             base_key = slugify_attribute_key(label) or "atribut_baru"
             if not base_key[0].isalpha():
                 base_key = "a_" + base_key
@@ -83,11 +89,11 @@ class SchemaRowRepository:
                 row = session.execute(text(
                     "INSERT INTO kms.schema_rows_ext (canonical_key, label, label_norm, domain, examples, aliases, status, "
                     "source_label, source_file_sha256, created_from_run, created_by, reason) "
-                    "VALUES (:k, :label, :n, :d, CAST(:ex AS jsonb), '[]'::jsonb, 'provisional', :src, :sha, :run, :actor, :reason) "
+                    "VALUES (:k, :label, :n, :d, CAST(:ex AS jsonb), CAST(:al AS jsonb), 'provisional', :src, :sha, :run, :actor, :reason) "
                     "RETURNING seq, canonical_key, label, domain, examples, aliases, status"),
                     {"k": key, "label": label, "n": label_norm, "d": domain,
                      "ex": json.dumps([str(x) for x in (examples or [])[:5]], ensure_ascii=False),
-                     "src": source_label, "sha": source_sha256, "run": run_id, "actor": actor,
+                     "al": json.dumps(alias_norms, ensure_ascii=False), "src": source_label, "sha": source_sha256, "run": run_id, "actor": actor,
                      "reason": reason}).mappings().one()
             except IntegrityError as error:
                 raise Conflict("Row conflicts with an existing acquired row.") from error

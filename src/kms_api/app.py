@@ -389,6 +389,7 @@ def create_app(
             return schema_rows.acquire(
                 label=str(body.get('label') or ''), domain=str(body.get('domain') or ''),
                 examples=[str(x) for x in (body.get('examples') or [])],
+                aliases=[str(x) for x in (body.get('aliases') or [])],
                 source_label=body.get('source_label'), run_id=str(body.get('run_id') or ''),
                 source_sha256=body.get('source_sha256'), actor=principal.subject,
                 reason=str(body.get('reason') or 'acquired from run'),
