@@ -138,6 +138,58 @@ def test_pipeline_stage_adds_rows_to_excel_without_touching_template_rows(monkey
     assert result.evaluation_config_fingerprint
 
 
+def _null_rerank(profile, retrieved, state, **kwargs):
+    mapping = SchemaMapping(source_attribute=profile.attribute_name, source_context=profile.structural_context,
+                            source_format="row-oriented", target_canonical_row=NULL_ROW, confidence=0.1,
+                            reasoning="uji", normalization_required=False)
+    return mapping, {}
+
+
+def test_acquired_attributes_are_not_left_pending_in_the_review_queue(monkeypatch, tmp_path):
+    """An attribute that got a row (AUTO_ACCEPT) must not also sit in the review queue as pending."""
+    import pandas as pd
+
+    from src.agents.schema_matching import review_queue
+    from src.ui import pipeline_runner as pr
+
+    monkeypatch.setenv("KMS_DYNAMIC_SCHEMA", "true")
+    monkeypatch.setattr(pr, "_make_acquire_call", lambda: _FakeStore())
+    monkeypatch.setattr(pr, "safe_rerank", _null_rerank)
+    monkeypatch.setattr(acquisition, "plan", lambda cands, llm_call=None, catalog=(): AcquisitionPlan(
+        items=[_item(c.index, f"Atribut Uji {c.index}", group=c.index, domain="vegetatif") for c in cands]))
+    queue = tmp_path / "queue.jsonl"
+    result = pr._run_tabular_stage_impl(SAMPLE, source_format="row-oriented", sheet_name="Resume Data",
+                                        retrieval_backend="exact", review_queue_path=queue)
+    df = result.mapping_df
+    acquired = df[df["acquisition_status"] == "NEW_ROW"]
+    assert len(acquired) >= 1
+    pending_ids = {item.item_id for item in review_queue.list_pending(queue, run_id=result.run_id)}
+    for _, row in acquired.iterrows():
+        assert pd.isna(row["review_item_id"]) or not row["review_item_id"]
+        assert row["acceptance_status"] == "AUTO_ACCEPT"
+    assert pending_ids == {r for r in df["review_item_id"].dropna() if r}
+
+
+def test_candidates_that_are_not_acquired_still_reach_the_review_queue(monkeypatch, tmp_path):
+    from src.agents.schema_matching import review_queue
+    from src.ui import pipeline_runner as pr
+
+    monkeypatch.setenv("KMS_DYNAMIC_SCHEMA", "true")
+    monkeypatch.setattr(pr, "_make_acquire_call", lambda: _FakeStore())
+    monkeypatch.setattr(pr, "safe_rerank", _null_rerank)
+    monkeypatch.setattr(acquisition, "plan", lambda cands, llm_call=None, catalog=(): AcquisitionPlan(
+        items=[_item(c.index, "x", group=c.index, ok=False) for c in cands]))
+    queue = tmp_path / "queue.jsonl"
+    result = pr._run_tabular_stage_impl(SAMPLE, source_format="row-oriented", sheet_name="Resume Data",
+                                        retrieval_backend="exact", review_queue_path=queue)
+    df = result.mapping_df
+    rejected = df[df["acquisition_status"] == "NOT_CHARACTERISTIC"]
+    assert len(rejected) >= 1
+    assert all(isinstance(v, str) and v for v in rejected["review_item_id"])
+    pending = {item.item_id for item in review_queue.list_pending(queue, run_id=result.run_id)}
+    assert set(rejected["review_item_id"]) <= pending
+
+
 def test_flag_off_pipeline_has_no_acquisition_column(monkeypatch, tmp_path):
     from src.ui import pipeline_runner as pr
 

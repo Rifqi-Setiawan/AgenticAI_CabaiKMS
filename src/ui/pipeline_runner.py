@@ -22,6 +22,7 @@ Python"), not a production job queue.
 from __future__ import annotations
 
 import io
+from functools import partial
 import re
 import uuid
 import zipfile
@@ -594,6 +595,7 @@ def _run_tabular_stage_impl(
         mapping_rows.append(mapping_row)
 
         grouped = group_attribute_contributions_by_variety(attr, position_to_variety)
+        acq_index = None
         if (
             acquire_enabled
             and mapping_method == "retrieve_rerank"
@@ -601,7 +603,7 @@ def _run_tabular_stage_impl(
             and mapping.target_canonical_row == NULL_ROW
             and acquisition.passes_guard(attr.display_name, [str(v) for v in attr.sample_values])
         ):
-            index = len(acq_candidates)
+            index = acq_index = len(acq_candidates)
             acq_candidates.append(acquisition.Candidate(
                 index=index, display_name=attr.display_name, context=attr.structural_context or "",
                 samples=[str(v) for v in attr.sample_values[:5]],
@@ -610,7 +612,8 @@ def _run_tabular_stage_impl(
             ))
             acq_info[index] = {"attr": attr, "grouped": grouped, "mapping_row": mapping_row, "mapping_item_id": mapping_item_id}
         if acceptance.status is AcceptanceStatus.REVIEW and mapping is not None:
-            review_item = review_queue.enqueue(
+            enqueue_call = partial(
+                review_queue.enqueue,
                 mapping,
                 reason=acceptance.reason,
                 queue_path=review_queue_path,
@@ -643,8 +646,13 @@ def _run_tabular_stage_impl(
                 source_header_cells=list(attr.header_cells),
                 source_ir_version=(source_bundle.source_ir.ir_version if source_bundle.source_ir else None),
             )
-            mapping_row["review_item_id"] = review_item.item_id
-            state.update(review_queue.append_error_trace(state, acceptance.reason))
+            if acq_index is not None:
+                # Acquisition may still give this attribute a row; enqueue only if it does not (see below).
+                acq_info[acq_index]["enqueue"] = (enqueue_call, acceptance.reason)
+            else:
+                review_item = enqueue_call()
+                mapping_row["review_item_id"] = review_item.item_id
+                state.update(review_queue.append_error_trace(state, acceptance.reason))
 
         # Selective-acceptance safety invariant: only AUTO_ACCEPT may cross
         # this boundary into normalization or canonical mutation.
@@ -762,6 +770,11 @@ def _run_tabular_stage_impl(
                     mapping_row["acquisition_status"] = f"MERGED_TO:{target_row.canonical_key}"
                 reason_text = "ACQUIRED_DUPLICATE_OF_EXISTING (provisional)"
             if target_row is None:
+                deferred = info.get("enqueue")
+                if deferred is not None:
+                    enqueue_call, review_reason = deferred
+                    mapping_row["review_item_id"] = enqueue_call().item_id
+                    state.update(review_queue.append_error_trace(state, review_reason))
                 if outcome.note:
                     state.update(review_queue.append_error_trace(state, f"akuisisi {attr.display_name!r}: {outcome.status} {outcome.note}"))
                 continue
