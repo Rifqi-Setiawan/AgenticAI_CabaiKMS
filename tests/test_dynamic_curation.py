@@ -73,6 +73,24 @@ def test_panel_offers_approve_merge_and_discard_for_each_provisional_row():
     assert any(k.startswith("sr_merge_") for k in keys) and any(k.startswith("sr_drop_") for k in keys)
 
 
+def test_refused_curation_shows_a_readable_message_and_does_not_rerun():
+    from src.integrations import schema_rows_ui
+
+    client = MagicMock()
+    client.request.side_effect = RuntimeError("HTTP 403: Curator role required.")
+    with patch("streamlit.error") as err:
+        assert schema_rows_ui._post(client, "aroma", "approve", {"reason": "alasan cukup panjang"}) is False
+    assert "curator" in err.call_args.args[0].lower()
+
+
+def test_successful_curation_reports_success():
+    from src.integrations import schema_rows_ui
+
+    client = MagicMock()
+    assert schema_rows_ui._post(client, "aroma", "approve", {"reason": "alasan cukup panjang"}) is True
+    client.request.assert_called_once()
+
+
 # ----------------------------------------------------------------------------- database
 @pytest.fixture
 def db() -> Engine:
