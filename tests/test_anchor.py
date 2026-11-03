@@ -134,7 +134,9 @@ class TestDetectAnchor:
 
     def test_threshold_can_force_escalation_even_with_a_real_anchor_present(self):
         result = detect_anchor(
-            ROW_ORIENTED_CANDIDATES_WITH_ANCHOR, source_format="row-oriented", threshold=0.95
+            # Casefolded "jenis cabai" equals a concept phrase (cosine 1.0), so only a
+            # threshold above 1.0 can still force escalation.
+            ROW_ORIENTED_CANDIDATES_WITH_ANCHOR, source_format="row-oriented", threshold=1.01
         )
         assert result.status == "escalate"
 
@@ -148,3 +150,23 @@ class TestDetectAnchor:
         result = detect_anchor(ROW_ORIENTED_CANDIDATES_SINTETIS_1, source_format="row-oriented")
         assert result.status == "found"
         assert result.column_name == "Jenis Cabai"
+
+    def test_does_not_pick_header_that_only_mentions_varietas(self):
+        """Regression test: on the Kementan workbooks (E07, input_cabai_kms) the
+        case-sensitive encoder ranked "Keunggulan varietas" (variety advantages)
+        and "Golongan varietas" above the real identity column "Varietas Cabai",
+        so output variety columns were named after advantage sentences."""
+        result = detect_anchor([
+            AnchorCandidate("Varietas Cabai"), AnchorCandidate("Asal"),
+            AnchorCandidate("Golongan varietas"), AnchorCandidate("Bentuk biji"),
+            AnchorCandidate("Keunggulan varietas"),
+        ], source_format="row-oriented")
+        assert result.status == "found"
+        assert result.column_name == "Varietas Cabai"
+
+    def test_header_case_does_not_change_the_choice(self):
+        for header in ("JENIS CABAI", "jenis cabai", "Jenis Cabai", "  Jenis   Cabai "):
+            result = detect_anchor([
+                AnchorCandidate("Lokasi Sampling"), AnchorCandidate(header), AnchorCandidate("pH Tanah"),
+            ], source_format="row-oriented")
+            assert result.column_name == header

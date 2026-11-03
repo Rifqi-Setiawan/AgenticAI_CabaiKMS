@@ -25,6 +25,13 @@ data_input_sintetis_1.xlsx (the header-only score for "Jenis Cabai" clears
 0.74 in both, with the next-highest real candidate — "Lokasi Sampling" —
 around 0.64, hence DEFAULT_THRESHOLD sitting between the two).
 
+Headers are compared case-insensitively (stripped and casefolded) because
+the multilingual encoder is case-sensitive: "Varietas Cabai" scored only
+0.749 against the concept "varietas cabai", so "Keunggulan varietas" (0.886)
+won on the Kementan workbooks and produced variety columns named after the
+"advantages" text. Casefolding gives the real anchor 1.0 there and leaves
+the choice unchanged on every other evaluation workbook.
+
 For transposed spreadsheets, varietas identity is already the column
 headers, so anchor detection is skipped entirely (`status="not_required"`).
 
@@ -56,8 +63,15 @@ _concept_embedding_cache: dict[str, list[list[float]]] = {}
 
 def _concept_embeddings(model_name: str = EMBEDDING_MODEL_NAME) -> list[list[float]]:
     if model_name not in _concept_embedding_cache:
-        _concept_embedding_cache[model_name] = encode(ANCHOR_CONCEPT_PHRASES, model_name=model_name)
+        _concept_embedding_cache[model_name] = encode(
+            [_normalize_header(p) for p in ANCHOR_CONCEPT_PHRASES], model_name=model_name
+        )
     return _concept_embedding_cache[model_name]
+
+
+def _normalize_header(name: str) -> str:
+    """Case-insensitive, whitespace-trimmed header text for embedding."""
+    return " ".join(str(name).split()).casefold()
 
 
 def _cosine(a: list[float], b: list[float]) -> float:
@@ -107,7 +121,9 @@ def detect_anchor(
         )
 
     concept_embeddings = _concept_embeddings(model_name)
-    candidate_embeddings = encode([c.column_name for c in candidates], model_name=model_name)
+    candidate_embeddings = encode(
+        [_normalize_header(c.column_name) for c in candidates], model_name=model_name
+    )
 
     scored = [
         (candidate, max(_cosine(emb, concept) for concept in concept_embeddings))
