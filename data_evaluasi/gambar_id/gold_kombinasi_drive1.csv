@@ -1,5 +1,4 @@
 ﻿spreadsheet,filename,varietas_atau_jenis,bagian,expected_status,expected_variety,dinilai,dapat_dibedakan_dari_gambar,kelayakan,catatan
-S01,C. annuum - bentuk buah_ warna bh_ posisi buah menggantung.jpg,C. annuum,BUAH,UNCERTAIN,,Y,Y,layak,Dua buah hijau panjang menggantung.
 S01,cabai domba.jpg,Domba,BUAH,OTHER,,Y,Y,layak,Buah menggantung hijau-oranye pada tanaman.
 S01,cabai katokon - bentuk daun.jpg,Katokkon,DAUN,KNOWN,Katokkon,Y,N,layak,Tanaman muda di rumah kaca.
 S01,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,Katokkon,BUNGA,KNOWN,Katokkon,Y,N,layak,"Dua bunga, foto vertikal."
@@ -10,8 +9,6 @@ S01,daun cabai domba.webp,Domba,DAUN,OTHER,,Y,N,layak,"Tanaman pot, fokus daun."
 S01,daun cabai gendot,Gendot,DAUN,KNOWN,Gendot,Y,N,perlu cek hak cipta,Ada watermark media sosial (@lusymardiani75 / lemon8); berkas tanpa ekstensi (sebenarnya JPEG).
 S01,daun cabai kopay.jpg,Kopay,DAUN,KNOWN,Kopay,N,N,tidak layak,Gambar stok bergaya cutout dengan latar transparan; bukan foto varietas.
 S01,p9vb80t0ldt5cms.webp,(tidak diketahui),BUAH,,,N,Y,perlu label,"Nama acak; buah hijau membulat di tangan; varietas belum diberi label (dugaan Gendot, belum pasti). Sebenarnya JPEG."
-S01,warna tangkai daun C. chinense dan C. annuum permukaan bawah.jpg,C. chinense dan C. annuum,TANGKAI DAUN,UNCERTAIN,,Y,N,layak,"Dua daun, permukaan bawah."
-S02,C. annuum - bentuk buah_ warna bh_ posisi buah menggantung.jpg,C. annuum,BUAH,UNCERTAIN,,Y,Y,layak,Dua buah hijau panjang menggantung.
 S02,cabai domba.jpg,Domba,BUAH,OTHER,,Y,Y,layak,Buah menggantung hijau-oranye pada tanaman.
 S02,cabai katokon - bentuk daun.jpg,Katokkon,DAUN,KNOWN,Katokkon,Y,N,layak,Tanaman muda di rumah kaca.
 S02,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,Katokkon,BUNGA,KNOWN,Katokkon,Y,N,layak,"Dua bunga, foto vertikal."
@@ -22,8 +19,6 @@ S02,daun cabai domba.webp,Domba,DAUN,OTHER,,Y,N,layak,"Tanaman pot, fokus daun."
 S02,daun cabai gendot,Gendot,DAUN,KNOWN,Gendot,Y,N,perlu cek hak cipta,Ada watermark media sosial (@lusymardiani75 / lemon8); berkas tanpa ekstensi (sebenarnya JPEG).
 S02,daun cabai kopay.jpg,Kopay,DAUN,KNOWN,Kopay,N,N,tidak layak,Gambar stok bergaya cutout dengan latar transparan; bukan foto varietas.
 S02,p9vb80t0ldt5cms.webp,(tidak diketahui),BUAH,,,N,Y,perlu label,"Nama acak; buah hijau membulat di tangan; varietas belum diberi label (dugaan Gendot, belum pasti). Sebenarnya JPEG."
-S02,warna tangkai daun C. chinense dan C. annuum permukaan bawah.jpg,C. chinense dan C. annuum,TANGKAI DAUN,UNCERTAIN,,Y,N,layak,"Dua daun, permukaan bawah."
-S03,C. annuum - bentuk buah_ warna bh_ posisi buah menggantung.jpg,C. annuum,BUAH,UNCERTAIN,,Y,Y,layak,Dua buah hijau panjang menggantung.
 S03,cabai domba.jpg,Domba,BUAH,KNOWN,Domba,Y,Y,layak,Buah menggantung hijau-oranye pada tanaman.
 S03,cabai katokon - bentuk daun.jpg,Katokkon,DAUN,KNOWN,Katokkon,Y,N,layak,Tanaman muda di rumah kaca.
 S03,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,Katokkon,BUNGA,KNOWN,Katokkon,Y,N,layak,"Dua bunga, foto vertikal."
@@ -34,8 +29,6 @@ S03,daun cabai domba.webp,Domba,DAUN,KNOWN,Domba,Y,N,layak,"Tanaman pot, fokus d
 S03,daun cabai gendot,Gendot,DAUN,OTHER,,Y,N,perlu cek hak cipta,Ada watermark media sosial (@lusymardiani75 / lemon8); berkas tanpa ekstensi (sebenarnya JPEG).
 S03,daun cabai kopay.jpg,Kopay,DAUN,OTHER,,N,N,tidak layak,Gambar stok bergaya cutout dengan latar transparan; bukan foto varietas.
 S03,p9vb80t0ldt5cms.webp,(tidak diketahui),BUAH,,,N,Y,perlu label,"Nama acak; buah hijau membulat di tangan; varietas belum diberi label (dugaan Gendot, belum pasti). Sebenarnya JPEG."
-S03,warna tangkai daun C. chinense dan C. annuum permukaan bawah.jpg,C. chinense dan C. annuum,TANGKAI DAUN,UNCERTAIN,,Y,N,layak,"Dua daun, permukaan bawah."
-S04,C. annuum - bentuk buah_ warna bh_ posisi buah menggantung.jpg,C. annuum,BUAH,UNCERTAIN,,Y,Y,layak,Dua buah hijau panjang menggantung.
 S04,cabai domba.jpg,Domba,BUAH,OTHER,,Y,Y,layak,Buah menggantung hijau-oranye pada tanaman.
 S04,cabai katokon - bentuk daun.jpg,Katokkon,DAUN,OTHER,,Y,N,layak,Tanaman muda di rumah kaca.
 S04,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,Katokkon,BUNGA,OTHER,,Y,N,layak,"Dua bunga, foto vertikal."
@@ -46,4 +39,3 @@ S04,daun cabai domba.webp,Domba,DAUN,OTHER,,Y,N,layak,"Tanaman pot, fokus daun."
 S04,daun cabai gendot,Gendot,DAUN,KNOWN,Gendot,Y,N,perlu cek hak cipta,Ada watermark media sosial (@lusymardiani75 / lemon8); berkas tanpa ekstensi (sebenarnya JPEG).
 S04,daun cabai kopay.jpg,Kopay,DAUN,KNOWN,Kopay,N,N,tidak layak,Gambar stok bergaya cutout dengan latar transparan; bukan foto varietas.
 S04,p9vb80t0ldt5cms.webp,(tidak diketahui),BUAH,,,N,Y,perlu label,"Nama acak; buah hijau membulat di tangan; varietas belum diberi label (dugaan Gendot, belum pasti). Sebenarnya JPEG."
-S04,warna tangkai daun C. chinense dan C. annuum permukaan bawah.jpg,C. chinense dan C. annuum,TANGKAI DAUN,UNCERTAIN,,Y,N,layak,"Dua daun, permukaan bawah."

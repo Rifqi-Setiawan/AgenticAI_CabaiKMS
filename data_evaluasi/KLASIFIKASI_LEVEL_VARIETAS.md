@@ -104,6 +104,23 @@ KNOWN/OTHER ikut berubah karena ketiga nama baru tidak ada di daftar varietas te
 CANDIDATE. Alasan perubahan dicatat di kolom `catatan_tinjauan`. Status KNOWN/OTHER di seluruh gold tetap perlu
 ditinjau ulang setelah daftar varietas terdaftar yang baru ditetapkan.
 
+## 2d-2. Tahap 3 (5 November 2026): jejak di gold dan berkas daftar dibersihkan
+
+Skrip `--tahap3` membuang baris untuk data yang sudah dikeluarkan. Versi sebelum penyaringan disimpan di arsip lokal.
+
+- **Foto (117 Commons + 2 Indonesia):** baris dihapus dari manifest gold (final dan usulan AI, CSV dan XLSX),
+  `ATRIBUSI_LISENSI.csv`, `pembagian_8_folder.csv`, gold bagian (`gold_bagian_commons.csv`, `kunci_nomor.csv`),
+  gold kombinasi foto Indonesia, dan daftar foto Indonesia. Gold foto Commons tersisa 41 baris.
+- **Dipindah ke arsip:** `lembar_bagian_160.xlsx` dan `lembar_gold_foto_indonesia.xlsx` (keduanya menyimpan foto di dalam
+  berkas, termasuk foto yang dikeluarkan; isi gold-nya tetap ada di CSV), `gold_R01_data_input.xlsx`, dan cadangan
+  manifest sebelum ganti label.
+- **Gold atribut:** 14 butir R01 dibuang (326 menjadi 312 butir; TOTAL di sheet Ringkasan disesuaikan).
+- **Kunci sel:** baris R01, Cabai tanjung (S01, S03), Cabai rawit NTB (S03), dan 13 genotipe tipe N08 dibuang (602 menjadi 409).
+- **`data_input_dummy/T01`–`T08`** (berkas dummy lama yang tidak dipakai kode maupun tes) dihapus dari repo.
+
+Tidak dibersihkan: hasil run lama (`dataset_eksperimen/4_hasil_sistem/`, `data_evaluasi/hasil_eksperimen/`), karena itu catatan
+historis yang angkanya dipakai di draf paper; `data/samples/data_input.xlsx`, karena dipakai kode dan tes; dan riwayat git.
+
 ## 2e. Riset nama lokal dan aksesi GRIN yang tersisa (5 November 2026)
 
 | Nama | Kesimpulan | Bukti |

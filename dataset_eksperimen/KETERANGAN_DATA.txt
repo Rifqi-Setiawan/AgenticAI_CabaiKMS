@@ -306,6 +306,8 @@ Rincian, usulan nama varietas untuk kelompok abu-abu, dan sumber: data_evaluasi/
 Skrip: data_evaluasi/skrip/keluarkan_non_varietas.py. Backup: backup_sebelum_hapus_nonvarietas_2026-11-04.zip
 (folder Penulisan Proposal).
 Checksum arsip ada di _dikeluarkan_bukan_varietas/SHA256SUMS.txt (arsip hanya disimpan lokal, tidak di GitHub).
+Tahap 3 (5 Nov 2026): baris foto yang dikeluarkan juga dibuang dari ATRIBUSI_LISENSI.csv,
+pembagian_8_folder.csv (commons_8_folder) dan daftar_foto.csv (foto_indonesia_drive1). Hasil di 4_hasil_sistem/ tetap.
 
 
 =====================================================================

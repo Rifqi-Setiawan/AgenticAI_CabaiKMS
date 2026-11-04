@@ -142,8 +142,89 @@ if TAHAP2:
     hapus_baris("D03_row_multilevel_indonesia.xlsx", [("Data_Bertingkat", "A")], {"Cabai tanjung"},
                 "[tahap 2] S03: 'Cabai tanjung' = tipe; varietas resmi Tanjung-1/Tanjung-2 tidak dapat dipastikan")
 
-if not (TAHAP1 or TAHAP2):
-    sys.exit("Pilih --tahap1 atau --tahap2")
+TAHAP3 = "--tahap3" in sys.argv
+
+
+def saring_csv(p, kolom, buang, alasan):
+    """Hapus baris CSV yang nilai `kolom`-nya memenuhi buang(row); BOM dan akhir baris dipertahankan."""
+    if not os.path.exists(p):
+        return
+    raw = open(p, "rb").read()
+    bom = raw.startswith(b"\xef\xbb\xbf")
+    eol = "\r\n" if b"\r\n" in raw else "\n"
+    rows = list(csv.DictReader(raw.decode("utf-8-sig").splitlines()))
+    sisa = [r for r in rows if not buang(r)]
+    n = len(rows) - len(sisa)
+    if n == 0:
+        return
+    dst = arsip_path(p)
+    log.append(("saring baris", p, dst, f"{alasan} | {n} baris dibuang, {len(sisa)} tersisa"))
+    if JALANKAN:
+        if not os.path.exists(dst):
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+            shutil.copy2(p, dst)
+        with open(p, "w", encoding="utf-8-sig" if bom else "utf-8", newline="") as fh:
+            w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()), lineterminator=eol)
+            w.writeheader()
+            w.writerows(sisa)
+
+
+def saring_xlsx(p, sheet, kolom, buang_nilai, alasan):
+    if not os.path.exists(p):
+        return
+    wb = openpyxl.load_workbook(p)
+    ws = wb[sheet]
+    idx = [c.row for c in ws[kolom][1:] if c.value is not None and buang_nilai(str(c.value).strip())]
+    if not idx:
+        return
+    for i in sorted(idx, reverse=True):
+        ws.delete_rows(i)
+    log.append(("saring baris", p, simpan_dengan_arsip(p, wb), f"{alasan} | {sheet}: {len(idx)} baris dibuang"))
+
+
+if TAHAP3:
+    # Buang jejak data yang sudah dikeluarkan dari gold dan berkas daftar (5 Nov 2026).
+    daftar = list(csv.DictReader(open(DAFTAR, encoding="utf-8-sig")))
+    foto = {r["path_asli"].split("/")[-1] for r in daftar if r["aksi"] == "pindah"
+            and r["path_asli"].lower().endswith((".jpg", ".jpeg", ".png", ".webp"))}
+    a = "[tahap 3] baris foto yang sudah dikeluarkan"
+    for p in ["data_evaluasi/gambar/manifest/gold_gambar_manifest_final.csv",
+              "data_evaluasi/gambar/manifest/gold_gambar_manifest.csv",
+              "data_evaluasi/gambar/manifest/ATRIBUSI_LISENSI.csv",
+              "data_evaluasi/gambar/manifest/pembagian_8_folder.csv",
+              "dataset_eksperimen/2_input_foto/commons_8_folder/ATRIBUSI_LISENSI.csv",
+              "dataset_eksperimen/2_input_foto/commons_8_folder/pembagian_8_folder.csv",
+              "data_evaluasi/gold/bagian_foto_commons/gold_bagian_commons.csv",
+              "data_evaluasi/gold/bagian_foto_commons/kunci_nomor.csv",
+              "data_evaluasi/gambar_id/gold_kombinasi_drive1.csv",
+              "data_evaluasi/gambar_id/gold_peneliti/gold_kombinasi_peneliti.csv",
+              "data_evaluasi/gambar_id/foto_peneliti/foto_peneliti.csv",
+              "dataset_eksperimen/2_input_foto/foto_indonesia_drive1/daftar_foto.csv"]:
+        saring_csv(p, "filename", lambda r: r["filename"] in foto, a)
+    saring_xlsx("data_evaluasi/gambar/manifest/gold_gambar_manifest.xlsx", "Manifest", "A", lambda v: v in foto, a)
+    # Lembar anotasi menyimpan foto di dalam berkas (termasuk foto yang dikeluarkan); gold-nya sudah ada sebagai CSV.
+    for p in ["data_evaluasi/gold/bagian_foto_commons/lembar_bagian_160.xlsx",
+              "data_evaluasi/gambar_id/gold_peneliti/lembar_gold_foto_indonesia.xlsx",
+              "data_evaluasi/gambar/manifest/gold_gambar_manifest_final.bak_sebelum_ganti_label_2026-11-05.csv"]:
+        if os.path.exists(p):
+            pindah(p, "[tahap 3] lembar/cadangan yang memuat foto atau baris yang sudah dikeluarkan")
+    # R01 dan varietas yang dikeluarkan di gold atribut dan kunci sel
+    if os.path.exists("data_evaluasi/gold/gold_R01_data_input.xlsx"):
+        pindah("data_evaluasi/gold/gold_R01_data_input.xlsx", "[tahap 3] gold R01 (workbook dikeluarkan)")
+    for p in ["data_evaluasi/gold/gold_semua_dataset.csv", "data_evaluasi/gold/final/gold_semua_dataset_final.csv"]:
+        saring_csv(p, "dataset_id", lambda r: r["dataset_id"] == "R01", "[tahap 3] butir gold R01")
+    saring_xlsx("data_evaluasi/gold/gold_semua_dataset.xlsx", "Annotations", "G", lambda v: v == "R01", "[tahap 3] butir gold R01")
+    saring_xlsx("data_evaluasi/gold/gold_semua_dataset.xlsx", "Ringkasan", "A", lambda v: v == "R01", "[tahap 3] ringkasan R01")
+    var_keluar = {("S01", "Cabai tanjung"), ("S03", "Cabai tanjung"), ("S03", "Cabai rawit NTB")} | {
+        ("N08", v) for v in ["Arari bode amarela", "Biquinho amarela", "Biquinho vermelha", "Cayenne", "Cheiro do Norte",
+                             "Cumari do Pará", "Habanero amarela", "Habanero chocolate", "Habanero vermelha",
+                             "Malagueta", "Murupi", "Peito de moça", "Piãozinho"]}
+    saring_csv("data_evaluasi/gold/kunci_sel/kunci_sel_semua.csv", "dataset",
+               lambda r: r["dataset"] == "R01" or (r["dataset"], r["varietas"]) in var_keluar,
+               "[tahap 3] kunci sel R01 dan varietas yang dikeluarkan")
+
+if not (TAHAP1 or TAHAP2 or TAHAP3):
+    sys.exit("Pilih --tahap1, --tahap2, atau --tahap3")
 for a in log:
     print(" | ".join(a))
 print("total aksi:", len(log), "(DRY RUN)" if not JALANKAN else "(DIJALANKAN)")

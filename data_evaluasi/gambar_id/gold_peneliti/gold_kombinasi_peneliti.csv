@@ -1,5 +1,4 @@
 spreadsheet,filename,varietas_atau_jenis,sumber_varietas,bagian,bagian_lain,bagian_boleh,expected_status,expected_variety,dinilai,dapat_dibedakan_dari_gambar,yakin_varietas,catatan,anotator,tanggal
-S01,C. annuum - bentuk buah_ warna bh_ posisi buah menggantung.jpg,Cabai Besar,tebakan AI,BUAH,DAUN,BUAH|DAUN,OTHER,,Y,Y,Ragu,,peneliti (Rifqi),2026-11-04
 S01,cabai domba.jpg,Domba,peneliti,BUAH,DAUN,BUAH|DAUN,OTHER,,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
 S01,cabai katokon - bentuk daun.jpg,Katokkon,peneliti,DAUN,,DAUN,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
 S01,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,Katokkon,peneliti,BUNGA,BATANG,BATANG|BUNGA,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
@@ -10,8 +9,6 @@ S01,daun cabai domba.webp,Domba,peneliti,DAUN,,DAUN,OTHER,,Y,Y,Ya,,peneliti (Rif
 S01,daun cabai gendot,Gendot,peneliti,DAUN,BUAH,BUAH|DAUN,KNOWN,Gendot,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
 S01,daun cabai kopay.jpg,Kopay,peneliti,DAUN,,DAUN,KNOWN,Kopay,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
 S01,p9vb80t0ldt5cms.webp,Gendot,tebakan AI,BUAH,,BUAH,KNOWN,Gendot,Y,Y,Ragu,,peneliti (Rifqi),2026-11-04
-S01,warna tangkai daun C. chinense dan C. annuum permukaan bawah.jpg,C. chinense + C. annuum,tebakan AI,DAUN,,DAUN,OTHER,,Y,Y,Ragu,,peneliti (Rifqi),2026-11-04
-S02,C. annuum - bentuk buah_ warna bh_ posisi buah menggantung.jpg,Cabai Besar,tebakan AI,BUAH,DAUN,BUAH|DAUN,OTHER,,Y,Y,Ragu,,peneliti (Rifqi),2026-11-04
 S02,cabai domba.jpg,Domba,peneliti,BUAH,DAUN,BUAH|DAUN,OTHER,,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
 S02,cabai katokon - bentuk daun.jpg,Katokkon,peneliti,DAUN,,DAUN,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
 S02,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,Katokkon,peneliti,BUNGA,BATANG,BATANG|BUNGA,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
@@ -22,8 +19,6 @@ S02,daun cabai domba.webp,Domba,peneliti,DAUN,,DAUN,OTHER,,Y,Y,Ya,,peneliti (Rif
 S02,daun cabai gendot,Gendot,peneliti,DAUN,BUAH,BUAH|DAUN,KNOWN,Gendot,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
 S02,daun cabai kopay.jpg,Kopay,peneliti,DAUN,,DAUN,KNOWN,Kopay,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
 S02,p9vb80t0ldt5cms.webp,Gendot,tebakan AI,BUAH,,BUAH,KNOWN,Gendot,Y,Y,Ragu,,peneliti (Rifqi),2026-11-04
-S02,warna tangkai daun C. chinense dan C. annuum permukaan bawah.jpg,C. chinense + C. annuum,tebakan AI,DAUN,,DAUN,OTHER,,Y,Y,Ragu,,peneliti (Rifqi),2026-11-04
-S03,C. annuum - bentuk buah_ warna bh_ posisi buah menggantung.jpg,Cabai Besar,tebakan AI,BUAH,DAUN,BUAH|DAUN,OTHER,,Y,Y,Ragu,,peneliti (Rifqi),2026-11-04
 S03,cabai domba.jpg,Domba,peneliti,BUAH,DAUN,BUAH|DAUN,KNOWN,Domba,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
 S03,cabai katokon - bentuk daun.jpg,Katokkon,peneliti,DAUN,,DAUN,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
 S03,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,Katokkon,peneliti,BUNGA,BATANG,BATANG|BUNGA,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
@@ -34,4 +29,3 @@ S03,daun cabai domba.webp,Domba,peneliti,DAUN,,DAUN,KNOWN,Domba,Y,Y,Ya,,peneliti
 S03,daun cabai gendot,Gendot,peneliti,DAUN,BUAH,BUAH|DAUN,OTHER,,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
 S03,daun cabai kopay.jpg,Kopay,peneliti,DAUN,,DAUN,OTHER,,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
 S03,p9vb80t0ldt5cms.webp,Gendot,tebakan AI,BUAH,,BUAH,OTHER,,Y,Y,Ragu,,peneliti (Rifqi),2026-11-04
-S03,warna tangkai daun C. chinense dan C. annuum permukaan bawah.jpg,C. chinense + C. annuum,tebakan AI,DAUN,,DAUN,OTHER,,Y,Y,Ragu,,peneliti (Rifqi),2026-11-04
