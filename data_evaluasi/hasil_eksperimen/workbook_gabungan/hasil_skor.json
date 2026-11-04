@@ -7,18 +7,18 @@
       "harapan": 78
     },
     "foto": {
-      "benar": 5,
-      "salah_tulis": 2,
-      "terlewat": 1,
-      "harapan": 6
+      "benar": 4,
+      "salah_tulis": 4,
+      "terlewat": 4,
+      "harapan": 8
     },
     "gabungan": {
-      "benar": 79,
-      "salah_tulis": 2,
-      "terlewat": 5,
-      "harapan": 84
+      "benar": 78,
+      "salah_tulis": 4,
+      "terlewat": 8,
+      "harapan": 86
     },
-    "foto_tidak_dinilai": 1
+    "foto_tidak_dinilai": 0
   },
   "Indonesia S02": {
     "atribut": {
@@ -29,17 +29,17 @@
     },
     "foto": {
       "benar": 5,
-      "salah_tulis": 1,
-      "terlewat": 1,
-      "harapan": 6
+      "salah_tulis": 3,
+      "terlewat": 3,
+      "harapan": 8
     },
     "gabungan": {
       "benar": 71,
-      "salah_tulis": 1,
-      "terlewat": 1,
-      "harapan": 72
+      "salah_tulis": 3,
+      "terlewat": 3,
+      "harapan": 74
     },
-    "foto_tidak_dinilai": 2
+    "foto_tidak_dinilai": 0
   },
   "Indonesia S03": {
     "atribut": {
@@ -49,18 +49,18 @@
       "harapan": 112
     },
     "foto": {
-      "benar": 4,
-      "salah_tulis": 3,
-      "terlewat": 2,
+      "benar": 3,
+      "salah_tulis": 5,
+      "terlewat": 3,
       "harapan": 6
     },
     "gabungan": {
-      "benar": 76,
-      "salah_tulis": 3,
-      "terlewat": 42,
+      "benar": 75,
+      "salah_tulis": 5,
+      "terlewat": 43,
       "harapan": 118
     },
-    "foto_tidak_dinilai": 1
+    "foto_tidak_dinilai": 0
   },
   "Commons F1": {
     "atribut": {
@@ -112,15 +112,15 @@
       "harapan": 0
     },
     "foto": {
-      "benar": 8,
-      "salah_tulis": 1,
-      "terlewat": 5,
+      "benar": 7,
+      "salah_tulis": 2,
+      "terlewat": 6,
       "harapan": 13
     },
     "gabungan": {
-      "benar": 8,
-      "salah_tulis": 1,
-      "terlewat": 5,
+      "benar": 7,
+      "salah_tulis": 2,
+      "terlewat": 6,
       "harapan": 13
     },
     "foto_tidak_dinilai": 0
@@ -238,16 +238,16 @@
       "harapan": 256
     },
     "foto": {
-      "benar": 14,
-      "salah_tulis": 6,
-      "terlewat": 4,
-      "harapan": 18
+      "benar": 12,
+      "salah_tulis": 12,
+      "terlewat": 10,
+      "harapan": 22
     },
     "gabungan": {
-      "benar": 226,
-      "salah_tulis": 6,
-      "terlewat": 48,
-      "harapan": 274
+      "benar": 224,
+      "salah_tulis": 12,
+      "terlewat": 54,
+      "harapan": 278
     }
   },
   "Commons F1-F8": {
@@ -258,15 +258,15 @@
       "harapan": 0
     },
     "foto": {
-      "benar": 64,
-      "salah_tulis": 23,
-      "terlewat": 35,
+      "benar": 63,
+      "salah_tulis": 24,
+      "terlewat": 36,
       "harapan": 99
     },
     "gabungan": {
-      "benar": 64,
-      "salah_tulis": 23,
-      "terlewat": 35,
+      "benar": 63,
+      "salah_tulis": 24,
+      "terlewat": 36,
       "harapan": 99
     }
   },
@@ -278,16 +278,16 @@
       "harapan": 256
     },
     "foto": {
-      "benar": 78,
-      "salah_tulis": 29,
-      "terlewat": 39,
-      "harapan": 117
+      "benar": 75,
+      "salah_tulis": 36,
+      "terlewat": 46,
+      "harapan": 121
     },
     "gabungan": {
-      "benar": 290,
-      "salah_tulis": 29,
-      "terlewat": 83,
-      "harapan": 373
+      "benar": 287,
+      "salah_tulis": 36,
+      "terlewat": 90,
+      "harapan": 377
     }
   }
 }

@@ -1,26 +1,26 @@
 ﻿run,foto,baris_gambar,kolom_varietas,hasil
 Indonesia S01,cabai katokon - bentuk daun.jpg,DAUN,Katokkon,benar
-Indonesia S01,cabai katokon - warna tangkai daun.jpg,DAUN,Katokkon,benar
-Indonesia S01,warna tangkai daun C. chinense dan C. annuum permukaan bawah.jpg,DAUN,Katokkon,salah: foto UNCERTAIN
+Indonesia S01,cabai katokon - warna tangkai daun.jpg,DAUN,Katokkon,salah: bagian tanaman
+Indonesia S01,warna tangkai daun C. chinense dan C. annuum permukaan bawah.jpg,DAUN,Katokkon,salah: foto OTHER
 Indonesia S01,cabai kopay.webp,BUAH,Kopay,benar
-Indonesia S01,p9vb80t0ldt5cms.webp,BUAH,Katokkon,tidak dinilai
-Indonesia S01,"C. annuum - bentuk buah, warna bh_ posisi buah menggantung.jpg",BUAH,Cabai tanjung,salah: foto UNCERTAIN
+Indonesia S01,p9vb80t0ldt5cms.webp,BUAH,Katokkon,salah: varietas
+Indonesia S01,"C. annuum - bentuk buah, warna bh_ posisi buah menggantung.jpg",BUAH,Cabai tanjung,salah: foto OTHER
 Indonesia S01,cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,BUNGA,Katokkon,benar
 Indonesia S01,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,BUNGA,Katokkon,benar
-Indonesia S02,daun cabai kopay.jpg,DAUN,Kopay,tidak dinilai
+Indonesia S02,daun cabai kopay.jpg,DAUN,Kopay,benar
 Indonesia S02,cabai katokon - bentuk daun.jpg,DAUN,Katokkon,benar
-Indonesia S02,cabai katokon - warna tangkai daun.jpg,DAUN,Katokkon,benar
+Indonesia S02,cabai katokon - warna tangkai daun.jpg,DAUN,Katokkon,salah: bagian tanaman
 Indonesia S02,cabai kopay.webp,BUAH,Kopay,benar
-Indonesia S02,"C. annuum - bentuk buah, warna bh_ posisi buah menggantung.jpg",BUAH,Kopay,salah: foto UNCERTAIN
-Indonesia S02,p9vb80t0ldt5cms.webp,BUAH,Katokkon,tidak dinilai
+Indonesia S02,"C. annuum - bentuk buah, warna bh_ posisi buah menggantung.jpg",BUAH,Kopay,salah: foto OTHER
+Indonesia S02,p9vb80t0ldt5cms.webp,BUAH,Katokkon,salah: varietas
 Indonesia S02,cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,BUNGA,Katokkon,benar
 Indonesia S02,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,BUNGA,Katokkon,benar
 Indonesia S03,daun cabai gendot,DAUN,Katokkon,salah: foto OTHER
 Indonesia S03,cabai katokon - bentuk daun.jpg,DAUN,Katokkon,benar
-Indonesia S03,cabai katokon - warna tangkai daun.jpg,DAUN,Katokkon,benar
-Indonesia S03,warna tangkai daun C. chinense dan C. annuum permukaan bawah.jpg,DAUN,Katokkon,salah: foto UNCERTAIN
-Indonesia S03,p9vb80t0ldt5cms.webp,BUAH,Katokkon,tidak dinilai
-Indonesia S03,"C. annuum - bentuk buah, warna bh_ posisi buah menggantung.jpg",BUAH,Cabai tanjung,salah: foto UNCERTAIN
+Indonesia S03,cabai katokon - warna tangkai daun.jpg,DAUN,Katokkon,salah: bagian tanaman
+Indonesia S03,warna tangkai daun C. chinense dan C. annuum permukaan bawah.jpg,DAUN,Katokkon,salah: foto OTHER
+Indonesia S03,p9vb80t0ldt5cms.webp,BUAH,Katokkon,salah: foto OTHER
+Indonesia S03,"C. annuum - bentuk buah, warna bh_ posisi buah menggantung.jpg",BUAH,Cabai tanjung,salah: foto OTHER
 Indonesia S03,cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,BUNGA,Katokkon,benar
 Indonesia S03,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,BUNGA,Katokkon,benar
 Commons F1,IMG_0089.jpg,BUAH,Hungarian Wax,salah: foto OTHER
@@ -48,7 +48,7 @@ Commons F2,habanero_buah_059.jpg,BUAH,Habanero,benar
 Commons F2,IMG_0060.jpg,BUAH,Habanero,benar
 Commons F2,IMG_0119.jpg,BUAH,Jalapeno,benar
 Commons F2,IMG_0050.jpg,BUNGA,Cabai Rawit,benar
-Commons F3,habanero_buah_053.jpg,BUAH,Habanero,benar
+Commons F3,habanero_buah_053.jpg,BUAH,Habanero,salah: bagian tanaman
 Commons F3,habanero_buah_122.jpg,BUAH,Habanero,benar
 Commons F3,IMG_0109.jpg,BUAH,Cabai Rawit,salah: foto OTHER
 Commons F3,cabai-korea_buah_002.jpg,BUAH,Cabai Korea,benar

@@ -29,6 +29,7 @@ import openpyxl
 DS = Path("../dataset_eksperimen/4_hasil_sistem")
 OUT = Path("hasil_eksperimen/workbook_gabungan")
 KOREKSI = Path("hasil_eksperimen/hasil_ui/2026-11-04_koreksi_mock/gambar")
+GOLD_BAGIAN = Path("gold/bagian_foto_commons/gold_bagian_commons.csv")
 BARIS = {"gambar daun": "DAUN", "gambar batang": "BATANG", "gambar buah": "BUAH", "gambar bunga": "BUNGA"}
 BOLEH = {"TANGKAI DAUN": {"DAUN", "BATANG"}}
 RUN_IND = {"S01": "S01_D01_transposed", "S02": "S02_D02_english", "S03": "S03_D03_bertingkat"}
@@ -72,7 +73,10 @@ def nilai_foto(links, fid2fn, gold_run):
             abaikan += 1
             rincian.append((fn or fid, bagian, kolom, "tidak dinilai"))
             continue
-        ok_bagian = bagian in BOLEH.get(g["bagian"], {g["bagian"]})
+        if "boleh" in g:  # gold bagian peneliti (Commons): kosong = tidak ada satu bagian yang benar, tidak dihukum
+            ok_bagian = not g["boleh"] or bagian in g["boleh"]
+        else:
+            ok_bagian = bagian in BOLEH.get(g["bagian"], {g["bagian"]})
         ok = g["status"] == "KNOWN" and norm(kolom) == norm(g["varietas"]) and ok_bagian
         if ok:
             benar += 1
@@ -98,11 +102,12 @@ def main():
     sel = json.loads(Path("hasil_eksperimen/akurasi_sel/akurasi_sel.json").read_text(encoding="utf-8"))["hasil"]["paper"]
     runs = {}
     # Indonesia
-    gi = read("gambar_id/gold_kombinasi_drive1.csv")
+    gi = read("gambar_id/gold_peneliti/gold_kombinasi_peneliti.csv")
     for run, d in RUN_IND.items():
         kl = read(DS / "B_kombinasi_spreadsheet_foto" / d / "klasifikasi_foto.csv")
         fid2fn = {r["file_id"]: r["filename"] for r in kl}
         gold = {norm(g["filename"]): {"status": g["expected_status"], "varietas": g["expected_variety"], "bagian": g["bagian"],
+                                      "boleh": set(filter(None, g["bagian_boleh"].split("|"))),
                                       "dinilai": g["dinilai"] == "Y"} for g in gi if g["spreadsheet"] == run}
         foto, rin = nilai_foto(link_di_workbook(DS / "B_kombinasi_spreadsheet_foto" / d / "hasil_kanonik.xlsx"), fid2fn, gold)
         a = sel[run]["ketat"]
@@ -110,6 +115,8 @@ def main():
                                                 "harapan": a["harapan"]}, "foto": foto, "rincian": rin, "kelompok": "Indonesia"}
     # Commons
     gc = {r["filename"]: r for r in read("gambar/manifest/gold_gambar_manifest.csv")}
+    # bagian tanaman: gold anotasi peneliti 4 Nov 2026 (skor_bagian_foto_commons.py), bukan true_part dari judul foto
+    gb = {r["filename"]: set(filter(None, r["bagian_boleh"].split("|"))) for r in read(GOLD_BAGIAN)}
     folder = {r["filename"]: r["folder"] for r in read("gambar/manifest/pembagian_8_folder.csv")}
     for i in range(1, 9):
         f = f"F{i}"
@@ -117,7 +124,8 @@ def main():
         # dari baris yang tertaut otomatis, persis seperti apply_vision_result_to_worksheet: baris Gambar <bagian>, kolom <varietas>.
         kl = read(KOREKSI / f / "vision.csv")
         fid2fn = {r["file_id"]: r["filename"] for r in kl}
-        gold = {norm(fn): {"status": g["label_kind"], "varietas": g["true_variety"], "bagian": g["true_part"], "dinilai": True}
+        gold = {norm(fn): {"status": g["label_kind"], "varietas": g["true_variety"], "bagian": g["true_part"], "boleh": gb[fn],
+                           "dinilai": True}
                 for fn, g in gc.items() if folder.get(fn) == f}
         wb = DS / "C_foto_commons" / f / "hasil_kanonik.xlsx"
         links = [(r["file_id"], r["identified_part"], r["matched_variety"]) for r in kl

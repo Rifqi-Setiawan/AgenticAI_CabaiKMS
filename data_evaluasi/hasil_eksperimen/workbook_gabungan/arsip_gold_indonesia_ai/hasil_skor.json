@@ -1,0 +1,293 @@
+{
+  "Indonesia S01": {
+    "atribut": {
+      "benar": 74,
+      "salah_tulis": 0,
+      "terlewat": 4,
+      "harapan": 78
+    },
+    "foto": {
+      "benar": 5,
+      "salah_tulis": 2,
+      "terlewat": 1,
+      "harapan": 6
+    },
+    "gabungan": {
+      "benar": 79,
+      "salah_tulis": 2,
+      "terlewat": 5,
+      "harapan": 84
+    },
+    "foto_tidak_dinilai": 1
+  },
+  "Indonesia S02": {
+    "atribut": {
+      "benar": 66,
+      "salah_tulis": 0,
+      "terlewat": 0,
+      "harapan": 66
+    },
+    "foto": {
+      "benar": 5,
+      "salah_tulis": 1,
+      "terlewat": 1,
+      "harapan": 6
+    },
+    "gabungan": {
+      "benar": 71,
+      "salah_tulis": 1,
+      "terlewat": 1,
+      "harapan": 72
+    },
+    "foto_tidak_dinilai": 2
+  },
+  "Indonesia S03": {
+    "atribut": {
+      "benar": 72,
+      "salah_tulis": 0,
+      "terlewat": 40,
+      "harapan": 112
+    },
+    "foto": {
+      "benar": 4,
+      "salah_tulis": 3,
+      "terlewat": 2,
+      "harapan": 6
+    },
+    "gabungan": {
+      "benar": 76,
+      "salah_tulis": 3,
+      "terlewat": 42,
+      "harapan": 118
+    },
+    "foto_tidak_dinilai": 1
+  },
+  "Commons F1": {
+    "atribut": {
+      "benar": 0,
+      "salah_tulis": 0,
+      "terlewat": 0,
+      "harapan": 0
+    },
+    "foto": {
+      "benar": 7,
+      "salah_tulis": 6,
+      "terlewat": 6,
+      "harapan": 13
+    },
+    "gabungan": {
+      "benar": 7,
+      "salah_tulis": 6,
+      "terlewat": 6,
+      "harapan": 13
+    },
+    "foto_tidak_dinilai": 0
+  },
+  "Commons F2": {
+    "atribut": {
+      "benar": 0,
+      "salah_tulis": 0,
+      "terlewat": 0,
+      "harapan": 0
+    },
+    "foto": {
+      "benar": 9,
+      "salah_tulis": 3,
+      "terlewat": 4,
+      "harapan": 13
+    },
+    "gabungan": {
+      "benar": 9,
+      "salah_tulis": 3,
+      "terlewat": 4,
+      "harapan": 13
+    },
+    "foto_tidak_dinilai": 0
+  },
+  "Commons F3": {
+    "atribut": {
+      "benar": 0,
+      "salah_tulis": 0,
+      "terlewat": 0,
+      "harapan": 0
+    },
+    "foto": {
+      "benar": 7,
+      "salah_tulis": 2,
+      "terlewat": 6,
+      "harapan": 13
+    },
+    "gabungan": {
+      "benar": 7,
+      "salah_tulis": 2,
+      "terlewat": 6,
+      "harapan": 13
+    },
+    "foto_tidak_dinilai": 0
+  },
+  "Commons F4": {
+    "atribut": {
+      "benar": 0,
+      "salah_tulis": 0,
+      "terlewat": 0,
+      "harapan": 0
+    },
+    "foto": {
+      "benar": 10,
+      "salah_tulis": 3,
+      "terlewat": 2,
+      "harapan": 12
+    },
+    "gabungan": {
+      "benar": 10,
+      "salah_tulis": 3,
+      "terlewat": 2,
+      "harapan": 12
+    },
+    "foto_tidak_dinilai": 0
+  },
+  "Commons F5": {
+    "atribut": {
+      "benar": 0,
+      "salah_tulis": 0,
+      "terlewat": 0,
+      "harapan": 0
+    },
+    "foto": {
+      "benar": 8,
+      "salah_tulis": 1,
+      "terlewat": 4,
+      "harapan": 12
+    },
+    "gabungan": {
+      "benar": 8,
+      "salah_tulis": 1,
+      "terlewat": 4,
+      "harapan": 12
+    },
+    "foto_tidak_dinilai": 0
+  },
+  "Commons F6": {
+    "atribut": {
+      "benar": 0,
+      "salah_tulis": 0,
+      "terlewat": 0,
+      "harapan": 0
+    },
+    "foto": {
+      "benar": 8,
+      "salah_tulis": 4,
+      "terlewat": 4,
+      "harapan": 12
+    },
+    "gabungan": {
+      "benar": 8,
+      "salah_tulis": 4,
+      "terlewat": 4,
+      "harapan": 12
+    },
+    "foto_tidak_dinilai": 0
+  },
+  "Commons F7": {
+    "atribut": {
+      "benar": 0,
+      "salah_tulis": 0,
+      "terlewat": 0,
+      "harapan": 0
+    },
+    "foto": {
+      "benar": 4,
+      "salah_tulis": 5,
+      "terlewat": 8,
+      "harapan": 12
+    },
+    "gabungan": {
+      "benar": 4,
+      "salah_tulis": 5,
+      "terlewat": 8,
+      "harapan": 12
+    },
+    "foto_tidak_dinilai": 0
+  },
+  "Commons F8": {
+    "atribut": {
+      "benar": 0,
+      "salah_tulis": 0,
+      "terlewat": 0,
+      "harapan": 0
+    },
+    "foto": {
+      "benar": 10,
+      "salah_tulis": 0,
+      "terlewat": 2,
+      "harapan": 12
+    },
+    "gabungan": {
+      "benar": 10,
+      "salah_tulis": 0,
+      "terlewat": 2,
+      "harapan": 12
+    },
+    "foto_tidak_dinilai": 0
+  },
+  "Indonesia S01-S03": {
+    "atribut": {
+      "benar": 212,
+      "salah_tulis": 0,
+      "terlewat": 44,
+      "harapan": 256
+    },
+    "foto": {
+      "benar": 14,
+      "salah_tulis": 6,
+      "terlewat": 4,
+      "harapan": 18
+    },
+    "gabungan": {
+      "benar": 226,
+      "salah_tulis": 6,
+      "terlewat": 48,
+      "harapan": 274
+    }
+  },
+  "Commons F1-F8": {
+    "atribut": {
+      "benar": 0,
+      "salah_tulis": 0,
+      "terlewat": 0,
+      "harapan": 0
+    },
+    "foto": {
+      "benar": 63,
+      "salah_tulis": 24,
+      "terlewat": 36,
+      "harapan": 99
+    },
+    "gabungan": {
+      "benar": 63,
+      "salah_tulis": 24,
+      "terlewat": 36,
+      "harapan": 99
+    }
+  },
+  "SEMUA RUN": {
+    "atribut": {
+      "benar": 212,
+      "salah_tulis": 0,
+      "terlewat": 44,
+      "harapan": 256
+    },
+    "foto": {
+      "benar": 77,
+      "salah_tulis": 30,
+      "terlewat": 40,
+      "harapan": 117
+    },
+    "gabungan": {
+      "benar": 289,
+      "salah_tulis": 30,
+      "terlewat": 84,
+      "harapan": 373
+    }
+  }
+}

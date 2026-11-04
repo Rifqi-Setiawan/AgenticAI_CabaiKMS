@@ -1,7 +1,7 @@
 """Skor foto Indonesia (12 foto koleksi peneliti, run kombinasi S01-S03, UI 31 Okt 2026) dengan metrik yang sama dengan
 160 foto Commons, plus gabungan Commons + Indonesia.
 
-Gold: gambar_id/gold_kombinasi_drive1.csv (expected_status per spreadsheet; dinilai = Y, 10 foto per run).
+Gold: gambar_id/gold_peneliti/gold_kombinasi_peneliti.csv (gold peneliti 4 Nov 2026, buat_gold_foto_indonesia.py; 12 foto per run).
 Prediksi: dataset_eksperimen/4_hasil_sistem/B_kombinasi_spreadsheet_foto/S0x_*/klasifikasi_foto.csv.
 Nama file dicocokkan tanpa tanda baca (di Drive memakai koma, di gold diganti garis bawah).
 Jalankan dari folder data_evaluasi:  ..\\.venv\\Scripts\\python.exe -I skrip\\skor_foto_indonesia.py
@@ -26,7 +26,7 @@ def kunci(f):
 
 
 def butir_indonesia():
-    gold = s.read("gambar_id/gold_kombinasi_drive1.csv")
+    gold = s.read("gambar_id/gold_peneliti/gold_kombinasi_peneliti.csv")
     out = []
     for run, d in RUNS.items():
         pred = {kunci(r["filename"]): r for r in s.read(B / d / "klasifikasi_foto.csv")}
@@ -44,12 +44,24 @@ def butir_indonesia():
     return out
 
 
+def macro_kelas_ada(xs):
+    """Macro-F1 hanya atas kelas yang muncul di gold (gold peneliti Indonesia tidak punya UNCERTAIN; macro-F1 tiga kelas
+    akan menghitung F1 UNCERTAIN = 0 dan menurunkan skor tanpa dasar)."""
+    f1s = []
+    for c in sorted({i["gold"] for i in xs}):
+        tp = sum(1 for i in xs if i["gold"] == c and i["pred"] == c)
+        fp = sum(1 for i in xs if i["gold"] != c and i["pred"] == c)
+        fn = sum(1 for i in xs if i["gold"] == c and i["pred"] != c)
+        f1s.append(2 * tp / (2 * tp + fp + fn) if tp else 0.0)
+    return sum(f1s) / len(f1s)
+
+
 def baris(lab, xs):
     m = s.metr(xs)
     al = [i for i in xs if i["aksi"] == "AUTO_LINK"]
     ok = sum(1 for i in al if i["gold"] == "KNOWN" and s.benar(i))
-    return (f"| {lab} | {len(xs)} | {sum(s.benar(i) for i in xs)}/{len(xs)} | {m['macro_f1']:.3f} | {m['top1_known']:.3f} | "
-            f"{ok}/{len(al)} = {ok / len(al):.3f} |")
+    return (f"| {lab} | {len(xs)} | {sum(s.benar(i) for i in xs)}/{len(xs)} | {m['macro_f1']:.3f} | {macro_kelas_ada(xs):.3f} | "
+            f"{m['top1_known']:.3f} | {ok}/{len(al)} = {ok / len(al):.3f} |")
 
 
 def main():
@@ -62,8 +74,11 @@ def main():
     com = s.items(ui, gold)
     out = ["# Foto Indonesia (S01-S03) dan gabungan dengan 160 foto Commons", "",
            "Metrik sama dengan foto Commons (hitung_metrik.img_metrics): status KNOWN/OTHER/UNCERTAIN, Top-1 pada foto KNOWN, "
-           "presisi AUTO_LINK. Foto Indonesia: 10 foto unik yang sama di tiga run (spreadsheet berbeda), jadi 30 keputusan tidak independen.", "",
-           "| Himpunan | Keputusan | Status benar | Macro-F1 | Top-1 KNOWN | AUTO_LINK benar |", "|---|---|---|---|---|---|"]
+           "presisi AUTO_LINK. Foto Indonesia: 12 foto unik yang sama di tiga run (spreadsheet berbeda), jadi 36 keputusan tidak "
+           "independen. Gold Indonesia = isian peneliti 4 Nov 2026 (3 varietas tebakan AI atas persetujuan peneliti) dan tidak memuat "
+           "UNCERTAIN, sehingga untuk foto Indonesia yang adil adalah macro-F1 atas kelas yang ada di gold (KNOWN, OTHER).", "",
+           "| Himpunan | Keputusan | Status benar | Macro-F1 3 kelas | Macro-F1 kelas di gold | Top-1 KNOWN | AUTO_LINK benar |",
+           "|---|---|---|---|---|---|---|"]
     for run in RUNS:
         out.append(baris(f"Indonesia {run}", [i for i in ind if i["run"] == run]))
     out.append(baris("Indonesia, 3 run", ind))

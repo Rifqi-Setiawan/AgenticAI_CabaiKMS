@@ -1,6 +1,6 @@
 # Panduan Lengkap Eksperimen CABAI-KMS
 
-Kondisi per **4 November 2026**. Dokumen ini hanya memuat data dan hasil **terbaru** (yang dipakai di paper draf v10 dan
+Kondisi per **4 November 2026**. Dokumen ini hanya memuat data dan hasil **terbaru** (yang dipakai di paper draf v11 dan
 pekerjaan revisi setelahnya). Semua angka foto Commons sudah memakai hasil terkoreksi D18 (19 foto mock dijalankan ulang). Dokumen ini menggantikan `docs/HASIL_SEMENTARA_EKSPERIMEN.md` dan `data_evaluasi/STATUS_PROGRES.md`
 (keduanya versi 1 November dan sudah usang).
 
@@ -25,9 +25,9 @@ Daftar isi:
 | Isi spreadsheet per sel | 600 sel kunci | held-out (posisi) presisi 1,000, recall 0,898, F1 0,946; ketat 0,591 karena bug kolom varietas N07/R02 (setelah diperbaiki 1,000) |
 | Tulis otomatis | 293 atribut berkeluaran | 129 ditulis otomatis, **128 benar** (0,992); 164 (56%) ke review, semuanya usulan NULL |
 | Foto Commons | 160 foto (terkoreksi D18) | macro-F1 **0,640**, Top-1 0,727, presisi AUTO_LINK 0,736 (nama netral **0,644**) |
-| Foto Indonesia | 10 foto x 3 spreadsheet | macro-F1 0,649, Top-1 0,833, AUTO_LINK 0,700 |
-| Foto gabungan | 190 keputusan | macro-F1 0,634, Top-1 0,744, AUTO_LINK **0,729** |
-| Workbook gabungan | sel atribut + link foto | F1 semua run **0,838** (Indonesia 0,893; Commons, hanya foto, 0,688) |
+| Foto Indonesia | 12 foto x 3 spreadsheet (gold peneliti) | macro-F1 (KNOWN/OTHER) 0,706, Top-1 0,773, AUTO_LINK 15/24 = 0,625 |
+| Foto gabungan | 196 keputusan | macro-F1 0,632, Top-1 0,736, AUTO_LINK **79/111 = 0,712** |
+| Workbook gabungan | sel atribut + link foto | F1 semua run **0,820** (Indonesia 0,872; Commons, hanya foto, 0,677) |
 
 Kesimpulan singkat: pemetaan atribut sangat akurat dan hampir tidak pernah menulis salah (kesalahannya berupa *tidak menulis*
 lalu dikirim ke review). Tautan foto cukup baik bila nama file informatif, tetapi masih menautkan varietas yang mirip atau foto
@@ -121,7 +121,7 @@ MENYESATKAN 32 (menyebut varietas terdaftar yang salah).
 | Konsistensi gold | `data_evaluasi/anotasi_buta/subset_v1/hasil/laporan_kappa.md` | 100 butir dianotasi ulang buta oleh peneliti yang sama | kesepakatan 0,98; kappa 0,97 (target), 0,96 (dipetakan vs NULL) |
 | Isi sel | `data_evaluasi/gold/kunci_sel/kunci_sel_semua.csv` | otomatis dari gold pemetaan + nilai mentah sumber (pembaca terpisah dari parser sistem) | 600 sel |
 | Foto Commons | `data_evaluasi/gambar/manifest/gold_gambar_manifest.csv` | kategori Commons | versi kedua (tinjauan visual AI) untuk uji sensitivitas |
-| Foto Indonesia | `data_evaluasi/gambar_id/gold_kombinasi_drive1.csv` | nama berkas peneliti, status per spreadsheet | 2 foto isinya belum diperiksa |
+| Foto Indonesia | `data_evaluasi/gambar_id/gold_peneliti/gold_kombinasi_peneliti.csv` | diisi peneliti 4 Nov (varietas, bagian, layak); status per spreadsheet diturunkan otomatis (`skrip/buat_gold_foto_indonesia.py`) | 3 varietas kosong diisi tebakan visual AI atas persetujuan peneliti; gold lama `gold_kombinasi_drive1.csv` (bantuan AI) tidak dipakai lagi |
 
 Keterbatasan: gold atribut bukan buatan pakar independen; kappa mengukur konsistensi peneliti sendiri, bukan validitas.
 
@@ -283,18 +283,28 @@ V3 vs V2 macro-F1 +0,326 [0,209; 0,435]. Ada 16 tautan otomatis yang salah pada 
 - 2 dari foto tak jelas yang tetap ditautkan.
 
 ### 6.8 Foto Indonesia dan gabungan
-| Himpunan | Keputusan | Status benar | Macro-F1 | Top-1 KNOWN | AUTO_LINK benar |
-|---|---|---|---|---|---|
-| Indonesia S01 | 10 | 7/10 | 0,619 | 0,833 | 5/7 = 0,714 |
-| Indonesia S02 | 10 | 8/10 | 0,863 | 0,833 | 5/6 = 0,833 |
-| Indonesia S03 | 10 | 6/10 | 0,405 | 0,833 | 4/7 = 0,571 |
-| Indonesia, 3 run | 30 | 21/30 | 0,649 | 0,833 | 14/20 = 0,700 |
-| Commons 160 (terkoreksi) | 160 | 108/160 | 0,640 | 0,727 | 64/87 = 0,736 |
-| **Gabungan** | **190** | **129/190** | **0,634** | **0,744** | **78/107 = 0,729** |
+Gold foto Indonesia = isian peneliti (4 Nov 2026). Semua 12 foto dinilai. Tidak ada foto UNCERTAIN di gold, jadi untuk foto
+Indonesia dipakai macro-F1 atas kelas yang ada di gold (KNOWN, OTHER); macro-F1 tiga kelas dicantumkan sebagai pembanding.
 
-Foto Indonesia hanya 10 foto unik (dipakai ulang di tiga spreadsheet), didominasi Katokkon (4 foto), dan nama filenya menyebut
-varietas, jadi bukti lemah. Kesalahannya sama polanya: foto tak jelas ditautkan dengan keyakinan 0,85-0,95, daun Gendot dibaca
-Katokkon. Presisi nama netral tetap 0,644 karena tidak ada foto Indonesia bernama netral.
+| Himpunan | Keputusan | Status benar | Macro-F1 3 kelas | Macro-F1 KNOWN/OTHER | Top-1 KNOWN | AUTO_LINK benar |
+|---|---|---|---|---|---|---|
+| Indonesia S01 | 12 | 8/12 | 0,519 | 0,778 | 0,750 | 5/8 = 0,625 |
+| Indonesia S02 | 12 | 8/12 | 0,536 | 0,804 | 0,750 | 6/8 = 0,750 |
+| Indonesia S03 | 12 | 7/12 | 0,370 | 0,556 | 0,833 | 4/8 = 0,500 |
+| Indonesia, 3 run | 36 | 23/36 | 0,470 | 0,706 | 0,773 | 15/24 = 0,625 |
+| Commons 160 (terkoreksi) | 160 | 108/160 | 0,640 | 0,640 | 0,727 | 64/87 = 0,736 |
+| **Gabungan** | **196** | **131/196** | **0,632** | - | **0,736** | **79/111 = 0,712** |
+
+Pola hasilnya (gold peneliti):
+- Empat foto Katokkon dan foto buah Kopay selalu benar.
+- Daun Gendot dan foto buah Gendot (`p9vb...`) selalu dibaca Katokkon.
+- Foto cabai besar (`C. annuum ...`) ditautkan sebagai Cabai tanjung (S01, S03) atau Kopay (S02), dengan keyakinan 0,85-0,95.
+- Foto daun *C. chinense* + *C. annuum* ditautkan sebagai Katokkon di S01 dan S03.
+- Di S03, buah Domba yang terdaftar justru dianggap OTHER.
+
+Sampelnya kecil (12 foto unik dipakai di 3 run), dan varietas 3 foto adalah tebakan AI, jadi buktinya lemah.
+
+Presisi nama netral tetap 0,644 karena tidak ada foto Indonesia bernama netral. Hasil dengan gold lama (bantuan AI, 10 foto per run): `hasil_eksperimen/foto_indonesia/arsip_gold_ai/`.
 
 **Skor workbook akhir gabungan** (`skrip/skor_workbook_gabungan.py`). Keluaran sistem adalah satu workbook: baris karakter
 diisi dari spreadsheet, sedangkan baris Gambar diisi link foto. Skor ini menilai keduanya dengan satuan yang sama, yaitu satu
@@ -302,12 +312,23 @@ sel atribut atau satu link foto (benar / salah tulis / terlewat):
 
 | Run | Atribut F1 | Foto F1 | Gabungan P / R / F1 |
 |---|---|---|---|
-| Indonesia S01-S03 | 0,906 (212 benar, 0 salah, 44 terlewat) | 0,737 (14/6/4) | 0,974 / 0,825 / **0,893** |
-| Commons F1-F8 (spreadsheet hanya nama varietas) | - | 0,688 (64/23/35) | 0,736 / 0,646 / **0,688** |
-| **Semua run** | 0,906 | 0,696 (78/29/39) | 0,909 / 0,777 / **0,838** |
+| Indonesia S01-S03 | 0,906 (212 benar, 0 salah, 44 terlewat) | 0,522 (12/12/10) | 0,949 / 0,806 / **0,872** |
+| Commons F1-F8 (spreadsheet hanya nama varietas) | - | 0,677 (63/24/36) | 0,724 / 0,636 / **0,677** |
+| **Semua run** | 0,906 | 0,647 (75/36/46) | 0,889 / 0,761 / **0,820** |
 
-Link foto yang salah: 12 foto OTHER ditautkan, 9 foto UNCERTAIN ditautkan, dan 8 salah varietas. Sel atribut tidak pernah
-salah tulis; kesalahannya berupa sel yang terlewat, terutama pada header bertingkat S03.
+Link foto yang salah (36): 18 foto OTHER ditautkan, 4 foto UNCERTAIN ditautkan, 10 salah varietas, dan 4 salah bagian tanaman
+(1 Commons: `habanero_buah_053.jpg`, foto daun ditautkan ke Gambar Buah; 3 Indonesia). Gold bagian Commons dan seluruh gold
+foto Indonesia memakai isian peneliti (4 Nov 2026). Riwayat skor semua run: 0,838 (gold lama) -> 0,835 (gold bagian Commons)
+-> 0,820 (ditambah gold Indonesia peneliti). Sel atribut tidak pernah salah tulis; kesalahannya berupa
+sel yang terlewat, terutama pada header bertingkat S03.
+
+**Gold bagian tanaman (4 Nov 2026).** Bagian tanaman 160 foto Commons sekarang memakai anotasi buta peneliti
+(`data_evaluasi/gold/bagian_foto_commons/gold_bagian_commons.csv`, dibuat dari `lembar_bagian_160.xlsx` tanpa nama file,
+label lama, maupun prediksi). Hasil anotasi: BUAH 128, TANAMAN_UTUH 12, DAUN 10, BUNGA 7, LAIN 3. Bagian dianggap benar
+bila sama dengan bagian utama atau bagian kedua yang diisi peneliti; 11 foto TANAMAN_UTUH tanpa bagian kedua dan 3 foto LAIN
+tidak dinilai. Akurasi bagian tanaman sistem: **140/146 = 0,959** (foto yang ditautkan otomatis 79/80 = 0,988). Per bagian:
+BUAH 128/128, BUNGA 7/7, DAUN 5/10 (empat foto daun dibaca BUAH, satu BUNGA). Kesesuaian dengan label bagian lama (dari judul foto)
+135/160. Rincian: `data_evaluasi/hasil_eksperimen/bagian_foto/hasil_skor.md` (skrip `skor_bagian_foto_commons.py`).
 
 ### 6.9 Skema kanonik dinamis (fitur, hasil kelayakan)
 Dengan saklar aktif, R01, N07, N09, R02 diproses berurutan tiga kali dari database kosong: 84-85 atribut tak berpadanan
@@ -342,7 +363,7 @@ Sedang berjalan: pasangan spreadsheet data asli untuk 160 foto.
 - Hasil yang diharapkan: pasangan spreadsheet-foto kini data asli; akurasi foto kemungkinan mirip run lama karena model visi
   hanya menerima nama varietas.
 
-Selesai 4 Nov: koreksi mock D18. Ke-19 foto dijalankan ulang, angka foto paper diperbarui di draf v10 (tetap 7 halaman), dan
+Selesai 4 Nov: koreksi mock D18. Ke-19 foto dijalankan ulang, angka foto paper diperbarui di draf v10 (tetap 7 halaman; v11 menambah gold foto Indonesia dan gold bagian dari peneliti), dan
 skor workbook gabungan dihitung ulang (6.8). Perubahan kode di VPS (D18, tes, `DESIGN_DECISIONS.md`) belum di-commit.
 
 Hal terbuka lain:
@@ -360,7 +381,7 @@ Hal terbuka lain:
 ### Dokumen
 | Berkas | Isi |
 |---|---|
-| `docs/paper/paper_ieee_draft_v10.pdf` | paper terbaru (7 halaman, angka foto terkoreksi D18) |
+| `docs/paper/paper_ieee_draft_v11.pdf` | paper terbaru (7 halaman; foto terkoreksi D18, gold foto Indonesia dan gold bagian dari peneliti) |
 | `docs/paper/DAFTAR_PERBAIKAN_PAPER.txt` | masukan dosen |
 | `docs/SKENARIO_EKSPERIMEN.md`, `docs/RENCANA_EVALUASI.md` | protokol dan definisi metrik awal |
 | `dataset_eksperimen/KETERANGAN_DATA.txt`, `DESKRIPSI_PEMBUATAN_DAN_TUJUAN_DATA.txt` | rincian semua data dan run |
