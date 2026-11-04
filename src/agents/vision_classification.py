@@ -538,6 +538,10 @@ def deterministic_mock_lvm(
     )
 
 
+class VisionProviderUnavailable(RuntimeError):
+    """Raised when no real vision provider is configured and the mock was not explicitly requested."""
+
+
 def default_lvm_call(
     *,
     response_model: Any = None,
@@ -545,8 +549,16 @@ def default_lvm_call(
     max_retries: int = 2,
     **kwargs: Any,
 ) -> Any:
-    """Default LVM dispatcher: uses deterministic mock in mock/offline mode or test environment (A28),
-    routes to call_vision otherwise."""
+    """Default LVM dispatcher.
+
+    The deterministic mock is used ONLY when explicitly requested
+    (CABAI_KMS_VISION_PROVIDER=mock) or inside pytest (A28 quota isolation).
+    In every other case the real provider is called and failures propagate:
+    a missing key raises VisionProviderUnavailable and a provider/contract
+    error is re-raised, so the caller records the photo as FAILED and routes
+    it to review. Silently substituting the mock (previous behaviour) produced
+    filename-derived KNOWN results with part DAUN that were indistinguishable
+    from real model output (DESIGN_DECISIONS D18)."""
     provider_env = os.environ.get("CABAI_KMS_VISION_PROVIDER", "").strip().lower()
     is_test_env = bool(os.environ.get("PYTEST_CURRENT_TEST"))
     if provider_env == "mock" or is_test_env:
@@ -558,16 +570,16 @@ def default_lvm_call(
         or os.environ.get("GEMINI_API_KEY")
     )
     if not has_keys:
-        return deterministic_mock_lvm(response_model=response_model, messages=messages, **kwargs)
-
-    try:
-        return call_vision(
-            response_model=response_model,
-            messages=messages or [],
-            max_retries=max_retries,
+        raise VisionProviderUnavailable(
+            "No vision provider key configured; refusing to substitute the deterministic mock. "
+            "Set CABAI_KMS_VISION_PROVIDER=mock explicitly for offline runs."
         )
-    except Exception:
-        return deterministic_mock_lvm(response_model=response_model, messages=messages, **kwargs)
+
+    return call_vision(
+        response_model=response_model,
+        messages=messages or [],
+        max_retries=max_retries,
+    )
 
 
 def classify_image(
