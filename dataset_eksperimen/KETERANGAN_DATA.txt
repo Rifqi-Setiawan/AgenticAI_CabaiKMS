@@ -1,0 +1,319 @@
+KETERANGAN DATA EKSPERIMEN CABAI-KMS
+Adaptive Knowledge Acquisition berbasis Agentic AI untuk standardisasi data multimodal
+Disusun 3 November 2026. Peneliti: Muhammad Rifqi Setiawan (Telkom University).
+
+Folder ini mengumpulkan SEMUA data input yang dipakai dalam eksperimen beserta spreadsheet hasil olahan sistem.
+Isinya salinan; berkas asli tetap di data_evaluasi/ dan tidak diubah. Gold label (kunci jawaban) sengaja TIDAK
+disertakan; gold ada di data_evaluasi/gold/, data_evaluasi/gambar/manifest/, dan
+data_evaluasi/pilot_foto_pvt/uji_visi_40/sampel.csv (varietas asli uji 40 foto PVT).
+Keutuhan berkas: SHA256SUMS.txt. Dibuat ulang dengan: data_evaluasi/skrip/kumpulkan_dataset_eksperimen.py
+
+
+=====================================================================
+STRUKTUR FOLDER
+=====================================================================
+1_input_spreadsheet/      13 workbook input (.xlsx) + sumber_grin/ (halaman sumber aksesi GRIN untuk G01/G02)
+2_input_foto/
+   commons_8_folder/F1-F8 160 foto Wikimedia Commons, 20 per folder (+ ATRIBUSI_LISENSI.csv, pembagian_8_folder.csv)
+   foto_indonesia_drive1/ 12 foto cabai Indonesia koleksi peneliti (+ daftar_foto.csv)
+   pvt_kementan_34_varietas/ 317 foto cabai Indonesia berlabel resmi dari Berita Resmi PVT Kementan, 34 varietas
+                          (+ daftar_foto.csv, daftar_berita_resmi_cabai.tsv, sumber_pdf/ 34 PDF)
+   pvt_uji_40/            40 foto uji (dari pvt_kementan_34_varietas) dalam dua kondisi: kartu nama terlihat dan
+                          kartu nama tertutup (+ pembagian_uji_40.csv, varietas_terdaftar.txt, kotak_penutup_kartu.json)
+3_template_kanonik/       template_kanonik.xlsx (skema target 60 baris)
+4_hasil_sistem/           spreadsheet hasil olahan sistem per run
+   A_atribut/                     5 run spreadsheet saja
+   B_kombinasi_spreadsheet_foto/  3 run spreadsheet + folder foto Indonesia
+   C_foto_commons/                8 run foto Commons (F1-F8)
+   D_skema_dinamis_R01/           1 run dengan fitur baris kanonik dinamis aktif
+   E_foto_pvt_uji40/              uji 40 foto PVT x 2 kondisi kartu (klasifikasi foto saja, tanpa spreadsheet kanonik)
+   F_rerun_kolom_varietas_ac4f2e4/ rerun N07 dan R02 setelah perbaikan deteksi kolom varietas (untuk akurasi sel)
+   H_koreksi_foto_commons_D18/    klasifikasi foto Commons terkoreksi: 19 foto yang dijawab mock dijalankan ulang
+KETERANGAN_DATA.txt       berkas ini
+DESKRIPSI_PEMBUATAN_DAN_TUJUAN_DATA.txt  cara pembuatan, tujuan uji, dan output yang diharapkan per input
+SHA256SUMS.txt            checksum semua berkas
+
+
+=====================================================================
+1. INPUT SPREADSHEET (1_input_spreadsheet/)
+=====================================================================
+Jumlah atribut = jumlah atribut sumber hasil parser sistem. Split: dev = dipakai saat pengembangan
+(alias baris kanonik ditulis dengan melihat data ini); held-out = tidak dipakai saat pengembangan.
+
+[R01] data_input.xlsx
+  Sheet "Resume Data", row-oriented, header 2 baris (sel gabungan), 14 atribut, split dev.
+  Sumber: data riset lapangan asli milik peneliti (sampling cabai di beberapa lokasi, mis. Hargobinangun,
+  Sleman dan Parakan, Temanggung): lokasi, koordinat, ketinggian, data fisiologi daun (SPAD, nitrogen,
+  suhu/kelembapan daun), tanah (pH, kelembapan), dan mikroklimat.
+
+[R02] input_cabai_kms.xlsx
+  Sheet "Data Varietas", row-oriented, header 1 baris, 54 atribut, split held-out.
+  Sumber: disusun peneliti (26 Okt 2026) dengan menggabungkan struktur kolom data Zenodo (lihat N08) dan
+  isi deskripsi varietas resmi Kementan (lihat N07/N09). Label campuran Indonesia-Inggris.
+
+[N07] E07_kementan_deskripsi_ext.xlsx
+  Sheet "Deskripsi Varietas", row-oriented, header 1 baris, 70 atribut, split held-out.
+  Sumber: tiga dokumen deskripsi varietas resmi Kementerian Pertanian RI; label dan nilai disalin persis:
+   - Biocalya-Agrihorti (cabai merah): Kepmentan 448/Kpts/PV.240/D/XII/2022, BRMP Biogen
+     https://biogen.brmp.pertanian.go.id/informasi-publik/download/varietas/deskripsi-cabai-merah-besar-varietas-biocalya
+   - ENNO009 (cabai rawit): Kepmentan 415/Kpts/PV.240/D/V/2024, Ditjen Hortikultura (JDIH)
+     https://hortikultura.pertanian.go.id/jdih/upload/peraturan/peraturan-1725324775.pdf
+   - Arisa IPB (cabai besar): Kepmentan 492/Kpts/PV.240/D/VII/2024, Ditjen Hortikultura (JDIH)
+     https://hortikultura.pertanian.go.id/jdih/upload/peraturan/peraturan-1725325323.pdf
+  Biocalya dari lapisan teks PDF; ENNO009 dan Arisa dibaca dari gambar halaman lampiran (pindaian).
+  Anomali sumber dipertahankan (mis. rentang terbalik pada ukuran daun Biocalya).
+  Syarat penggunaan ulang dokumen pemerintah belum diperiksa.
+
+[N08] E08_zenodo_capsicum_en.xlsx  (berkas asli)
+[N08] E08_zenodo_capsicum_en_variety.xlsx  (varian yang dinilai)
+  Sheet "Observed85_readable", row-oriented, header 1 baris, 23 atribut, split held-out.
+  Sumber: sheet Observed85 dari Capsicum_Supplementary_Data.xlsx, Zenodo record 23395436,
+  https://zenodo.org/records/23395436, lisensi CC BY 4.0 (Pinto Ribeiro, W. et al., Univ. Federal de
+  Itajuba/Vicosa, Brasil). Kolom bersandi diganti nama deskriptor Inggris dari sheet Descriptors;
+  85 baris pengamatan, 17 genotipe; nilai kategorik tetap kode angka. Wajib atribusi bila dipublikasikan.
+  Berkas asli ditolak sistem karena kolom varietas tidak dikenali (uji penolakan). Berkas varian identik
+  kecuali sel A1 diganti "Variety" (deviasi D4) dan dipakai untuk skor.
+
+[N09] dataset_cabai_deskripsi_varietas.xlsx
+  Sheet "transposed" (yang dipakai), transposed, 80 atribut, split held-out.
+  Sheet "row_oriented" berisi data sama dalam orientasi baris (tidak dipakai di eksperimen);
+  sheet "sumber" mencatat sumber per varietas.
+  Sumber: 80 label asli dari dokumen deskripsi varietas resmi untuk 6 varietas (disusun 26 Okt 2026):
+   - Carvi Agrihorti (051/Kpts/SR.120/D.2.7/5/2018), Biocarpa Agrihorti (2021), Biocarning-Agrihorti
+     (79/Kpts/PV.240/D/III/2023): BRMP Biogen, https://biogen.brmp.pertanian.go.id/
+   - JS CK 01 (496/Kpts/PV.240/D/VII/2024), CR P1 (495/Kpts/PV.240/D/VII/2024),
+     CB 96307 (471/Kpts/PV.240/D/VI/2024): Ditjen Hortikultura JDIH, https://hortikultura.pertanian.go.id/jdih/
+  URL lengkap dan catatan anomali ada di sheet "sumber".
+
+[S01] D01_transposed_indonesia_mixed.xlsx
+  Sheet "Data_Transposed", transposed (baris "Karakter"), 21 atribut, split dev.
+  Sumber: SINTETIS buatan peneliti; varietas Gendot, Kopay, Katokkon, Cabai tanjung; label Indonesia/Inggris.
+
+[S02] D02_row_flat_english_semantic.xlsx
+  Sheet "English_Flat_Data", row-oriented, header 1 baris, 26 atribut, split dev.
+  Sumber: SINTETIS; makna sama dengan S01 tetapi label Inggris bersinonim (uji pemetaan semantik).
+
+[S03] D03_row_multilevel_indonesia.xlsx
+  Sheet "Data_Bertingkat", row-oriented, header 2 tingkat, 30 atribut, split dev.
+  Sumber: SINTETIS; header bertingkat (mis. Vegetatif / Tinggi tanaman).
+
+[S04] D04_varietas_kosong_invalid.xlsx
+  Sheet "Data_Invalid", row-oriented, header 1 baris, 8 atribut.
+  Sumber: SINTETIS, sengaja tidak valid (satu baris tanpa nama varietas). Uji penolakan; tidak dinilai.
+
+[FOTO] spreadsheet_varietas_terdaftar.xlsx
+  Sheet "Data Varietas", satu kolom "Varietas Cabai" berisi 8 varietas terdaftar: Cabai Rawit, Jalapeno,
+  Habanero, Cayenne, Paprika, Cabai Korea, Serrano, Hungarian Wax. Dipakai sebagai spreadsheet pendamping
+  pada run foto Commons (F1-F8) untuk menentukan daftar varietas yang dikenali.
+
+[G01] G01_grin_8_varietas_terdaftar.xlsx  dan  [G02] G02_grin_11_varietas.xlsx  (ditambahkan 4 Nov 2026)
+  Sheet "GRIN Capsicum", row-oriented, header 1 baris, 4 kolom identitas (Variety, Accession, Accession name,
+  Species) + 54 deskriptor GRIN; sheet "sumber" mencatat aksesi, GRIN id, URL, alasan pemilihan per varietas.
+  Sumber: USDA ARS GRIN-Global, https://npgsweb.ars-grin.gov (data pemerintah AS), satu aksesi per tipe varietas
+  foto Commons; nilai disalin persis. G01 = 8 varietas terdaftar run foto paper; G02 = G01 + Scotch Bonnet,
+  Banana Pepper, Poblano. Halaman sumber: sumber_grin/<PI>_<id>.html. Dipakai sebagai pasangan spreadsheet asli
+  160 foto Commons (menggantikan daftar nama sintetis pada run lanjutan); belum dinilai untuk pemetaan atribut.
+  Rincian: DESKRIPSI_PEMBUATAN_DAN_TUJUAN_DATA.txt entri G01/G02.
+
+Ringkas: 326 atribut total (R01 14, R02 54, N07 70, N08 23, N09 80, S01 21, S02 26, S03 30, S04 8).
+Dinilai 299 atribut (142 punya target, 157 tanpa padanan); S04 dan 19 atribut AMBIGUOUS/COMPOSITE tidak dinilai.
+
+
+=====================================================================
+2. INPUT FOTO (2_input_foto/)
+=====================================================================
+[commons_8_folder] 160 foto cabai dari Wikimedia Commons (lisensi terbuka), 20 foto per folder F1-F8.
+  Sumber dan lisensi per foto (judul Commons, pengarang, lisensi, URL): ATRIBUSI_LISENSI.csv.
+  Pembagian foto ke folder: pembagian_8_folder.csv.
+  Label awal berasal dari kategori Commons (kurasi komunitas), bukan verifikasi ahli botani.
+  Komposisi: KNOWN 99 (varietas terdaftar), OTHER 45 (varietas cabai yang tidak terdaftar, mis. Bhut Jolokia,
+  Carolina Reaper, Scotch Bonnet), UNCERTAIN 16 (varietas tidak dapat ditentukan).
+  Nama file sengaja dibuat dalam tiga kondisi: INFORMATIF 64 (mis. habanero_buah_048.jpg), NETRAL 64
+  (mis. IMG_0042.jpg), MENYESATKAN 32 (nama menyebut varietas terdaftar yang salah). Nomor urut diacak.
+  Ini proksi luar negeri; tidak boleh dipakai untuk klaim performa pada cabai Indonesia.
+  Folder Google Drive yang dipakai saat run (folder induk 1wcTPSuNbLys96h3xGt50H9S4bInl8-1h):
+   F1 1hMtGiSQhWApBB79wlG6RuphKHzOy-Ynw   F2 1caUB6mBgYAYAfjK1WGPcljedGRt4kVSw
+   F3 1XtjrgvrEOukuB5Vo0EdWkh0H4vj9OETG   F4 1VR4MPyNwbm9PCK1_qPf3lc4YAfLiCCrw
+   F5 17WxTFAPHyy1IOsvFjbbjZ5TARb790cfS   F6 1Imdnk36ItEGMRHT1ZWY-AjFGOu9KXq2f
+   F7 1Zx8f2_u92IyXQKaYI-7DouvUnGSBsLWh   F8 1DVW2E4v0_vB4oRAKWD4QeuQdZuFB_pNi
+
+[foto_indonesia_drive1] 12 foto cabai Indonesia dari folder Google Drive "dataset-image" milik peneliti
+  (Drive ID 1G1DG4qfT_-EhJ_D7XZvnK1Kw1EGu8t2g), dipakai pada run kombinasi S01-S03.
+  Varietas: Katokkon, Kopay, Domba, Gendot, serta foto C. annuum / C. chinense. Rincian per foto dan kelayakan:
+  daftar_foto.csv. Catatan hak: "daun cabai gendot" memuat watermark media sosial (perlu cek hak cipta);
+  "daun cabai kopay.jpg" gambar stok (tidak layak); dua berkas sebenarnya JPEG meski berekstensi lain.
+  Sepuluh foto per run memiliki label yang dapat dinilai.
+
+[pvt_kementan_34_varietas] 317 foto cabai Indonesia dari Berita Resmi PVT (Pusat Perlindungan Varietas Tanaman
+  dan Perizinan Pertanian, Kementerian Pertanian), bagian "Foto yang Disebut dalam Deskripsi".
+  Portal: https://ppvtpp.setjen.pertanian.go.id/publikasi/berita-resmi-pvt (pencarian "cabai", 3 Nov 2026).
+  Pencarian memberi 80 Berita Resmi (daftar lengkap + URL + SHA-256: daftar_berita_resmi_cabai.tsv). Hanya 34
+  dokumen jenis Pendaftaran Varietas (24 hasil pemuliaan, 10 varietas lokal) yang memuat foto; 46 dokumen
+  perlindungan varietas (pengumuman/pemberian/pencabutan hak) tidak. 34 PDF sumber ada di sumber_pdf/.
+  Foto diekstrak dari PDF apa adanya (PNG, resolusi asli tertanam: 298 foto 125x125 px, 19 foto 164x164 px,
+  2 foto 145x145 px); QR tanda tangan elektronik, topeng gambar, dan logo Kementan dibuang. Tidak ada versi
+  resolusi penuh yang dapat diunduh dari portal.
+  Varietas per foto: folder dan daftar_foto.csv (varietas, nama umum, spesies, jalur pendaftaran, ukuran,
+  SHA-256, PDF sumber). Label varietas berasal dari dokumen resmi pendaftaran varietas.
+  Kolom bagian_tanaman, ada_kartu_nama, catatan pada daftar_foto.csv masih kosong (belum dianotasi).
+  Komposisi: 19 C. annuum, 8 C. frutescens, 6 C. chinense, 1 tanpa spesies; 3 sampai 28 foto per varietas.
+  Catatan: sebagian besar foto memuat kartu bertuliskan nama varietas (bocoran label). Hak cipta foto
+  milik pemohon/pendeskripsi varietas; Berita Resmi adalah publikasi resmi pemerintah. Syarat penggunaan ulang
+  belum diperiksa; cantumkan nomor publikasi Berita Resmi bila foto dipublikasikan.
+  Unduhan dari laptop peneliti (IP VPS ditolak Cloudflare portal): data_evaluasi/skrip/pilot_pvt_unduh.py.
+  Laporan pilot: data_evaluasi/pilot_foto_pvt/LAPORAN_PILOT.md.
+
+[pvt_uji_40] 40 foto dari pvt_kementan_34_varietas, dipilih acak terstratifikasi (seed 20261103):
+  30 foto dari 8 varietas yang dianggap terdaftar di spreadsheet run (varietas_terdaftar.txt: Turima 1,
+  Rabon Bojonegoro 1, Jabung, Carabrina 01, Indina, IPBrin KR 03, Tabia Sala 2 IPB, Guritno IPB) dan 10 foto dari
+  6 varietas tidak terdaftar (Turima 2, Rabon Bojonegoro 2, Rungun Tabalong Smart, Humbang Roberkat, Margi 2 IPB,
+  AF Wonosobo). Nama file netral IMG_4101 sampai IMG_4140 (urutan acak).
+  kartu_terlihat/  foto asli dikonversi ke WebP q80 (profil turunan CAS sistem).
+  kartu_tertutup/  foto yang sama dengan kartu nama dan stiker bertulisan ditutup kotak berwarna median tepi
+                   (kotak per foto: kotak_penutup_kartu.json, koordinat piksel asli; ditentukan manual karena
+                   OCR tesseract tidak andal pada 125 px). Foto IMG_4106 dan IMG_4131 tidak punya kartu.
+  pembagian_uji_40.csv: filename, label_kind (KNOWN/OTHER), berkas sumber, SHA-256 sumber.
+
+
+=====================================================================
+3. TEMPLATE KANONIK (3_template_kanonik/)
+=====================================================================
+template_kanonik.xlsx: skema target CABAI-KMS, 60 baris karakter. Baris 1-55 karakter morfologi
+(vegetatif, daun, bunga, buah, biji), baris 56 Lokasi, baris 57-60 Gambar Daun/Batang/Buah/Bunga.
+SHA-256 identik dengan berkas di repositori sistem di VPS
+(ce20735de4eda597427a9671fb841f5193ab64ec18dafef2e659b0b05204f6c5).
+
+
+=====================================================================
+4. HASIL OLAHAN SISTEM (4_hasil_sistem/)
+=====================================================================
+Setiap folder run berisi:
+  hasil_kanonik.xlsx      spreadsheet terstandar keluaran sistem (Sheet1; Sheet2/Sheet3 kosong bawaan template).
+                          Baris = 60 karakter kanonik, kolom = varietas dari input. Baris 57-60 berisi tautan
+                          Google Drive foto yang ditautkan otomatis (AUTO_LINK).
+  pemetaan_atribut.csv    keputusan pemetaan per atribut sumber (baris target, confidence, alasan model,
+                          metode exact-name/retrieve-rerank, status verifier, AUTO_ACCEPT/REVIEW).
+  klasifikasi_foto.csv    hasil klasifikasi per foto (status KNOWN/OTHER/UNCERTAIN, varietas, bagian
+                          tanaman, confidence, bukti visual, ditulis atau tidak).
+Semua run dijalankan lewat antarmuka web Streamlit produksi (bukan skrip), diunduh dengan tombol unduhan UI.
+Model: teks ag/gemini-3.8-flash-medium, vision ag/gemini-3.8-flash-high (lewat gateway 9Router);
+embedding paraphrase-multilingual-MiniLM-L12-v2. Hasil ini adalah keluaran mentah sistem SEBELUM koreksi
+kurator (tidak ada item review yang disetujui/direvisi).
+
+A_atribut/ (31 Okt 2026, commit 323f1e4, tanpa folder Drive)
+  R01_data_input            13 atribut terpetakan, 11 REVIEW
+  R02_input_cabai_kms       53 atribut, 35 REVIEW
+  N07_kementan              69 atribut, 49 REVIEW
+  N08_zenodo_variety        22 atribut, 14 REVIEW (berkas varian; berkas asli ditolak, tidak ada keluaran)
+  N09_deskripsi_varietas    80 atribut, 55 REVIEW
+B_kombinasi_spreadsheet_foto/ (31 Okt 2026, commit bc3c21b, folder foto Indonesia, maks 12 foto)
+  S01_D01_transposed        21 atribut, 2 REVIEW; 12 foto diproses
+  S02_D02_english           25 atribut, 3 REVIEW; 12 foto diproses
+  S03_D03_bertingkat        29 atribut, 11 REVIEW; 12 foto diproses
+  (S04 ditolak sistem: "Struktur workbook belum dapat diproses"; tidak ada keluaran)
+C_foto_commons/F1-F8 (1 Nov 2026, commit bc3c21b, input spreadsheet_varietas_terdaftar.xlsx, 20 foto per run)
+D_skema_dinamis_R01/ (2 Nov 2026, commit 8d89e06, R01 dengan KMS_DYNAMIC_SCHEMA aktif, run 8569f1d04b10)
+  hasil_kanonik_68_baris.xlsx  60 baris template + 8 baris akuisisi baru (klorofil daun, nitrogen daun,
+                               kelembapan dan suhu permukaan daun, kelembapan tanah, pH tanah, suhu dan
+                               kelembapan udara); kedelapannya kemudian disetujui peneliti sebagai kurator.
+  laporan_uji.md               catatan tiga run uji UI.
+E_foto_pvt_uji40/ (3 Nov 2026, commit ac4f2e4, 40 foto pvt_uji_40 x 2 kondisi = 80 klasifikasi, 0 gagal)
+  klasifikasi_foto_kartu_terlihat.csv   hasil per foto: status, varietas, bagian tanaman, confidence, tindakan
+  klasifikasi_foto_kartu_tertutup.csv   fusi (AUTO_LINK/CANDIDATE/REVIEW_*), alasan fusi, bukti visual, detik.
+  meta_run.json                         varietas run, varietas DB KMS (kosong saat run), opsi yang dievaluasi
+                                        model, commit, waktu mulai/selesai.
+  log_run.txt                           log per foto.
+  BEDA DENGAN RUN LAIN: dijalankan lewat skrip di VPS (data_evaluasi/skrip/uji_visi_pvt_vps.py), bukan UI,
+  karena foto tidak diunggah ke Google Drive. Skrip memanggil modul produksi yang sama dengan node vision
+  (VarietyRegistry dari varietas run + GET /varieties KMS, VisionSession, extract_photo_context_signal,
+  fuse_photo_signals) dengan environment layanan yang dideploy, tetapi TIDAK menulis ke KMS (tanpa /assets dan
+  /candidates) dan tidak menghasilkan hasil_kanonik.xlsx. Kegagalan provider dicatat FAILED, tidak diganti mock.
+  Varietas PVT tidak ada di kolom referensi template, sehingga model hanya menerima NAMA varietas, tanpa
+  deskripsi morfologi.
+  Ringkas (gold di data_evaluasi): kartu terlihat Top-1 varietas KNOWN 20/30, recall OTHER 7/10, AUTO_LINK benar
+  20/24, bukti visual menyebut label/tulisan pada 34/40 foto; kartu tertutup Top-1 0/30, UNCERTAIN 37/40,
+  AUTO_LINK 3 dan ketiganya salah (confidence 0,88-0,90). Skor: data_evaluasi/pilot_foto_pvt/uji_visi_40/hasil_skor.md.
+F_rerun_kolom_varietas_ac4f2e4/ (4 Nov 2026, commit ac4f2e4, harness VPS harness_vps.py --ids N07,R02 --reps 1)
+  N07_kementan            69 atribut, 8 REVIEW; kolom varietas Biocalya Agrihorti, ENNO009, Arisa IPB (benar)
+  R02_input_cabai_kms     53 atribut, 8 REVIEW; kolom varietas Carvi Agrihorti s.d. CB 96307 (benar)
+  Isi per folder: hasil_kanonik.xlsx, pemetaan_atribut.csv, meta_run.json (commit, SHA-256 input, waktu).
+  Tujuan: menilai akurasi isi spreadsheet per sel (masukan dosen poin 3) setelah perbaikan deteksi kolom varietas.
+  PERHATIAN: run ini dijalankan dengan environment layanan yang berlaku saat itu, termasuk KMS_DYNAMIC_SCHEMA=1
+  (aktif sejak 2 Nov 2026). Akibatnya atribut tanpa padanan dipetakan ke baris kanonik dinamis (r_61 dst., ditulis di
+  bawah 60 baris template) alih-alih ke REVIEW, sehingga jumlah REVIEW tidak sebanding dengan run A_atribut (skema
+  dinamis mati). Run ini juga membuat 31 baris kanonik provisional di basis data KMS (28 dari N07, 3 dari R02).
+  Akurasi sel hanya menilai 60 baris template, jadi tidak terpengaruh: kolom varietas 3/3 dan 6/6 benar, F1 sel
+  ketat 1,000 untuk keduanya. Skor lengkap: data_evaluasi/hasil_eksperimen/akurasi_sel/akurasi_sel.md.
+H_koreksi_foto_commons_D18/ (4 Nov 2026, commit ac4f2e4 + perbaikan D18, skrip VPS uji_visi_commons_vps.py)
+  F1-F8/klasifikasi_foto_terkoreksi.csv  hasil run UI C_foto_commons (1 Nov) dengan 19 baris diganti hasil rerun.
+                                         INI YANG DINILAI DI PAPER (v10) dan di analisis_paper.md.
+  daftar_baris_diganti.csv               19 foto: jawaban lama (mock) vs jawaban baru (model), tindakan baru.
+  rerun_19_foto/                         klasifikasi_19_foto.csv (gabungan, 0 gagal), percobaan 1 (1 foto gagal:
+                                         cabai-korea_buah_158, InstructorRetryException), percobaan 2 untuk foto itu,
+                                         meta_run.json (varietas run, DB KMS kosong, 8 opsi), log, commit,
+                                         perubahan_kode.txt (diff vision_classification.py).
+  Sebab: pada run UI 1 Nov, 19 dari 160 foto dijawab fungsi tiruan deterministic_mock_lvm karena panggilan model
+  gagal dan kode lama diam-diam mengganti jawaban dengan mock (varietas ditebak dari nama file, bagian tanaman
+  selalu DAUN, confidence tetap 0,90/0,70/0,40). Diperbaiki (keputusan D18, docs/DESIGN_DECISIONS.md): kegagalan
+  model sekarang menjadi error, mock hanya dipakai di tes atau bila diminta eksplisit. Rerun dijalankan lewat skrip
+  (bukan UI), tidak menulis ke KMS, dengan prompt dan registry varietas yang sama dengan node vision produksi.
+  Spreadsheet hasil_kanonik.xlsx di C_foto_commons/ TIDAK diubah; skor link foto dibentuk ulang dari baris
+  write_applied=True di berkas terkoreksi.
+  Dampak (label sumber, 160 foto): macro-F1 0,692 -> 0,640; Top-1 KNOWN 0,758 -> 0,727; presisi AUTO_LINK
+  0,713 -> 0,736 (64/87); nama file netral 0,659 -> 0,644 (29/45); menyesatkan 0/11 -> 0/6.
+  Foto Indonesia (B_) dan pemetaan atribut tidak terdampak (tidak ada baris mock).
+
+Yang masuk ke basis data KMS (PostgreSQL): penulisan dokumen pengetahuan saat ini hanya untuk tata letak
+"Resume Data" (R01). Workbook lain berhenti di spreadsheet kanonik (hasil_kanonik.xlsx).
+
+MASALAH YANG DIKETAHUI PADA HASIL
+- N07 dan R02: kolom varietas keluaran memakai isi kolom "Keunggulan varietas" (mis. "Tahan terhadap
+  antraknos", "Produktivitas tinggi") alih-alih kolom "Varietas Cabai" (Biocalya Agrihorti, ENNO009,
+  Arisa IPB, dst.). Deteksi kolom anchor varietas salah pilih pada dua workbook ini. Pemetaan atribut
+  (pemetaan_atribut.csv, yang dinilai di paper) tidak terpengaruh, tetapi nama kolom varietas pada
+  hasil_kanonik.xlsx kedua run ini keliru.
+  Penyebab: model embedding peka huruf besar-kecil ("Varietas Cabai" 0,749 vs "Keunggulan varietas" 0,886).
+  Diperbaiki 3 Nov 2026 pada commit ac4f2e4 (header dibandingkan tanpa membedakan huruf besar-kecil) dan
+  layanan UI sudah di-restart. Berkas di folder ini tetap hasil commit lama (323f1e4) sesuai eksperimen;
+  spreadsheet N07 dan R02 dengan kolom varietas yang benar ada di F_rerun_kolom_varietas_ac4f2e4/ (4 Nov 2026).
+  Dampaknya diukur dengan akurasi sel: F1 sel ketat held-out 0,591 pada keluaran lama, 1,000 pada rerun.
+- C_foto_commons: 19 dari 160 klasifikasi adalah jawaban mock, bukan model (lihat H_koreksi_foto_commons_D18/).
+  Gunakan klasifikasi_foto_terkoreksi.csv untuk penilaian; klasifikasi_foto.csv di C_ dibiarkan sebagai keluaran asli UI.
+- Foto: sebagian tautan otomatis salah (pada nama file netral sekitar 1 dari 3), lihat analisis di
+  data_evaluasi/hasil_eksperimen/analisis_paper.md.
+
+
+=====================================================================
+PEMBERSIHAN LEVEL VARIETAS (4 Nov 2026)
+=====================================================================
+Keputusan peneliti: hanya data cabai yang namanya sampai level varietas/kultivar yang dipakai.
+Yang gagal kriteria DIPINDAH (bukan dihapus) ke _dikeluarkan_bukan_varietas/<path asli>:
+ - 1_input_spreadsheet/data_input.xlsx (R01): Jenis Cabai hanya level spesies.
+ - Baris dihapus (salinan utuh di arsip): D03 "Cabai rawit NTB"; spreadsheet_varietas_terdaftar.xlsx,
+   G01, G02 baris "Cabai Rawit" dan "Cabai Korea".
+ - 2_input_foto/commons_8_folder: 58 foto (35 UNCERTAIN, 11 Cabai Rawit, 12 Cabai Korea generik);
+   sisa 102 foto (termasuk 2 foto yang sejak awal dikeluarkan dari gold).
+ - 2_input_foto/foto_indonesia_drive1: 2 foto berlabel spesies (C. annuum, C. chinense + C. annuum).
+Hasil di 4_hasil_sistem/ TIDAK diubah (tetap keluaran run asli). Gold tidak diubah.
+Tahap 2 (5 Nov 2026): nama yang hanya level tipe buah juga dipindah ke arsip (skrip --tahap2):
+ - commons_8_folder: 59 foto tipe (Habanero, Jalapeno, Cayenne, Scotch Bonnet, Serrano, Banana Pepper,
+   Paprika); sisa 43 foto.
+ - spreadsheet_varietas_terdaftar.xlsx tinggal Hungarian Wax; G01 tinggal Hungarian Wax; G02 tinggal
+   Hungarian Wax dan Poblano.
+ - E08 (kedua berkas): tinggal Tabasco, Bhut Jolokia, Etna ornamental, Piramide ornamental (20 baris).
+ - D01 kolom dan D03 baris "Cabai tanjung" dihapus.
+Rincian, usulan nama varietas untuk kelompok abu-abu, dan sumber: data_evaluasi/KLASIFIKASI_LEVEL_VARIETAS.md.
+Skrip: data_evaluasi/skrip/keluarkan_non_varietas.py. Backup: backup_sebelum_hapus_nonvarietas_2026-11-04.zip
+(folder Penulisan Proposal).
+Checksum arsip ada di _dikeluarkan_bukan_varietas/SHA256SUMS.txt (arsip hanya disimpan lokal, tidak di GitHub).
+
+
+=====================================================================
+DOKUMEN TERKAIT
+=====================================================================
+data_evaluasi/README_DATA_EVALUASI.md       inventaris dan sumber lengkap
+data_evaluasi/gambar/README_GAMBAR.md       desain dataset foto
+data_evaluasi/gambar_id/README_GAMBAR_ID.md foto Indonesia
+data_evaluasi/pilot_foto_pvt/LAPORAN_PILOT.md  pilot foto Berita Resmi PVT dan uji 40 foto
+data_evaluasi/hasil_eksperimen/             hasil mentah semua run (UI dan harness), RUNLOG
+docs/HASIL_SEMENTARA_EKSPERIMEN.md          ringkasan skor

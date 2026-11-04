@@ -1,0 +1,603 @@
+﻿dataset,canonical_key,varietas,atribut_sumber,nilai_sumber
+R01,lokasi,Cabai rawit (Capsicum frutescens L),Lokasi Sampling,"Dusun Randu, Desa Hargobinangun, Area Sawah, Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55582, Indonesia (sampling 1); Dusun Jatisuko, Desa Campursalam, Kec. Parakan, Kabupaten Temanggung, Jawa Tengah 56254, Indonesia (sampling 1); Dusun Grogol, Desa Kutoanyar, Kec. Kedu, Kabupaten Temanggung, Jawa Tengah, Indonesia (sampling 2); Dusun Wolodono, Desa Gondosuli, Jl. Bulu - Parakan, Wolodono, Bulu, Kec. Bulu, Kabupaten Temanggung, Jawa Tengah 56253, Indonesia (sampling 3); Dusun Gondosuli, Desa Gondosuli, Kec. Bulu, Kab. Temanggung, Jawa Tengah 56253 (sampling 4); Desa Pengilon, Kecamatan Bulu, Kab. Temanggung, Jawa Tengah 56253, Indonesia (sampling 5); Desa Pengilon, Kecamatan Bulu, Kab. Temanggung, Jawa Tengah 56253, Indonesia (sampling 6); Desa Bulu, Kecamatan Bulu, Kab. Temanggung, Jawa Tengah 56253, Indonesia (sampling 7); Dusun Pangempon, Desa Lamuk, Kec. Kalikajar, Kabupaten Wonosobo, Jawa Tengah 56372, Indonesia (lokasi 1); Dusun Genting, Desa Lamuk, Kec. Kalikajar, Kabupaten Wonosobo, Jawa Tengah 56372, Indonesia (lokasi 2)"
+R01,lokasi,cabai besar (Capsicum annum L),Lokasi Sampling,"Dusun Tenen, Desa Hargobinangun, Jl. Boyong, Area Sawah, Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55582, Indonesia (sampling 2); Desa Argalingga, Kec. Argapura, Kabupaten Majalengka, Jawa Barat 45462, Indonesia (lokasi 1); Desa Argalingga, Kec. Argapura, Kabupaten Majalengka, Jawa Barat 45462, Indonesia (lokasi 2)"
+R02,bentuk_daun,Carvi Agrihorti,Leaf shape,Eliptical
+R02,bentuk_daun,Biocarpa Agrihorti,Leaf shape,Lanceolate
+R02,bentuk_daun,Biocarning Agrihorti,Leaf shape,Ovate
+R02,bentuk_daun,JS CK 01,Leaf shape,Lanset (Lanceolate)
+R02,bentuk_daun,CR P1,Leaf shape,Bulat telur
+R02,bentuk_daun,CB 96307,Leaf shape,Lanceolate
+R02,bentuk_buah,Carvi Agrihorti,Fruit shape,Panjang rata
+R02,bentuk_buah,Biocarning Agrihorti,Fruit shape,Memanjang
+R02,bentuk_buah,JS CK 01,Fruit shape,Silindris Panjang dengan permukaan buah rata
+R02,bentuk_buah,CR P1,Fruit shape,Berbentuk segitiga
+R02,bentuk_buah,CB 96307,Fruit shape,Silindris
+R02,warna_mahkota,Carvi Agrihorti,Corolla colour,Hijau (RHS 142 A)
+R02,warna_mahkota,Biocarpa Agrihorti,Corolla colour,Putih (YW NN 155C)
+R02,warna_mahkota,Biocarning Agrihorti,Corolla colour,Putih (RHS 155C)
+R02,warna_mahkota,JS CK 01,Corolla colour,Putih (RHS Green White Group 155 A)
+R02,warna_mahkota,CR P1,Corolla colour,Putih kehijauan (Yellow Green Group RHS 145 D)
+R02,warna_mahkota,CB 96307,Corolla colour,Putih (RHS NN155C)
+R02,warna_buah_masak,Carvi Agrihorti,Mature fruit colour,Merah (Red Group RHS 46 A)
+R02,warna_buah_masak,Biocarpa Agrihorti,Mature fruit colour,Merah (VR 45 A)
+R02,warna_buah_masak,Biocarning Agrihorti,Mature fruit colour,Merah (RHS 45A)
+R02,warna_buah_masak,JS CK 01,Mature fruit colour,Merah (RHS Red Group 45 A)
+R02,warna_buah_masak,CR P1,Mature fruit colour,Merah (Red Group RHS 45 A)
+R02,warna_buah_masak,CB 96307,Mature fruit colour,Merah (RHS 45A)
+R02,tinggi_tanaman,Carvi Agrihorti,Plant height,60-70 cm
+R02,tinggi_tanaman,Biocarpa Agrihorti,Plant height,46-83 cm
+R02,tinggi_tanaman,Biocarning Agrihorti,Plant height,"50,73-67,93 (cm)"
+R02,tinggi_tanaman,JS CK 01,Plant height,"65,32 - 72,32 cm"
+R02,tinggi_tanaman,CR P1,Plant height,"87,9 - 109,8 cm"
+R02,tinggi_tanaman,CB 96307,Plant height,"57,27-65,34 cm"
+R02,warna_buah_muda,Carvi Agrihorti,Immature fruit colour,Hijau (Green Group RHS 139 A)
+R02,warna_buah_muda,Biocarpa Agrihorti,Immature fruit colour,Hijau (SYG 144 A)
+R02,warna_buah_muda,Biocarning Agrihorti,Immature fruit colour,Hijau (RHS 1394)
+R02,warna_buah_muda,JS CK 01,Immature fruit colour,Hijau Tua (RHS Green Group 137 A)
+R02,warna_buah_muda,CR P1,Immature fruit colour,Kuning kehijauan (Yellow Green Group RHS 150 C)
+R02,warna_buah_muda,CB 96307,Immature fruit colour,Hijau (RHS 141A)
+R02,panjang_buah_masak,Carvi Agrihorti,Mature fruit length,"12,14-12,52 cm"
+R02,panjang_buah_masak,Biocarpa Agrihorti,Mature fruit length,"12,0-16,2 cm"
+R02,panjang_buah_masak,Biocarning Agrihorti,Mature fruit length,"10,74-14,03 (cm)"
+R02,panjang_buah_masak,JS CK 01,Mature fruit length,"13,87 - 15,63 cm"
+R02,panjang_buah_masak,CR P1,Mature fruit length,"4,18 - 5,32 cm"
+R02,panjang_buah_masak,CB 96307,Mature fruit length,"13,76-15,51 cm"
+R02,habitus,Biocarning Agrihorti,Plant growth habit,Tegak
+R02,panjang_daun,Biocarpa Agrihorti,Panjang daun,"4,10-5,10 cm"
+R02,panjang_daun,Biocarning Agrihorti,Panjang daun,"6,45-10,64 (cm)"
+R02,panjang_daun,CB 96307,Panjang daun,"7,72-8,78 cm"
+R02,lebar_daun,Biocarpa Agrihorti,Lebar daun,"1,70-2,20 cm"
+R02,lebar_daun,Biocarning Agrihorti,Lebar daun,"2,73-4,04 (cm)"
+R02,lebar_daun,CB 96307,Lebar daun,"2,98-3,32 cm"
+R02,bentuk_pangkal_daun,JS CK 01,Bentuk pangkal daun,Membulat
+R02,warna_daun,Carvi Agrihorti,Warna daun,Hijau tua (RHS N 137 A)
+R02,warna_daun,Biocarpa Agrihorti,Warna daun,Hijau (GOG NN137A)
+R02,warna_daun,Biocarning Agrihorti,Warna daun,Hijau (RHS NN 137A)
+R02,warna_daun,JS CK 01,Warna daun,Hijau Gelap (RHS Green Group NN 137 A)
+R02,warna_daun,CR P1,Warna daun,Hijau tua (Green Group RHS NN 137 A)
+R02,warna_daun,CB 96307,Warna daun,Hijau (RHS 136A)
+R02,bentuk_bunga,Carvi Agrihorti,Bentuk bunga,Bintang
+R02,bentuk_bunga,Biocarning Agrihorti,Bentuk bunga,Bintang
+R02,bentuk_bunga,CR P1,Bentuk bunga,Seperti bintang
+R02,bentuk_bunga,CB 96307,Bentuk bunga,Seperti Bintang
+R02,warna_mahkota,Biocarning Agrihorti,Warna bunga,Putih (RHS White grup NN155A)
+R02,warna_kelopak_bunga,Carvi Agrihorti,Warna kelopak bunga,Hijau (RHS 155 A)
+R02,warna_kelopak_bunga,Biocarpa Agrihorti,Warna kelopak bunga,Hijau (DYG 139B)
+R02,warna_kelopak_bunga,Biocarning Agrihorti,Warna kelopak bunga,Hijau (RHS 137C)
+R02,warna_kelopak_bunga,JS CK 01,Warna kelopak bunga,Hijau Gelap (RHS Green Group 141 A)
+R02,warna_kelopak_bunga,CR P1,Warna kelopak bunga,Hijau (Green Group RHS 143 A)
+R02,warna_kelopak_bunga,CB 96307,Warna kelopak bunga,Hijau (RHS 137C)
+R02,warna_kepala_sari,JS CK 01,Warna kotak sari,Hijau kebiruan (RHS Blue Green Group 122 B)
+R02,warna_kepala_sari,CR P1,Warna kotak sari,Hijau keabuan (Greyed Green Group RHS N189 B)
+R02,warna_biji,Carvi Agrihorti,Warna biji,Kuning jerami (RHS 2 B)
+R02,warna_biji,Biocarpa Agrihorti,Warna biji,Kuning jerami (MY 161A)
+R02,warna_biji,Biocarning Agrihorti,Warna biji,Kuning (RHS 10B)
+R02,warna_biji,JS CK 01,Warna biji,Kuning Terang (RHS Light Yellow Group 4 D)
+R02,warna_biji,CR P1,Warna biji,Coklat kekuningan (Greyed Orange Group RHS 163 C)
+R02,warna_biji,CB 96307,Warna biji,Kuning (RHS 18B)
+R02,adaptasi_ekologi,Carvi Agrihorti,Wilayah adaptasi,Sesuai di dataran tinggi pada musim hujan
+R02,adaptasi_ekologi,Biocarpa Agrihorti,Wilayah adaptasi,"Sesuai pada musim kemarau di dataran tinggi Kec. Pacet, Kab. Cianjur, Provinsi Jawa Barat."
+R02,adaptasi_ekologi,Biocarning Agrihorti,Wilayah adaptasi,Sesuai untuk dataran medium-tinggi pada musim hujan
+R02,adaptasi_ekologi,JS CK 01,Wilayah adaptasi,"Beradaptasi dengan baik pada dataran rendah di Kabupaten Sleman, D.I. Yogyakarta pada musim Kemarau"
+R02,adaptasi_ekologi,CR P1,Wilayah adaptasi,Beradaptasi dengan baik di dataran tinggi di kabupaten Semarang pada musim penghujan
+R02,adaptasi_ekologi,CB 96307,Wilayah adaptasi,Sesuai untuk dataran rendah pada musim penghujan
+N07,tinggi_tanaman,Biocalya Agrihorti,Tinggi tanaman,"50,67-65,67 cm"
+N07,tinggi_tanaman,ENNO009,Tinggi tanaman,"83,00-100,42 cm"
+N07,tinggi_tanaman,Arisa IPB,Tinggi tanaman,65.00-83.23 cm
+N07,habitus,Biocalya Agrihorti,Bentuk habitus tanaman,Semi-tegak
+N07,bentuk_daun,Biocalya Agrihorti,Bentuk daun,Lanceolate
+N07,bentuk_daun,ENNO009,Bentuk daun,Lanset (Lanceolate)
+N07,bentuk_daun,Arisa IPB,Bentuk daun,Lanceolate
+N07,warna_daun,Biocalya Agrihorti,Warna daun,Hijau zaitun sedang (MOG 147A)
+N07,warna_daun,ENNO009,Warna daun,Hijau (RHS NN137A)
+N07,warna_daun,Arisa IPB,Warna daun,Hijau (RHS NN137A)
+N07,bentuk_bunga,Biocalya Agrihorti,Bentuk bunga,Bintang
+N07,bentuk_bunga,ENNO009,Bentuk bunga,Seperti bintang
+N07,warna_kelopak_bunga,Biocalya Agrihorti,Warna bunga kelopak,Hijau kekuningan kuat (SYG 144A)
+N07,warna_mahkota,Biocalya Agrihorti,Mahkota,Putih kekuningan (YW NN155A)
+N07,bentuk_buah,Biocalya Agrihorti,Bentuk buah,Memanjang
+N07,bentuk_buah,ENNO009,Bentuk buah,Segitiga sedang
+N07,bentuk_buah,Arisa IPB,Bentuk buah,Segitiga menyempit
+N07,warna_buah_muda,Biocalya Agrihorti,Warna buah muda,Hijau zaitun sedang (MOG 137A)
+N07,warna_buah_muda,ENNO009,Warna buah muda,Hijau muda (RHS 150B)
+N07,warna_buah_muda,Arisa IPB,Warna buah muda,Hijau tua (RHS 143A)
+N07,warna_buah_masak,Biocalya Agrihorti,Warna buah tua,Merah sedang (MR N45A)
+N07,warna_buah_masak,ENNO009,Warna buah tua,Merah (RHS 42A)
+N07,warna_buah_masak,Arisa IPB,Warna buah tua,Merah (RHS 45A)
+N07,warna_biji,Biocalya Agrihorti,Warna biji,Kuning terang (YL 10C)
+N07,warna_biji,ENNO009,Warna biji,Krem (RHS 162D)
+N07,adaptasi_ekologi,Biocalya Agrihorti,Wilayah adaptasi,Sesuai untuk dataran menengah hingga dataran tinggi pada musim hujan
+N07,adaptasi_ekologi,ENNO009,Wilayah adaptasi,Beradaptasi dengan baik di dataran rendah di Kabupaten Jember pada musim penghujan
+N07,adaptasi_ekologi,Arisa IPB,Wilayah adaptasi,Sesuai di dataran rendah di musim hujan
+N07,warna_kelopak_bunga,ENNO009,Warna kelopak bunga,Hijau (RHS 143A)
+N07,warna_mahkota,ENNO009,Warna mahkota bunga,Hijau keputihan (RHS 145C)
+N07,warna_mahkota,Arisa IPB,Warna mahkota bunga,Putih (RHS 155A)
+N07,habitus,Arisa IPB,Tipe tumbuh tanaman,Tegak
+N07,panjang_daun,Arisa IPB,Panjang daun,6.33-14.35 cm
+N07,lebar_daun,Arisa IPB,Lebar daun,2.23-3.70 cm
+N07,posisi_bunga,Arisa IPB,Posisi bunga,Pendant
+N07,warna_kepala_sari,Arisa IPB,Warna kotak sari,Putih (RHS N77C)
+N07,bentuk_ujung_buah,Arisa IPB,Ujung buah,Sangat lancip
+N08,bentuk_daun,Malagueta,Leaf shape,3
+N08,bentuk_daun,Bhut Jolokia,Leaf shape,1
+N08,bentuk_daun,Cumari do Pará,Leaf shape,2
+N08,bentuk_daun,Habanero chocolate,Leaf shape,1
+N08,bentuk_daun,Habanero vermelha,Leaf shape,1
+N08,bentuk_daun,Habanero amarela,Leaf shape,2
+N08,bentuk_daun,Peito de moça,Leaf shape,2
+N08,bentuk_daun,Murupi,Leaf shape,3
+N08,bentuk_daun,Piãozinho,Leaf shape,1
+N08,bentuk_daun,Cheiro do Norte,Leaf shape,2
+N08,bentuk_daun,Tabasco,Leaf shape,2
+N08,bentuk_daun,Biquinho vermelha,Leaf shape,2
+N08,bentuk_daun,Cayenne,Leaf shape,3
+N08,bentuk_daun,Biquinho amarela,Leaf shape,2
+N08,bentuk_daun,Arari bode amarela,Leaf shape,1
+N08,bentuk_daun,Etna ornamental,Leaf shape,3
+N08,bentuk_daun,Pirâmide ornamental,Leaf shape,3
+N08,bentuk_buah,Malagueta,Fruit shape,1
+N08,bentuk_buah,Bhut Jolokia,Fruit shape,3
+N08,bentuk_buah,Cumari do Pará,Fruit shape,3
+N08,bentuk_buah,Habanero chocolate,Fruit shape,4
+N08,bentuk_buah,Habanero vermelha,Fruit shape,4
+N08,bentuk_buah,Habanero amarela,Fruit shape,4
+N08,bentuk_buah,Peito de moça,Fruit shape,3
+N08,bentuk_buah,Murupi,Fruit shape,1
+N08,bentuk_buah,Piãozinho,Fruit shape,3
+N08,bentuk_buah,Cheiro do Norte,Fruit shape,5
+N08,bentuk_buah,Tabasco,Fruit shape,1
+N08,bentuk_buah,Biquinho vermelha,Fruit shape,3
+N08,bentuk_buah,Cayenne,Fruit shape,1
+N08,bentuk_buah,Biquinho amarela,Fruit shape,3
+N08,bentuk_buah,Arari bode amarela,Fruit shape,2
+N08,bentuk_buah,Etna ornamental,Fruit shape,3
+N08,bentuk_buah,Pirâmide ornamental,Fruit shape,3
+N08,warna_mahkota,Malagueta,Corolla colour,4
+N08,warna_mahkota,Bhut Jolokia,Corolla colour,2
+N08,warna_mahkota,Cumari do Pará,Corolla colour,2
+N08,warna_mahkota,Habanero chocolate,Corolla colour,4
+N08,warna_mahkota,Habanero vermelha,Corolla colour,3
+N08,warna_mahkota,Habanero amarela,Corolla colour,2
+N08,warna_mahkota,Peito de moça,Corolla colour,1
+N08,warna_mahkota,Murupi,Corolla colour,2
+N08,warna_mahkota,Piãozinho,Corolla colour,2
+N08,warna_mahkota,Cheiro do Norte,Corolla colour,2
+N08,warna_mahkota,Tabasco,Corolla colour,4
+N08,warna_mahkota,Biquinho vermelha,Corolla colour,1
+N08,warna_mahkota,Cayenne,Corolla colour,1
+N08,warna_mahkota,Biquinho amarela,Corolla colour,1
+N08,warna_mahkota,Arari bode amarela,Corolla colour,1
+N08,warna_mahkota,Etna ornamental,Corolla colour,4
+N08,warna_mahkota,Pirâmide ornamental,Corolla colour,1
+N08,warna_buah_masak,Malagueta,Mature fruit colour,8
+N08,warna_buah_masak,Bhut Jolokia,Mature fruit colour,6
+N08,warna_buah_masak,Cumari do Pará,Mature fruit colour,3
+N08,warna_buah_masak,Habanero chocolate,Mature fruit colour,10
+N08,warna_buah_masak,Habanero vermelha,Mature fruit colour,8
+N08,warna_buah_masak,Habanero amarela,Mature fruit colour,6
+N08,warna_buah_masak,Peito de moça,Mature fruit colour,8
+N08,warna_buah_masak,Murupi,Mature fruit colour,7
+N08,warna_buah_masak,Piãozinho,Mature fruit colour,8
+N08,warna_buah_masak,Cheiro do Norte,Mature fruit colour,5
+N08,warna_buah_masak,Tabasco,Mature fruit colour,7
+N08,warna_buah_masak,Biquinho vermelha,Mature fruit colour,8
+N08,warna_buah_masak,Cayenne,Mature fruit colour,8
+N08,warna_buah_masak,Biquinho amarela,Mature fruit colour,4
+N08,warna_buah_masak,Arari bode amarela,Mature fruit colour,5
+N08,warna_buah_masak,Etna ornamental,Mature fruit colour,8
+N08,warna_buah_masak,Pirâmide ornamental,Mature fruit colour,8
+N08,tinggi_tanaman,Malagueta,Plant height,105; 118; 121; 108; 115
+N08,tinggi_tanaman,Bhut Jolokia,Plant height,137; 126; 194; 153; 142
+N08,tinggi_tanaman,Cumari do Pará,Plant height,121; 94; 113; 89; 99
+N08,tinggi_tanaman,Habanero chocolate,Plant height,120; 140; 130; 147; 153
+N08,tinggi_tanaman,Habanero vermelha,Plant height,101; 97; 109; 102; 110
+N08,tinggi_tanaman,Habanero amarela,Plant height,112; 89; 108; 113; 116
+N08,tinggi_tanaman,Peito de moça,Plant height,120; 128; 130; 110; 124
+N08,tinggi_tanaman,Murupi,Plant height,137; 156; 140; 139; 150
+N08,tinggi_tanaman,Piãozinho,Plant height,115; 125; 123; 111; 132
+N08,tinggi_tanaman,Cheiro do Norte,Plant height,125; 127; 131; 122
+N08,tinggi_tanaman,Tabasco,Plant height,150; 132; 120; 119; 130
+N08,tinggi_tanaman,Biquinho vermelha,Plant height,76; 70; 84; 94; 80
+N08,tinggi_tanaman,Cayenne,Plant height,139; 105; 98; 108; 110
+N08,tinggi_tanaman,Biquinho amarela,Plant height,93; 96; 70; 85; 82
+N08,tinggi_tanaman,Arari bode amarela,Plant height,102; 134; 107; 120; 119
+N08,tinggi_tanaman,Etna ornamental,Plant height,104; 108; 110; 90; 112
+N08,tinggi_tanaman,Pirâmide ornamental,Plant height,37; 34; 31; 32
+N08,warna_buah_muda,Malagueta,Immature fruit colour,4
+N08,warna_buah_muda,Bhut Jolokia,Immature fruit colour,2
+N08,warna_buah_muda,Cumari do Pará,Immature fruit colour,4
+N08,warna_buah_muda,Habanero chocolate,Immature fruit colour,4
+N08,warna_buah_muda,Habanero vermelha,Immature fruit colour,2
+N08,warna_buah_muda,Habanero amarela,Immature fruit colour,4
+N08,warna_buah_muda,Peito de moça,Immature fruit colour,2
+N08,warna_buah_muda,Murupi,Immature fruit colour,2
+N08,warna_buah_muda,Piãozinho,Immature fruit colour,4
+N08,warna_buah_muda,Cheiro do Norte,Immature fruit colour,2
+N08,warna_buah_muda,Tabasco,Immature fruit colour,2
+N08,warna_buah_muda,Biquinho vermelha,Immature fruit colour,1
+N08,warna_buah_muda,Cayenne,Immature fruit colour,4
+N08,warna_buah_muda,Biquinho amarela,Immature fruit colour,1
+N08,warna_buah_muda,Arari bode amarela,Immature fruit colour,2
+N08,warna_buah_muda,Etna ornamental,Immature fruit colour,3
+N08,warna_buah_muda,Pirâmide ornamental,Immature fruit colour,1
+N08,panjang_buah_masak,Malagueta,Mature fruit length,2.019; 1.468; 2.0420000000000003; 2.261; 2.046
+N08,panjang_buah_masak,Bhut Jolokia,Mature fruit length,6.614; 5.351; 5.364; 5.661; 5.07
+N08,panjang_buah_masak,Cumari do Pará,Mature fruit length,1.282; 1.266; 1.446; 1.249; 1.233
+N08,panjang_buah_masak,Habanero chocolate,Mature fruit length,4.28; 3.743; 4.002000000000001; 4.103; 4.202000000000001
+N08,panjang_buah_masak,Habanero vermelha,Mature fruit length,3.5340000000000007; 3.808; 4.137; 3.91; 4.89
+N08,panjang_buah_masak,Habanero amarela,Mature fruit length,3.729; 3.493; 3.29; 3.897; 4.009
+N08,panjang_buah_masak,Peito de moça,Mature fruit length,1.839; 2.252; 2.237; 1.91; 2.294
+N08,panjang_buah_masak,Murupi,Mature fruit length,7.611; 6.722; 4.72; 7.351; 7.46
+N08,panjang_buah_masak,Piãozinho,Mature fruit length,2.707; 3.027; 2.973; 2.989; 2.896
+N08,panjang_buah_masak,Cheiro do Norte,Mature fruit length,4.265999999999999; 4.87; 4.197; 5.415; 4.536
+N08,panjang_buah_masak,Tabasco,Mature fruit length,3.443; 2.729; 2.983; 2.771; 2.77
+N08,panjang_buah_masak,Biquinho vermelha,Mature fruit length,2.48; 2.371; 1.853; 2.269; 2.118
+N08,panjang_buah_masak,Cayenne,Mature fruit length,8.139; 7.177; 7.862; 7.497; 6.376
+N08,panjang_buah_masak,Biquinho amarela,Mature fruit length,2.378; 2.37; 2.006; 1.978; 2.03
+N08,panjang_buah_masak,Arari bode amarela,Mature fruit length,0.99; 1.106; 1.02; 1.005; 0.947
+N08,panjang_buah_masak,Etna ornamental,Mature fruit length,2.585; 3.401; 2.908; 2.809; 3.619
+N08,panjang_buah_masak,Pirâmide ornamental,Mature fruit length,1.802; 2.4170000000000003; 1.975; 2.19; 1.903
+N08,jumlah_biji_buah_masak,Malagueta,Seeds per fruit,12; 21; 14
+N08,jumlah_biji_buah_masak,Bhut Jolokia,Seeds per fruit,13; 8; 12; 14
+N08,jumlah_biji_buah_masak,Cumari do Pará,Seeds per fruit,4; 5; 7; 2
+N08,jumlah_biji_buah_masak,Habanero chocolate,Seeds per fruit,37; 50; 48; 47; 39
+N08,jumlah_biji_buah_masak,Habanero vermelha,Seeds per fruit,23; 22; 36; 27
+N08,jumlah_biji_buah_masak,Habanero amarela,Seeds per fruit,10; 15; 22; 31; 52
+N08,jumlah_biji_buah_masak,Peito de moça,Seeds per fruit,25; 29; 27; 23; 26
+N08,jumlah_biji_buah_masak,Murupi,Seeds per fruit,28; 34; 30; 23
+N08,jumlah_biji_buah_masak,Piãozinho,Seeds per fruit,26; 38; 29; 24
+N08,jumlah_biji_buah_masak,Cheiro do Norte,Seeds per fruit,21; 29; 16; 20; 12
+N08,jumlah_biji_buah_masak,Tabasco,Seeds per fruit,27; 15; 20
+N08,jumlah_biji_buah_masak,Biquinho vermelha,Seeds per fruit,30; 37; 23; 25; 17
+N08,jumlah_biji_buah_masak,Cayenne,Seeds per fruit,41; 25; 30; 19
+N08,jumlah_biji_buah_masak,Biquinho amarela,Seeds per fruit,13; 16; 15; 12
+N08,jumlah_biji_buah_masak,Arari bode amarela,Seeds per fruit,20; 32; 30; 25; 21
+N08,jumlah_biji_buah_masak,Etna ornamental,Seeds per fruit,40; 39; 30; 23; 33
+N08,jumlah_biji_buah_masak,Pirâmide ornamental,Seeds per fruit,23; 32; 19; 16; 20
+N08,habitus,Malagueta,Plant growth habit,7
+N08,habitus,Bhut Jolokia,Plant growth habit,7
+N08,habitus,Cumari do Pará,Plant growth habit,5
+N08,habitus,Habanero chocolate,Plant growth habit,7
+N08,habitus,Habanero vermelha,Plant growth habit,7
+N08,habitus,Habanero amarela,Plant growth habit,7
+N08,habitus,Peito de moça,Plant growth habit,7
+N08,habitus,Murupi,Plant growth habit,7
+N08,habitus,Piãozinho,Plant growth habit,7
+N08,habitus,Cheiro do Norte,Plant growth habit,7
+N08,habitus,Tabasco,Plant growth habit,7
+N08,habitus,Biquinho vermelha,Plant growth habit,3
+N08,habitus,Cayenne,Plant growth habit,7
+N08,habitus,Biquinho amarela,Plant growth habit,3
+N08,habitus,Arari bode amarela,Plant growth habit,7
+N08,habitus,Etna ornamental,Plant growth habit,7
+N08,habitus,Pirâmide ornamental,Plant growth habit,5
+N09,tinggi_tanaman,Carvi Agrihorti,Tinggi tanaman,60-70 cm
+N09,tinggi_tanaman,Biocarpa Agrihorti,Tinggi tanaman,46-83 cm
+N09,tinggi_tanaman,JS CK 01,Tinggi tanaman,"65,32 - 72,32 cm"
+N09,tinggi_tanaman,CR P1,Tinggi tanaman,"87,9 - 109,8 cm"
+N09,tinggi_tanaman,CB 96307,Tinggi tanaman,"57,27-65,34 cm"
+N09,bentuk_daun,Carvi Agrihorti,Bentuk daun,Eliptical
+N09,bentuk_daun,Biocarpa Agrihorti,Bentuk daun,Lanceolate
+N09,bentuk_daun,Biocarning-Agrihorti,Bentuk daun,Ovate
+N09,bentuk_daun,JS CK 01,Bentuk daun,Lanset (Lanceolate)
+N09,bentuk_daun,CR P1,Bentuk daun,Bulat telur
+N09,bentuk_daun,CB 96307,Bentuk daun,Lanceolate
+N09,warna_daun,Carvi Agrihorti,Warna daun,Hijau tua (RHS N 137 A)
+N09,warna_daun,Biocarpa Agrihorti,Warna daun,Hijau (GOG NN137A)
+N09,warna_daun,Biocarning-Agrihorti,Warna daun,Hijau (RHS NN 137A)
+N09,warna_daun,JS CK 01,Warna daun,Hijau Gelap (RHS Green Group NN 137 A)
+N09,warna_daun,CR P1,Warna daun,Hijau tua (Green Group RHS NN 137 A)
+N09,warna_daun,CB 96307,Warna daun,Hijau (RHS 136A)
+N09,bentuk_bunga,Carvi Agrihorti,Bentuk bunga,Bintang
+N09,bentuk_bunga,Biocarning-Agrihorti,Bentuk bunga,Bintang
+N09,bentuk_bunga,CR P1,Bentuk bunga,Seperti bintang
+N09,bentuk_bunga,CB 96307,Bentuk bunga,Seperti Bintang
+N09,warna_kelopak_bunga,Carvi Agrihorti,Warna kelopak bunga,Hijau (RHS 155 A)
+N09,warna_kelopak_bunga,Biocarpa Agrihorti,Warna kelopak bunga,Hijau (DYG 139B)
+N09,warna_kelopak_bunga,CB 96307,Warna kelopak bunga,Hijau (RHS 137C)
+N09,warna_mahkota,Carvi Agrihorti,Warna mahkota bunga,Hijau (RHS 142 A)
+N09,warna_mahkota,Biocarpa Agrihorti,Warna mahkota bunga,Putih (YW NN 155C)
+N09,warna_mahkota,CB 96307,Warna mahkota bunga,Putih (RHS NN155C)
+N09,bentuk_buah,Carvi Agrihorti,Bentuk buah,Panjang rata
+N09,bentuk_buah,Biocarning-Agrihorti,Bentuk buah,Memanjang
+N09,bentuk_buah,JS CK 01,Bentuk buah,Silindris Panjang dengan permukaan buah rata
+N09,bentuk_buah,CR P1,Bentuk buah,Berbentuk segitiga
+N09,bentuk_buah,CB 96307,Bentuk buah,Silindris
+N09,warna_buah_muda,Carvi Agrihorti,Warna buah muda,Hijau (Green Group RHS 139 A)
+N09,warna_buah_muda,Biocarpa Agrihorti,Warna buah muda,Hijau (SYG 144 A)
+N09,warna_buah_muda,Biocarning-Agrihorti,Warna buah muda,Hijau (RHS 1394)
+N09,warna_buah_muda,JS CK 01,Warna buah muda,Hijau Tua (RHS Green Group 137 A)
+N09,warna_buah_muda,CR P1,Warna buah muda,Kuning kehijauan (Yellow Green Group RHS 150 C)
+N09,warna_buah_muda,CB 96307,Warna buah muda,Hijau (RHS 141A)
+N09,warna_buah_masak,Carvi Agrihorti,Warna buah tua,Merah (Red Group RHS 46 A)
+N09,warna_buah_masak,Biocarpa Agrihorti,Warna buah tua,Merah (VR 45 A)
+N09,warna_buah_masak,Biocarning-Agrihorti,Warna buah tua,Merah (RHS 45A)
+N09,warna_buah_masak,JS CK 01,Warna buah tua,Merah (RHS Red Group 45 A)
+N09,warna_buah_masak,CR P1,Warna buah tua,Merah (Red Group RHS 45 A)
+N09,warna_buah_masak,CB 96307,Warna buah tua,Merah (RHS 45A)
+N09,warna_biji,Carvi Agrihorti,Warna biji,Kuning jerami (RHS 2 B)
+N09,warna_biji,Biocarpa Agrihorti,Warna biji,Kuning jerami (MY 161A)
+N09,warna_biji,Biocarning-Agrihorti,Warna biji,Kuning (RHS 10B)
+N09,warna_biji,JS CK 01,Warna biji,Kuning Terang (RHS Light Yellow Group 4 D)
+N09,warna_biji,CR P1,Warna biji,Coklat kekuningan (Greyed Orange Group RHS 163 C)
+N09,warna_biji,CB 96307,Warna biji,Kuning (RHS 18B)
+N09,adaptasi_ekologi,Carvi Agrihorti,Wilayah adaptasi,Sesuai di dataran tinggi pada musim hujan
+N09,adaptasi_ekologi,Biocarpa Agrihorti,Wilayah adaptasi,"Sesuai pada musim kemarau di dataran tinggi Kec. Pacet, Kab. Cianjur, Provinsi Jawa Barat."
+N09,adaptasi_ekologi,Biocarning-Agrihorti,Wilayah adaptasi,Sesuai untuk dataran medium-tinggi pada musim hujan
+N09,adaptasi_ekologi,JS CK 01,Wilayah adaptasi,"Beradaptasi dengan baik pada dataran rendah di Kabupaten Sleman, D.I. Yogyakarta pada musim Kemarau"
+N09,adaptasi_ekologi,CR P1,Wilayah adaptasi,Beradaptasi dengan baik di dataran tinggi di kabupaten Semarang pada musim penghujan
+N09,adaptasi_ekologi,CB 96307,Wilayah adaptasi,Sesuai untuk dataran rendah pada musim penghujan
+N09,panjang_daun,Biocarpa Agrihorti,Ukuran daun Panjang,"4,10-5,10 cm"
+N09,lebar_daun,Biocarpa Agrihorti,Ukuran daun Lebar,"1,70-2,20 cm"
+N09,tinggi_tanaman,Biocarning-Agrihorti,Tinggi tanaman (cm),"50,73-67,93 (cm)"
+N09,habitus,Biocarning-Agrihorti,Habitus tanaman,Tegak
+N09,panjang_daun,Biocarning-Agrihorti,Panjang daun,"6,45-10,64 (cm)"
+N09,panjang_daun,CB 96307,Panjang daun,"7,72-8,78 cm"
+N09,lebar_daun,Biocarning-Agrihorti,Lebar daun,"2,73-4,04 (cm)"
+N09,lebar_daun,CB 96307,Lebar daun,"2,98-3,32 cm"
+N09,warna_mahkota,Biocarning-Agrihorti,Warna bunga,Putih (RHS White grup NN155A)
+N09,warna_kelopak_bunga,Biocarning-Agrihorti,Kelopak,Hijau (RHS 137C)
+N09,warna_mahkota,Biocarning-Agrihorti,Mahkota,Putih (RHS 155C)
+N09,bentuk_pangkal_daun,JS CK 01,Bentuk pangkal daun,Membulat
+N09,warna_kelopak_bunga,JS CK 01,Kelopak Bunga,Hijau Gelap (RHS Green Group 141 A)
+N09,warna_kelopak_bunga,CR P1,Kelopak Bunga,Hijau (Green Group RHS 143 A)
+N09,warna_mahkota,JS CK 01,Mahkota Bunga,Putih (RHS Green White Group 155 A)
+N09,warna_mahkota,CR P1,Mahkota Bunga,Putih kehijauan (Yellow Green Group RHS 145 D)
+N09,warna_kepala_sari,JS CK 01,Kotak Sari,Hijau kebiruan (RHS Blue Green Group 122 B)
+N09,warna_kepala_sari,CR P1,Kotak Sari,Hijau keabuan (Greyed Green Group RHS N189 B)
+S01,habitus,Gendot,Bentuk pertumbuhan tanaman,Perdu
+S01,habitus,Kopay,Bentuk pertumbuhan tanaman,Tegak kompak
+S01,habitus,Katokkon,Bentuk pertumbuhan tanaman,Semak rapat
+S01,habitus,Cabai tanjung,Bentuk pertumbuhan tanaman,Tegak
+S01,tinggi_tanaman,Gendot,Tinggi keseluruhan tanaman,˃ 100 cm; 20 cm
+S01,tinggi_tanaman,Kopay,Tinggi keseluruhan tanaman,60 - 89 cm
+S01,tinggi_tanaman,Katokkon,Tinggi keseluruhan tanaman,90–120 cm
+S01,tinggi_tanaman,Cabai tanjung,Tinggi keseluruhan tanaman,75 cm
+S01,umur,Gendot,Siklus hidup tanaman,Tahunan
+S01,umur,Kopay,Siklus hidup tanaman,Semusim
+S01,umur,Katokkon,Siklus hidup tanaman,Tahunan
+S01,umur,Cabai tanjung,Siklus hidup tanaman,Semusim
+S01,adaptasi_ekologi,Gendot,Kesesuaian lingkungan tumbuh,Dataran tinggi sejuk
+S01,adaptasi_ekologi,Kopay,Kesesuaian lingkungan tumbuh,Dataran rendah lembap
+S01,adaptasi_ekologi,Katokkon,Kesesuaian lingkungan tumbuh,Dataran tinggi
+S01,adaptasi_ekologi,Cabai tanjung,Kesesuaian lingkungan tumbuh,Dataran menengah
+S01,batang,Gendot,Permukaan batang,Berbulu lebat
+S01,batang,Kopay,Permukaan batang,Berbulu halus
+S01,batang,Katokkon,Permukaan batang,Berbulu sedang
+S01,batang,Cabai tanjung,Permukaan batang,Hampir tidak berbulu
+S01,tekstur_daun,Gendot,Tekstur permukaan daun,Agak kasar
+S01,tekstur_daun,Kopay,Tekstur permukaan daun,Halus
+S01,tekstur_daun,Katokkon,Tekstur permukaan daun,Kasar
+S01,tekstur_daun,Cabai tanjung,Tekstur permukaan daun,Licin
+S01,warna_daun,Gendot,Warna dominan daun,Hijau tua
+S01,warna_daun,Kopay,Warna dominan daun,Hijau
+S01,warna_daun,Katokkon,Warna dominan daun,Hijau pekat
+S01,warna_daun,Cabai tanjung,Warna dominan daun,Hijau muda
+S01,panjang_daun,Gendot,Ukuran panjang helai daun,"14,3–16,8 cm"
+S01,panjang_daun,Kopay,Ukuran panjang helai daun,"10,2–12,4 cm"
+S01,panjang_daun,Katokkon,Ukuran panjang helai daun,"12,2 cm"
+S01,panjang_daun,Cabai tanjung,Ukuran panjang helai daun,"11,7 cm"
+S01,lebar_daun,Gendot,Lebar helai daun,"6,4–7,1 cm"
+S01,lebar_daun,Kopay,Lebar helai daun,"4,0–5,1 cm"
+S01,lebar_daun,Katokkon,Lebar helai daun,"5,8 cm"
+S01,warna_mahkota,Gendot,Warna mahkota bunga,Ungu pucat
+S01,warna_mahkota,Kopay,Warna mahkota bunga,Putih
+S01,warna_mahkota,Katokkon,Warna mahkota bunga,Ungu
+S01,warna_mahkota,Cabai tanjung,Warna mahkota bunga,Putih kehijauan
+S01,jumlah_mahkota_bunga,Gendot,Jumlah helai mahkota,5
+S01,jumlah_mahkota_bunga,Kopay,Jumlah helai mahkota,5
+S01,jumlah_mahkota_bunga,Katokkon,Jumlah helai mahkota,6
+S01,jumlah_mahkota_bunga,Cabai tanjung,Jumlah helai mahkota,5
+S01,posisi_bunga,Gendot,Arah bunga pada tanaman,Menggantung
+S01,posisi_bunga,Kopay,Arah bunga pada tanaman,Tegak
+S01,posisi_bunga,Katokkon,Arah bunga pada tanaman,Menggantung
+S01,posisi_bunga,Cabai tanjung,Arah bunga pada tanaman,Menyamping
+S01,panjang_buah_muda,Gendot,Panjang buah belum masak,"5,8–7,2 cm"
+S01,panjang_buah_muda,Kopay,Panjang buah belum masak,"10,3–12,1 cm"
+S01,panjang_buah_muda,Katokkon,Panjang buah belum masak,"4,1 cm"
+S01,panjang_buah_muda,Cabai tanjung,Panjang buah belum masak,"8,6 cm"
+S01,keliling_buah_muda,Gendot,Keliling buah belum masak,"5,1–6,0 cm"
+S01,keliling_buah_muda,Kopay,Keliling buah belum masak,"2,8–3,4 cm"
+S01,keliling_buah_muda,Katokkon,Keliling buah belum masak,"4,8 cm"
+S01,keliling_buah_muda,Cabai tanjung,Keliling buah belum masak,"3,1 cm"
+S01,warna_buah_masak,Gendot,Warna buah ketika matang,Merah
+S01,warna_buah_masak,Kopay,Warna buah ketika matang,Merah cerah
+S01,warna_buah_masak,Katokkon,Warna buah ketika matang,Merah tua
+S01,warna_buah_masak,Cabai tanjung,Warna buah ketika matang,Merah jingga
+S01,posisi_buah_masak,Gendot,Posisi buah matang,Menggantung
+S01,posisi_buah_masak,Kopay,Posisi buah matang,Tegak
+S01,posisi_buah_masak,Katokkon,Posisi buah matang,Menggantung
+S01,posisi_buah_masak,Cabai tanjung,Posisi buah matang,Menyamping
+S01,bentuk_ujung_buah,Gendot,Bentuk ujung buah,Meruncing
+S01,bentuk_ujung_buah,Kopay,Bentuk ujung buah,Runcing
+S01,bentuk_ujung_buah,Katokkon,Bentuk ujung buah,Tumpul
+S01,bentuk_ujung_buah,Cabai tanjung,Bentuk ujung buah,Runcing
+S01,warna_biji,Gendot,Warna kulit biji,Krem
+S01,warna_biji,Kopay,Warna kulit biji,Krem kekuningan
+S01,warna_biji,Katokkon,Warna kulit biji,Krem
+S01,warna_biji,Cabai tanjung,Warna kulit biji,Kuning pucat
+S01,jumlah_biji_buah_masak,Gendot,Jumlah biji pada buah matang,31
+S01,jumlah_biji_buah_masak,Kopay,Jumlah biji pada buah matang,46
+S01,jumlah_biji_buah_masak,Katokkon,Jumlah biji pada buah matang,26
+S01,lokasi,Gendot,Lokasi pengambilan sampel,"Cisarua, Bandung Barat"
+S01,lokasi,Kopay,Lokasi pengambilan sampel,"Agam, Sumatera Barat"
+S01,lokasi,Katokkon,Lokasi pengambilan sampel,"Toraja Utara, Sulawesi Selatan"
+S01,lokasi,Cabai tanjung,Lokasi pengambilan sampel,"Garut, Jawa Barat"
+S02,habitus,Gendot,Overall plant growth form,Shrub-like; Compact shrub
+S02,habitus,Kopay,Overall plant growth form,Herbaceous upright
+S02,habitus,Katokkon,Overall plant growth form,Dense bush
+S02,tinggi_tanaman,Gendot,Vertical size at maturity,> 100 cm; 20 cm; 98 cm
+S02,tinggi_tanaman,Kopay,Vertical size at maturity,60–89 cm
+S02,tinggi_tanaman,Katokkon,Vertical size at maturity,90–120 cm
+S02,umur,Gendot,Productive plant lifespan,Perennial
+S02,umur,Kopay,Productive plant lifespan,Annual
+S02,umur,Katokkon,Productive plant lifespan,Perennial
+S02,adaptasi_ekologi,Gendot,Suitable growing environment,Cool highland zone
+S02,adaptasi_ekologi,Kopay,Suitable growing environment,Humid lowland zone
+S02,adaptasi_ekologi,Katokkon,Suitable growing environment,Mountain growing zone
+S02,batang,Gendot,Hair coverage on the stem,Dense fine hairs; Dense hairs
+S02,batang,Kopay,Hair coverage on the stem,Sparse fine hairs
+S02,batang,Katokkon,Hair coverage on the stem,Moderate hairs
+S02,tekstur_daun,Gendot,Leaf surface feel,Slightly rough; Slightly coarse
+S02,tekstur_daun,Kopay,Leaf surface feel,Smooth
+S02,tekstur_daun,Katokkon,Leaf surface feel,Rough
+S02,warna_daun,Gendot,Dominant foliage shade,Dark green; Deep green
+S02,warna_daun,Kopay,Dominant foliage shade,Medium green
+S02,warna_daun,Katokkon,Dominant foliage shade,Deep green
+S02,panjang_daun,Gendot,Leaf blade longitudinal size,14.3–16.8 cm; 14.9 cm
+S02,panjang_daun,Kopay,Leaf blade longitudinal size,10.2–12.4 cm
+S02,panjang_daun,Katokkon,Leaf blade longitudinal size,12.2 cm
+S02,lebar_daun,Gendot,Leaf blade crosswise span,6.4–7.1 cm; 6.8 cm
+S02,lebar_daun,Kopay,Leaf blade crosswise span,4.0–5.1 cm
+S02,lebar_daun,Katokkon,Leaf blade crosswise span,5.8 cm
+S02,bentuk_ujung_daun,Gendot,Leaf-tip profile,Tapered
+S02,bentuk_ujung_daun,Kopay,Leaf-tip profile,Pointed
+S02,bentuk_ujung_daun,Katokkon,Leaf-tip profile,Long-tapered
+S02,kedudukan_daun,Gendot,Leaf arrangement along the stem,Alternating
+S02,kedudukan_daun,Kopay,Leaf arrangement along the stem,Alternate
+S02,kedudukan_daun,Katokkon,Leaf arrangement along the stem,Alternating
+S02,warna_mahkota,Gendot,Petal pigmentation,Pale purple; Light violet
+S02,warna_mahkota,Kopay,Petal pigmentation,White
+S02,warna_mahkota,Katokkon,Petal pigmentation,Purple
+S02,jumlah_mahkota_bunga,Gendot,Petals found on each bloom,5
+S02,jumlah_mahkota_bunga,Kopay,Petals found on each bloom,5
+S02,jumlah_mahkota_bunga,Katokkon,Petals found on each bloom,6
+S02,posisi_bunga,Gendot,Flower orientation on the plant,Pendant
+S02,posisi_bunga,Kopay,Flower orientation on the plant,Upright
+S02,posisi_bunga,Katokkon,Flower orientation on the plant,Pendant
+S02,panjang_buah_muda,Gendot,Longitudinal size of the unripe pod,5.8–7.2 cm; 6.4 cm
+S02,panjang_buah_muda,Kopay,Longitudinal size of the unripe pod,10.3–12.1 cm
+S02,panjang_buah_muda,Katokkon,Longitudinal size of the unripe pod,4.1 cm
+S02,keliling_buah_muda,Gendot,Girth of the unripe pod,5.1–6.0 cm; 5.5 cm
+S02,keliling_buah_muda,Kopay,Girth of the unripe pod,2.8–3.4 cm
+S02,keliling_buah_muda,Katokkon,Girth of the unripe pod,4.8 cm
+S02,warna_buah_masak,Gendot,Pigmentation of ripe pods,Red; Dark red
+S02,warna_buah_masak,Kopay,Pigmentation of ripe pods,Bright red
+S02,warna_buah_masak,Katokkon,Pigmentation of ripe pods,Deep red
+S02,posisi_buah_masak,Gendot,Orientation of ripe pods,Pendant
+S02,posisi_buah_masak,Kopay,Orientation of ripe pods,Upright
+S02,posisi_buah_masak,Katokkon,Orientation of ripe pods,Pendant
+S02,bentuk_ujung_buah,Gendot,Fruit-tip profile,Pointed
+S02,bentuk_ujung_buah,Kopay,Fruit-tip profile,Pointed
+S02,bentuk_ujung_buah,Katokkon,Fruit-tip profile,Blunt
+S02,warna_biji,Gendot,Seed coat shade,Cream
+S02,warna_biji,Kopay,Seed coat shade,Yellowish cream
+S02,warna_biji,Katokkon,Seed coat shade,Cream
+S02,jumlah_biji_buah_masak,Gendot,Seed load in each ripe pod,31; 29
+S02,jumlah_biji_buah_masak,Kopay,Seed load in each ripe pod,46
+S02,jumlah_biji_buah_masak,Katokkon,Seed load in each ripe pod,26
+S02,lokasi,Gendot,Specimen collection site,"Cisarua, West Bandung; Lembang, West Bandung"
+S02,lokasi,Kopay,Specimen collection site,"Agam, West Sumatra"
+S02,lokasi,Katokkon,Specimen collection site,"North Toraja, South Sulawesi"
+S03,habitus,Katokkon,Vegetatif / Bentuk tumbuh,Semak rapat
+S03,habitus,Cabai tanjung,Vegetatif / Bentuk tumbuh,Tegak
+S03,habitus,Domba,Vegetatif / Bentuk tumbuh,Perdu
+S03,habitus,Cabai rawit NTB,Vegetatif / Bentuk tumbuh,Tegak bercabang
+S03,tinggi_tanaman,Katokkon,Vegetatif / Ukuran tinggi,90–120 cm
+S03,tinggi_tanaman,Cabai tanjung,Vegetatif / Ukuran tinggi,75 cm
+S03,tinggi_tanaman,Domba,Vegetatif / Ukuran tinggi,105 cm
+S03,tinggi_tanaman,Cabai rawit NTB,Vegetatif / Ukuran tinggi,82 cm
+S03,umur,Katokkon,Vegetatif / Lama hidup,Tahunan
+S03,umur,Cabai tanjung,Vegetatif / Lama hidup,Semusim
+S03,umur,Domba,Vegetatif / Lama hidup,Tahunan
+S03,umur,Cabai rawit NTB,Vegetatif / Lama hidup,Semusim
+S03,batang,Katokkon,Vegetatif / Permukaan batang,Berbulu sedang
+S03,batang,Cabai tanjung,Vegetatif / Permukaan batang,Hampir tidak berbulu
+S03,batang,Domba,Vegetatif / Permukaan batang,Berbulu lebat
+S03,batang,Cabai rawit NTB,Vegetatif / Permukaan batang,Berbulu halus
+S03,tekstur_daun,Katokkon,Daun / Tekstur,Kasar
+S03,tekstur_daun,Cabai tanjung,Daun / Tekstur,Licin
+S03,tekstur_daun,Domba,Daun / Tekstur,Agak kasar
+S03,tekstur_daun,Cabai rawit NTB,Daun / Tekstur,Halus
+S03,warna_daun,Katokkon,Daun / Warna,Hijau pekat
+S03,warna_daun,Cabai tanjung,Daun / Warna,Hijau muda
+S03,warna_daun,Domba,Daun / Warna,Hijau tua
+S03,warna_daun,Cabai rawit NTB,Daun / Warna,Hijau
+S03,panjang_daun,Katokkon,Daun / Panjang,"12,2 cm"
+S03,panjang_daun,Cabai tanjung,Daun / Panjang,"11,7 cm"
+S03,panjang_daun,Domba,Daun / Panjang,"15,1 cm"
+S03,panjang_daun,Cabai rawit NTB,Daun / Panjang,"9,8 cm"
+S03,lebar_daun,Katokkon,Daun / Lebar,"5,8 cm"
+S03,lebar_daun,Cabai tanjung,Daun / Lebar,"4,6 cm"
+S03,lebar_daun,Domba,Daun / Lebar,"7,0 cm"
+S03,lebar_daun,Cabai rawit NTB,Daun / Lebar,"3,7 cm"
+S03,warna_mahkota,Katokkon,Bunga / Warna mahkota,Ungu
+S03,warna_mahkota,Cabai tanjung,Bunga / Warna mahkota,Putih kehijauan
+S03,warna_mahkota,Domba,Bunga / Warna mahkota,Ungu pucat
+S03,warna_mahkota,Cabai rawit NTB,Bunga / Warna mahkota,Putih
+S03,jumlah_mahkota_bunga,Katokkon,Bunga / Jumlah mahkota,6
+S03,jumlah_mahkota_bunga,Cabai tanjung,Bunga / Jumlah mahkota,5
+S03,jumlah_mahkota_bunga,Domba,Bunga / Jumlah mahkota,5
+S03,jumlah_mahkota_bunga,Cabai rawit NTB,Bunga / Jumlah mahkota,5
+S03,posisi_bunga,Katokkon,Bunga / Posisi,Menggantung
+S03,posisi_bunga,Cabai tanjung,Bunga / Posisi,Menyamping
+S03,posisi_bunga,Domba,Bunga / Posisi,Menggantung
+S03,posisi_bunga,Cabai rawit NTB,Bunga / Posisi,Tegak
+S03,panjang_buah_muda,Katokkon,Buah Muda / Panjang,"4,1 cm"
+S03,panjang_buah_muda,Cabai tanjung,Buah Muda / Panjang,"8,6 cm"
+S03,panjang_buah_muda,Domba,Buah Muda / Panjang,"6,9 cm"
+S03,panjang_buah_muda,Cabai rawit NTB,Buah Muda / Panjang,"5,2 cm"
+S03,keliling_buah_muda,Katokkon,Buah Muda / Keliling,"4,8 cm"
+S03,keliling_buah_muda,Cabai tanjung,Buah Muda / Keliling,"3,1 cm"
+S03,keliling_buah_muda,Domba,Buah Muda / Keliling,"5,7 cm"
+S03,keliling_buah_muda,Cabai rawit NTB,Buah Muda / Keliling,"2,1 cm"
+S03,panjang_tangkai_buah_muda,Katokkon,Buah Muda / Panjang tangkai,"2,3 cm"
+S03,panjang_tangkai_buah_muda,Cabai tanjung,Buah Muda / Panjang tangkai,"3,0 cm"
+S03,panjang_tangkai_buah_muda,Domba,Buah Muda / Panjang tangkai,"2,7 cm"
+S03,panjang_tangkai_buah_muda,Cabai rawit NTB,Buah Muda / Panjang tangkai,"2,4 cm"
+S03,panjang_kelopak_buah_muda,Katokkon,Buah Muda / Panjang kelopak,"1,1 cm"
+S03,panjang_kelopak_buah_muda,Cabai tanjung,Buah Muda / Panjang kelopak,"0,9 cm"
+S03,panjang_kelopak_buah_muda,Domba,Buah Muda / Panjang kelopak,"1,3 cm"
+S03,panjang_kelopak_buah_muda,Cabai rawit NTB,Buah Muda / Panjang kelopak,"0,8 cm"
+S03,keliling_kelopak_buah_muda,Katokkon,Buah Muda / Keliling kelopak,"3,2 cm"
+S03,keliling_kelopak_buah_muda,Cabai tanjung,Buah Muda / Keliling kelopak,"2,7 cm"
+S03,keliling_kelopak_buah_muda,Domba,Buah Muda / Keliling kelopak,"3,6 cm"
+S03,keliling_kelopak_buah_muda,Cabai rawit NTB,Buah Muda / Keliling kelopak,"2,2 cm"
+S03,bentuk_kelopak_buah_muda,Katokkon,Buah Muda / Bentuk kelopak,Mangkuk
+S03,bentuk_kelopak_buah_muda,Cabai tanjung,Buah Muda / Bentuk kelopak,Datar
+S03,bentuk_kelopak_buah_muda,Domba,Buah Muda / Bentuk kelopak,Mangkuk
+S03,bentuk_kelopak_buah_muda,Cabai rawit NTB,Buah Muda / Bentuk kelopak,Datar
+S03,posisi_buah_muda,Katokkon,Buah Muda / Posisi,Menggantung
+S03,posisi_buah_muda,Cabai tanjung,Buah Muda / Posisi,Menyamping
+S03,posisi_buah_muda,Domba,Buah Muda / Posisi,Menggantung
+S03,posisi_buah_muda,Cabai rawit NTB,Buah Muda / Posisi,Tegak
+S03,panjang_buah_masak,Katokkon,Buah Masak / Panjang,"4,6 cm"
+S03,panjang_buah_masak,Cabai tanjung,Buah Masak / Panjang,"9,1 cm"
+S03,panjang_buah_masak,Domba,Buah Masak / Panjang,"7,4 cm"
+S03,panjang_buah_masak,Cabai rawit NTB,Buah Masak / Panjang,"5,8 cm"
+S03,keliling_buah_masak,Katokkon,Buah Masak / Keliling,"5,2 cm"
+S03,keliling_buah_masak,Cabai tanjung,Buah Masak / Keliling,"3,4 cm"
+S03,keliling_buah_masak,Domba,Buah Masak / Keliling,"6,2 cm"
+S03,keliling_buah_masak,Cabai rawit NTB,Buah Masak / Keliling,"2,4 cm"
+S03,panjang_tangkai_buah_masak,Katokkon,Buah Masak / Panjang tangkai,"2,5 cm"
+S03,panjang_tangkai_buah_masak,Cabai tanjung,Buah Masak / Panjang tangkai,"3,2 cm"
+S03,panjang_tangkai_buah_masak,Domba,Buah Masak / Panjang tangkai,"2,9 cm"
+S03,panjang_tangkai_buah_masak,Cabai rawit NTB,Buah Masak / Panjang tangkai,"2,6 cm"
+S03,panjang_kelopak_buah_masak,Katokkon,Buah Masak / Panjang kelopak,"1,2 cm"
+S03,panjang_kelopak_buah_masak,Cabai tanjung,Buah Masak / Panjang kelopak,"1,0 cm"
+S03,panjang_kelopak_buah_masak,Domba,Buah Masak / Panjang kelopak,"1,4 cm"
+S03,panjang_kelopak_buah_masak,Cabai rawit NTB,Buah Masak / Panjang kelopak,"0,9 cm"
+S03,keliling_kelopak_buah_masak,Katokkon,Buah Masak / Keliling kelopak,"3,4 cm"
+S03,keliling_kelopak_buah_masak,Cabai tanjung,Buah Masak / Keliling kelopak,"2,9 cm"
+S03,keliling_kelopak_buah_masak,Domba,Buah Masak / Keliling kelopak,"3,8 cm"
+S03,keliling_kelopak_buah_masak,Cabai rawit NTB,Buah Masak / Keliling kelopak,"2,4 cm"
+S03,warna_buah_masak,Katokkon,Buah Masak / Warna,Merah tua
+S03,warna_buah_masak,Cabai tanjung,Buah Masak / Warna,Merah jingga
+S03,warna_buah_masak,Domba,Buah Masak / Warna,Merah
+S03,warna_buah_masak,Cabai rawit NTB,Buah Masak / Warna,Merah cerah
+S03,posisi_buah_masak,Katokkon,Buah Masak / Posisi,Menggantung
+S03,posisi_buah_masak,Cabai tanjung,Buah Masak / Posisi,Menyamping
+S03,posisi_buah_masak,Domba,Buah Masak / Posisi,Menggantung
+S03,posisi_buah_masak,Cabai rawit NTB,Buah Masak / Posisi,Tegak
+S03,warna_biji,Katokkon,Biji / Warna,Krem
+S03,warna_biji,Cabai tanjung,Biji / Warna,Kuning pucat
+S03,warna_biji,Domba,Biji / Warna,Krem
+S03,warna_biji,Cabai rawit NTB,Biji / Warna,Krem kekuningan
+S03,jumlah_biji_buah_masak,Katokkon,Biji / Jumlah,26
+S03,jumlah_biji_buah_masak,Cabai tanjung,Biji / Jumlah,39
+S03,jumlah_biji_buah_masak,Domba,Biji / Jumlah,33
+S03,jumlah_biji_buah_masak,Cabai rawit NTB,Biji / Jumlah,41
+S03,lokasi,Katokkon,Lokasi,"Toraja Utara, Sulawesi Selatan"
+S03,lokasi,Cabai tanjung,Lokasi,"Garut, Jawa Barat"
+S03,lokasi,Domba,Lokasi,"Bandung Barat, Jawa Barat"
+S03,lokasi,Cabai rawit NTB,Lokasi,"Lombok Timur, Nusa Tenggara Barat"

@@ -1,0 +1,30 @@
+API call failed on attempt 1: Request timed out.
+Max retries exceeded. Total attempts: 1, Last error: Request timed out.
+ulang19 1 serrano_buah_027.jpg KNOWN Serrano AUTO_LINK 251.5
+API call failed on attempt 1: Request timed out.
+Max retries exceeded. Total attempts: 1, Last error: Request timed out.
+ulang19 2 jalapeno_bunga_118.jpg OTHER None REVIEW_MISMATCH 183.2
+ulang19 3 hungarian-wax_buah_081.jpg KNOWN Hungarian Wax AUTO_LINK 43.6
+API call failed on attempt 1: Request timed out.
+Max retries exceeded. Total attempts: 1, Last error: Request timed out.
+API call failed on attempt 1: Request timed out.
+Max retries exceeded. Total attempts: 1, Last error: Request timed out.
+ulang19 4 cabai-korea_buah_158.jpg FAILED None None 255.5
+ulang19 5 IMG_0009.jpg OTHER None CANDIDATE 45.6
+ulang19 6 serrano_buah_156.jpg OTHER None REVIEW_MISMATCH 39.7
+ulang19 7 IMG_0066.jpg OTHER None CANDIDATE 35.8
+ulang19 8 jalapeno_buah_010.jpg KNOWN Jalapeno AUTO_LINK 39.5
+ulang19 9 hungarian-wax_buah_083.jpg OTHER None REVIEW_MISMATCH 29.4
+ulang19 10 paprika_bunga_028.jpg OTHER None REVIEW_MISMATCH 118.8
+ulang19 11 hungarian-wax_buah_019.jpg OTHER None REVIEW_MISMATCH 115.2
+API call failed on attempt 1: Request timed out.
+Max retries exceeded. Total attempts: 1, Last error: Request timed out.
+ulang19 12 serrano_buah_041.jpg OTHER None REVIEW_MISMATCH 195.7
+ulang19 13 IMG_0087.jpg OTHER None CANDIDATE 62.8
+ulang19 14 paprika_buah_104.jpg KNOWN Jalapeno REVIEW_MISMATCH 40.0
+ulang19 15 IMG_0045.jpg KNOWN Cayenne AUTO_LINK 77.3
+ulang19 16 cabai-korea_buah_090.jpg KNOWN Cabai Korea AUTO_LINK 91.0
+ulang19 17 habanero_bunga_136.jpg KNOWN Habanero AUTO_LINK 98.8
+ulang19 18 cayenne_buah_080.jpg KNOWN Cayenne AUTO_LINK 44.0
+ulang19 19 hungarian-wax_buah_015.jpg OTHER None REVIEW_MISMATCH 42.2
+SELESAI_ULANG19

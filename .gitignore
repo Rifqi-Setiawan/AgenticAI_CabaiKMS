@@ -49,3 +49,6 @@ Thumbs.db
 !.env.kms.example
 .venv-kms/
 data/review/kms_runs/
+
+# Arsip data yang dikeluarkan karena bukan level varietas (D19); hanya disimpan lokal
+_dikeluarkan_bukan_varietas/

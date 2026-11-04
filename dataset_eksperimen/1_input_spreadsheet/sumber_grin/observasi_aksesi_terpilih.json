@@ -1,0 +1,4536 @@
+{
+ "Cabai Rawit": {
+  "accession": "PI 640908",
+  "accession_name": "'Rawit Kutoarjo'",
+  "species": "Capsicum annuum L.",
+  "grin_id": "1572498",
+  "alasan": "satu-satunya aksesi bernama rawit (Rawit Kutoarjo, Indonesia); tanpa observasi karakter",
+  "url": "https://npgsweb.ars-grin.gov/gringlobal/accessiondetail?id=1572498",
+  "observasi": [
+   {
+    "kategori": "SUBSET",
+    "deskriptor": "IMAGE",
+    "deskripsi": "Image present in GRIN database",
+    "nilai": "PLANT - Image of plant",
+    "n_sampel": "",
+    "studi": "PEPPERS.IMAGE.PLANT.2008"
+   }
+  ]
+ },
+ "Jalapeno": {
+  "accession": "PI 268103",
+  "accession_name": "Tipo Jalapeno",
+  "species": "Capsicum annuum L.",
+  "grin_id": "1201668",
+  "alasan": "nama memuat jalapeno, observasi morfologi terbanyak di antara aksesi C. annuum bernama jalapeno",
+  "url": "https://npgsweb.ars-grin.gov/gringlobal/accessiondetail?id=1201668",
+  "observasi": [
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "Phytophthora Root Rot",
+    "deskripsi": "Resistance to root rot (Phytophthora capsici). A disease index value of 2 or less is considered resistant, and a value greater than 2 is susceptible",
+    "nilai": "4 - (0 = Resistant, no response, healthy; 9 = Susceptible, dead plants)",
+    "n_sampel": "1",
+    "studi": "PEPPERS.ROOTROT.2009"
+   },
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "VERTICILLIUM WILT ISOLATE (VdCa59)",
+    "deskripsi": "Resistance to Verticillium wilt (Verticillium dahliae) using isolate VdCa59",
+    "nilai": "4 - 76 to 100% discoloration in the absence of foliar symptoms",
+    "n_sampel": "",
+    "studi": "PEPPERS.VERTICILLIUM.WILT.2015"
+   },
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "VERTICILLIUM WILT ISOLATE (VdCf45)",
+    "deskripsi": "Resistance to Verticillium wilt (Verticillium dahliae) using isolate VdCf45",
+    "nilai": "3 - 51 to 75% of the vascular tissue exhibiting discoloration",
+    "n_sampel": "",
+    "studi": "PEPPERS.VERTICILLIUM.WILT.2015"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "DWARFISM",
+    "deskripsi": "PRESENCE OR ABSENCE OF DWARFISM",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HEIGHT",
+    "deskripsi": "HEIGHT OF THE PLANT IN CENTIMETERS",
+    "nilai": "36",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT WIDTH",
+    "deskripsi": "WIDTH OF THE PLANT IN CENTIMETERS",
+    "nilai": "50",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHER COLOR",
+    "deskripsi": "COLOR OF THE ANTHERS",
+    "nilai": "4 - PURPLE",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "NODE ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE NODES",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE STEM",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "BLOSSOM END SHAPE",
+    "deskripsi": "BLOSSOM END SHAPE",
+    "nilai": "1 - POINTED",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF CALYX CONSTRICTION",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX MARGIN",
+    "deskripsi": "CALYX MARGIN",
+    "nilai": "3 - (1 = SMOOTH, 9 = SERRATE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA COLOR",
+    "deskripsi": "COLOR OF THE COROLLA",
+    "nilai": "1 - WHITE OR PALE YELLOW",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA SPOTS",
+    "deskripsi": "COLOR OF COROLLA SPOTS",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FASCICULATED",
+    "deskripsi": "PRESENCE OR ABSENCE OF FASCICULATION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FILAMENT COLOR",
+    "deskripsi": "COLOR OF THE FILAMENT",
+    "nilai": "1 - WHITE",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT CORKINESS",
+    "deskripsi": "FRUIT CORKINESS",
+    "nilai": "0 - NONE",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "3",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "8",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "1 - PENDANT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "5 - MEDIUM",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "2 - OBLATE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "2 - OBLATE",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WEIGHT",
+    "deskripsi": "AVERAGE WEIGHT OF 20 FRUITS IN GRAMS",
+    "nilai": "17.8",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "3",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "5",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "IMMATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF IMMATURE FRUITS",
+    "nilai": "2 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE LEAF",
+    "nilai": "0 - GLABROUS",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF TEXTURE",
+    "deskripsi": "TEXTURE OF THE LEAF",
+    "nilai": "1 - SMOOTH",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LOCULE NUMBER",
+    "deskripsi": "NUMBER OF LOCULES OF A FRUIT CROSS SECTION",
+    "nilai": "3",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "2 - RED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "2 - RED",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE LENGTH",
+    "deskripsi": "LENGTH OF THE PEDUNCLE IN CENTIMETERS",
+    "nilai": "5",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "SEED COLOR",
+    "deskripsi": "COLOR OF THE SEED",
+    "nilai": "1 - STRAW",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE STEM",
+    "nilai": "5 - INTERMEDIATE",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STIGMA EXSERTION",
+    "deskripsi": "EXSERTION OF THE STIGMA",
+    "nilai": "5 - SAME LEVEL",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX SHAPE",
+    "deskripsi": "SHAPE OF CALYX",
+    "nilai": "2 - SAUCER SHAPED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX SHAPE",
+    "deskripsi": "SHAPE OF CALYX",
+    "nilai": "2 - SAUCER SHAPED",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT PODS PER NODE",
+    "deskripsi": "HIGHEST NUMBER OF FRUITING PODS PER NODE OBSERVED",
+    "nilai": "1.0",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT PODS PER NODE",
+    "deskripsi": "HIGHEST NUMBER OF FRUITING PODS PER NODE OBSERVED",
+    "nilai": "1.0",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM COLOR",
+    "deskripsi": "COLOR OF THE STEM",
+    "nilai": "1 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PHENOLOGY",
+    "deskriptor": "DAYS TO MATURITY",
+    "deskripsi": "RELATIVE NUMBER OF DAYS TO PLANT MATURITY",
+    "nilai": "1 - EARLY",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PHENOLOGY",
+    "deskriptor": "DAYS TO MATURITY",
+    "deskripsi": "RELATIVE NUMBER OF DAYS TO PLANT MATURITY",
+    "nilai": "1 - EARLY",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT PERSISTANCE",
+    "deskripsi": "FRUIT PERSISTANCE",
+    "nilai": "0 - SEPARATING CALYX (HAS Sp GENE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT SET",
+    "deskripsi": "RELATIVE AMOUNT OF FRUIT SET",
+    "nilai": "2 - (1 = LOW, 9 = HIGH)",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT SET",
+    "deskripsi": "RELATIVE AMOUNT OF FRUIT SET",
+    "nilai": "2 - (1 = LOW, 9 = HIGH)",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "PUNGENCY",
+    "deskripsi": "PRESENCE OR ABSENCE OF PUNGENCY",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "ACCESSION UNIFORMITY",
+    "deskripsi": "ACCESSION UNIFORMITY",
+    "nilai": "3 - (1 = LOW - NONE UNIFORM, HIGH - ALL UNIFORM)",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "COMMERCIAL CATEGORY",
+    "deskripsi": "COMMERCIAL FRUIT CATEGORY",
+    "nilai": "PAP - PAPRIKA",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "COMMERCIAL CATEGORY",
+    "deskripsi": "COMMERCIAL FRUIT CATEGORY",
+    "nilai": "PIM - PIMIENTO",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "DEGREE OF PUNGENCY",
+    "deskripsi": "DEGREE OF PUNGENCY, DATA FOR THIS DESCRIPTOR TAKEN BY STAFF AT THE SOUTHERN REGIONAL PI STATION.",
+    "nilai": "5 - PUNGENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "SUBSET",
+    "deskriptor": "IMAGE",
+    "deskripsi": "Image present in GRIN database",
+    "nilai": "FRUIT-PLANT - Image of fruit on the plant",
+    "n_sampel": "",
+    "studi": "PEPPERS.IMAGE.FIELD.FRUIT-ON-PLANT.2002"
+   }
+  ]
+ },
+ "Habanero": {
+  "accession": "PI 438622",
+  "accession_name": "Habanero",
+  "species": "Capsicum chinense Jacq.",
+  "grin_id": "1333558",
+  "alasan": "nama memuat habanero, observasi morfologi terbanyak",
+  "url": "https://npgsweb.ars-grin.gov/gringlobal/accessiondetail?id=1333558",
+  "observasi": [
+   {
+    "kategori": "CHEMICAL",
+    "deskriptor": "CAPSAICIN CONTENT FRESH WEIGHT",
+    "deskripsi": "Capsaicin content expressed as micrograms per gram fresh weight fruit",
+    "nilai": "1163.02",
+    "n_sampel": "",
+    "studi": "PEPPERS.CAPSAICINOIDS.2006"
+   },
+   {
+    "kategori": "CHEMICAL",
+    "deskriptor": "DIHYDROCPASAICIN CONTENT FRESH WEIGHT",
+    "deskripsi": "Dihydrocapsaicin content expressed as micrograms per gram fresh weight fruit",
+    "nilai": "970.29",
+    "n_sampel": "",
+    "studi": "PEPPERS.CAPSAICINOIDS.2006"
+   },
+   {
+    "kategori": "CHEMICAL",
+    "deskriptor": "TOTAL CAPSAICINOID CONTENT FRESH WEIGHT",
+    "deskripsi": "Total capsoicinoid (capsaicin plus dihydrocapsaicin) content expressed as micrograms per gram fresh weight fruit",
+    "nilai": "2133.31",
+    "n_sampel": "",
+    "studi": "PEPPERS.CAPSAICINOIDS.2006"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "DETERMINATE HABIT",
+    "deskripsi": "DETERMINATE HABIT",
+    "nilai": "1 - AT LEAST 75% OF FRUITS MATURE AT ONCE",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "DWARFISM",
+    "deskripsi": "PRESENCE OR ABSENCE OF DWARFISM",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HABIT",
+    "deskripsi": "GROWTH HABIT OF PLANT",
+    "nilai": "5 - COMPACT, HEIGHT = WIDTH",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HEIGHT",
+    "deskripsi": "HEIGHT OF THE PLANT IN CENTIMETERS",
+    "nilai": "67",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT WIDTH",
+    "deskripsi": "WIDTH OF THE PLANT IN CENTIMETERS",
+    "nilai": "68",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHER COLOR",
+    "deskripsi": "COLOR OF THE ANTHERS",
+    "nilai": "3 - BLUE",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHOCYANIN IMMATURE FRUIT",
+    "deskripsi": "PRESENCE OR ABSENCE OF ANTHOCYANIN IN IMMATURE FRUIT",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "NODE ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE NODES",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE STEM",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "BLOSSOM END SHAPE",
+    "deskripsi": "BLOSSOM END SHAPE",
+    "nilai": "3 - (1 = POINTED, 9 = SUNKEN)",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF CALYX CONSTRICTION",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX MARGIN",
+    "deskripsi": "CALYX MARGIN",
+    "nilai": "4 - (1 = SMOOTH, 9 = SERRATE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA COLOR",
+    "deskripsi": "COLOR OF THE COROLLA",
+    "nilai": "2 - GREEN WHITE",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA SPOTS",
+    "deskripsi": "COLOR OF COROLLA SPOTS",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COTYLEDON COLOR",
+    "deskripsi": "COLOR OF THE COTYLEDON",
+    "nilai": "1 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FASCICULATED",
+    "deskripsi": "PRESENCE OR ABSENCE OF FASCICULATION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FILAMENT COLOR",
+    "deskripsi": "COLOR OF THE FILAMENT",
+    "nilai": "1 - WHITE",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FLOWERS PER AXIL",
+    "deskripsi": "NUMBER OF FLOWERS PER AXIL",
+    "nilai": "1",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT CORKINESS",
+    "deskripsi": "FRUIT CORKINESS",
+    "nilai": "3 - (0 = NONE, 9 = HIGH)",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "4",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "5",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "5.07",
+    "n_sampel": "",
+    "studi": "PEPPERS.WOODLAND.2006"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "1 - PENDANT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "1 - PENDANT",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "5 - CAMPANULATE",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "6 - BELL",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WEIGHT",
+    "deskripsi": "AVERAGE WEIGHT OF 20 FRUITS IN GRAMS",
+    "nilai": "12",
+    "n_sampel": "",
+    "studi": "PEPPERS.WOODLAND.2006"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WEIGHT",
+    "deskripsi": "AVERAGE WEIGHT OF 20 FRUITS IN GRAMS",
+    "nilai": "8.5",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "3",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "3",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "3.14",
+    "n_sampel": "",
+    "studi": "PEPPERS.WOODLAND.2006"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "IMMATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF IMMATURE FRUITS",
+    "nilai": "2 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE LEAF",
+    "nilai": "2 - (0 = GLABROUS, 9 = EXCESSIVE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF TEXTURE",
+    "deskripsi": "TEXTURE OF THE LEAF",
+    "nilai": "5 - (1 = SMOOTH, 9 = CURLED)",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LOCULE NUMBER",
+    "deskripsi": "NUMBER OF LOCULES OF A FRUIT CROSS SECTION",
+    "nilai": "3",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "5 - ORANGE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "5 - ORANGE",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "5 - ORANGE",
+    "n_sampel": "",
+    "studi": "PEPPERS.WOODLAND.2006"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT NECK CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF FRUIT NECK CONSTRICTION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDICEL POSITION AT ANTHESIS",
+    "deskripsi": "PEDICEL POSITION AT ANTHESIS",
+    "nilai": "5 - (1 = PENDANT, 9 = ERECT)",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE INSERTION",
+    "deskripsi": "INSERTION OF PEDUNCLE",
+    "nilai": "5 - FLAT",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE LENGTH",
+    "deskripsi": "LENGTH OF THE PEDUNCLE IN CENTIMETERS",
+    "nilai": "2.5",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "SEED COLOR",
+    "deskripsi": "COLOR OF THE SEED",
+    "nilai": "1 - STRAW",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM NUMBER",
+    "deskripsi": "NUMBER OF STEMS ON THE PLANT",
+    "nilai": "2 - (1 = SINGLE, 9 = MULTIPLE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE STEM",
+    "nilai": "2 - (0 = GLABROUS, 9 = EXCESSIVE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "WALL THICKNESS",
+    "deskripsi": "AVERAGE THICKNESS OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "0.2",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX SHAPE",
+    "deskripsi": "SHAPE OF CALYX",
+    "nilai": "2 - SAUCER SHAPED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX SHAPE",
+    "deskripsi": "SHAPE OF CALYX",
+    "nilai": "2 - SAUCER SHAPED",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT PODS PER NODE",
+    "deskripsi": "HIGHEST NUMBER OF FRUITING PODS PER NODE OBSERVED",
+    "nilai": "3.0",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT PODS PER NODE",
+    "deskripsi": "HIGHEST NUMBER OF FRUITING PODS PER NODE OBSERVED",
+    "nilai": "M",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM COLOR",
+    "deskripsi": "COLOR OF THE STEM",
+    "nilai": "1 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FLOWER ANGLE",
+    "deskripsi": "ANGLE IN DEGREES BETWEEN FLOWER AND PEDICEL",
+    "nilai": "4 - >90 DEGREES",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PERCENT DRY WEIGHT",
+    "deskripsi": "Percent Dry Weight (DW) of ground mature fruit",
+    "nilai": "12.006",
+    "n_sampel": "",
+    "studi": "PEPPERS.DRYWEIGHT.WOODLAND.2006"
+   },
+   {
+    "kategori": "PHENOLOGY",
+    "deskriptor": "DAYS TO MATURITY",
+    "deskripsi": "RELATIVE NUMBER OF DAYS TO PLANT MATURITY",
+    "nilai": "5 - MEDIUM",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PHENOLOGY",
+    "deskriptor": "DAYS TO MATURITY",
+    "deskripsi": "RELATIVE NUMBER OF DAYS TO PLANT MATURITY",
+    "nilai": "8 - LATE",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT PERSISTANCE",
+    "deskripsi": "FRUIT PERSISTANCE",
+    "nilai": "0 - SEPARATING CALYX (HAS Sp GENE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT SET",
+    "deskripsi": "RELATIVE AMOUNT OF FRUIT SET",
+    "nilai": "5 - (1 = LOW, 9 = HIGH)",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT SET",
+    "deskripsi": "RELATIVE AMOUNT OF FRUIT SET",
+    "nilai": "9 - HIGH",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "MALE STERILITY",
+    "deskripsi": "PRESENCE OR ABSENCE OF MALE STERILITY",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "PUNGENCY",
+    "deskripsi": "PRESENCE OR ABSENCE OF PUNGENCY",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "ACCESSION UNIFORMITY",
+    "deskripsi": "ACCESSION UNIFORMITY",
+    "nilai": "9 - HIGH (ALL UNIFORM)",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "COMMERCIAL CATEGORY",
+    "deskripsi": "COMMERCIAL FRUIT CATEGORY",
+    "nilai": "HAB - HABANERO",
+    "n_sampel": "",
+    "studi": "PEPPERS.EXPERIMENT.2004"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "COMMERCIAL CATEGORY",
+    "deskripsi": "COMMERCIAL FRUIT CATEGORY",
+    "nilai": "ORN - ORNAMENTAL",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "DEGREE OF PUNGENCY",
+    "deskripsi": "DEGREE OF PUNGENCY, DATA FOR THIS DESCRIPTOR TAKEN BY STAFF AT THE SOUTHERN REGIONAL PI STATION.",
+    "nilai": "5 - PUNGENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "SUBSET",
+    "deskriptor": "IMAGE",
+    "deskripsi": "Image present in GRIN database",
+    "nilai": "FLOWER - Image of flower on the plant",
+    "n_sampel": "",
+    "studi": "PEPPERS.IMAGE.FIELD.FLOWER.2004"
+   },
+   {
+    "kategori": "SUBSET",
+    "deskriptor": "IMAGE",
+    "deskripsi": "Image present in GRIN database",
+    "nilai": "HARVESTED-FRUIT - Image of harvested fruit",
+    "n_sampel": "",
+    "studi": "PEPPERS.IMAGE.WOODLAND.2006"
+   }
+  ]
+ },
+ "Cayenne": {
+  "accession": "PI 288975",
+  "accession_name": "Cayenne",
+  "species": "Capsicum annuum L.",
+  "grin_id": "1218576",
+  "alasan": "nama tepat 'Cayenne', observasi morfologi terbanyak di antara aksesi bernama cayenne",
+  "url": "https://npgsweb.ars-grin.gov/gringlobal/accessiondetail?id=1218576",
+  "observasi": [
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "Phytophthora Root Rot",
+    "deskripsi": "Resistance to root rot (Phytophthora capsici). A disease index value of 2 or less is considered resistant, and a value greater than 2 is susceptible",
+    "nilai": "9 - Dead plants",
+    "n_sampel": "6",
+    "studi": "PEPPERS.ROOTROT.2009"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HABIT",
+    "deskripsi": "GROWTH HABIT OF PLANT",
+    "nilai": "5 - COMPACT, HEIGHT = WIDTH",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HEIGHT",
+    "deskripsi": "HEIGHT OF THE PLANT IN CENTIMETERS",
+    "nilai": "45",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHER COLOR",
+    "deskripsi": "COLOR OF THE ANTHERS",
+    "nilai": "3 - BLUE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHOCYANIN IMMATURE FRUIT",
+    "deskripsi": "PRESENCE OR ABSENCE OF ANTHOCYANIN IN IMMATURE FRUIT",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "NODE ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE NODES",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "BLOSSOM END SHAPE",
+    "deskripsi": "BLOSSOM END SHAPE",
+    "nilai": "1 - POINTED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF CALYX CONSTRICTION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX MARGIN",
+    "deskripsi": "CALYX MARGIN",
+    "nilai": "5 - (1 = SMOOTH, 9 = SERRATE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA COLOR",
+    "deskripsi": "COLOR OF THE COROLLA",
+    "nilai": "1 - WHITE OR PALE YELLOW",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA SPOTS",
+    "deskripsi": "COLOR OF COROLLA SPOTS",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FASCICULATED",
+    "deskripsi": "PRESENCE OR ABSENCE OF FASCICULATION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FILAMENT COLOR",
+    "deskripsi": "COLOR OF THE FILAMENT",
+    "nilai": "1 - WHITE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FLOWERS PER AXIL",
+    "deskripsi": "NUMBER OF FLOWERS PER AXIL",
+    "nilai": "1",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT CORKINESS",
+    "deskripsi": "FRUIT CORKINESS",
+    "nilai": "0 - NONE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "12",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "1 - PENDANT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "M - MIXED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "1 - ELONGATE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "1 - ELONGATE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "3",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "IMMATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF IMMATURE FRUITS",
+    "nilai": "2 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF TEXTURE",
+    "deskripsi": "TEXTURE OF THE LEAF",
+    "nilai": "1 - SMOOTH",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LOCULE NUMBER",
+    "deskripsi": "NUMBER OF LOCULES OF A FRUIT CROSS SECTION",
+    "nilai": "2",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "2 - RED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "2 - RED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT NECK CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF FRUIT NECK CONSTRICTION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDICEL POSITION AT ANTHESIS",
+    "deskripsi": "PEDICEL POSITION AT ANTHESIS",
+    "nilai": "5 - (1 = PENDANT, 9 = ERECT)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE INSERTION",
+    "deskripsi": "INSERTION OF PEDUNCLE",
+    "nilai": "3 - (1 = PROTRUDED, 9 = INSERTED)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE LENGTH",
+    "deskripsi": "LENGTH OF THE PEDUNCLE IN CENTIMETERS",
+    "nilai": "5",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "SEED COLOR",
+    "deskripsi": "COLOR OF THE SEED",
+    "nilai": "1 - STRAW",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM NUMBER",
+    "deskripsi": "NUMBER OF STEMS ON THE PLANT",
+    "nilai": "3 - (1 = SINGLE, 9 = MULTIPLE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE STEM",
+    "nilai": "0 - GLABROUS",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STIGMA EXSERTION",
+    "deskripsi": "EXSERTION OF THE STIGMA",
+    "nilai": "9 - EXSERTED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX SHAPE",
+    "deskripsi": "SHAPE OF CALYX",
+    "nilai": "2 - SAUCER SHAPED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT PODS PER NODE",
+    "deskripsi": "HIGHEST NUMBER OF FRUITING PODS PER NODE OBSERVED",
+    "nilai": "1.0",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM COLOR",
+    "deskripsi": "COLOR OF THE STEM",
+    "nilai": "1 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "PHENOLOGY",
+    "deskriptor": "DAYS TO MATURITY",
+    "deskripsi": "RELATIVE NUMBER OF DAYS TO PLANT MATURITY",
+    "nilai": "5 - MEDIUM",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT PERSISTANCE",
+    "deskripsi": "FRUIT PERSISTANCE",
+    "nilai": "0 - SEPARATING CALYX (HAS Sp GENE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT SET",
+    "deskripsi": "RELATIVE AMOUNT OF FRUIT SET",
+    "nilai": "6 - (1 = LOW, 9 = HIGH)",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "PUNGENCY",
+    "deskripsi": "PRESENCE OR ABSENCE OF PUNGENCY",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "COMMERCIAL CATEGORY",
+    "deskripsi": "COMMERCIAL FRUIT CATEGORY",
+    "nilai": "CAY - CAYENNE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "DEGREE OF PUNGENCY",
+    "deskripsi": "DEGREE OF PUNGENCY, DATA FOR THIS DESCRIPTOR TAKEN BY STAFF AT THE SOUTHERN REGIONAL PI STATION.",
+    "nilai": "5 - PUNGENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   }
+  ]
+ },
+ "Paprika": {
+  "accession": "PI 193469",
+  "accession_name": "PAPRIKA NEWSIEDLER",
+  "species": "Capsicum annuum L.",
+  "grin_id": "1164568",
+  "alasan": "nama memuat paprika, observasi morfologi terbanyak di antara aksesi bernama paprika",
+  "url": "https://npgsweb.ars-grin.gov/gringlobal/accessiondetail?id=1164568",
+  "observasi": [
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "CUCUMBER MOSIAC VIRUS",
+    "deskripsi": "RESISTANCE TO CUCUMBER MOSAIC VIRUS",
+    "nilai": "9 - SUSCEPTIBLE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "BACTERIAL LEAF SPOT",
+    "deskripsi": "RESISTANCE TO BACTERIAL LEAFSPOT",
+    "nilai": "9 - SUSCEPTIBLE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "TOBACCO ETCH VIRUS",
+    "deskripsi": "RESISTANCE TO TOBACCO ETCH VIRUS",
+    "nilai": "9 - SUSCEPTIBLE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "TOBACCO MOSAIC VIRUS",
+    "deskripsi": "RESISTANCE TO TOBACCO MOSAIC VIRUS",
+    "nilai": "9 - SUSCEPTIBLE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "VERTICILLIUM WILT",
+    "deskripsi": "RESISTANCE TO VERTICILLIUM WILT",
+    "nilai": "9 - SUSCEPTIBLE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "Phytophthora Root Rot",
+    "deskripsi": "Resistance to root rot (Phytophthora capsici). A disease index value of 2 or less is considered resistant, and a value greater than 2 is susceptible",
+    "nilai": "8 - (0 = Resistant, no response, healthy; 9 = Susceptible, dead plants)",
+    "n_sampel": "6",
+    "studi": "PEPPERS.ROOTROT.2009"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "DETERMINATE HABIT",
+    "deskripsi": "DETERMINATE HABIT",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "DWARFISM",
+    "deskripsi": "PRESENCE OR ABSENCE OF DWARFISM",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HABIT",
+    "deskripsi": "GROWTH HABIT OF PLANT",
+    "nilai": "9 - TALL OR UPRIGHT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HEIGHT",
+    "deskripsi": "HEIGHT OF THE PLANT IN CENTIMETERS",
+    "nilai": "50",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHER COLOR",
+    "deskripsi": "COLOR OF THE ANTHERS",
+    "nilai": "2 - YELLOW/BLUE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHOCYANIN IMMATURE FRUIT",
+    "deskripsi": "PRESENCE OR ABSENCE OF ANTHOCYANIN IN IMMATURE FRUIT",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "NODE ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE NODES",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "BLOSSOM END SHAPE",
+    "deskripsi": "BLOSSOM END SHAPE",
+    "nilai": "3 - (1 = POINTED, 9 = SUNKEN)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF CALYX CONSTRICTION",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX MARGIN",
+    "deskripsi": "CALYX MARGIN",
+    "nilai": "7 - (1 = SMOOTH, 9 = SERRATE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA COLOR",
+    "deskripsi": "COLOR OF THE COROLLA",
+    "nilai": "1 - WHITE OR PALE YELLOW",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA SPOTS",
+    "deskripsi": "COLOR OF COROLLA SPOTS",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COTYLEDON COLOR",
+    "deskripsi": "COLOR OF THE COTYLEDON",
+    "nilai": "1 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FASCICULATED",
+    "deskripsi": "PRESENCE OR ABSENCE OF FASCICULATION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FILAMENT COLOR",
+    "deskripsi": "COLOR OF THE FILAMENT",
+    "nilai": "1 - WHITE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FLOWERS PER AXIL",
+    "deskripsi": "NUMBER OF FLOWERS PER AXIL",
+    "nilai": "1",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT CORKINESS",
+    "deskripsi": "FRUIT CORKINESS",
+    "nilai": "0 - NONE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "7",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "9",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "1 - PENDANT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "5 - MEDIUM",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "4 - CONIC",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "M - MIXED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "1.5",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "4",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "IMMATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF IMMATURE FRUITS",
+    "nilai": "M - MIXED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE LEAF",
+    "nilai": "0 - GLABROUS",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF TEXTURE",
+    "deskripsi": "TEXTURE OF THE LEAF",
+    "nilai": "1 - SMOOTH",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LOCULE NUMBER",
+    "deskripsi": "NUMBER OF LOCULES OF A FRUIT CROSS SECTION",
+    "nilai": "3",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "2 - RED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "2 - RED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT NECK CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF FRUIT NECK CONSTRICTION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDICEL POSITION AT ANTHESIS",
+    "deskripsi": "PEDICEL POSITION AT ANTHESIS",
+    "nilai": "5 - (1 = PENDANT, 9 = ERECT)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE INSERTION",
+    "deskripsi": "INSERTION OF PEDUNCLE",
+    "nilai": "5 - FLAT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE LENGTH",
+    "deskripsi": "LENGTH OF THE PEDUNCLE IN CENTIMETERS",
+    "nilai": "4",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "SEED COLOR",
+    "deskripsi": "COLOR OF THE SEED",
+    "nilai": "1 - STRAW",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM NUMBER",
+    "deskripsi": "NUMBER OF STEMS ON THE PLANT",
+    "nilai": "1 - SINGLE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE STEM",
+    "nilai": "0 - GLABROUS",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STIGMA EXSERTION",
+    "deskripsi": "EXSERTION OF THE STIGMA",
+    "nilai": "9 - EXSERTED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX SHAPE",
+    "deskripsi": "SHAPE OF CALYX",
+    "nilai": "1 - CUP SHAPED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT PODS PER NODE",
+    "deskripsi": "HIGHEST NUMBER OF FRUITING PODS PER NODE OBSERVED",
+    "nilai": "1.0",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM COLOR",
+    "deskripsi": "COLOR OF THE STEM",
+    "nilai": "1 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "NEMATODE",
+    "deskriptor": "Meloidogyne hapla gall",
+    "deskripsi": "Resistance to Meloidogyne hapla (northern root-knot nematode), gall index",
+    "nilai": "9 - 81% to 100% of root system galled",
+    "n_sampel": "",
+    "studi": "PEPPERS.HAPLAGALL.THIES"
+   },
+   {
+    "kategori": "NEMATODE",
+    "deskriptor": "Meloidogyne hapla egg",
+    "deskripsi": "Resistance to Meloidogyne hapla (northern root-knot nematode), egg mass index",
+    "nilai": "9 - 81% to 100% visible egg masses present on root system",
+    "n_sampel": "",
+    "studi": "PEPPERS.HAPLAEGG.THIES"
+   },
+   {
+    "kategori": "PHENOLOGY",
+    "deskriptor": "DAYS TO MATURITY",
+    "deskripsi": "RELATIVE NUMBER OF DAYS TO PLANT MATURITY",
+    "nilai": "1 - EARLY",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT SET",
+    "deskripsi": "RELATIVE AMOUNT OF FRUIT SET",
+    "nilai": "4 - (1 = LOW, 9 = HIGH)",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT SET",
+    "deskripsi": "RELATIVE AMOUNT OF FRUIT SET",
+    "nilai": "9 - HIGH",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "MALE STERILITY",
+    "deskripsi": "PRESENCE OR ABSENCE OF MALE STERILITY",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "PUNGENCY",
+    "deskripsi": "PRESENCE OR ABSENCE OF PUNGENCY",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "ACCESSION UNIFORMITY",
+    "deskripsi": "ACCESSION UNIFORMITY",
+    "nilai": "5 - (1 = LOW - NONE UNIFORM, HIGH - ALL UNIFORM)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "COMMERCIAL CATEGORY",
+    "deskripsi": "COMMERCIAL FRUIT CATEGORY",
+    "nilai": "PAP - PAPRIKA",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "DEGREE OF PUNGENCY",
+    "deskripsi": "DEGREE OF PUNGENCY, DATA FOR THIS DESCRIPTOR TAKEN BY STAFF AT THE SOUTHERN REGIONAL PI STATION.",
+    "nilai": "1 - SWEET",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   }
+  ]
+ },
+ "Cabai Korea": {
+  "accession": "PI 433360",
+  "accession_name": "Saego Chu",
+  "species": "Capsicum annuum L.",
+  "grin_id": "1328296",
+  "alasan": "asal Korea Selatan, nama memuat 'go chu' (gochu), observasi morfologi terbanyak",
+  "url": "https://npgsweb.ars-grin.gov/gringlobal/accessiondetail?id=1328296",
+  "observasi": [
+   {
+    "kategori": "CHEMICAL",
+    "deskriptor": "CAPSAICIN CONTENT FRESH WEIGHT",
+    "deskripsi": "Capsaicin content expressed as micrograms per gram fresh weight fruit",
+    "nilai": "0",
+    "n_sampel": "",
+    "studi": "PEPPERS.CAPSAICINOIDS.2007"
+   },
+   {
+    "kategori": "CHEMICAL",
+    "deskriptor": "DIHYDROCPASAICIN CONTENT FRESH WEIGHT",
+    "deskripsi": "Dihydrocapsaicin content expressed as micrograms per gram fresh weight fruit",
+    "nilai": "0",
+    "n_sampel": "",
+    "studi": "PEPPERS.CAPSAICINOIDS.2007"
+   },
+   {
+    "kategori": "CHEMICAL",
+    "deskriptor": "TOTAL CAPSAICINOID CONTENT FRESH WEIGHT",
+    "deskripsi": "Total capsoicinoid (capsaicin plus dihydrocapsaicin) content expressed as micrograms per gram fresh weight fruit",
+    "nilai": "0",
+    "n_sampel": "",
+    "studi": "PEPPERS.CAPSAICINOIDS.2007"
+   },
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "Phytophthora Root Rot",
+    "deskripsi": "Resistance to root rot (Phytophthora capsici). A disease index value of 2 or less is considered resistant, and a value greater than 2 is susceptible",
+    "nilai": "9 - Dead plants",
+    "n_sampel": "2",
+    "studi": "PEPPERS.ROOTROT.2009"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "DWARFISM",
+    "deskripsi": "PRESENCE OR ABSENCE OF DWARFISM",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HEIGHT",
+    "deskripsi": "HEIGHT OF THE PLANT IN CENTIMETERS",
+    "nilai": "43",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT WIDTH",
+    "deskripsi": "WIDTH OF THE PLANT IN CENTIMETERS",
+    "nilai": "55",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHER COLOR",
+    "deskripsi": "COLOR OF THE ANTHERS",
+    "nilai": "4 - PURPLE",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHOCYANIN IMMATURE FRUIT",
+    "deskripsi": "PRESENCE OR ABSENCE OF ANTHOCYANIN IN IMMATURE FRUIT",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "NODE ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE NODES",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE STEM",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "BLOSSOM END SHAPE",
+    "deskripsi": "BLOSSOM END SHAPE",
+    "nilai": "1 - POINTED",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF CALYX CONSTRICTION",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX MARGIN",
+    "deskripsi": "CALYX MARGIN",
+    "nilai": "5 - (1 = SMOOTH, 9 = SERRATE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA COLOR",
+    "deskripsi": "COLOR OF THE COROLLA",
+    "nilai": "1 - WHITE OR PALE YELLOW",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA SPOTS",
+    "deskripsi": "COLOR OF COROLLA SPOTS",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FASCICULATED",
+    "deskripsi": "PRESENCE OR ABSENCE OF FASCICULATION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FILAMENT COLOR",
+    "deskripsi": "COLOR OF THE FILAMENT",
+    "nilai": "1 - WHITE",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT CORKINESS",
+    "deskripsi": "FRUIT CORKINESS",
+    "nilai": "0 - NONE",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "7",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "7",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "1 - PENDANT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "1 - PENDANT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "4 - CONIC",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "4 - CONIC",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WEIGHT",
+    "deskripsi": "AVERAGE WEIGHT OF 20 FRUITS IN GRAMS",
+    "nilai": "8",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "1",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "1",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "IMMATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF IMMATURE FRUITS",
+    "nilai": "2 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE LEAF",
+    "nilai": "0 - GLABROUS",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF TEXTURE",
+    "deskripsi": "TEXTURE OF THE LEAF",
+    "nilai": "1 - SMOOTH",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LOCULE NUMBER",
+    "deskripsi": "NUMBER OF LOCULES OF A FRUIT CROSS SECTION",
+    "nilai": "2",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "2 - RED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "2 - RED",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT NECK CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF FRUIT NECK CONSTRICTION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE LENGTH",
+    "deskripsi": "LENGTH OF THE PEDUNCLE IN CENTIMETERS",
+    "nilai": "5",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "SEED COLOR",
+    "deskripsi": "COLOR OF THE SEED",
+    "nilai": "1 - STRAW",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE STEM",
+    "nilai": "1 - (0 = GLABROUS, 9 = EXCESSIVE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STIGMA EXSERTION",
+    "deskripsi": "EXSERTION OF THE STIGMA",
+    "nilai": "7 - (1 = INSERTED, 9 = EXSERTED)",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX SHAPE",
+    "deskripsi": "SHAPE OF CALYX",
+    "nilai": "1 - CUP SHAPED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX SHAPE",
+    "deskripsi": "SHAPE OF CALYX",
+    "nilai": "1 - CUP SHAPED",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT PODS PER NODE",
+    "deskripsi": "HIGHEST NUMBER OF FRUITING PODS PER NODE OBSERVED",
+    "nilai": "1.0",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT PODS PER NODE",
+    "deskripsi": "HIGHEST NUMBER OF FRUITING PODS PER NODE OBSERVED",
+    "nilai": "1.0",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM COLOR",
+    "deskripsi": "COLOR OF THE STEM",
+    "nilai": "1 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PHENOLOGY",
+    "deskriptor": "DAYS TO MATURITY",
+    "deskripsi": "RELATIVE NUMBER OF DAYS TO PLANT MATURITY",
+    "nilai": "1 - EARLY",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PHENOLOGY",
+    "deskriptor": "DAYS TO MATURITY",
+    "deskripsi": "RELATIVE NUMBER OF DAYS TO PLANT MATURITY",
+    "nilai": "1 - EARLY",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT PERSISTANCE",
+    "deskripsi": "FRUIT PERSISTANCE",
+    "nilai": "0 - SEPARATING CALYX (HAS Sp GENE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT SET",
+    "deskripsi": "RELATIVE AMOUNT OF FRUIT SET",
+    "nilai": "5 - (1 = LOW, 9 = HIGH)",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT SET",
+    "deskripsi": "RELATIVE AMOUNT OF FRUIT SET",
+    "nilai": "5 - (1 = LOW, 9 = HIGH)",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "PUNGENCY",
+    "deskripsi": "PRESENCE OR ABSENCE OF PUNGENCY",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "ACCESSION UNIFORMITY",
+    "deskripsi": "ACCESSION UNIFORMITY",
+    "nilai": "9 - HIGH (ALL UNIFORM)",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "COMMERCIAL CATEGORY",
+    "deskripsi": "COMMERCIAL FRUIT CATEGORY",
+    "nilai": "CHL - CHILI",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "COMMERCIAL CATEGORY",
+    "deskripsi": "COMMERCIAL FRUIT CATEGORY",
+    "nilai": "CHL - CHILI",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "DEGREE OF PUNGENCY",
+    "deskripsi": "DEGREE OF PUNGENCY, DATA FOR THIS DESCRIPTOR TAKEN BY STAFF AT THE SOUTHERN REGIONAL PI STATION.",
+    "nilai": "5 - PUNGENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "SUBSET",
+    "deskriptor": "CORE SUBSET",
+    "deskripsi": "A FLAG TO INDICATE THE ACCESSION IS PART OF THE CORE SUBSET",
+    "nilai": "Y - YES, ACCESSION IS PART OF THE CORE",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE"
+   },
+   {
+    "kategori": "SUBSET",
+    "deskriptor": "IMAGE",
+    "deskripsi": "Image present in GRIN database",
+    "nilai": "FRUIT-PLANT - Image of fruit on the plant",
+    "n_sampel": "",
+    "studi": "PEPPERS.IMAGE.FIELD.FRUIT-ON-PLANT.2002"
+   },
+   {
+    "kategori": "SUBSET",
+    "deskriptor": "IMAGE",
+    "deskripsi": "Image present in GRIN database",
+    "nilai": "HARVESTED-FRUIT - Image of harvested fruit",
+    "n_sampel": "",
+    "studi": "PEPPERS.IMAGE.LAB.HARVESTED-FRUIT.2006"
+   }
+  ]
+ },
+ "Serrano": {
+  "accession": "PI 281367",
+  "accession_name": "Chili Serrano",
+  "species": "Capsicum annuum L.",
+  "grin_id": "1209240",
+  "alasan": "nama memuat serrano, observasi morfologi terbanyak",
+  "url": "https://npgsweb.ars-grin.gov/gringlobal/accessiondetail?id=1209240",
+  "observasi": [
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "Phytophthora Root Rot",
+    "deskripsi": "Resistance to root rot (Phytophthora capsici). A disease index value of 2 or less is considered resistant, and a value greater than 2 is susceptible",
+    "nilai": "8 - (0 = Resistant, no response, healthy; 9 = Susceptible, dead plants)",
+    "n_sampel": "2",
+    "studi": "PEPPERS.ROOTROT.2009"
+   },
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "VERTICILLIUM WILT ISOLATE (VdCa59)",
+    "deskripsi": "Resistance to Verticillium wilt (Verticillium dahliae) using isolate VdCa59",
+    "nilai": "4 - 76 to 100% discoloration in the absence of foliar symptoms",
+    "n_sampel": "",
+    "studi": "PEPPERS.VERTICILLIUM.WILT.2015"
+   },
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "VERTICILLIUM WILT ISOLATE (VdCf45)",
+    "deskripsi": "Resistance to Verticillium wilt (Verticillium dahliae) using isolate VdCf45",
+    "nilai": "3 - 51 to 75% of the vascular tissue exhibiting discoloration",
+    "n_sampel": "",
+    "studi": "PEPPERS.VERTICILLIUM.WILT.2015"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HABIT",
+    "deskripsi": "GROWTH HABIT OF PLANT",
+    "nilai": "9 - TALL OR UPRIGHT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HEIGHT",
+    "deskripsi": "HEIGHT OF THE PLANT IN CENTIMETERS",
+    "nilai": "60",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHER COLOR",
+    "deskripsi": "COLOR OF THE ANTHERS",
+    "nilai": "3 - BLUE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHOCYANIN IMMATURE FRUIT",
+    "deskripsi": "PRESENCE OR ABSENCE OF ANTHOCYANIN IN IMMATURE FRUIT",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "NODE ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE NODES",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "BLOSSOM END SHAPE",
+    "deskripsi": "BLOSSOM END SHAPE",
+    "nilai": "1 - POINTED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF CALYX CONSTRICTION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX MARGIN",
+    "deskripsi": "CALYX MARGIN",
+    "nilai": "5 - (1 = SMOOTH, 9 = SERRATE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA COLOR",
+    "deskripsi": "COLOR OF THE COROLLA",
+    "nilai": "1 - WHITE OR PALE YELLOW",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA SPOTS",
+    "deskripsi": "COLOR OF COROLLA SPOTS",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FASCICULATED",
+    "deskripsi": "PRESENCE OR ABSENCE OF FASCICULATION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FILAMENT COLOR",
+    "deskripsi": "COLOR OF THE FILAMENT",
+    "nilai": "1 - WHITE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FLOWERS PER AXIL",
+    "deskripsi": "NUMBER OF FLOWERS PER AXIL",
+    "nilai": "1",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT CORKINESS",
+    "deskripsi": "FRUIT CORKINESS",
+    "nilai": "0 - NONE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "2",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "9 - ERECT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "M - MIXED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "2 - OBLATE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "4 - CONIC",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "3",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "IMMATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF IMMATURE FRUITS",
+    "nilai": "2 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF TEXTURE",
+    "deskripsi": "TEXTURE OF THE LEAF",
+    "nilai": "1 - SMOOTH",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LOCULE NUMBER",
+    "deskripsi": "NUMBER OF LOCULES OF A FRUIT CROSS SECTION",
+    "nilai": "M",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "2 - RED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "2 - RED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT NECK CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF FRUIT NECK CONSTRICTION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDICEL POSITION AT ANTHESIS",
+    "deskripsi": "PEDICEL POSITION AT ANTHESIS",
+    "nilai": "3 - (1 = PENDANT, 9 = ERECT)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE INSERTION",
+    "deskripsi": "INSERTION OF PEDUNCLE",
+    "nilai": "1 - PROTRUDED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE LENGTH",
+    "deskripsi": "LENGTH OF THE PEDUNCLE IN CENTIMETERS",
+    "nilai": "1",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "SEED COLOR",
+    "deskripsi": "COLOR OF THE SEED",
+    "nilai": "1 - STRAW",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM NUMBER",
+    "deskripsi": "NUMBER OF STEMS ON THE PLANT",
+    "nilai": "9 - MULTIPLE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE STEM",
+    "nilai": "M - MIXED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STIGMA EXSERTION",
+    "deskripsi": "EXSERTION OF THE STIGMA",
+    "nilai": "9 - EXSERTED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX SHAPE",
+    "deskripsi": "SHAPE OF CALYX",
+    "nilai": "1 - CUP SHAPED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT PODS PER NODE",
+    "deskripsi": "HIGHEST NUMBER OF FRUITING PODS PER NODE OBSERVED",
+    "nilai": "1.0",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM COLOR",
+    "deskripsi": "COLOR OF THE STEM",
+    "nilai": "1 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "PHENOLOGY",
+    "deskriptor": "DAYS TO MATURITY",
+    "deskripsi": "RELATIVE NUMBER OF DAYS TO PLANT MATURITY",
+    "nilai": "5 - MEDIUM",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT PERSISTANCE",
+    "deskripsi": "FRUIT PERSISTANCE",
+    "nilai": "M - Mixed",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT SET",
+    "deskripsi": "RELATIVE AMOUNT OF FRUIT SET",
+    "nilai": "5 - (1 = LOW, 9 = HIGH)",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "PUNGENCY",
+    "deskripsi": "PRESENCE OR ABSENCE OF PUNGENCY",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "COMMERCIAL CATEGORY",
+    "deskripsi": "COMMERCIAL FRUIT CATEGORY",
+    "nilai": "MIX - MIXED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "DEGREE OF PUNGENCY",
+    "deskripsi": "DEGREE OF PUNGENCY, DATA FOR THIS DESCRIPTOR TAKEN BY STAFF AT THE SOUTHERN REGIONAL PI STATION.",
+    "nilai": "5 - PUNGENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "SUBSET",
+    "deskriptor": "IMAGE",
+    "deskripsi": "Image present in GRIN database",
+    "nilai": "HARVESTED-FRUIT - Image of harvested fruit",
+    "n_sampel": "",
+    "studi": "PEPPERS.IMAGE.LAB.HARVESTED-FRUIT.2006"
+   }
+  ]
+ },
+ "Hungarian Wax": {
+  "accession": "PI 640679",
+  "accession_name": "'Hungarian Yellow Wax'",
+  "species": "Capsicum annuum L.",
+  "grin_id": "1572830",
+  "alasan": "satu-satunya aksesi bernama Hungarian ... Wax; hanya 3 observasi buah",
+  "url": "https://npgsweb.ars-grin.gov/gringlobal/accessiondetail?id=1572830",
+  "observasi": [
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "Phytophthora Root Rot",
+    "deskripsi": "Resistance to root rot (Phytophthora capsici). A disease index value of 2 or less is considered resistant, and a value greater than 2 is susceptible",
+    "nilai": "8 - (0 = Resistant, no response, healthy; 9 = Susceptible, dead plants)",
+    "n_sampel": "6",
+    "studi": "PEPPERS.ROOTROT.2009"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "12.49",
+    "n_sampel": "",
+    "studi": "PEPPERS.BYRON.2008"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WEIGHT",
+    "deskripsi": "AVERAGE WEIGHT OF 20 FRUITS IN GRAMS",
+    "nilai": "34.1",
+    "n_sampel": "",
+    "studi": "PEPPERS.BYRON.2008"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "3.37",
+    "n_sampel": "",
+    "studi": "PEPPERS.BYRON.2008"
+   }
+  ]
+ },
+ "Scotch Bonnet": {
+  "accession": "PI 485593",
+  "accession_name": "Scotch Bonnet",
+  "species": "Capsicum chinense Jacq.",
+  "grin_id": "1380529",
+  "alasan": "nama tepat 'Scotch Bonnet', observasi morfologi terbanyak di antara yang bernama tepat",
+  "url": "https://npgsweb.ars-grin.gov/gringlobal/accessiondetail?id=1380529",
+  "observasi": [
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "DETERMINATE HABIT",
+    "deskripsi": "DETERMINATE HABIT",
+    "nilai": "1 - AT LEAST 75% OF FRUITS MATURE AT ONCE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "DWARFISM",
+    "deskripsi": "PRESENCE OR ABSENCE OF DWARFISM",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HABIT",
+    "deskripsi": "GROWTH HABIT OF PLANT",
+    "nilai": "9 - TALL OR UPRIGHT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHER COLOR",
+    "deskripsi": "COLOR OF THE ANTHERS",
+    "nilai": "3 - BLUE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHOCYANIN IMMATURE FRUIT",
+    "deskripsi": "PRESENCE OR ABSENCE OF ANTHOCYANIN IN IMMATURE FRUIT",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "NODE ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE NODES",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "BLOSSOM END SHAPE",
+    "deskripsi": "BLOSSOM END SHAPE",
+    "nilai": "9 - SUNKEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF CALYX CONSTRICTION",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX MARGIN",
+    "deskripsi": "CALYX MARGIN",
+    "nilai": "4 - (1 = SMOOTH, 9 = SERRATE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA COLOR",
+    "deskripsi": "COLOR OF THE COROLLA",
+    "nilai": "2 - GREEN WHITE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA SPOTS",
+    "deskripsi": "COLOR OF COROLLA SPOTS",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COTYLEDON COLOR",
+    "deskripsi": "COLOR OF THE COTYLEDON",
+    "nilai": "1 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FASCICULATED",
+    "deskripsi": "PRESENCE OR ABSENCE OF FASCICULATION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FILAMENT COLOR",
+    "deskripsi": "COLOR OF THE FILAMENT",
+    "nilai": "1 - WHITE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FLOWERS PER AXIL",
+    "deskripsi": "NUMBER OF FLOWERS PER AXIL",
+    "nilai": "M",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT CORKINESS",
+    "deskripsi": "FRUIT CORKINESS",
+    "nilai": "0 - NONE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "11.55",
+    "n_sampel": "",
+    "studi": "PEPPERS.WOODLAND.2006"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "4",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "1 - PENDANT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "5 - CAMPANULATE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WEIGHT",
+    "deskripsi": "AVERAGE WEIGHT OF 20 FRUITS IN GRAMS",
+    "nilai": "23.2",
+    "n_sampel": "",
+    "studi": "PEPPERS.WOODLAND.2006"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "2.72",
+    "n_sampel": "",
+    "studi": "PEPPERS.WOODLAND.2006"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "4",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "IMMATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF IMMATURE FRUITS",
+    "nilai": "3 - GREEN YELLOW",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE LEAF",
+    "nilai": "0 - GLABROUS",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF TEXTURE",
+    "deskripsi": "TEXTURE OF THE LEAF",
+    "nilai": "3 - (1 = SMOOTH, 9 = CURLED)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LOCULE NUMBER",
+    "deskripsi": "NUMBER OF LOCULES OF A FRUIT CROSS SECTION",
+    "nilai": "4",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "4 - YELLOW",
+    "n_sampel": "",
+    "studi": "PEPPERS.WOODLAND.2006"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "5 - ORANGE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT NECK CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF FRUIT NECK CONSTRICTION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDICEL POSITION AT ANTHESIS",
+    "deskripsi": "PEDICEL POSITION AT ANTHESIS",
+    "nilai": "5 - (1 = PENDANT, 9 = ERECT)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE INSERTION",
+    "deskripsi": "INSERTION OF PEDUNCLE",
+    "nilai": "5 - FLAT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE LENGTH",
+    "deskripsi": "LENGTH OF THE PEDUNCLE IN CENTIMETERS",
+    "nilai": "4",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "SEED COLOR",
+    "deskripsi": "COLOR OF THE SEED",
+    "nilai": "1 - STRAW",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM NUMBER",
+    "deskripsi": "NUMBER OF STEMS ON THE PLANT",
+    "nilai": "1 - SINGLE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE STEM",
+    "nilai": "0 - GLABROUS",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STIGMA EXSERTION",
+    "deskripsi": "EXSERTION OF THE STIGMA",
+    "nilai": "7 - (1 = INSERTED, 9 = EXSERTED)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "NEMATODE",
+    "deskriptor": "Meloidogyne hapla gall",
+    "deskripsi": "Resistance to Meloidogyne hapla (northern root-knot nematode), gall index",
+    "nilai": "5 - 26% to 35% of root system galled",
+    "n_sampel": "",
+    "studi": "PEPPERS.HAPLAGALL.THIES"
+   },
+   {
+    "kategori": "NEMATODE",
+    "deskriptor": "Meloidogyne hapla egg",
+    "deskripsi": "Resistance to Meloidogyne hapla (northern root-knot nematode), egg mass index",
+    "nilai": "5 - 26% to 35% visible egg masses present on root system",
+    "n_sampel": "",
+    "studi": "PEPPERS.HAPLAEGG.THIES"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT SET",
+    "deskripsi": "RELATIVE AMOUNT OF FRUIT SET",
+    "nilai": "7 - (1 = LOW, 9 = HIGH)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "MALE STERILITY",
+    "deskripsi": "PRESENCE OR ABSENCE OF MALE STERILITY",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "PUNGENCY",
+    "deskripsi": "PRESENCE OR ABSENCE OF PUNGENCY",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "ACCESSION UNIFORMITY",
+    "deskripsi": "ACCESSION UNIFORMITY",
+    "nilai": "9 - HIGH (ALL UNIFORM)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "SUBSET",
+    "deskriptor": "CORE SUBSET",
+    "deskripsi": "A FLAG TO INDICATE THE ACCESSION IS PART OF THE CORE SUBSET",
+    "nilai": "Y - YES, ACCESSION IS PART OF THE CORE",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE"
+   },
+   {
+    "kategori": "SUBSET",
+    "deskriptor": "IMAGE",
+    "deskripsi": "Image present in GRIN database",
+    "nilai": "HARVESTED-FRUIT - Image of harvested fruit",
+    "n_sampel": "",
+    "studi": "PEPPERS.IMAGE.WOODLAND.2006"
+   }
+  ]
+ },
+ "Banana Pepper": {
+  "accession": "PI 592816",
+  "accession_name": "SWEET BANANA",
+  "species": "Capsicum annuum L.",
+  "grin_id": "1077911",
+  "alasan": "nama memuat banana (SWEET BANANA), observasi morfologi terbanyak",
+  "url": "https://npgsweb.ars-grin.gov/gringlobal/accessiondetail?id=1077911",
+  "observasi": [
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "Phytophthora Root Rot",
+    "deskripsi": "Resistance to root rot (Phytophthora capsici). A disease index value of 2 or less is considered resistant, and a value greater than 2 is susceptible",
+    "nilai": "3 - Brown roots, slight stunting, very small lesions on stems or small water-soaked lesions at base of stem, browning of primary root",
+    "n_sampel": "2",
+    "studi": "PEPPERS.ROOTROT.2009"
+   },
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "Phytophthora Root Rot",
+    "deskripsi": "Resistance to root rot (Phytophthora capsici). A disease index value of 2 or less is considered resistant, and a value greater than 2 is susceptible",
+    "nilai": "7 - Brown roots, large lesions on stems, girdling, whole plant wilted and stunted",
+    "n_sampel": "2",
+    "studi": "PEPPERS.ROOTROT.2009"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "DWARFISM",
+    "deskripsi": "PRESENCE OR ABSENCE OF DWARFISM",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "DWARFISM",
+    "deskripsi": "PRESENCE OR ABSENCE OF DWARFISM",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "DWARFISM",
+    "deskripsi": "PRESENCE OR ABSENCE OF DWARFISM",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HABIT",
+    "deskripsi": "GROWTH HABIT OF PLANT",
+    "nilai": "9 - TALL OR UPRIGHT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HABIT",
+    "deskripsi": "GROWTH HABIT OF PLANT",
+    "nilai": "9 - TALL OR UPRIGHT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HABIT",
+    "deskripsi": "GROWTH HABIT OF PLANT",
+    "nilai": "9 - TALL OR UPRIGHT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HEIGHT",
+    "deskripsi": "HEIGHT OF THE PLANT IN CENTIMETERS",
+    "nilai": "43",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HEIGHT",
+    "deskripsi": "HEIGHT OF THE PLANT IN CENTIMETERS",
+    "nilai": "45",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT WIDTH",
+    "deskripsi": "WIDTH OF THE PLANT IN CENTIMETERS",
+    "nilai": "20",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT WIDTH",
+    "deskripsi": "WIDTH OF THE PLANT IN CENTIMETERS",
+    "nilai": "31",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHER COLOR",
+    "deskripsi": "COLOR OF THE ANTHERS",
+    "nilai": "3 - BLUE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHER COLOR",
+    "deskripsi": "COLOR OF THE ANTHERS",
+    "nilai": "3 - BLUE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHER COLOR",
+    "deskripsi": "COLOR OF THE ANTHERS",
+    "nilai": "3 - BLUE",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHOCYANIN IMMATURE FRUIT",
+    "deskripsi": "PRESENCE OR ABSENCE OF ANTHOCYANIN IN IMMATURE FRUIT",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHOCYANIN IMMATURE FRUIT",
+    "deskripsi": "PRESENCE OR ABSENCE OF ANTHOCYANIN IN IMMATURE FRUIT",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHOCYANIN IMMATURE FRUIT",
+    "deskripsi": "PRESENCE OR ABSENCE OF ANTHOCYANIN IN IMMATURE FRUIT",
+    "nilai": "M - MIXED",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "NODE ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE NODES",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "NODE ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE NODES",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "NODE ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE NODES",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE STEM",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE STEM",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE STEM",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "BLOSSOM END SHAPE",
+    "deskripsi": "BLOSSOM END SHAPE",
+    "nilai": "1 - POINTED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "BLOSSOM END SHAPE",
+    "deskripsi": "BLOSSOM END SHAPE",
+    "nilai": "1 - POINTED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "BLOSSOM END SHAPE",
+    "deskripsi": "BLOSSOM END SHAPE",
+    "nilai": "1 - POINTED",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF CALYX CONSTRICTION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF CALYX CONSTRICTION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF CALYX CONSTRICTION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX MARGIN",
+    "deskripsi": "CALYX MARGIN",
+    "nilai": "1 - SMOOTH",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX MARGIN",
+    "deskripsi": "CALYX MARGIN",
+    "nilai": "5 - (1 = SMOOTH, 9 = SERRATE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX MARGIN",
+    "deskripsi": "CALYX MARGIN",
+    "nilai": "9 - SERRATE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA COLOR",
+    "deskripsi": "COLOR OF THE COROLLA",
+    "nilai": "1 - WHITE OR PALE YELLOW",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA COLOR",
+    "deskripsi": "COLOR OF THE COROLLA",
+    "nilai": "1 - WHITE OR PALE YELLOW",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA COLOR",
+    "deskripsi": "COLOR OF THE COROLLA",
+    "nilai": "1 - WHITE OR PALE YELLOW",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA SPOTS",
+    "deskripsi": "COLOR OF COROLLA SPOTS",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA SPOTS",
+    "deskripsi": "COLOR OF COROLLA SPOTS",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA SPOTS",
+    "deskripsi": "COLOR OF COROLLA SPOTS",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FASCICULATED",
+    "deskripsi": "PRESENCE OR ABSENCE OF FASCICULATION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FASCICULATED",
+    "deskripsi": "PRESENCE OR ABSENCE OF FASCICULATION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FASCICULATED",
+    "deskripsi": "PRESENCE OR ABSENCE OF FASCICULATION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FILAMENT COLOR",
+    "deskripsi": "COLOR OF THE FILAMENT",
+    "nilai": "1 - WHITE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FILAMENT COLOR",
+    "deskripsi": "COLOR OF THE FILAMENT",
+    "nilai": "1 - WHITE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FILAMENT COLOR",
+    "deskripsi": "COLOR OF THE FILAMENT",
+    "nilai": "1 - WHITE",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FLOWERS PER AXIL",
+    "deskripsi": "NUMBER OF FLOWERS PER AXIL",
+    "nilai": "1",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FLOWERS PER AXIL",
+    "deskripsi": "NUMBER OF FLOWERS PER AXIL",
+    "nilai": "1",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT CORKINESS",
+    "deskripsi": "FRUIT CORKINESS",
+    "nilai": "0 - NONE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT CORKINESS",
+    "deskripsi": "FRUIT CORKINESS",
+    "nilai": "0 - NONE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT CORKINESS",
+    "deskripsi": "FRUIT CORKINESS",
+    "nilai": "0 - NONE",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "12",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "15.27",
+    "n_sampel": "",
+    "studi": "PEPPERS.BYRON.2008"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "2.3",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "1 - PENDANT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "1 - PENDANT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "1 - PENDANT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "1 - ELONGATE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "1 - ELONGATE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "1 - ELONGATE",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WEIGHT",
+    "deskripsi": "AVERAGE WEIGHT OF 20 FRUITS IN GRAMS",
+    "nilai": "16.5",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WEIGHT",
+    "deskripsi": "AVERAGE WEIGHT OF 20 FRUITS IN GRAMS",
+    "nilai": "28.1",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WEIGHT",
+    "deskripsi": "AVERAGE WEIGHT OF 20 FRUITS IN GRAMS",
+    "nilai": "32.3",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WEIGHT",
+    "deskripsi": "AVERAGE WEIGHT OF 20 FRUITS IN GRAMS",
+    "nilai": "44.4",
+    "n_sampel": "",
+    "studi": "PEPPERS.BYRON.2008"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "3",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "3.26",
+    "n_sampel": "",
+    "studi": "PEPPERS.BYRON.2008"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "3.6",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "IMMATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF IMMATURE FRUITS",
+    "nilai": "3 - GREEN YELLOW",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "IMMATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF IMMATURE FRUITS",
+    "nilai": "3 - GREEN YELLOW",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "IMMATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF IMMATURE FRUITS",
+    "nilai": "4 - YELLOW",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE LEAF",
+    "nilai": "0 - GLABROUS",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE LEAF",
+    "nilai": "0 - GLABROUS",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE LEAF",
+    "nilai": "0 - GLABROUS",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF TEXTURE",
+    "deskripsi": "TEXTURE OF THE LEAF",
+    "nilai": "1 - SMOOTH",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF TEXTURE",
+    "deskripsi": "TEXTURE OF THE LEAF",
+    "nilai": "1 - SMOOTH",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF TEXTURE",
+    "deskripsi": "TEXTURE OF THE LEAF",
+    "nilai": "9 - CURLED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LOCULE NUMBER",
+    "deskripsi": "NUMBER OF LOCULES OF A FRUIT CROSS SECTION",
+    "nilai": "2",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LOCULE NUMBER",
+    "deskripsi": "NUMBER OF LOCULES OF A FRUIT CROSS SECTION",
+    "nilai": "3",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "2 - RED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "2 - RED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "2 - RED",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT NECK CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF FRUIT NECK CONSTRICTION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT NECK CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF FRUIT NECK CONSTRICTION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT NECK CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF FRUIT NECK CONSTRICTION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDICEL POSITION AT ANTHESIS",
+    "deskripsi": "PEDICEL POSITION AT ANTHESIS",
+    "nilai": "1 - PENDANT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDICEL POSITION AT ANTHESIS",
+    "deskripsi": "PEDICEL POSITION AT ANTHESIS",
+    "nilai": "1 - PENDANT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDICEL POSITION AT ANTHESIS",
+    "deskripsi": "PEDICEL POSITION AT ANTHESIS",
+    "nilai": "1 - PENDANT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE INSERTION",
+    "deskripsi": "INSERTION OF PEDUNCLE",
+    "nilai": "5 - FLAT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE INSERTION",
+    "deskripsi": "INSERTION OF PEDUNCLE",
+    "nilai": "5 - FLAT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE INSERTION",
+    "deskripsi": "INSERTION OF PEDUNCLE",
+    "nilai": "5 - FLAT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE LENGTH",
+    "deskripsi": "LENGTH OF THE PEDUNCLE IN CENTIMETERS",
+    "nilai": "5",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "SEED COLOR",
+    "deskripsi": "COLOR OF THE SEED",
+    "nilai": "1 - STRAW",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "SEED COLOR",
+    "deskripsi": "COLOR OF THE SEED",
+    "nilai": "1 - STRAW",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "SEED COLOR",
+    "deskripsi": "COLOR OF THE SEED",
+    "nilai": "1 - STRAW",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM NUMBER",
+    "deskripsi": "NUMBER OF STEMS ON THE PLANT",
+    "nilai": "9 - MULTIPLE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM NUMBER",
+    "deskripsi": "NUMBER OF STEMS ON THE PLANT",
+    "nilai": "9 - MULTIPLE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM NUMBER",
+    "deskripsi": "NUMBER OF STEMS ON THE PLANT",
+    "nilai": "9 - MULTIPLE",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE STEM",
+    "nilai": "0 - GLABROUS",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE STEM",
+    "nilai": "0 - GLABROUS",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE STEM",
+    "nilai": "0 - GLABROUS",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STIGMA EXSERTION",
+    "deskripsi": "EXSERTION OF THE STIGMA",
+    "nilai": "5 - SAME LEVEL",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STIGMA EXSERTION",
+    "deskripsi": "EXSERTION OF THE STIGMA",
+    "nilai": "5 - SAME LEVEL",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STIGMA EXSERTION",
+    "deskripsi": "EXSERTION OF THE STIGMA",
+    "nilai": "5 - SAME LEVEL",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "WALL THICKNESS",
+    "deskripsi": "AVERAGE THICKNESS OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "0.2",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "WALL THICKNESS",
+    "deskripsi": "AVERAGE THICKNESS OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "0.4",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX SHAPE",
+    "deskripsi": "SHAPE OF CALYX",
+    "nilai": "1 - CUP SHAPED",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX SHAPE",
+    "deskripsi": "SHAPE OF CALYX",
+    "nilai": "2 - SAUCER SHAPED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX SHAPE",
+    "deskripsi": "SHAPE OF CALYX",
+    "nilai": "2 - SAUCER SHAPED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT PODS PER NODE",
+    "deskripsi": "HIGHEST NUMBER OF FRUITING PODS PER NODE OBSERVED",
+    "nilai": "1.0",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT PODS PER NODE",
+    "deskripsi": "HIGHEST NUMBER OF FRUITING PODS PER NODE OBSERVED",
+    "nilai": "1.0",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT PODS PER NODE",
+    "deskripsi": "HIGHEST NUMBER OF FRUITING PODS PER NODE OBSERVED",
+    "nilai": "1.0",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM COLOR",
+    "deskripsi": "COLOR OF THE STEM",
+    "nilai": "1 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PHENOLOGY",
+    "deskriptor": "DAYS TO MATURITY",
+    "deskripsi": "RELATIVE NUMBER OF DAYS TO PLANT MATURITY",
+    "nilai": "5 - MEDIUM",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "PHENOLOGY",
+    "deskriptor": "DAYS TO MATURITY",
+    "deskripsi": "RELATIVE NUMBER OF DAYS TO PLANT MATURITY",
+    "nilai": "5 - MEDIUM",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PHENOLOGY",
+    "deskriptor": "DAYS TO MATURITY",
+    "deskripsi": "RELATIVE NUMBER OF DAYS TO PLANT MATURITY",
+    "nilai": "8 - LATE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT PERSISTANCE",
+    "deskripsi": "FRUIT PERSISTANCE",
+    "nilai": "0 - SEPARATING CALYX (HAS Sp GENE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT SET",
+    "deskripsi": "RELATIVE AMOUNT OF FRUIT SET",
+    "nilai": "9 - HIGH",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT SET",
+    "deskripsi": "RELATIVE AMOUNT OF FRUIT SET",
+    "nilai": "9 - HIGH",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT SET",
+    "deskripsi": "RELATIVE AMOUNT OF FRUIT SET",
+    "nilai": "9 - HIGH",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "MALE STERILITY",
+    "deskripsi": "PRESENCE OR ABSENCE OF MALE STERILITY",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "MALE STERILITY",
+    "deskripsi": "PRESENCE OR ABSENCE OF MALE STERILITY",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "MALE STERILITY",
+    "deskripsi": "PRESENCE OR ABSENCE OF MALE STERILITY",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "PUNGENCY",
+    "deskripsi": "PRESENCE OR ABSENCE OF PUNGENCY",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "PUNGENCY",
+    "deskripsi": "PRESENCE OR ABSENCE OF PUNGENCY",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "PUNGENCY",
+    "deskripsi": "PRESENCE OR ABSENCE OF PUNGENCY",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "ACCESSION UNIFORMITY",
+    "deskripsi": "ACCESSION UNIFORMITY",
+    "nilai": "9 - HIGH (ALL UNIFORM)",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "ACCESSION UNIFORMITY",
+    "deskripsi": "ACCESSION UNIFORMITY",
+    "nilai": "9 - HIGH (ALL UNIFORM)",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "ACCESSION UNIFORMITY",
+    "deskripsi": "ACCESSION UNIFORMITY",
+    "nilai": "9 - HIGH (ALL UNIFORM)",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE.EXPERIMENT.2002"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "DEGREE OF PUNGENCY",
+    "deskripsi": "DEGREE OF PUNGENCY, DATA FOR THIS DESCRIPTOR TAKEN BY STAFF AT THE SOUTHERN REGIONAL PI STATION.",
+    "nilai": "1 - SWEET",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "DEGREE OF PUNGENCY",
+    "deskripsi": "DEGREE OF PUNGENCY, DATA FOR THIS DESCRIPTOR TAKEN BY STAFF AT THE SOUTHERN REGIONAL PI STATION.",
+    "nilai": "1 - SWEET",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS.95"
+   },
+   {
+    "kategori": "SUBSET",
+    "deskriptor": "CORE SUBSET",
+    "deskripsi": "A FLAG TO INDICATE THE ACCESSION IS PART OF THE CORE SUBSET",
+    "nilai": "Y - YES, ACCESSION IS PART OF THE CORE",
+    "n_sampel": "",
+    "studi": "PEPPERS.CORE"
+   },
+   {
+    "kategori": "SUBSET",
+    "deskriptor": "IMAGE",
+    "deskripsi": "Image present in GRIN database",
+    "nilai": "FRUIT-PLANT - Image of fruit on the plant",
+    "n_sampel": "",
+    "studi": "PEPPERS.IMAGE.FIELD.FRUIT-ON-PLANT.2002"
+   },
+   {
+    "kategori": "SUBSET",
+    "deskriptor": "IMAGE",
+    "deskripsi": "Image present in GRIN database",
+    "nilai": "PLANT - Image of plant",
+    "n_sampel": "",
+    "studi": "PEPPERS.IMAGE.FIELD.PLANT.2006"
+   }
+  ]
+ },
+ "Poblano": {
+  "accession": "PI 268105",
+  "accession_name": "Tipo Poblano",
+  "species": "Capsicum annuum L.",
+  "grin_id": "1201670",
+  "alasan": "nama memuat poblano (Tipo Poblano), observasi morfologi terbanyak di antara yang bernama poblano",
+  "url": "https://npgsweb.ars-grin.gov/gringlobal/accessiondetail?id=1201670",
+  "observasi": [
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "Phytophthora Root Rot",
+    "deskripsi": "Resistance to root rot (Phytophthora capsici). A disease index value of 2 or less is considered resistant, and a value greater than 2 is susceptible",
+    "nilai": "2 - (0 = Resistant, no response, healthy; 9 = Susceptible, dead plants)",
+    "n_sampel": "3",
+    "studi": "PEPPERS.ROOTROT.2009"
+   },
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "VERTICILLIUM WILT ISOLATE (VdCa59)",
+    "deskripsi": "Resistance to Verticillium wilt (Verticillium dahliae) using isolate VdCa59",
+    "nilai": "4 - 76 to 100% discoloration in the absence of foliar symptoms",
+    "n_sampel": "",
+    "studi": "PEPPERS.VERTICILLIUM.WILT.2015"
+   },
+   {
+    "kategori": "DISEASE",
+    "deskriptor": "VERTICILLIUM WILT ISOLATE (VdCf45)",
+    "deskripsi": "Resistance to Verticillium wilt (Verticillium dahliae) using isolate VdCf45",
+    "nilai": "3 - 51 to 75% of the vascular tissue exhibiting discoloration",
+    "n_sampel": "",
+    "studi": "PEPPERS.VERTICILLIUM.WILT.2015"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HABIT",
+    "deskripsi": "GROWTH HABIT OF PLANT",
+    "nilai": "7 - (1 = SPRAWLING, 9 = TALL OR UPRIGHT)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "GROWTH",
+    "deskriptor": "PLANT HEIGHT",
+    "deskripsi": "HEIGHT OF THE PLANT IN CENTIMETERS",
+    "nilai": "50",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHER COLOR",
+    "deskripsi": "COLOR OF THE ANTHERS",
+    "nilai": "3 - BLUE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "ANTHOCYANIN IMMATURE FRUIT",
+    "deskripsi": "PRESENCE OR ABSENCE OF ANTHOCYANIN IN IMMATURE FRUIT",
+    "nilai": "M - MIXED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "NODE ANTHOCYANIN",
+    "deskripsi": "INDICATION OF THE PRESENCE OF ANTHOCYANIN IN THE NODES",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "BLOSSOM END SHAPE",
+    "deskripsi": "BLOSSOM END SHAPE",
+    "nilai": "M - MIXED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF CALYX CONSTRICTION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX MARGIN",
+    "deskripsi": "CALYX MARGIN",
+    "nilai": "M - MIXED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA COLOR",
+    "deskripsi": "COLOR OF THE COROLLA",
+    "nilai": "1 - WHITE OR PALE YELLOW",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "COROLLA SPOTS",
+    "deskripsi": "COLOR OF COROLLA SPOTS",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FASCICULATED",
+    "deskripsi": "PRESENCE OR ABSENCE OF FASCICULATION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FILAMENT COLOR",
+    "deskripsi": "COLOR OF THE FILAMENT",
+    "nilai": "1 - WHITE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FLOWERS PER AXIL",
+    "deskripsi": "NUMBER OF FLOWERS PER AXIL",
+    "nilai": "1",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT CORKINESS",
+    "deskripsi": "FRUIT CORKINESS",
+    "nilai": "0 - NONE",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT LENGTH",
+    "deskripsi": "AVERAGE LENGTH OF 20 FRUITS IN CENTIMETERS",
+    "nilai": "7",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "1 - PENDANT",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT POSITION",
+    "deskripsi": "POSITION OF THE FRUIT",
+    "nilai": "M - MIXED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "4 - CONIC",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT SHAPE",
+    "deskripsi": "SHAPE OF FRUIT",
+    "nilai": "4 - CONIC",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT WIDTH",
+    "deskripsi": "AVERAGE WIDTH OF 20 FRUITS AT WIDEST SPOT IN CENTIMETERS",
+    "nilai": "3",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "IMMATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF IMMATURE FRUITS",
+    "nilai": "2 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LEAF TEXTURE",
+    "deskripsi": "TEXTURE OF THE LEAF",
+    "nilai": "1 - SMOOTH",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "LOCULE NUMBER",
+    "deskripsi": "NUMBER OF LOCULES OF A FRUIT CROSS SECTION",
+    "nilai": "M",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "2 - RED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "MATURE FRUIT COLOR",
+    "deskripsi": "COLOR OF MATURE FRUITS (BASED ON MUNSELL COLOR SCALE)",
+    "nilai": "3 - BROWN",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT NECK CONSTRICTION",
+    "deskripsi": "PRESENCE OR ABSENCE OF FRUIT NECK CONSTRICTION",
+    "nilai": "0 - ABSENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDICEL POSITION AT ANTHESIS",
+    "deskripsi": "PEDICEL POSITION AT ANTHESIS",
+    "nilai": "M - MIXED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE INSERTION",
+    "deskripsi": "INSERTION OF PEDUNCLE",
+    "nilai": "M - MIXED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "PEDUNCLE LENGTH",
+    "deskripsi": "LENGTH OF THE PEDUNCLE IN CENTIMETERS",
+    "nilai": "5",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "SEED COLOR",
+    "deskripsi": "COLOR OF THE SEED",
+    "nilai": "1 - STRAW",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM NUMBER",
+    "deskripsi": "NUMBER OF STEMS ON THE PLANT",
+    "nilai": "3 - (1 = SINGLE, 9 = MULTIPLE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM PUBESCENCE",
+    "deskripsi": "AMOUNT OF PUBESCENCE OBSERVED ON THE STEM",
+    "nilai": "0 - GLABROUS",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STIGMA EXSERTION",
+    "deskripsi": "EXSERTION OF THE STIGMA",
+    "nilai": "9 - EXSERTED",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "CALYX SHAPE",
+    "deskripsi": "SHAPE OF CALYX",
+    "nilai": "2 - SAUCER SHAPED",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "FRUIT PODS PER NODE",
+    "deskripsi": "HIGHEST NUMBER OF FRUITING PODS PER NODE OBSERVED",
+    "nilai": "1.0",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "MORPHOLOGY",
+    "deskriptor": "STEM COLOR",
+    "deskripsi": "COLOR OF THE STEM",
+    "nilai": "1 - GREEN",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "PHENOLOGY",
+    "deskriptor": "DAYS TO MATURITY",
+    "deskripsi": "RELATIVE NUMBER OF DAYS TO PLANT MATURITY",
+    "nilai": "8 - LATE",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT PERSISTANCE",
+    "deskripsi": "FRUIT PERSISTANCE",
+    "nilai": "0 - SEPARATING CALYX (HAS Sp GENE)",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "FRUIT SET",
+    "deskripsi": "RELATIVE AMOUNT OF FRUIT SET",
+    "nilai": "4 - (1 = LOW, 9 = HIGH)",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "PUNGENCY",
+    "deskripsi": "PRESENCE OR ABSENCE OF PUNGENCY",
+    "nilai": "1 - PRESENT",
+    "n_sampel": "",
+    "studi": "PEPPERS.BOSLAND"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "COMMERCIAL CATEGORY",
+    "deskripsi": "COMMERCIAL FRUIT CATEGORY",
+    "nilai": "PAP - PAPRIKA",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "PRODUCTION",
+    "deskriptor": "DEGREE OF PUNGENCY",
+    "deskripsi": "DEGREE OF PUNGENCY, DATA FOR THIS DESCRIPTOR TAKEN BY STAFF AT THE SOUTHERN REGIONAL PI STATION.",
+    "nilai": "1 - SWEET",
+    "n_sampel": "",
+    "studi": "S9.PEPPERS"
+   },
+   {
+    "kategori": "SUBSET",
+    "deskriptor": "IMAGE",
+    "deskripsi": "Image present in GRIN database",
+    "nilai": "HARVESTED-FRUIT - Image of harvested fruit",
+    "n_sampel": "",
+    "studi": "PEPPERS.IMAGE.LAB.HARVESTED-FRUIT.2006"
+   }
+  ]
+ }
+}

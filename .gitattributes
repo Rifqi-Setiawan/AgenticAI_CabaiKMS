@@ -1,0 +1,9 @@
+# Data penelitian disimpan byte-per-byte apa adanya (tanpa konversi akhir baris)
+# agar SHA256SUMS.txt dan ID butir gold (dihitung dari SHA-256 berkas) tetap cocok setelah clone.
+dataset_eksperimen/** -text
+data_evaluasi/inputs/** -text
+data_evaluasi/gold/** -text
+data_evaluasi/gambar/manifest/** -text
+data_evaluasi/gambar_id/gold_peneliti/** -text
+data_evaluasi/gambar_id/gold_kombinasi_drive1.csv -text
+data_evaluasi/pilot_foto_pvt/uji_visi_40/sampel.csv -text

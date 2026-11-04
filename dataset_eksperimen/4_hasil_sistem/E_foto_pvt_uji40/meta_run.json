@@ -1,0 +1,26 @@
+{
+  "run_scope": [
+    "Turima 1",
+    "Rabon Bojonegoro 1",
+    "Jabung",
+    "Carabrina 01",
+    "Indina",
+    "IPBrin KR 03",
+    "Tabia Sala 2 IPB",
+    "Guritno IPB"
+  ],
+  "db_varieties": [],
+  "options": [
+    "Carabrina 01",
+    "Guritno IPB",
+    "IPBrin KR 03",
+    "Indina",
+    "Jabung",
+    "Rabon Bojonegoro 1",
+    "Tabia Sala 2 IPB",
+    "Turima 1"
+  ],
+  "mulai": "2026-11-03T14:47:23.758462",
+  "selesai": "2026-11-03T15:28:49.791375",
+  "commit": "ac4f2e4"
+}

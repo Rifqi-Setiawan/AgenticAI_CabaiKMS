@@ -7,8 +7,9 @@ Catatan istilah: "varietas" di sini dipakai dalam arti budidaya (varietas terdaf
 kultivar bernama), bukan rank botani *var.* (mis. *C. annuum* var. *glabriusculum*). Menurut rank botani yang ketat,
 tidak ada data di proyek ini yang memenuhi syarat.
 
-Dokumen dan skrip ini ada di GitHub. Foto, gold, folder arsip `_dikeluarkan_bukan_varietas/`,
-`klasifikasi_varietas_foto_commons_abu_abu.csv`, dan `dataset_eksperimen/` tetap disimpan lokal di laptop peneliti.
+Sejak 5 Nov 2026 dataset bersih (`dataset_eksperimen/`, `data_evaluasi/inputs/`) dan gold (`gold/`, `gambar/manifest/`,
+`gambar_id/gold_peneliti/`, `klasifikasi_varietas_foto_commons_abu_abu.csv`) ikut di GitHub. Yang tetap lokal: folder
+arsip `_dikeluarkan_bukan_varietas/` serta foto lain di `data_evaluasi/` (gambar, pilot PVT, sumber luar negeri).
 Keputusan desainnya dicatat sebagai D19 di `docs/DESIGN_DECISIONS.md`.
 
 ## 1. Sudah dikeluarkan (gagal kriteria)
