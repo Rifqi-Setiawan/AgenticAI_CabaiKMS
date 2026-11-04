@@ -1,0 +1,76 @@
+{
+  "commit": "7b5a19c",
+  "k": 8,
+  "runs": [
+    {
+      "dataset": "R01",
+      "file": "data_input.xlsx",
+      "status": "ok",
+      "n_mapping": 13,
+      "detik": 14.5
+    },
+    {
+      "dataset": "R02",
+      "file": "input_cabai_kms.xlsx",
+      "status": "ok",
+      "n_mapping": 53,
+      "detik": 2.9
+    },
+    {
+      "dataset": "N07",
+      "file": "E07_kementan_deskripsi_ext.xlsx",
+      "status": "ok",
+      "n_mapping": 69,
+      "detik": 3.2
+    },
+    {
+      "dataset": "N08",
+      "file": "E08_zenodo_capsicum_en.xlsx",
+      "status": "gagal",
+      "galat": "ValueError('Kolom varietas tidak ditemukan. Periksa jumlah baris header dan nama kolom identitas (misalnya Variety atau Jenis Cabai). Proses dihentikan agar tidak menghasilkan workbook kosong.')",
+      "detik": 0.2
+    },
+    {
+      "dataset": "N09",
+      "file": "dataset_cabai_deskripsi_varietas.xlsx",
+      "status": "ok",
+      "n_mapping": 80,
+      "detik": 4.0
+    },
+    {
+      "dataset": "N08VAR",
+      "file": "E08_zenodo_capsicum_en_variety.xlsx",
+      "status": "ok",
+      "n_mapping": 22,
+      "detik": 2.3
+    },
+    {
+      "dataset": "S01",
+      "file": "D01_transposed_indonesia_mixed.xlsx",
+      "status": "ok",
+      "n_mapping": 21,
+      "detik": 1.9
+    },
+    {
+      "dataset": "S02",
+      "file": "D02_row_flat_english_semantic.xlsx",
+      "status": "ok",
+      "n_mapping": 25,
+      "detik": 1.5
+    },
+    {
+      "dataset": "S03",
+      "file": "D03_row_multilevel_indonesia.xlsx",
+      "status": "ok",
+      "n_mapping": 29,
+      "detik": 2.2
+    },
+    {
+      "dataset": "S04",
+      "file": "D04_varietas_kosong_invalid.xlsx",
+      "status": "gagal",
+      "galat": "ValueError('Varietas kosong pada observasi ke-2. Isi kolom varietas sebelum menjalankan pipeline.')",
+      "detik": 0.1
+    }
+  ]
+}

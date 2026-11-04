@@ -1,0 +1,20 @@
+﻿folder,filename,lama_status,lama_varietas,lama_bagian,baru_status,baru_varietas,baru_bagian,baru_confidence,baru_tindakan
+F1,serrano_buah_027.jpg,KNOWN,Serrano,DAUN,KNOWN,Serrano,BUAH,0.9,AUTO_LINK
+F1,jalapeno_bunga_118.jpg,KNOWN,Jalapeno,DAUN,OTHER,,BUNGA,0.92,REVIEW_MISMATCH
+F2,hungarian-wax_buah_081.jpg,KNOWN,Hungarian Wax,DAUN,KNOWN,Hungarian Wax,BUAH,0.93,AUTO_LINK
+F3,cabai-korea_buah_158.jpg,KNOWN,Cabai Korea,DAUN,KNOWN,Cabai Korea,BUAH,0.93,AUTO_LINK
+F3,IMG_0009.jpg,UNCERTAIN,,DAUN,CANDIDATE,,BUAH,0.92,CANDIDATE
+F4,serrano_buah_156.jpg,KNOWN,Serrano,DAUN,OTHER,,BUAH,0.85,REVIEW_MISMATCH
+F4,IMG_0066.jpg,UNCERTAIN,,DAUN,CANDIDATE,,BUAH,0.88,CANDIDATE
+F4,jalapeno_buah_010.jpg,KNOWN,Jalapeno,DAUN,KNOWN,Jalapeno,BUAH,0.95,AUTO_LINK
+F5,hungarian-wax_buah_083.jpg,KNOWN,Hungarian Wax,DAUN,OTHER,,BUAH,0.85,REVIEW_MISMATCH
+F5,paprika_bunga_028.jpg,KNOWN,Paprika,DAUN,OTHER,,BUNGA,0.9,REVIEW_MISMATCH
+F5,hungarian-wax_buah_019.jpg,KNOWN,Hungarian Wax,DAUN,OTHER,,BUAH,0.9,REVIEW_MISMATCH
+F6,serrano_buah_041.jpg,KNOWN,Serrano,DAUN,OTHER,,BUAH,0.92,REVIEW_MISMATCH
+F7,IMG_0087.jpg,UNCERTAIN,,DAUN,CANDIDATE,,BUAH,0.92,CANDIDATE
+F7,paprika_buah_104.jpg,KNOWN,Paprika,DAUN,KNOWN,Jalapeno,BUAH,0.85,REVIEW_MISMATCH
+F7,IMG_0045.jpg,UNCERTAIN,,DAUN,KNOWN,Cayenne,BUAH,0.88,AUTO_LINK
+F7,cabai-korea_buah_090.jpg,KNOWN,Cabai Korea,DAUN,KNOWN,Cabai Korea,BUAH,0.91,AUTO_LINK
+F7,habanero_bunga_136.jpg,KNOWN,Habanero,DAUN,KNOWN,Habanero,BUNGA,0.95,AUTO_LINK
+F7,cayenne_buah_080.jpg,KNOWN,Cayenne,DAUN,KNOWN,Cayenne,BUAH,0.92,AUTO_LINK
+F7,hungarian-wax_buah_015.jpg,KNOWN,Hungarian Wax,DAUN,OTHER,,BUAH,0.88,REVIEW_MISMATCH

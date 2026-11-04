@@ -1,0 +1,17 @@
+{
+  "run": "N08",
+  "kind": "atribut",
+  "rep": 2,
+  "file": "E08_zenodo_capsicum_en.xlsx",
+  "sheet": "Observed85_readable",
+  "format": "row-oriented",
+  "header_rows": 1,
+  "drive": null,
+  "max_images": 5,
+  "k": 8,
+  "commit": "0f0fbca",
+  "start": "2026-10-31 18:15:47",
+  "status": "gagal",
+  "galat": "ValueError('Kolom varietas tidak ditemukan. Periksa jumlah baris header dan nama kolom identitas (misalnya Variety atau Jenis Cabai). Proses dihentikan agar tidak menghasilkan workbook kosong.')",
+  "detik": 0.2
+}

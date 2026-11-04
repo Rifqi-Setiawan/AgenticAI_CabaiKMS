@@ -1,0 +1,11 @@
+# Bagian C UI Cabai-KMS — bc3c21b
+UI-only; no gold opened; no scoring. Concurrent harness permitted by Rifqi.
+C-F1 06:42:23–06:59:20 WIB; observed_seconds=1017; images=20; processed=20; errors=; UI only; ekspor vision/Excel lengkap; event downloadWillBegin/completed. Waktu selesai teramati. Harness lain berjalan, sesuai izin Rifqi tidak menunggu.
+C-F2 07:01:02–07:19:05 WIB; observed_seconds=1083; images=20; processed=20; errors=; attempt=1; UI-only; concurrent harness allowed by Rifqi; selesai teramati polling 60s. Export complete; no observed timeout/429.
+C-F3 07:19:43–07:36:46 WIB; observed_seconds=1023; images=20; processed=20; errors=; attempt=1; UI-only; concurrent harness allowed by Rifqi; selesai teramati polling 60s. Export complete; no observed timeout/429.
+C-F4 07:37:24–07:58:28 WIB; observed_seconds=1264; images=20; processed=20; errors=; attempt=1; UI-only; concurrent harness allowed by Rifqi; selesai teramati polling 60s. Export complete; no observed timeout/429.
+C-F5 07:59:06–08:18:10 WIB; observed_seconds=1144; images=20; processed=20; errors=; attempt=1; UI-only; concurrent harness allowed by Rifqi; selesai teramati polling 60s. Export complete; no observed timeout/429.
+C-F6 08:18:48–08:32:50 WIB; observed_seconds=842; images=20; processed=20; errors=; attempt=1; UI-only; concurrent harness allowed by Rifqi; selesai teramati polling 60s. Export complete; no observed timeout/429.
+C-F7 08:33:28–09:00:33 WIB; observed_seconds=1625; images=20; processed=20; errors=; attempt=1; UI-only; concurrent harness allowed by Rifqi; selesai teramati polling 60s. Export complete; no observed timeout/429.
+C-F8 09:01:11–09:10:13 WIB; observed_seconds=542; images=20; processed=20; errors=; attempt=1; UI-only; concurrent harness allowed by Rifqi; selesai teramati polling 60s. Export complete; no observed timeout/429.
+All eight output folders verified nonempty required files. CSVs downloaded through frontend buttons; download events recorded. Screenshot readability not independently verified. Candidate IDs are UI display numbers, not verified DB keys. No data deleted or curated, no app/config/model changes or restart.

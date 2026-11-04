@@ -1,0 +1,112 @@
+{
+  "run": "S01",
+  "kind": "kombinasi",
+  "rep": 3,
+  "file": "D01_transposed_indonesia_mixed.xlsx",
+  "sheet": "Data_Transposed",
+  "format": "transposed",
+  "header_rows": null,
+  "drive": "1G1DG4qfT_-EhJ_D7XZvnK1Kw1EGu8t2g",
+  "max_images": 12,
+  "k": 8,
+  "commit": "bc3c21b",
+  "sha256_berkas": "7e4eb51952340a5968bfbb161325f9285b477d04924c392b1fbf988a5956e1c6",
+  "start": "2026-11-01 07:47:26",
+  "s2_keys": [
+    [
+      "Tinggi keseluruhan tanaman",
+      "",
+      "r_2"
+    ],
+    [
+      "Siklus hidup tanaman",
+      "",
+      "r_3"
+    ],
+    [
+      "Kesesuaian lingkungan tumbuh",
+      "",
+      "r_4"
+    ],
+    [
+      "Permukaan batang",
+      "",
+      "r_6"
+    ],
+    [
+      "Tekstur permukaan daun",
+      "",
+      "r_14"
+    ],
+    [
+      "Ukuran panjang helai daun",
+      "",
+      "r_8"
+    ],
+    [
+      "Lebar helai daun",
+      "",
+      "r_20"
+    ],
+    [
+      "Warna mahkota bunga",
+      "",
+      "r_13"
+    ],
+    [
+      "Jumlah helai mahkota",
+      "",
+      "r_22"
+    ],
+    [
+      "Panjang buah belum masak",
+      "",
+      "r_51"
+    ],
+    [
+      "Keliling buah belum masak",
+      "",
+      "r_52"
+    ],
+    [
+      "Warna buah ketika matang",
+      "",
+      "r_59"
+    ],
+    [
+      "Posisi buah matang",
+      "",
+      "r_46"
+    ],
+    [
+      "Warna kulit biji",
+      "",
+      "r_54"
+    ],
+    [
+      "Jumlah biji pada buah matang",
+      "",
+      "r_37"
+    ],
+    [
+      "Lokasi pengambilan sampel",
+      "",
+      "r_56"
+    ],
+    [
+      "Kandungan klorofil (SPAD)",
+      "",
+      "r_10"
+    ]
+  ],
+  "images_discovered": 12,
+  "n_mapping": 21,
+  "n_vision": 12,
+  "fingerprint": "b421eb1f6f0d765a8c68bbfadd87d685e09b34206e4274584e07d8abadaecc1f",
+  "errors": [
+    "atribut \"Keliling buah belum masak\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut sumber mengukur keliling buah belum masak (buah muda), sedangkan kandidat yang tersedia hanya mencakup keliling buah masak (r_50) atau keliling kelopak (r_41, r_52). Karena tidak ada kandidat keliling buah muda, dipetakan ke NULL.",
+    "atribut \"Kandungan klorofil (SPAD)\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut sumber merujuk pada kandungan klorofil (SPAD), sedangkan tidak ada kandidat baris kanonik yang mewakili sifat fisiologis/klorofil tersebut (kandidat hanya mencakup morfologi daun, bunga, buah, dan biji)."
+  ],
+  "status": "ok",
+  "detik": 542.6
+}

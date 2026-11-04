@@ -1,0 +1,39 @@
+UI KMS 2026-11-01T09:10:45.638119+07:00
+Jumlah kandidat ditampilkan: 36
+Nomor adalah ID tampilan UI, bukan primary key DB. Tidak dikurasi/dihapus.
+#1 | daun cabai domba.webp
+#2 | cabai domba.jpg
+#3 | daun cabai kopay.jpg
+#4 | cabai kopay.webp
+#5 | IMG_0097.jpg
+#6 | IMG_0049.jpg
+#7 | IMG_0065.jpg
+#8 | IMG_0035.jpg
+#9 | IMG_0134.jpg
+#10 | shishito_buah_006.jpg
+#11 | IMG_0142.jpg
+#12 | IMG_0026.jpg
+#13 | black-pearl_buah_153.jpg
+#14 | cabai-kering_bunga_095.jpg
+#15 | IMG_0016.jpg
+#16 | trinidad-moruga-scorpion_buah_073.jpg
+#17 | padron_buah_070.jpg
+#18 | IMG_0078.jpg
+#19 | bhut-jolokia_buah_063.jpg
+#20 | padron_buah_040.jpg
+#21 | carolina-reaper_buah_112.jpg
+#22 | black-pearl_buah_132.jpg
+#23 | IMG_0107.jpg
+#24 | scotch-bonnet_buah_124.jpg
+#25 | scotch-bonnet_buah_111.jpg
+#26 | black-pearl_buah_160.jpg
+#27 | bhut-jolokia_buah_108.jpg
+#28 | cabai-campuran_buah_152.jpg
+#29 | carolina-reaper_buah_113.jpg
+#30 | IMG_0149.jpg
+#31 | trinidad-moruga-scorpion_buah_018.jpg
+#32 | bhut-jolokia_buah_137.jpg
+#33 | bhut-jolokia_buah_005.jpg
+#34 | IMG_0054.jpg
+#35 | carolina-reaper_buah_075.jpg
+#36 | bhut-jolokia_buah_023.jpg

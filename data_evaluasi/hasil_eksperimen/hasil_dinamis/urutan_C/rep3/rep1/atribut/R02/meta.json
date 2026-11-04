@@ -1,0 +1,160 @@
+{
+  "run": "R02",
+  "kind": "atribut",
+  "rep": 1,
+  "file": "input_cabai_kms.xlsx",
+  "sheet": "Data Varietas",
+  "format": "row-oriented",
+  "header_rows": 1,
+  "drive": null,
+  "max_images": 5,
+  "k": 8,
+  "commit": "6217420",
+  "sha256_berkas": "5b4a748b0dc99f7db66d8d95d544e8742a9a194a52eafec6ce32ca023613fb61",
+  "start": "2026-11-01 17:58:19",
+  "s2_keys": [
+    [
+      "Varietas Cabai",
+      "",
+      "r_6"
+    ],
+    [
+      "Leaf shape",
+      "",
+      "r_14"
+    ],
+    [
+      "Fruit diameter",
+      "",
+      "r_95"
+    ],
+    [
+      "Fruit shape",
+      "",
+      "r_59"
+    ],
+    [
+      "Stem diameter",
+      "",
+      "r_21"
+    ],
+    [
+      "Pericarp thickness",
+      "",
+      "r_20"
+    ],
+    [
+      "Leaf size as recorded",
+      "",
+      "r_9"
+    ],
+    [
+      "Mature fruit weight",
+      "",
+      "r_83"
+    ],
+    [
+      "Corolla colour",
+      "",
+      "r_19"
+    ],
+    [
+      "Mature fruit colour",
+      "",
+      "r_96"
+    ],
+    [
+      "Immature fruit colour",
+      "",
+      "r_96"
+    ],
+    [
+      "Mature fruit length",
+      "",
+      "r_37"
+    ],
+    [
+      "Plant growth habit",
+      "",
+      "r_1"
+    ],
+    [
+      "Panjang dikotomus",
+      "",
+      "r_8"
+    ],
+    [
+      "Warna bunga",
+      "",
+      "r_24"
+    ],
+    [
+      "Warna kotak sari",
+      "",
+      "r_26"
+    ],
+    [
+      "Tipe berbuah",
+      "",
+      "r_6"
+    ],
+    [
+      "Berat 1.000 biji",
+      "",
+      "r_82"
+    ],
+    [
+      "Penciri utama",
+      "",
+      "r_96"
+    ],
+    [
+      "Wilayah adaptasi",
+      "",
+      "r_4"
+    ],
+    [
+      "Asal",
+      "",
+      "r_80"
+    ],
+    [
+      "Silsilah",
+      "",
+      "r_6"
+    ],
+    [
+      "Golongan varietas",
+      "",
+      "r_6"
+    ],
+    [
+      "Pemohon",
+      "",
+      "r_80"
+    ],
+    [
+      "Pemulia",
+      "",
+      "r_80"
+    ],
+    [
+      "Peneliti",
+      "",
+      "r_6"
+    ]
+  ],
+  "images_discovered": 0,
+  "n_mapping": 53,
+  "n_vision": 0,
+  "fingerprint": "6e10f4bdbc05580bffd7907be262ac1862f33f15064dd5dd8b06e872b73f76ee",
+  "errors": [
+    "akuisisi 'Silsilah': NOT_CHARACTERISTIC Informasi riwayat persilangan tanaman, bukan karakter morfologi teramati.",
+    "akuisisi 'Golongan varietas': NOT_CHARACTERISTIC Tipe pemuliaan varietas, bukan karakter tanaman atau kondisi tumbuh.",
+    "akuisisi 'Pemohon': NOT_CHARACTERISTIC Identitas instansi pendaftar varietas, bukan karakter tanaman.",
+    "akuisisi 'Pemulia': NOT_CHARACTERISTIC Identitas individu pemulia varietas, bukan karakter tanaman.",
+    "akuisisi 'Peneliti': NOT_CHARACTERISTIC Identitas orang yang meneliti, bukan karakter tanaman."
+  ],
+  "status": "ok",
+  "detik": 215.3
+}

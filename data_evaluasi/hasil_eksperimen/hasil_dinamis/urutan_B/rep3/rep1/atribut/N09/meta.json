@@ -1,0 +1,375 @@
+{
+  "run": "N09",
+  "kind": "atribut",
+  "rep": 1,
+  "file": "dataset_cabai_deskripsi_varietas.xlsx",
+  "sheet": "transposed",
+  "format": "transposed",
+  "header_rows": null,
+  "drive": null,
+  "max_images": 5,
+  "k": 8,
+  "commit": "3705aab",
+  "sha256_berkas": "bd7875dd13fa2350105334a40f46ad209a6d7c1ec672c25f21f1e7e6c0913612",
+  "start": "2026-11-01 16:20:43",
+  "s2_keys": [
+    [
+      "Asal",
+      "",
+      "r_6"
+    ],
+    [
+      "Silsilah",
+      "",
+      "r_6"
+    ],
+    [
+      "Golongan varietas",
+      "",
+      "r_6"
+    ],
+    [
+      "Bentuk penampang batang",
+      "",
+      "r_53"
+    ],
+    [
+      "Diameter batang",
+      "",
+      "r_20"
+    ],
+    [
+      "Warna batang",
+      "",
+      "r_29"
+    ],
+    [
+      "Ukuran daun",
+      "",
+      "r_9"
+    ],
+    [
+      "Warna mahkota bunga",
+      "",
+      "r_19"
+    ],
+    [
+      "Warna kepala putik",
+      "",
+      "r_27"
+    ],
+    [
+      "Warna benang sari",
+      "",
+      "r_27"
+    ],
+    [
+      "Umur mulai berbunga",
+      "",
+      "r_3"
+    ],
+    [
+      "Umur mulai panen",
+      "",
+      "r_3"
+    ],
+    [
+      "Ukuran buah",
+      "",
+      "r_39"
+    ],
+    [
+      "Warna buah tua",
+      "",
+      "r_45"
+    ],
+    [
+      "Tebal kulit buah",
+      "",
+      "r_40"
+    ],
+    [
+      "Rasa buah",
+      "",
+      "r_59"
+    ],
+    [
+      "Bentuk biji",
+      "",
+      "r_6"
+    ],
+    [
+      "Berat 1.000 biji",
+      "",
+      "r_28"
+    ],
+    [
+      "Berat per buah",
+      "",
+      "r_37"
+    ],
+    [
+      "Jumlah buah per tanaman",
+      "",
+      "r_37"
+    ],
+    [
+      "Berat buah per tanaman",
+      "",
+      "r_37"
+    ],
+    [
+      "Ketahanan terhadap hama",
+      "",
+      "r_63"
+    ],
+    [
+      "Ketahanan terhadap penyakit",
+      "",
+      "r_15"
+    ],
+    [
+      "Daya simpan buah pada suhu 24-27 oC",
+      "",
+      "r_64"
+    ],
+    [
+      "Hasil buah per hektar",
+      "",
+      "r_50"
+    ],
+    [
+      "Populasi per hektar",
+      "",
+      "r_65"
+    ],
+    [
+      "Kebutuhan benih per hektar",
+      "",
+      "r_65"
+    ],
+    [
+      "Penciri utama",
+      "",
+      "r_36"
+    ],
+    [
+      "Keunggulan varietas",
+      "",
+      "r_6"
+    ],
+    [
+      "Wilayah adaptasi",
+      "",
+      "r_4"
+    ],
+    [
+      "Ukuran daun Panjang",
+      "",
+      "r_28"
+    ],
+    [
+      "Ukuran daun Lebar",
+      "",
+      "r_10"
+    ],
+    [
+      "Ukuran buah Panjang",
+      "",
+      "r_39"
+    ],
+    [
+      "Ukuran buah Diameter",
+      "",
+      "r_41"
+    ],
+    [
+      "Berat 1000 biji",
+      "",
+      "r_10"
+    ],
+    [
+      "Daya simpan buah pada suhu (25-30 oC)",
+      "",
+      "r_64"
+    ],
+    [
+      "Populasi Tanaman per ha",
+      "",
+      "r_63"
+    ],
+    [
+      "Kebutuhan benih per ha",
+      "",
+      "r_34"
+    ],
+    [
+      "Tinggi tanaman (cm)",
+      "",
+      "r_2"
+    ],
+    [
+      "Habitus tanaman",
+      "",
+      "r_1"
+    ],
+    [
+      "Diameter batang (cm)",
+      "",
+      "r_28"
+    ],
+    [
+      "Warna bunga",
+      "",
+      "r_24"
+    ],
+    [
+      "Kelopak",
+      "",
+      "r_7"
+    ],
+    [
+      "Mahkota",
+      "",
+      "r_6"
+    ],
+    [
+      "Benang sari",
+      "",
+      "r_27"
+    ],
+    [
+      "Umur mulai berbunga (hari)",
+      "",
+      "r_10"
+    ],
+    [
+      "Umur mulai panen (hari)",
+      "",
+      "r_10"
+    ],
+    [
+      "Tebal kulit buah (cm)",
+      "",
+      "r_40"
+    ],
+    [
+      "Daya simpan buah pada suhu kamar (24-27 oC)",
+      "",
+      "r_50"
+    ],
+    [
+      "Hasil buah per hektar (ton)",
+      "",
+      "r_59"
+    ],
+    [
+      "Populasi per hektar (tanaman)",
+      "",
+      "r_65"
+    ],
+    [
+      "Kebutuhan benih per hektar (g)",
+      "",
+      "r_65"
+    ],
+    [
+      "Kelopak Bunga",
+      "",
+      "r_35"
+    ],
+    [
+      "Mahkota Bunga",
+      "",
+      "r_19"
+    ],
+    [
+      "Kepala Putik",
+      "",
+      "r_19"
+    ],
+    [
+      "Kotak Sari",
+      "",
+      "r_35"
+    ],
+    [
+      "Tipe Berbuah",
+      "",
+      "r_6"
+    ],
+    [
+      "Daya simpan buah pada suhu (25-27 oC)",
+      "",
+      "r_64"
+    ],
+    [
+      "Pemohon",
+      "",
+      "r_56"
+    ],
+    [
+      "Pemulia",
+      "",
+      "r_6"
+    ],
+    [
+      "Peneliti",
+      "",
+      "r_6"
+    ],
+    [
+      "Panjang dikotomus",
+      "",
+      "r_8"
+    ],
+    [
+      "Panjang ruas batang",
+      "",
+      "r_20"
+    ],
+    [
+      "Daya simpan buah pada suhu 25 - 27 oC",
+      "",
+      "r_64"
+    ],
+    [
+      "Profil potongan melintang",
+      "",
+      "r_56"
+    ],
+    [
+      "Orientasi pedunkulus",
+      "",
+      "r_6"
+    ],
+    [
+      "Panjang buah",
+      "",
+      "r_40"
+    ],
+    [
+      "Diameter buah",
+      "",
+      "r_40"
+    ],
+    [
+      "Daya simpan buah pada suhu 27-31 oC",
+      "",
+      "r_64"
+    ]
+  ],
+  "images_discovered": 0,
+  "n_mapping": 80,
+  "n_vision": 0,
+  "fingerprint": "0da1801a4cab665c672cec1e38ac877098575a95866a6a6660f0367f59a29558",
+  "errors": [
+    "akuisisi 'Profil potongan melintang': FAILED penilai akuisisi gagal: LLMCallError",
+    "akuisisi 'Orientasi pedunkulus': FAILED penilai akuisisi gagal: LLMCallError",
+    "akuisisi 'Panjang buah': FAILED penilai akuisisi gagal: LLMCallError",
+    "akuisisi 'Diameter buah': FAILED penilai akuisisi gagal: LLMCallError",
+    "akuisisi 'Daya simpan buah pada suhu 27-31 oC': FAILED penilai akuisisi gagal: LLMCallError"
+  ],
+  "status": "ok",
+  "detik": 637.1
+}

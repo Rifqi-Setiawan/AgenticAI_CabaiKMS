@@ -1,0 +1,255 @@
+{
+  "run": "R02",
+  "kind": "atribut",
+  "rep": 1,
+  "file": "input_cabai_kms.xlsx",
+  "sheet": "Data Varietas",
+  "format": "row-oriented",
+  "header_rows": 1,
+  "drive": null,
+  "max_images": 5,
+  "k": 8,
+  "commit": "6217420",
+  "sha256_berkas": "5b4a748b0dc99f7db66d8d95d544e8742a9a194a52eafec6ce32ca023613fb61",
+  "start": "2026-11-02 06:54:30",
+  "s2_keys": [
+    [
+      "Varietas Cabai",
+      "",
+      ""
+    ],
+    [
+      "Leaf shape",
+      "",
+      ""
+    ],
+    [
+      "Fruit diameter",
+      "",
+      ""
+    ],
+    [
+      "Fruit shape",
+      "",
+      ""
+    ],
+    [
+      "Stem diameter",
+      "",
+      ""
+    ],
+    [
+      "Pericarp thickness",
+      "",
+      ""
+    ],
+    [
+      "Leaf size as recorded",
+      "",
+      ""
+    ],
+    [
+      "Mature fruit weight",
+      "",
+      ""
+    ],
+    [
+      "Corolla colour",
+      "",
+      ""
+    ],
+    [
+      "Mature fruit colour",
+      "",
+      ""
+    ],
+    [
+      "Immature fruit colour",
+      "",
+      ""
+    ],
+    [
+      "Mature fruit length",
+      "",
+      ""
+    ],
+    [
+      "Plant growth habit",
+      "",
+      ""
+    ],
+    [
+      "Profil potongan melintang daun",
+      "",
+      ""
+    ],
+    [
+      "Warna batang",
+      "",
+      ""
+    ],
+    [
+      "Bentuk penampang batang",
+      "",
+      ""
+    ],
+    [
+      "Panjang dikotomus",
+      "",
+      ""
+    ],
+    [
+      "Panjang ruas batang",
+      "",
+      ""
+    ],
+    [
+      "Warna bunga",
+      "",
+      ""
+    ],
+    [
+      "Warna kepala putik",
+      "",
+      ""
+    ],
+    [
+      "Warna benang sari",
+      "",
+      ""
+    ],
+    [
+      "Warna kotak sari",
+      "",
+      ""
+    ],
+    [
+      "Orientasi pedunkulus",
+      "",
+      ""
+    ],
+    [
+      "Tipe berbuah",
+      "",
+      ""
+    ],
+    [
+      "Umur mulai berbunga",
+      "",
+      ""
+    ],
+    [
+      "Umur mulai panen",
+      "",
+      ""
+    ],
+    [
+      "Rasa buah",
+      "",
+      ""
+    ],
+    [
+      "Bentuk biji",
+      "",
+      ""
+    ],
+    [
+      "Berat 1.000 biji",
+      "",
+      ""
+    ],
+    [
+      "Jumlah buah per tanaman",
+      "",
+      ""
+    ],
+    [
+      "Berat buah per tanaman",
+      "",
+      ""
+    ],
+    [
+      "Daya simpan buah",
+      "",
+      ""
+    ],
+    [
+      "Ketahanan terhadap hama",
+      "",
+      ""
+    ],
+    [
+      "Ketahanan terhadap penyakit",
+      "",
+      ""
+    ],
+    [
+      "Hasil buah per hektar",
+      "",
+      ""
+    ],
+    [
+      "Populasi per hektar",
+      "",
+      ""
+    ],
+    [
+      "Kebutuhan benih per hektar",
+      "",
+      ""
+    ],
+    [
+      "Penciri utama",
+      "",
+      ""
+    ],
+    [
+      "Wilayah adaptasi",
+      "",
+      ""
+    ],
+    [
+      "Asal",
+      "",
+      ""
+    ],
+    [
+      "Silsilah",
+      "",
+      ""
+    ],
+    [
+      "Golongan varietas",
+      "",
+      ""
+    ],
+    [
+      "Pemohon",
+      "",
+      ""
+    ],
+    [
+      "Pemulia",
+      "",
+      ""
+    ],
+    [
+      "Peneliti",
+      "",
+      ""
+    ]
+  ],
+  "images_discovered": 0,
+  "n_mapping": 53,
+  "n_vision": 0,
+  "fingerprint": "b421eb1f6f0d765a8c68bbfadd87d685e09b34206e4274584e07d8abadaecc1f",
+  "errors": [
+    "atribut \"Silsilah\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Silsilah' merujuk pada asal-usul genetik atau riwayat persilangan varietas (pedigree), dan tidak ada kandidat baris kanonik yang mencakup informasi silsilah/asal-usul tanaman dalam daftar kandidat.",
+    "atribut \"Golongan varietas\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Golongan varietas (seperti bersari bebas/OP atau hibrida) berkaitan dengan tipe pemuliaan tanaman dan tidak ada dalam daftar baris kanonik yang tersedia (r_1 sampai r_60).",
+    "atribut \"Pemohon\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Pemohon' berisi nama perusahaan/instansi pendaftar varietas, yang merupakan metadata administratif dan tidak ada padanannya dalam daftar kandidat karakter morfologi/fenotipik yang tersedia.",
+    "atribut \"Pemulia\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Pemulia' mengacu pada nama pemulia/peneliti tanaman, yang merupakan metadata varietas dan tidak terdapat pada daftar baris kanonik yang tersedia (mencakup karakter morfologis dan lokasi).",
+    "atribut \"Peneliti\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Peneliti' berisi nama-nama peneliti atau pemulia varietas, yang merupakan metadata pemuliaan/penelitian dan tidak cocok dengan kandidat baris kanonik karakter morfologi atau agronomi yang tersedia."
+  ],
+  "status": "ok",
+  "detik": 295.7
+}

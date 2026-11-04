@@ -1,0 +1,130 @@
+{
+  "run": "N08",
+  "kind": "atribut_n08var",
+  "rep": 3,
+  "file": "E08_zenodo_capsicum_en_variety.xlsx",
+  "sheet": "Observed85_readable",
+  "format": "row-oriented",
+  "header_rows": 1,
+  "drive": null,
+  "max_images": 5,
+  "k": 8,
+  "commit": "6217420",
+  "sha256_berkas": "6ede08a0163b26d08c094427292ea55ae1d5bca0b54783e6349c59546dee3b0a",
+  "start": "2026-11-02 07:28:20",
+  "s2_keys": [
+    [
+      "Species",
+      "",
+      ""
+    ],
+    [
+      "Crown diameter",
+      "",
+      ""
+    ],
+    [
+      "Leaf shape",
+      "",
+      ""
+    ],
+    [
+      "Fruit diameter",
+      "",
+      ""
+    ],
+    [
+      "Fruit shape",
+      "",
+      ""
+    ],
+    [
+      "Stem diameter",
+      "",
+      ""
+    ],
+    [
+      "Intermediate fruit colour",
+      "",
+      ""
+    ],
+    [
+      "Pericarp thickness",
+      "",
+      ""
+    ],
+    [
+      "Leaf size as recorded",
+      "",
+      ""
+    ],
+    [
+      "Fresh mass of seedless fruit tissue",
+      "",
+      ""
+    ],
+    [
+      "Mature fruit weight",
+      "",
+      ""
+    ],
+    [
+      "Branching density",
+      "",
+      ""
+    ],
+    [
+      "Corolla colour",
+      "",
+      ""
+    ],
+    [
+      "Mature fruit colour",
+      "",
+      ""
+    ],
+    [
+      "Dry mass of seedless fruit tissue",
+      "",
+      ""
+    ],
+    [
+      "Stem length",
+      "",
+      ""
+    ],
+    [
+      "Immature fruit colour",
+      "",
+      ""
+    ],
+    [
+      "Corolla diameter",
+      "",
+      ""
+    ],
+    [
+      "Mature fruit length",
+      "",
+      ""
+    ],
+    [
+      "Plant growth habit",
+      "",
+      ""
+    ]
+  ],
+  "images_discovered": 0,
+  "n_mapping": 22,
+  "n_vision": 0,
+  "fingerprint": "b421eb1f6f0d765a8c68bbfadd87d685e09b34206e4274584e07d8abadaecc1f",
+  "errors": [
+    "atribut \"Mature fruit weight\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut sumber merujuk pada bobot/berat buah masak (fruit weight), namun daftar kandidat baris kanonik yang tersedia tidak memuat karakteristik berat/bobot buah (hanya mencakup panjang, keliling, bentuk, dan warna). Oleh karena itu, atribut ini dipetakan ke NULL.",
+    "atribut \"Branching density\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Branching density' mengukur tingkat/kepadatan percabangan tanaman (skala deskriptor IPGRI), dan tidak ada baris kanonik dalam skema yang merepresentasikan karakter percabangan tanaman.",
+    "atribut \"Dry mass of seedless fruit tissue\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut sumber mengukur massa/bobot kering jaringan buah tanpa biji, sedangkan tidak ada baris kanonik yang mencakup bobot kering atau karakteristik massa buah pada daftar kandidat.",
+    "atribut \"Stem length\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: \"Stem length\" (panjang batang utama hingga percabangan pertama) merupakan deskriptor morfologi yang berbeda secara spesifik dari tinggi tanaman total (r_2: tinggi tanaman). Karena tidak ada baris kanonik untuk panjang batang pada skema target, atribut ini tidak dapat dipetakan secara meyakinkan.",
+    "atribut \"Corolla diameter\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: \"Corolla diameter\" merujuk pada diameter mahkota/bunga secara keseluruhan. Dalam daftar baris kanonik yang tersedia, hanya ada \"panjang mahkota\" (r_20) dan \"lebar mahkota bunga\" (r_21 / petal width), tanpa adanya baris spesifik untuk diameter bunga/mahkota, sehingga tidak ada target kanonik yang cocok secara meyakinkan."
+  ],
+  "status": "ok",
+  "detik": 156.4
+}

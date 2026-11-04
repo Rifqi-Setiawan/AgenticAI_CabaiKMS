@@ -1,0 +1,165 @@
+{
+  "run": "R02",
+  "kind": "atribut",
+  "rep": 1,
+  "file": "input_cabai_kms.xlsx",
+  "sheet": "Data Varietas",
+  "format": "row-oriented",
+  "header_rows": 1,
+  "drive": null,
+  "max_images": 5,
+  "k": 8,
+  "commit": "3705aab",
+  "sha256_berkas": "5b4a748b0dc99f7db66d8d95d544e8742a9a194a52eafec6ce32ca023613fb61",
+  "start": "2026-11-01 16:04:28",
+  "s2_keys": [
+    [
+      "Varietas Cabai",
+      "",
+      "r_6"
+    ],
+    [
+      "Leaf shape",
+      "",
+      "r_14"
+    ],
+    [
+      "Fruit diameter",
+      "",
+      "r_94"
+    ],
+    [
+      "Fruit shape",
+      "",
+      "r_59"
+    ],
+    [
+      "Stem diameter",
+      "",
+      "r_21"
+    ],
+    [
+      "Pericarp thickness",
+      "",
+      "r_20"
+    ],
+    [
+      "Leaf size as recorded",
+      "",
+      "r_9"
+    ],
+    [
+      "Mature fruit weight",
+      "",
+      "r_83"
+    ],
+    [
+      "Corolla colour",
+      "",
+      "r_19"
+    ],
+    [
+      "Mature fruit colour",
+      "",
+      "r_95"
+    ],
+    [
+      "Immature fruit colour",
+      "",
+      "r_95"
+    ],
+    [
+      "Mature fruit length",
+      "",
+      "r_37"
+    ],
+    [
+      "Plant growth habit",
+      "",
+      "r_1"
+    ],
+    [
+      "Panjang dikotomus",
+      "",
+      "r_8"
+    ],
+    [
+      "Warna bunga",
+      "",
+      "r_75"
+    ],
+    [
+      "Warna kotak sari",
+      "",
+      "r_26"
+    ],
+    [
+      "Orientasi pedunkulus",
+      "",
+      "r_6"
+    ],
+    [
+      "Tipe berbuah",
+      "",
+      "r_6"
+    ],
+    [
+      "Berat 1.000 biji",
+      "",
+      "r_82"
+    ],
+    [
+      "Penciri utama",
+      "",
+      "r_95"
+    ],
+    [
+      "Wilayah adaptasi",
+      "",
+      "r_4"
+    ],
+    [
+      "Asal",
+      "",
+      "r_80"
+    ],
+    [
+      "Silsilah",
+      "",
+      "r_6"
+    ],
+    [
+      "Golongan varietas",
+      "",
+      "r_6"
+    ],
+    [
+      "Pemohon",
+      "",
+      "r_80"
+    ],
+    [
+      "Pemulia",
+      "",
+      "r_80"
+    ],
+    [
+      "Peneliti",
+      "",
+      "r_69"
+    ]
+  ],
+  "images_discovered": 0,
+  "n_mapping": 53,
+  "n_vision": 0,
+  "fingerprint": "143d675cc99f6dda97b10de5043acc12f052782b2987e72a58c20ff3f9664b08",
+  "errors": [
+    "akuisisi 'Silsilah': NOT_CHARACTERISTIC Informasi silsilah persilangan dan riwayat pemuliaan tanaman, bukan karakter yang dapat diamati.",
+    "akuisisi 'Golongan varietas': NOT_CHARACTERISTIC Klasifikasi varietas (bersari bebas vs hibrida), merupakan kategori administratif/tipe kultivar.",
+    "akuisisi 'Pemohon': NOT_CHARACTERISTIC Nama pihak atau perusahaan pemohon pendaftaran varietas, data administratif.",
+    "akuisisi 'Pemulia': NOT_CHARACTERISTIC Nama individu pemulia varietas tanaman, data administratif personal.",
+    "akuisisi 'Peneliti': NOT_CHARACTERISTIC Nama tim peneliti pendukung varietas, data administratif personal."
+  ],
+  "status": "ok",
+  "detik": 290.6
+}

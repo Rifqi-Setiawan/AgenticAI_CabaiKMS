@@ -1,0 +1,320 @@
+{
+  "run": "N07",
+  "kind": "atribut",
+  "rep": 1,
+  "file": "E07_kementan_deskripsi_ext.xlsx",
+  "sheet": "Deskripsi Varietas",
+  "format": "row-oriented",
+  "header_rows": 1,
+  "drive": null,
+  "max_images": 5,
+  "k": 8,
+  "commit": "6217420",
+  "sha256_berkas": "c51a666839233718b301617aa03bd069acaf3aab20305aa8129a1475c246d320",
+  "start": "2026-11-02 06:46:34",
+  "s2_keys": [
+    [
+      "Varietas Cabai",
+      "",
+      ""
+    ],
+    [
+      "Asal",
+      "",
+      ""
+    ],
+    [
+      "Silsilah",
+      "",
+      ""
+    ],
+    [
+      "Golongan varietas",
+      "",
+      ""
+    ],
+    [
+      "Bentuk penampang batang",
+      "",
+      ""
+    ],
+    [
+      "Bentuk habitus tanaman",
+      "",
+      ""
+    ],
+    [
+      "Diameter batang",
+      "",
+      ""
+    ],
+    [
+      "Warna batang",
+      "",
+      ""
+    ],
+    [
+      "Intensitas pewarnaan antosianin pada buku",
+      "",
+      ""
+    ],
+    [
+      "Ukuran daun",
+      "",
+      ""
+    ],
+    [
+      "Warna bunga kelopak",
+      "",
+      ""
+    ],
+    [
+      "Mahkota",
+      "",
+      ""
+    ],
+    [
+      "kepala putik",
+      "",
+      ""
+    ],
+    [
+      "benang sari",
+      "",
+      ""
+    ],
+    [
+      "Umur mulai berbunga",
+      "",
+      ""
+    ],
+    [
+      "Umur mulai panen",
+      "",
+      ""
+    ],
+    [
+      "Ukuran buah",
+      "",
+      ""
+    ],
+    [
+      "Warna buah tua",
+      "",
+      ""
+    ],
+    [
+      "Tebal kulit buah",
+      "",
+      ""
+    ],
+    [
+      "Rasa buah",
+      "",
+      ""
+    ],
+    [
+      "Bentuk biji",
+      "",
+      ""
+    ],
+    [
+      "Berat 1000 biji",
+      "",
+      ""
+    ],
+    [
+      "Berat per buah",
+      "",
+      ""
+    ],
+    [
+      "Jumlah buah per tanaman",
+      "",
+      ""
+    ],
+    [
+      "Berat buah per tanaman",
+      "",
+      ""
+    ],
+    [
+      "Ketahanan terhadap penyakit",
+      "",
+      ""
+    ],
+    [
+      "Daya simpan buah pada suhu 24-27°C",
+      "",
+      ""
+    ],
+    [
+      "Hasil buah per hektar",
+      "",
+      ""
+    ],
+    [
+      "Populasi per hektar",
+      "",
+      ""
+    ],
+    [
+      "Kebutuhan benih per hektar",
+      "",
+      ""
+    ],
+    [
+      "Penciri utama",
+      "",
+      ""
+    ],
+    [
+      "Wilayah adaptasi",
+      "",
+      ""
+    ],
+    [
+      "Warna mahkota bunga",
+      "",
+      ""
+    ],
+    [
+      "Warna kepala putik",
+      "",
+      ""
+    ],
+    [
+      "Warna benangsari",
+      "",
+      ""
+    ],
+    [
+      "Daya simpan buah pada suhu 25-31°C",
+      "",
+      ""
+    ],
+    [
+      "Pemohon",
+      "",
+      ""
+    ],
+    [
+      "Pemulia",
+      "",
+      ""
+    ],
+    [
+      "Peneliti",
+      "",
+      ""
+    ],
+    [
+      "Tinggi dikotomus",
+      "",
+      ""
+    ],
+    [
+      "Lebar tajuk",
+      "",
+      ""
+    ],
+    [
+      "Tipe tumbuh tanaman",
+      "",
+      ""
+    ],
+    [
+      "Bentuk batang",
+      "",
+      ""
+    ],
+    [
+      "Pemendekan ruas-internode",
+      "",
+      ""
+    ],
+    [
+      "Umur berbunga",
+      "",
+      ""
+    ],
+    [
+      "Warna kotak sari",
+      "",
+      ""
+    ],
+    [
+      "Posisi stigma terhadap anther",
+      "",
+      ""
+    ],
+    [
+      "Umur panen",
+      "",
+      ""
+    ],
+    [
+      "Panjang buah",
+      "",
+      ""
+    ],
+    [
+      "Diameter buah",
+      "",
+      ""
+    ],
+    [
+      "Tebal daging buah",
+      "",
+      ""
+    ],
+    [
+      "Ujung buah",
+      "",
+      ""
+    ],
+    [
+      "Warna buah intermediate",
+      "",
+      ""
+    ],
+    [
+      "Bobot per buah",
+      "",
+      ""
+    ],
+    [
+      "Bobot buah pertanaman",
+      "",
+      ""
+    ],
+    [
+      "Umur daya simpan",
+      "",
+      ""
+    ],
+    [
+      "Produktivitas (Potensi hasil)",
+      "",
+      ""
+    ],
+    [
+      "Populasi Tanaman per hektar",
+      "",
+      ""
+    ]
+  ],
+  "images_discovered": 0,
+  "n_mapping": 69,
+  "n_vision": 0,
+  "fingerprint": "b421eb1f6f0d765a8c68bbfadd87d685e09b34206e4274584e07d8abadaecc1f",
+  "errors": [
+    "atribut \"Bobot per buah\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Bobot per buah' mengukur berat/massa buah cabai, namun tidak ada kandidat baris kanonik yang mewakili bobot buah pada skema yang tersedia (r_1 sampai r_60).",
+    "atribut \"Bobot buah pertanaman\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Bobot buah pertanaman' mengukur total bobot/hasil buah per tanaman (g), sedangkan kandidat baris kanonik yang tersedia tidak mencakup metrik bobot buah atau hasil per tanaman.",
+    "atribut \"Umur daya simpan\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Umur daya simpan' mengacu pada masa simpan (shelf life) pascapanen buah (6-12 hari), sedangkan kandidat 'umur' (r_3) merujuk pada siklus hidup tanaman (semusim/bertahunan). Tidak ada kandidat kanonik yang mencakup daya simpan buah.",
+    "atribut \"Produktivitas (Potensi hasil)\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Produktivitas (Potensi hasil)' mengukur hasil panen per satuan luas (Ton/Ha), yang tidak tersedia dalam daftar baris kanonik yang ada (hanya mencakup morfologi vegetatif, bunga, buah, biji, lokasi, dan gambar).",
+    "atribut \"Populasi Tanaman per hektar\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Populasi Tanaman per hektar' mencatat kepadatan tanam budidaya dan tidak memiliki baris kanonik yang sesuai pada daftar kandidat r_1 hingga r_60."
+  ],
+  "status": "ok",
+  "detik": 391.2
+}

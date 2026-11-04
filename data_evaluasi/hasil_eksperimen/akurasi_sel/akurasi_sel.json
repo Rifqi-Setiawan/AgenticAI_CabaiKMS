@@ -1,0 +1,5947 @@
+{
+  "hasil": {
+    "paper": {
+      "R01": {
+        "n_varietas": 2,
+        "n_kolom": 2,
+        "kolom_benar": 2,
+        "ketat": {
+          "benar": 0,
+          "salah_tulis": 2,
+          "harapan": 2,
+          "terlewat": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "posisi": {
+          "benar": 0,
+          "salah_tulis": 2,
+          "harapan": 2,
+          "terlewat": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "sel": {
+          "lokasi|Cabai rawit (Capsicum frutescens L)": [
+            [
+              "desa bulu, kecamatan bulu, kab. temanggung, jawa tengah 56253, indonesia (sampling 7)",
+              "desa pengilon, kecamatan bulu, kab. temanggung, jawa tengah 56253, indonesia (sampling 5)",
+              "desa pengilon, kecamatan bulu, kab. temanggung, jawa tengah 56253, indonesia (sampling 6)",
+              "dusun genting, desa lamuk, kec. kalikajar, kabupaten wonosobo, jawa tengah 56372, indonesia (lokasi 2)",
+              "dusun gondosuli, desa gondosuli, kec. bulu, kab. temanggung, jawa tengah 56253 (sampling 4)",
+              "dusun grogol, desa kutoanyar, kec. kedu, kabupaten temanggung, jawa tengah, indonesia (sampling 2)",
+              "dusun jatisuko, desa campursalam, kec. parakan, kabupaten temanggung, jawa tengah 56254, indonesia (sampling 1)",
+              "dusun pangempon, desa lamuk, kec. kalikajar, kabupaten wonosobo, jawa tengah 56372, indonesia (lokasi 1)",
+              "dusun randu, desa hargobinangun, area sawah, hargobinangun, kec. pakem, kabupaten sleman, daerah istimewa yogyakarta 55582, indonesia (sampling 1)",
+              "dusun wolodono, desa gondosuli, jl. bulu - parakan, wolodono, bulu, kec. bulu, kabupaten temanggung, jawa tengah 56253, indonesia (sampling 3)",
+              "lokasi ke-1",
+              "lokasi ke-10",
+              "lokasi ke-11",
+              "lokasi ke-3",
+              "lokasi ke-4",
+              "lokasi ke-5",
+              "lokasi ke-6",
+              "lokasi ke-7",
+              "lokasi ke-8",
+              "lokasi ke-9"
+            ],
+            [
+              "desa bulu, kecamatan bulu, kab. temanggung, jawa tengah 56253, indonesia (sampling 7)",
+              "desa pengilon, kecamatan bulu, kab. temanggung, jawa tengah 56253, indonesia (sampling 5)",
+              "desa pengilon, kecamatan bulu, kab. temanggung, jawa tengah 56253, indonesia (sampling 6)",
+              "dusun genting, desa lamuk, kec. kalikajar, kabupaten wonosobo, jawa tengah 56372, indonesia (lokasi 2)",
+              "dusun gondosuli, desa gondosuli, kec. bulu, kab. temanggung, jawa tengah 56253 (sampling 4)",
+              "dusun grogol, desa kutoanyar, kec. kedu, kabupaten temanggung, jawa tengah, indonesia (sampling 2)",
+              "dusun jatisuko, desa campursalam, kec. parakan, kabupaten temanggung, jawa tengah 56254, indonesia (sampling 1)",
+              "dusun pangempon, desa lamuk, kec. kalikajar, kabupaten wonosobo, jawa tengah 56372, indonesia (lokasi 1)",
+              "dusun randu, desa hargobinangun, area sawah, hargobinangun, kec. pakem, kabupaten sleman, daerah istimewa yogyakarta 55582, indonesia (sampling 1)",
+              "dusun wolodono, desa gondosuli, jl. bulu - parakan, wolodono, bulu, kec. bulu, kabupaten temanggung, jawa tengah 56253, indonesia (sampling 3)"
+            ]
+          ],
+          "lokasi|cabai besar (Capsicum annum L)": [
+            [
+              "desa argalingga, kec. argapura, kabupaten majalengka, jawa barat 45462, indonesia (lokasi 1)",
+              "desa argalingga, kec. argapura, kabupaten majalengka, jawa barat 45462, indonesia (lokasi 2)",
+              "dusun tenen, desa hargobinangun, jl. boyong, area sawah, hargobinangun, kec. pakem, kabupaten sleman, daerah istimewa yogyakarta 55582, indonesia (sampling 2)",
+              "lokasi ke-12",
+              "lokasi ke-13",
+              "lokasi ke-2"
+            ],
+            [
+              "desa argalingga, kec. argapura, kabupaten majalengka, jawa barat 45462, indonesia (lokasi 1)",
+              "desa argalingga, kec. argapura, kabupaten majalengka, jawa barat 45462, indonesia (lokasi 2)",
+              "dusun tenen, desa hargobinangun, jl. boyong, area sawah, hargobinangun, kec. pakem, kabupaten sleman, daerah istimewa yogyakarta 55582, indonesia (sampling 2)"
+            ]
+          ]
+        },
+        "normalisasi": {
+          "identik": 0,
+          "berubah_setara": 0,
+          "berbeda": 2
+        }
+      },
+      "R02": {
+        "n_varietas": 6,
+        "n_kolom": 6,
+        "kolom_benar": 0,
+        "ketat": {
+          "benar": 0,
+          "salah_tulis": 79,
+          "harapan": 79,
+          "terlewat": 79,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "posisi": {
+          "benar": 79,
+          "salah_tulis": 0,
+          "harapan": 79,
+          "terlewat": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "sel": {
+          "habitus|Biocarning Agrihorti": [
+            [
+              "tegak"
+            ],
+            [
+              "tegak"
+            ]
+          ],
+          "tinggi_tanaman|Carvi Agrihorti": [
+            [
+              "60--70 cm"
+            ],
+            [
+              "60--70 cm"
+            ]
+          ],
+          "tinggi_tanaman|Biocarpa Agrihorti": [
+            [
+              "46--83 cm"
+            ],
+            [
+              "46--83 cm"
+            ]
+          ],
+          "tinggi_tanaman|Biocarning Agrihorti": [
+            [
+              "50.73--67.93 (cm)"
+            ],
+            [
+              "50.73--67.93 (cm)"
+            ]
+          ],
+          "tinggi_tanaman|JS CK 01": [
+            [
+              "65.32--72.32 cm"
+            ],
+            [
+              "65.32--72.32 cm"
+            ]
+          ],
+          "tinggi_tanaman|CR P1": [
+            [
+              "87.9--109.8 cm"
+            ],
+            [
+              "87.9--109.8 cm"
+            ]
+          ],
+          "tinggi_tanaman|CB 96307": [
+            [
+              "57.27--65.34 cm"
+            ],
+            [
+              "57.27--65.34 cm"
+            ]
+          ],
+          "adaptasi_ekologi|Carvi Agrihorti": [
+            [
+              "sesuai di dataran tinggi pada musim hujan"
+            ],
+            [
+              "sesuai di dataran tinggi pada musim hujan"
+            ]
+          ],
+          "adaptasi_ekologi|Biocarpa Agrihorti": [
+            [
+              "sesuai pada musim kemarau di dataran tinggi kec. pacet, kab. cianjur, provinsi jawa barat"
+            ],
+            [
+              "sesuai pada musim kemarau di dataran tinggi kec. pacet, kab. cianjur, provinsi jawa barat"
+            ]
+          ],
+          "adaptasi_ekologi|Biocarning Agrihorti": [
+            [
+              "sesuai untuk dataran medium-tinggi pada musim hujan"
+            ],
+            [
+              "sesuai untuk dataran medium-tinggi pada musim hujan"
+            ]
+          ],
+          "adaptasi_ekologi|JS CK 01": [
+            [
+              "beradaptasi dengan baik pada dataran rendah di kabupaten sleman, d.i. yogyakarta pada musim kemarau"
+            ],
+            [
+              "beradaptasi dengan baik pada dataran rendah di kabupaten sleman, d.i. yogyakarta pada musim kemarau"
+            ]
+          ],
+          "adaptasi_ekologi|CR P1": [
+            [
+              "beradaptasi dengan baik di dataran tinggi di kabupaten semarang pada musim penghujan"
+            ],
+            [
+              "beradaptasi dengan baik di dataran tinggi di kabupaten semarang pada musim penghujan"
+            ]
+          ],
+          "adaptasi_ekologi|CB 96307": [
+            [
+              "sesuai untuk dataran rendah pada musim penghujan"
+            ],
+            [
+              "sesuai untuk dataran rendah pada musim penghujan"
+            ]
+          ],
+          "warna_daun|Carvi Agrihorti": [
+            [
+              "hijau tua (rhs n 137 a)"
+            ],
+            [
+              "hijau tua (rhs n 137 a)"
+            ]
+          ],
+          "warna_daun|Biocarpa Agrihorti": [
+            [
+              "hijau (gog nn137a)"
+            ],
+            [
+              "hijau (gog nn137a)"
+            ]
+          ],
+          "warna_daun|Biocarning Agrihorti": [
+            [
+              "hijau (rhs nn 137a)"
+            ],
+            [
+              "hijau (rhs nn 137a)"
+            ]
+          ],
+          "warna_daun|JS CK 01": [
+            [
+              "hijau gelap (rhs green group nn 137 a)"
+            ],
+            [
+              "hijau gelap (rhs green group nn 137 a)"
+            ]
+          ],
+          "warna_daun|CR P1": [
+            [
+              "hijau tua (green group rhs nn 137 a)"
+            ],
+            [
+              "hijau tua (green group rhs nn 137 a)"
+            ]
+          ],
+          "warna_daun|CB 96307": [
+            [
+              "hijau (rhs 136a)"
+            ],
+            [
+              "hijau (rhs 136a)"
+            ]
+          ],
+          "panjang_daun|Biocarpa Agrihorti": [
+            [
+              "4.10--5.10 cm"
+            ],
+            [
+              "4.10--5.10 cm"
+            ]
+          ],
+          "panjang_daun|Biocarning Agrihorti": [
+            [
+              "6.45--10.64 (cm)"
+            ],
+            [
+              "6.45--10.64 (cm)"
+            ]
+          ],
+          "panjang_daun|CB 96307": [
+            [
+              "7.72--8.78 cm"
+            ],
+            [
+              "7.72--8.78 cm"
+            ]
+          ],
+          "lebar_daun|Biocarpa Agrihorti": [
+            [
+              "1.70--2.20 cm"
+            ],
+            [
+              "1.70--2.20 cm"
+            ]
+          ],
+          "lebar_daun|Biocarning Agrihorti": [
+            [
+              "2.73--4.04 (cm)"
+            ],
+            [
+              "2.73--4.04 (cm)"
+            ]
+          ],
+          "lebar_daun|CB 96307": [
+            [
+              "2.98--3.32 cm"
+            ],
+            [
+              "2.98--3.32 cm"
+            ]
+          ],
+          "bentuk_pangkal_daun|JS CK 01": [
+            [
+              "membulat"
+            ],
+            [
+              "membulat"
+            ]
+          ],
+          "bentuk_daun|Carvi Agrihorti": [
+            [
+              "eliptical"
+            ],
+            [
+              "eliptical"
+            ]
+          ],
+          "bentuk_daun|Biocarpa Agrihorti": [
+            [
+              "lanceolate"
+            ],
+            [
+              "lanceolate"
+            ]
+          ],
+          "bentuk_daun|Biocarning Agrihorti": [
+            [
+              "ovate"
+            ],
+            [
+              "ovate"
+            ]
+          ],
+          "bentuk_daun|JS CK 01": [
+            [
+              "lanset (lanceolate)"
+            ],
+            [
+              "lanset (lanceolate)"
+            ]
+          ],
+          "bentuk_daun|CR P1": [
+            [
+              "bulat telur"
+            ],
+            [
+              "bulat telur"
+            ]
+          ],
+          "bentuk_daun|CB 96307": [
+            [
+              "lanceolate"
+            ],
+            [
+              "lanceolate"
+            ]
+          ],
+          "warna_mahkota|Carvi Agrihorti": [
+            [
+              "hijau (rhs 142 a)"
+            ],
+            [
+              "hijau (rhs 142 a)"
+            ]
+          ],
+          "warna_mahkota|Biocarpa Agrihorti": [
+            [
+              "putih (yw nn 155c)"
+            ],
+            [
+              "putih (yw nn 155c)"
+            ]
+          ],
+          "warna_mahkota|Biocarning Agrihorti": [
+            [
+              "putih (rhs 155c)",
+              "putih (rhs white grup nn155a)"
+            ],
+            [
+              "putih (rhs 155c)",
+              "putih (rhs white grup nn155a)"
+            ]
+          ],
+          "warna_mahkota|JS CK 01": [
+            [
+              "putih (rhs green white group 155 a)"
+            ],
+            [
+              "putih (rhs green white group 155 a)"
+            ]
+          ],
+          "warna_mahkota|CR P1": [
+            [
+              "putih kehijauan (yellow green group rhs 145 d)"
+            ],
+            [
+              "putih kehijauan (yellow green group rhs 145 d)"
+            ]
+          ],
+          "warna_mahkota|CB 96307": [
+            [
+              "putih (rhs nn155c)"
+            ],
+            [
+              "putih (rhs nn155c)"
+            ]
+          ],
+          "bentuk_bunga|Carvi Agrihorti": [
+            [
+              "bintang"
+            ],
+            [
+              "bintang"
+            ]
+          ],
+          "bentuk_bunga|Biocarning Agrihorti": [
+            [
+              "bintang"
+            ],
+            [
+              "bintang"
+            ]
+          ],
+          "bentuk_bunga|CR P1": [
+            [
+              "seperti bintang"
+            ],
+            [
+              "seperti bintang"
+            ]
+          ],
+          "bentuk_bunga|CB 96307": [
+            [
+              "seperti bintang"
+            ],
+            [
+              "seperti bintang"
+            ]
+          ],
+          "warna_kepala_sari|JS CK 01": [
+            [
+              "hijau kebiruan (rhs blue green group 122 b)"
+            ],
+            [
+              "hijau kebiruan (rhs blue green group 122 b)"
+            ]
+          ],
+          "warna_kepala_sari|CR P1": [
+            [
+              "hijau keabuan (greyed green group rhs n189 b)"
+            ],
+            [
+              "hijau keabuan (greyed green group rhs n189 b)"
+            ]
+          ],
+          "warna_kelopak_bunga|Carvi Agrihorti": [
+            [
+              "hijau (rhs 155 a)"
+            ],
+            [
+              "hijau (rhs 155 a)"
+            ]
+          ],
+          "warna_kelopak_bunga|Biocarpa Agrihorti": [
+            [
+              "hijau (dyg 139b)"
+            ],
+            [
+              "hijau (dyg 139b)"
+            ]
+          ],
+          "warna_kelopak_bunga|Biocarning Agrihorti": [
+            [
+              "hijau (rhs 137c)"
+            ],
+            [
+              "hijau (rhs 137c)"
+            ]
+          ],
+          "warna_kelopak_bunga|JS CK 01": [
+            [
+              "hijau gelap (rhs green group 141 a)"
+            ],
+            [
+              "hijau gelap (rhs green group 141 a)"
+            ]
+          ],
+          "warna_kelopak_bunga|CR P1": [
+            [
+              "hijau (green group rhs 143 a)"
+            ],
+            [
+              "hijau (green group rhs 143 a)"
+            ]
+          ],
+          "warna_kelopak_bunga|CB 96307": [
+            [
+              "hijau (rhs 137c)"
+            ],
+            [
+              "hijau (rhs 137c)"
+            ]
+          ],
+          "bentuk_buah|Carvi Agrihorti": [
+            [
+              "panjang rata"
+            ],
+            [
+              "panjang rata"
+            ]
+          ],
+          "bentuk_buah|Biocarning Agrihorti": [
+            [
+              "memanjang"
+            ],
+            [
+              "memanjang"
+            ]
+          ],
+          "bentuk_buah|JS CK 01": [
+            [
+              "silindris panjang dengan permukaan buah rata"
+            ],
+            [
+              "silindris panjang dengan permukaan buah rata"
+            ]
+          ],
+          "bentuk_buah|CR P1": [
+            [
+              "berbentuk segitiga"
+            ],
+            [
+              "berbentuk segitiga"
+            ]
+          ],
+          "bentuk_buah|CB 96307": [
+            [
+              "silindris"
+            ],
+            [
+              "silindris"
+            ]
+          ],
+          "warna_buah_muda|Carvi Agrihorti": [
+            [
+              "hijau (green group rhs 139 a)"
+            ],
+            [
+              "hijau (green group rhs 139 a)"
+            ]
+          ],
+          "warna_buah_muda|Biocarpa Agrihorti": [
+            [
+              "hijau (syg 144 a)"
+            ],
+            [
+              "hijau (syg 144 a)"
+            ]
+          ],
+          "warna_buah_muda|Biocarning Agrihorti": [
+            [
+              "hijau (rhs 1394)"
+            ],
+            [
+              "hijau (rhs 1394)"
+            ]
+          ],
+          "warna_buah_muda|JS CK 01": [
+            [
+              "hijau tua (rhs green group 137 a)"
+            ],
+            [
+              "hijau tua (rhs green group 137 a)"
+            ]
+          ],
+          "warna_buah_muda|CR P1": [
+            [
+              "kuning kehijauan (yellow green group rhs 150 c)"
+            ],
+            [
+              "kuning kehijauan (yellow green group rhs 150 c)"
+            ]
+          ],
+          "warna_buah_muda|CB 96307": [
+            [
+              "hijau (rhs 141a)"
+            ],
+            [
+              "hijau (rhs 141a)"
+            ]
+          ],
+          "warna_buah_masak|Carvi Agrihorti": [
+            [
+              "merah (red group rhs 46 a)"
+            ],
+            [
+              "merah (red group rhs 46 a)"
+            ]
+          ],
+          "warna_buah_masak|Biocarpa Agrihorti": [
+            [
+              "merah (vr 45 a)"
+            ],
+            [
+              "merah (vr 45 a)"
+            ]
+          ],
+          "warna_buah_masak|Biocarning Agrihorti": [
+            [
+              "merah (rhs 45a)"
+            ],
+            [
+              "merah (rhs 45a)"
+            ]
+          ],
+          "warna_buah_masak|JS CK 01": [
+            [
+              "merah (rhs red group 45 a)"
+            ],
+            [
+              "merah (rhs red group 45 a)"
+            ]
+          ],
+          "warna_buah_masak|CR P1": [
+            [
+              "merah (red group rhs 45 a)"
+            ],
+            [
+              "merah (red group rhs 45 a)"
+            ]
+          ],
+          "warna_buah_masak|CB 96307": [
+            [
+              "merah (rhs 45a)"
+            ],
+            [
+              "merah (rhs 45a)"
+            ]
+          ],
+          "panjang_buah_masak|Carvi Agrihorti": [
+            [
+              "12.14--12.52 cm"
+            ],
+            [
+              "12.14--12.52 cm"
+            ]
+          ],
+          "panjang_buah_masak|Biocarpa Agrihorti": [
+            [
+              "12.0--16.2 cm"
+            ],
+            [
+              "12.0--16.2 cm"
+            ]
+          ],
+          "panjang_buah_masak|Biocarning Agrihorti": [
+            [
+              "10.74--14.03 (cm)"
+            ],
+            [
+              "10.74--14.03 (cm)"
+            ]
+          ],
+          "panjang_buah_masak|JS CK 01": [
+            [
+              "13.87--15.63 cm"
+            ],
+            [
+              "13.87--15.63 cm"
+            ]
+          ],
+          "panjang_buah_masak|CR P1": [
+            [
+              "4.18--5.32 cm"
+            ],
+            [
+              "4.18--5.32 cm"
+            ]
+          ],
+          "panjang_buah_masak|CB 96307": [
+            [
+              "13.76--15.51 cm"
+            ],
+            [
+              "13.76--15.51 cm"
+            ]
+          ],
+          "warna_biji|Carvi Agrihorti": [
+            [
+              "kuning jerami (rhs 2 b)"
+            ],
+            [
+              "kuning jerami (rhs 2 b)"
+            ]
+          ],
+          "warna_biji|Biocarpa Agrihorti": [
+            [
+              "kuning jerami (my 161a)"
+            ],
+            [
+              "kuning jerami (my 161a)"
+            ]
+          ],
+          "warna_biji|Biocarning Agrihorti": [
+            [
+              "kuning (rhs 10b)"
+            ],
+            [
+              "kuning (rhs 10b)"
+            ]
+          ],
+          "warna_biji|JS CK 01": [
+            [
+              "kuning terang (rhs light yellow group 4 d)"
+            ],
+            [
+              "kuning terang (rhs light yellow group 4 d)"
+            ]
+          ],
+          "warna_biji|CR P1": [
+            [
+              "coklat kekuningan (greyed orange group rhs 163 c)"
+            ],
+            [
+              "coklat kekuningan (greyed orange group rhs 163 c)"
+            ]
+          ],
+          "warna_biji|CB 96307": [
+            [
+              "kuning (rhs 18b)"
+            ],
+            [
+              "kuning (rhs 18b)"
+            ]
+          ]
+        },
+        "normalisasi": {
+          "identik": 58,
+          "berubah_setara": 21,
+          "berbeda": 0
+        }
+      },
+      "N07": {
+        "n_varietas": 3,
+        "n_kolom": 3,
+        "kolom_benar": 0,
+        "ketat": {
+          "benar": 0,
+          "salah_tulis": 37,
+          "harapan": 37,
+          "terlewat": 37,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "posisi": {
+          "benar": 36,
+          "salah_tulis": 0,
+          "harapan": 37,
+          "terlewat": 1,
+          "precision": 1.0,
+          "recall": 0.972972972972973,
+          "f1": 0.9863013698630138
+        },
+        "sel": {
+          "habitus|Biocalya Agrihorti": [
+            [
+              "semi-tegak"
+            ],
+            [
+              "semi-tegak"
+            ]
+          ],
+          "habitus|Arisa IPB": [
+            [
+              "tegak"
+            ],
+            [
+              "tegak"
+            ]
+          ],
+          "tinggi_tanaman|Biocalya Agrihorti": [
+            [
+              "50.67--65.67 cm"
+            ],
+            [
+              "50.67--65.67 cm"
+            ]
+          ],
+          "tinggi_tanaman|ENNO009": [
+            [
+              "83.00--100.42 cm"
+            ],
+            [
+              "83.00--100.42 cm"
+            ]
+          ],
+          "tinggi_tanaman|Arisa IPB": [
+            [
+              "65.00--83.23 cm"
+            ],
+            [
+              "65.00--83.23 cm"
+            ]
+          ],
+          "adaptasi_ekologi|Biocalya Agrihorti": [
+            [
+              "sesuai untuk dataran menengah hingga dataran tinggi pada musim hujan"
+            ],
+            [
+              "sesuai untuk dataran menengah hingga dataran tinggi pada musim hujan"
+            ]
+          ],
+          "adaptasi_ekologi|ENNO009": [
+            [
+              "beradaptasi dengan baik di dataran rendah di kabupaten jember pada musim penghujan"
+            ],
+            [
+              "beradaptasi dengan baik di dataran rendah di kabupaten jember pada musim penghujan"
+            ]
+          ],
+          "adaptasi_ekologi|Arisa IPB": [
+            [
+              "sesuai di dataran rendah di musim hujan"
+            ],
+            [
+              "sesuai di dataran rendah di musim hujan"
+            ]
+          ],
+          "warna_daun|Biocalya Agrihorti": [
+            [
+              "hijau zaitun sedang (mog 147a)"
+            ],
+            [
+              "hijau zaitun sedang (mog 147a)"
+            ]
+          ],
+          "warna_daun|ENNO009": [
+            [
+              "hijau (rhs nn137a)"
+            ],
+            [
+              "hijau (rhs nn137a)"
+            ]
+          ],
+          "warna_daun|Arisa IPB": [
+            [
+              "hijau (rhs nn137a)"
+            ],
+            [
+              "hijau (rhs nn137a)"
+            ]
+          ],
+          "panjang_daun|Arisa IPB": [
+            [
+              "6.33--14.35 cm"
+            ],
+            [
+              "6.33--14.35 cm"
+            ]
+          ],
+          "lebar_daun|Arisa IPB": [
+            [
+              "2.23--3.70 cm"
+            ],
+            [
+              "2.23--3.70 cm"
+            ]
+          ],
+          "bentuk_daun|Biocalya Agrihorti": [
+            [
+              "lanceolate"
+            ],
+            [
+              "lanceolate"
+            ]
+          ],
+          "bentuk_daun|ENNO009": [
+            [
+              "lanset (lanceolate)"
+            ],
+            [
+              "lanset (lanceolate)"
+            ]
+          ],
+          "bentuk_daun|Arisa IPB": [
+            [
+              "lanceolate"
+            ],
+            [
+              "lanceolate"
+            ]
+          ],
+          "warna_mahkota|ENNO009": [
+            [
+              "hijau keputihan (rhs 145c)"
+            ],
+            [
+              "hijau keputihan (rhs 145c)"
+            ]
+          ],
+          "warna_mahkota|Arisa IPB": [
+            [
+              "putih (rhs 155a)"
+            ],
+            [
+              "putih (rhs 155a)"
+            ]
+          ],
+          "bentuk_bunga|Biocalya Agrihorti": [
+            [
+              "bintang"
+            ],
+            [
+              "bintang"
+            ]
+          ],
+          "bentuk_bunga|ENNO009": [
+            [
+              "seperti bintang"
+            ],
+            [
+              "seperti bintang"
+            ]
+          ],
+          "warna_kepala_sari|Arisa IPB": [
+            [
+              "putih (rhs n77c)"
+            ],
+            [
+              "putih (rhs n77c)"
+            ]
+          ],
+          "posisi_bunga|Arisa IPB": [
+            [
+              "pendant"
+            ],
+            [
+              "pendant"
+            ]
+          ],
+          "warna_kelopak_bunga|Biocalya Agrihorti": [
+            [
+              "hijau kekuningan kuat (syg 144a)"
+            ],
+            [
+              "hijau kekuningan kuat (syg 144a)"
+            ]
+          ],
+          "warna_kelopak_bunga|ENNO009": [
+            [
+              "hijau (rhs 143a)"
+            ],
+            [
+              "hijau (rhs 143a)"
+            ]
+          ],
+          "bentuk_buah|Biocalya Agrihorti": [
+            [
+              "memanjang"
+            ],
+            [
+              "memanjang"
+            ]
+          ],
+          "bentuk_buah|ENNO009": [
+            [
+              "segitiga sedang"
+            ],
+            [
+              "segitiga sedang"
+            ]
+          ],
+          "bentuk_buah|Arisa IPB": [
+            [
+              "segitiga menyempit"
+            ],
+            [
+              "segitiga menyempit"
+            ]
+          ],
+          "warna_buah_muda|Biocalya Agrihorti": [
+            [
+              "hijau zaitun sedang (mog 137a)"
+            ],
+            [
+              "hijau zaitun sedang (mog 137a)"
+            ]
+          ],
+          "warna_buah_muda|ENNO009": [
+            [
+              "hijau muda (rhs 150b)"
+            ],
+            [
+              "hijau muda (rhs 150b)"
+            ]
+          ],
+          "warna_buah_muda|Arisa IPB": [
+            [
+              "hijau tua (rhs 143a)"
+            ],
+            [
+              "hijau tua (rhs 143a)"
+            ]
+          ],
+          "warna_buah_masak|Biocalya Agrihorti": [
+            [
+              "merah sedang (mr n45a)"
+            ],
+            [
+              "merah sedang (mr n45a)"
+            ]
+          ],
+          "warna_buah_masak|ENNO009": [
+            [
+              "merah (rhs 42a)"
+            ],
+            [
+              "merah (rhs 42a)"
+            ]
+          ],
+          "warna_buah_masak|Arisa IPB": [
+            [
+              "merah (rhs 45a)"
+            ],
+            [
+              "merah (rhs 45a)"
+            ]
+          ],
+          "bentuk_ujung_buah|Arisa IPB": [
+            [
+              "sangat lancip"
+            ],
+            [
+              "sangat lancip"
+            ]
+          ],
+          "warna_biji|Biocalya Agrihorti": [
+            [
+              "kuning terang (yl 10c)"
+            ],
+            [
+              "kuning terang (yl 10c)"
+            ]
+          ],
+          "warna_biji|ENNO009": [
+            [
+              "krem (rhs 162d)"
+            ],
+            [
+              "krem (rhs 162d)"
+            ]
+          ]
+        },
+        "normalisasi": {
+          "identik": 30,
+          "berubah_setara": 6,
+          "berbeda": 0
+        }
+      },
+      "N08": {
+        "n_varietas": 17,
+        "n_kolom": 17,
+        "kolom_benar": 17,
+        "ketat": {
+          "benar": 119,
+          "salah_tulis": 0,
+          "harapan": 153,
+          "terlewat": 34,
+          "precision": 1.0,
+          "recall": 0.7777777777777778,
+          "f1": 0.8750000000000001
+        },
+        "posisi": {
+          "benar": 119,
+          "salah_tulis": 0,
+          "harapan": 153,
+          "terlewat": 34,
+          "precision": 1.0,
+          "recall": 0.7777777777777778,
+          "f1": 0.8750000000000001
+        },
+        "sel": {
+          "habitus|Malagueta": [
+            [
+              "7"
+            ],
+            [
+              "7"
+            ]
+          ],
+          "habitus|Bhut Jolokia": [
+            [
+              "7"
+            ],
+            [
+              "7"
+            ]
+          ],
+          "habitus|Cumari do Pará": [
+            [
+              "5"
+            ],
+            [
+              "5"
+            ]
+          ],
+          "habitus|Habanero chocolate": [
+            [
+              "7"
+            ],
+            [
+              "7"
+            ]
+          ],
+          "habitus|Habanero vermelha": [
+            [
+              "7"
+            ],
+            [
+              "7"
+            ]
+          ],
+          "habitus|Habanero amarela": [
+            [
+              "7"
+            ],
+            [
+              "7"
+            ]
+          ],
+          "habitus|Peito de moça": [
+            [
+              "7"
+            ],
+            [
+              "7"
+            ]
+          ],
+          "habitus|Murupi": [
+            [
+              "7"
+            ],
+            [
+              "7"
+            ]
+          ],
+          "habitus|Piãozinho": [
+            [
+              "7"
+            ],
+            [
+              "7"
+            ]
+          ],
+          "habitus|Cheiro do Norte": [
+            [
+              "7"
+            ],
+            [
+              "7"
+            ]
+          ],
+          "habitus|Tabasco": [
+            [
+              "7"
+            ],
+            [
+              "7"
+            ]
+          ],
+          "habitus|Biquinho vermelha": [
+            [
+              "3"
+            ],
+            [
+              "3"
+            ]
+          ],
+          "habitus|Cayenne": [
+            [
+              "7"
+            ],
+            [
+              "7"
+            ]
+          ],
+          "habitus|Biquinho amarela": [
+            [
+              "3"
+            ],
+            [
+              "3"
+            ]
+          ],
+          "habitus|Arari bode amarela": [
+            [
+              "7"
+            ],
+            [
+              "7"
+            ]
+          ],
+          "habitus|Etna ornamental": [
+            [
+              "7"
+            ],
+            [
+              "7"
+            ]
+          ],
+          "habitus|Pirâmide ornamental": [
+            [
+              "5"
+            ],
+            [
+              "5"
+            ]
+          ],
+          "tinggi_tanaman|Malagueta": [
+            [
+              "105",
+              "108",
+              "115",
+              "118",
+              "121"
+            ],
+            [
+              "105",
+              "108",
+              "115",
+              "118",
+              "121"
+            ]
+          ],
+          "tinggi_tanaman|Bhut Jolokia": [
+            [
+              "126",
+              "137",
+              "142",
+              "153",
+              "194"
+            ],
+            [
+              "126",
+              "137",
+              "142",
+              "153",
+              "194"
+            ]
+          ],
+          "tinggi_tanaman|Cumari do Pará": [
+            [
+              "113",
+              "121",
+              "89",
+              "94",
+              "99"
+            ],
+            [
+              "113",
+              "121",
+              "89",
+              "94",
+              "99"
+            ]
+          ],
+          "tinggi_tanaman|Habanero chocolate": [
+            [
+              "120",
+              "130",
+              "140",
+              "147",
+              "153"
+            ],
+            [
+              "120",
+              "130",
+              "140",
+              "147",
+              "153"
+            ]
+          ],
+          "tinggi_tanaman|Habanero vermelha": [
+            [
+              "101",
+              "102",
+              "109",
+              "110",
+              "97"
+            ],
+            [
+              "101",
+              "102",
+              "109",
+              "110",
+              "97"
+            ]
+          ],
+          "tinggi_tanaman|Habanero amarela": [
+            [
+              "108",
+              "112",
+              "113",
+              "116",
+              "89"
+            ],
+            [
+              "108",
+              "112",
+              "113",
+              "116",
+              "89"
+            ]
+          ],
+          "tinggi_tanaman|Peito de moça": [
+            [
+              "110",
+              "120",
+              "124",
+              "128",
+              "130"
+            ],
+            [
+              "110",
+              "120",
+              "124",
+              "128",
+              "130"
+            ]
+          ],
+          "tinggi_tanaman|Murupi": [
+            [
+              "137",
+              "139",
+              "140",
+              "150",
+              "156"
+            ],
+            [
+              "137",
+              "139",
+              "140",
+              "150",
+              "156"
+            ]
+          ],
+          "tinggi_tanaman|Piãozinho": [
+            [
+              "111",
+              "115",
+              "123",
+              "125",
+              "132"
+            ],
+            [
+              "111",
+              "115",
+              "123",
+              "125",
+              "132"
+            ]
+          ],
+          "tinggi_tanaman|Cheiro do Norte": [
+            [
+              "122",
+              "125",
+              "127",
+              "131"
+            ],
+            [
+              "122",
+              "125",
+              "127",
+              "131"
+            ]
+          ],
+          "tinggi_tanaman|Tabasco": [
+            [
+              "119",
+              "120",
+              "130",
+              "132",
+              "150"
+            ],
+            [
+              "119",
+              "120",
+              "130",
+              "132",
+              "150"
+            ]
+          ],
+          "tinggi_tanaman|Biquinho vermelha": [
+            [
+              "70",
+              "76",
+              "80",
+              "84",
+              "94"
+            ],
+            [
+              "70",
+              "76",
+              "80",
+              "84",
+              "94"
+            ]
+          ],
+          "tinggi_tanaman|Cayenne": [
+            [
+              "105",
+              "108",
+              "110",
+              "139",
+              "98"
+            ],
+            [
+              "105",
+              "108",
+              "110",
+              "139",
+              "98"
+            ]
+          ],
+          "tinggi_tanaman|Biquinho amarela": [
+            [
+              "70",
+              "82",
+              "85",
+              "93",
+              "96"
+            ],
+            [
+              "70",
+              "82",
+              "85",
+              "93",
+              "96"
+            ]
+          ],
+          "tinggi_tanaman|Arari bode amarela": [
+            [
+              "102",
+              "107",
+              "119",
+              "120",
+              "134"
+            ],
+            [
+              "102",
+              "107",
+              "119",
+              "120",
+              "134"
+            ]
+          ],
+          "tinggi_tanaman|Etna ornamental": [
+            [
+              "104",
+              "108",
+              "110",
+              "112",
+              "90"
+            ],
+            [
+              "104",
+              "108",
+              "110",
+              "112",
+              "90"
+            ]
+          ],
+          "tinggi_tanaman|Pirâmide ornamental": [
+            [
+              "31",
+              "32",
+              "34",
+              "37"
+            ],
+            [
+              "31",
+              "32",
+              "34",
+              "37"
+            ]
+          ],
+          "warna_mahkota|Malagueta": [
+            [
+              "4"
+            ],
+            [
+              "4"
+            ]
+          ],
+          "warna_mahkota|Bhut Jolokia": [
+            [
+              "2"
+            ],
+            [
+              "2"
+            ]
+          ],
+          "warna_mahkota|Cumari do Pará": [
+            [
+              "2"
+            ],
+            [
+              "2"
+            ]
+          ],
+          "warna_mahkota|Habanero chocolate": [
+            [
+              "4"
+            ],
+            [
+              "4"
+            ]
+          ],
+          "warna_mahkota|Habanero vermelha": [
+            [
+              "3"
+            ],
+            [
+              "3"
+            ]
+          ],
+          "warna_mahkota|Habanero amarela": [
+            [
+              "2"
+            ],
+            [
+              "2"
+            ]
+          ],
+          "warna_mahkota|Peito de moça": [
+            [
+              "1"
+            ],
+            [
+              "1"
+            ]
+          ],
+          "warna_mahkota|Murupi": [
+            [
+              "2"
+            ],
+            [
+              "2"
+            ]
+          ],
+          "warna_mahkota|Piãozinho": [
+            [
+              "2"
+            ],
+            [
+              "2"
+            ]
+          ],
+          "warna_mahkota|Cheiro do Norte": [
+            [
+              "2"
+            ],
+            [
+              "2"
+            ]
+          ],
+          "warna_mahkota|Tabasco": [
+            [
+              "4"
+            ],
+            [
+              "4"
+            ]
+          ],
+          "warna_mahkota|Biquinho vermelha": [
+            [
+              "1"
+            ],
+            [
+              "1"
+            ]
+          ],
+          "warna_mahkota|Cayenne": [
+            [
+              "1"
+            ],
+            [
+              "1"
+            ]
+          ],
+          "warna_mahkota|Biquinho amarela": [
+            [
+              "1"
+            ],
+            [
+              "1"
+            ]
+          ],
+          "warna_mahkota|Arari bode amarela": [
+            [
+              "1"
+            ],
+            [
+              "1"
+            ]
+          ],
+          "warna_mahkota|Etna ornamental": [
+            [
+              "4"
+            ],
+            [
+              "4"
+            ]
+          ],
+          "warna_mahkota|Pirâmide ornamental": [
+            [
+              "1"
+            ],
+            [
+              "1"
+            ]
+          ],
+          "bentuk_buah|Malagueta": [
+            [
+              "1"
+            ],
+            [
+              "1"
+            ]
+          ],
+          "bentuk_buah|Bhut Jolokia": [
+            [
+              "3"
+            ],
+            [
+              "3"
+            ]
+          ],
+          "bentuk_buah|Cumari do Pará": [
+            [
+              "3"
+            ],
+            [
+              "3"
+            ]
+          ],
+          "bentuk_buah|Habanero chocolate": [
+            [
+              "4"
+            ],
+            [
+              "4"
+            ]
+          ],
+          "bentuk_buah|Habanero vermelha": [
+            [
+              "4"
+            ],
+            [
+              "4"
+            ]
+          ],
+          "bentuk_buah|Habanero amarela": [
+            [
+              "4"
+            ],
+            [
+              "4"
+            ]
+          ],
+          "bentuk_buah|Peito de moça": [
+            [
+              "3"
+            ],
+            [
+              "3"
+            ]
+          ],
+          "bentuk_buah|Murupi": [
+            [
+              "1"
+            ],
+            [
+              "1"
+            ]
+          ],
+          "bentuk_buah|Piãozinho": [
+            [
+              "3"
+            ],
+            [
+              "3"
+            ]
+          ],
+          "bentuk_buah|Cheiro do Norte": [
+            [
+              "5"
+            ],
+            [
+              "5"
+            ]
+          ],
+          "bentuk_buah|Tabasco": [
+            [
+              "1"
+            ],
+            [
+              "1"
+            ]
+          ],
+          "bentuk_buah|Biquinho vermelha": [
+            [
+              "3"
+            ],
+            [
+              "3"
+            ]
+          ],
+          "bentuk_buah|Cayenne": [
+            [
+              "1"
+            ],
+            [
+              "1"
+            ]
+          ],
+          "bentuk_buah|Biquinho amarela": [
+            [
+              "3"
+            ],
+            [
+              "3"
+            ]
+          ],
+          "bentuk_buah|Arari bode amarela": [
+            [
+              "2"
+            ],
+            [
+              "2"
+            ]
+          ],
+          "bentuk_buah|Etna ornamental": [
+            [
+              "3"
+            ],
+            [
+              "3"
+            ]
+          ],
+          "bentuk_buah|Pirâmide ornamental": [
+            [
+              "3"
+            ],
+            [
+              "3"
+            ]
+          ],
+          "warna_buah_muda|Malagueta": [
+            [
+              "4"
+            ],
+            [
+              "4"
+            ]
+          ],
+          "warna_buah_muda|Bhut Jolokia": [
+            [
+              "2"
+            ],
+            [
+              "2"
+            ]
+          ],
+          "warna_buah_muda|Cumari do Pará": [
+            [
+              "4"
+            ],
+            [
+              "4"
+            ]
+          ],
+          "warna_buah_muda|Habanero chocolate": [
+            [
+              "4"
+            ],
+            [
+              "4"
+            ]
+          ],
+          "warna_buah_muda|Habanero vermelha": [
+            [
+              "2"
+            ],
+            [
+              "2"
+            ]
+          ],
+          "warna_buah_muda|Habanero amarela": [
+            [
+              "4"
+            ],
+            [
+              "4"
+            ]
+          ],
+          "warna_buah_muda|Peito de moça": [
+            [
+              "2"
+            ],
+            [
+              "2"
+            ]
+          ],
+          "warna_buah_muda|Murupi": [
+            [
+              "2"
+            ],
+            [
+              "2"
+            ]
+          ],
+          "warna_buah_muda|Piãozinho": [
+            [
+              "4"
+            ],
+            [
+              "4"
+            ]
+          ],
+          "warna_buah_muda|Cheiro do Norte": [
+            [
+              "2"
+            ],
+            [
+              "2"
+            ]
+          ],
+          "warna_buah_muda|Tabasco": [
+            [
+              "2"
+            ],
+            [
+              "2"
+            ]
+          ],
+          "warna_buah_muda|Biquinho vermelha": [
+            [
+              "1"
+            ],
+            [
+              "1"
+            ]
+          ],
+          "warna_buah_muda|Cayenne": [
+            [
+              "4"
+            ],
+            [
+              "4"
+            ]
+          ],
+          "warna_buah_muda|Biquinho amarela": [
+            [
+              "1"
+            ],
+            [
+              "1"
+            ]
+          ],
+          "warna_buah_muda|Arari bode amarela": [
+            [
+              "2"
+            ],
+            [
+              "2"
+            ]
+          ],
+          "warna_buah_muda|Etna ornamental": [
+            [
+              "3"
+            ],
+            [
+              "3"
+            ]
+          ],
+          "warna_buah_muda|Pirâmide ornamental": [
+            [
+              "1"
+            ],
+            [
+              "1"
+            ]
+          ],
+          "panjang_buah_masak|Malagueta": [
+            [
+              "1.468",
+              "2.019",
+              "2.0420000000000003",
+              "2.046",
+              "2.261"
+            ],
+            [
+              "1.468",
+              "2.019",
+              "2.0420000000000003",
+              "2.046",
+              "2.261"
+            ]
+          ],
+          "panjang_buah_masak|Bhut Jolokia": [
+            [
+              "5.07",
+              "5.351",
+              "5.364",
+              "5.661",
+              "6.614"
+            ],
+            [
+              "5.07",
+              "5.351",
+              "5.364",
+              "5.661",
+              "6.614"
+            ]
+          ],
+          "panjang_buah_masak|Cumari do Pará": [
+            [
+              "1.233",
+              "1.249",
+              "1.266",
+              "1.282",
+              "1.446"
+            ],
+            [
+              "1.233",
+              "1.249",
+              "1.266",
+              "1.282",
+              "1.446"
+            ]
+          ],
+          "panjang_buah_masak|Habanero chocolate": [
+            [
+              "3.743",
+              "4.002000000000001",
+              "4.103",
+              "4.202000000000001",
+              "4.28"
+            ],
+            [
+              "3.743",
+              "4.002000000000001",
+              "4.103",
+              "4.202000000000001",
+              "4.28"
+            ]
+          ],
+          "panjang_buah_masak|Habanero vermelha": [
+            [
+              "3.5340000000000007",
+              "3.808",
+              "3.91",
+              "4.137",
+              "4.89"
+            ],
+            [
+              "3.5340000000000007",
+              "3.808",
+              "3.91",
+              "4.137",
+              "4.89"
+            ]
+          ],
+          "panjang_buah_masak|Habanero amarela": [
+            [
+              "3.29",
+              "3.493",
+              "3.729",
+              "3.897",
+              "4.009"
+            ],
+            [
+              "3.29",
+              "3.493",
+              "3.729",
+              "3.897",
+              "4.009"
+            ]
+          ],
+          "panjang_buah_masak|Peito de moça": [
+            [
+              "1.839",
+              "1.91",
+              "2.237",
+              "2.252",
+              "2.294"
+            ],
+            [
+              "1.839",
+              "1.91",
+              "2.237",
+              "2.252",
+              "2.294"
+            ]
+          ],
+          "panjang_buah_masak|Murupi": [
+            [
+              "4.72",
+              "6.722",
+              "7.351",
+              "7.46",
+              "7.611"
+            ],
+            [
+              "4.72",
+              "6.722",
+              "7.351",
+              "7.46",
+              "7.611"
+            ]
+          ],
+          "panjang_buah_masak|Piãozinho": [
+            [
+              "2.707",
+              "2.896",
+              "2.973",
+              "2.989",
+              "3.027"
+            ],
+            [
+              "2.707",
+              "2.896",
+              "2.973",
+              "2.989",
+              "3.027"
+            ]
+          ],
+          "panjang_buah_masak|Cheiro do Norte": [
+            [
+              "4.197",
+              "4.265999999999999",
+              "4.536",
+              "4.87",
+              "5.415"
+            ],
+            [
+              "4.197",
+              "4.265999999999999",
+              "4.536",
+              "4.87",
+              "5.415"
+            ]
+          ],
+          "panjang_buah_masak|Tabasco": [
+            [
+              "2.729",
+              "2.77",
+              "2.771",
+              "2.983",
+              "3.443"
+            ],
+            [
+              "2.729",
+              "2.77",
+              "2.771",
+              "2.983",
+              "3.443"
+            ]
+          ],
+          "panjang_buah_masak|Biquinho vermelha": [
+            [
+              "1.853",
+              "2.118",
+              "2.269",
+              "2.371",
+              "2.48"
+            ],
+            [
+              "1.853",
+              "2.118",
+              "2.269",
+              "2.371",
+              "2.48"
+            ]
+          ],
+          "panjang_buah_masak|Cayenne": [
+            [
+              "6.376",
+              "7.177",
+              "7.497",
+              "7.862",
+              "8.139"
+            ],
+            [
+              "6.376",
+              "7.177",
+              "7.497",
+              "7.862",
+              "8.139"
+            ]
+          ],
+          "panjang_buah_masak|Biquinho amarela": [
+            [
+              "1.978",
+              "2.006",
+              "2.03",
+              "2.37",
+              "2.378"
+            ],
+            [
+              "1.978",
+              "2.006",
+              "2.03",
+              "2.37",
+              "2.378"
+            ]
+          ],
+          "panjang_buah_masak|Arari bode amarela": [
+            [
+              "0.947",
+              "0.99",
+              "1.005",
+              "1.02",
+              "1.106"
+            ],
+            [
+              "0.947",
+              "0.99",
+              "1.005",
+              "1.02",
+              "1.106"
+            ]
+          ],
+          "panjang_buah_masak|Etna ornamental": [
+            [
+              "2.585",
+              "2.809",
+              "2.908",
+              "3.401",
+              "3.619"
+            ],
+            [
+              "2.585",
+              "2.809",
+              "2.908",
+              "3.401",
+              "3.619"
+            ]
+          ],
+          "panjang_buah_masak|Pirâmide ornamental": [
+            [
+              "1.802",
+              "1.903",
+              "1.975",
+              "2.19",
+              "2.4170000000000003"
+            ],
+            [
+              "1.802",
+              "1.903",
+              "1.975",
+              "2.19",
+              "2.4170000000000003"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Malagueta": [
+            [
+              "12",
+              "14",
+              "21"
+            ],
+            [
+              "12",
+              "14",
+              "21"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Bhut Jolokia": [
+            [
+              "12",
+              "13",
+              "14",
+              "8"
+            ],
+            [
+              "12",
+              "13",
+              "14",
+              "8"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Cumari do Pará": [
+            [
+              "2",
+              "4",
+              "5",
+              "7"
+            ],
+            [
+              "2",
+              "4",
+              "5",
+              "7"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Habanero chocolate": [
+            [
+              "37",
+              "39",
+              "47",
+              "48",
+              "50"
+            ],
+            [
+              "37",
+              "39",
+              "47",
+              "48",
+              "50"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Habanero vermelha": [
+            [
+              "22",
+              "23",
+              "27",
+              "36"
+            ],
+            [
+              "22",
+              "23",
+              "27",
+              "36"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Habanero amarela": [
+            [
+              "10",
+              "15",
+              "22",
+              "31",
+              "52"
+            ],
+            [
+              "10",
+              "15",
+              "22",
+              "31",
+              "52"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Peito de moça": [
+            [
+              "23",
+              "25",
+              "26",
+              "27",
+              "29"
+            ],
+            [
+              "23",
+              "25",
+              "26",
+              "27",
+              "29"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Murupi": [
+            [
+              "23",
+              "28",
+              "30",
+              "34"
+            ],
+            [
+              "23",
+              "28",
+              "30",
+              "34"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Piãozinho": [
+            [
+              "24",
+              "26",
+              "29",
+              "38"
+            ],
+            [
+              "24",
+              "26",
+              "29",
+              "38"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Cheiro do Norte": [
+            [
+              "12",
+              "16",
+              "20",
+              "21",
+              "29"
+            ],
+            [
+              "12",
+              "16",
+              "20",
+              "21",
+              "29"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Tabasco": [
+            [
+              "15",
+              "20",
+              "27"
+            ],
+            [
+              "15",
+              "20",
+              "27"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Biquinho vermelha": [
+            [
+              "17",
+              "23",
+              "25",
+              "30",
+              "37"
+            ],
+            [
+              "17",
+              "23",
+              "25",
+              "30",
+              "37"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Cayenne": [
+            [
+              "19",
+              "25",
+              "30",
+              "41"
+            ],
+            [
+              "19",
+              "25",
+              "30",
+              "41"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Biquinho amarela": [
+            [
+              "12",
+              "13",
+              "15",
+              "16"
+            ],
+            [
+              "12",
+              "13",
+              "15",
+              "16"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Arari bode amarela": [
+            [
+              "20",
+              "21",
+              "25",
+              "30",
+              "32"
+            ],
+            [
+              "20",
+              "21",
+              "25",
+              "30",
+              "32"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Etna ornamental": [
+            [
+              "23",
+              "30",
+              "33",
+              "39",
+              "40"
+            ],
+            [
+              "23",
+              "30",
+              "33",
+              "39",
+              "40"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Pirâmide ornamental": [
+            [
+              "16",
+              "19",
+              "20",
+              "23",
+              "32"
+            ],
+            [
+              "16",
+              "19",
+              "20",
+              "23",
+              "32"
+            ]
+          ]
+        },
+        "normalisasi": {
+          "identik": 119,
+          "berubah_setara": 0,
+          "berbeda": 0
+        }
+      },
+      "N09": {
+        "n_varietas": 6,
+        "n_kolom": 6,
+        "kolom_benar": 6,
+        "ketat": {
+          "benar": 73,
+          "salah_tulis": 0,
+          "harapan": 73,
+          "terlewat": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "posisi": {
+          "benar": 73,
+          "salah_tulis": 0,
+          "harapan": 73,
+          "terlewat": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "sel": {
+          "habitus|Biocarning-Agrihorti": [
+            [
+              "tegak"
+            ],
+            [
+              "tegak"
+            ]
+          ],
+          "tinggi_tanaman|Carvi Agrihorti": [
+            [
+              "60--70 cm"
+            ],
+            [
+              "60--70 cm"
+            ]
+          ],
+          "tinggi_tanaman|Biocarpa Agrihorti": [
+            [
+              "46--83 cm"
+            ],
+            [
+              "46--83 cm"
+            ]
+          ],
+          "tinggi_tanaman|Biocarning-Agrihorti": [
+            [
+              "50.73--67.93 (cm)"
+            ],
+            [
+              "50.73--67.93 (cm)"
+            ]
+          ],
+          "tinggi_tanaman|JS CK 01": [
+            [
+              "65.32--72.32 cm"
+            ],
+            [
+              "65.32--72.32 cm"
+            ]
+          ],
+          "tinggi_tanaman|CR P1": [
+            [
+              "87.9--109.8 cm"
+            ],
+            [
+              "87.9--109.8 cm"
+            ]
+          ],
+          "tinggi_tanaman|CB 96307": [
+            [
+              "57.27--65.34 cm"
+            ],
+            [
+              "57.27--65.34 cm"
+            ]
+          ],
+          "adaptasi_ekologi|Carvi Agrihorti": [
+            [
+              "sesuai di dataran tinggi pada musim hujan"
+            ],
+            [
+              "sesuai di dataran tinggi pada musim hujan"
+            ]
+          ],
+          "adaptasi_ekologi|Biocarpa Agrihorti": [
+            [
+              "sesuai pada musim kemarau di dataran tinggi kec. pacet, kab. cianjur, provinsi jawa barat"
+            ],
+            [
+              "sesuai pada musim kemarau di dataran tinggi kec. pacet, kab. cianjur, provinsi jawa barat"
+            ]
+          ],
+          "adaptasi_ekologi|Biocarning-Agrihorti": [
+            [
+              "sesuai untuk dataran medium-tinggi pada musim hujan"
+            ],
+            [
+              "sesuai untuk dataran medium-tinggi pada musim hujan"
+            ]
+          ],
+          "adaptasi_ekologi|JS CK 01": [
+            [
+              "beradaptasi dengan baik pada dataran rendah di kabupaten sleman, d.i. yogyakarta pada musim kemarau"
+            ],
+            [
+              "beradaptasi dengan baik pada dataran rendah di kabupaten sleman, d.i. yogyakarta pada musim kemarau"
+            ]
+          ],
+          "adaptasi_ekologi|CR P1": [
+            [
+              "beradaptasi dengan baik di dataran tinggi di kabupaten semarang pada musim penghujan"
+            ],
+            [
+              "beradaptasi dengan baik di dataran tinggi di kabupaten semarang pada musim penghujan"
+            ]
+          ],
+          "adaptasi_ekologi|CB 96307": [
+            [
+              "sesuai untuk dataran rendah pada musim penghujan"
+            ],
+            [
+              "sesuai untuk dataran rendah pada musim penghujan"
+            ]
+          ],
+          "warna_daun|Carvi Agrihorti": [
+            [
+              "hijau tua (rhs n 137 a)"
+            ],
+            [
+              "hijau tua (rhs n 137 a)"
+            ]
+          ],
+          "warna_daun|Biocarpa Agrihorti": [
+            [
+              "hijau (gog nn137a)"
+            ],
+            [
+              "hijau (gog nn137a)"
+            ]
+          ],
+          "warna_daun|Biocarning-Agrihorti": [
+            [
+              "hijau (rhs nn 137a)"
+            ],
+            [
+              "hijau (rhs nn 137a)"
+            ]
+          ],
+          "warna_daun|JS CK 01": [
+            [
+              "hijau gelap (rhs green group nn 137 a)"
+            ],
+            [
+              "hijau gelap (rhs green group nn 137 a)"
+            ]
+          ],
+          "warna_daun|CR P1": [
+            [
+              "hijau tua (green group rhs nn 137 a)"
+            ],
+            [
+              "hijau tua (green group rhs nn 137 a)"
+            ]
+          ],
+          "warna_daun|CB 96307": [
+            [
+              "hijau (rhs 136a)"
+            ],
+            [
+              "hijau (rhs 136a)"
+            ]
+          ],
+          "panjang_daun|Biocarpa Agrihorti": [
+            [
+              "4.10--5.10 cm"
+            ],
+            [
+              "4.10--5.10 cm"
+            ]
+          ],
+          "panjang_daun|Biocarning-Agrihorti": [
+            [
+              "6.45--10.64 (cm)"
+            ],
+            [
+              "6.45--10.64 (cm)"
+            ]
+          ],
+          "panjang_daun|CB 96307": [
+            [
+              "7.72--8.78 cm"
+            ],
+            [
+              "7.72--8.78 cm"
+            ]
+          ],
+          "lebar_daun|Biocarpa Agrihorti": [
+            [
+              "1.70--2.20 cm"
+            ],
+            [
+              "1.70--2.20 cm"
+            ]
+          ],
+          "lebar_daun|Biocarning-Agrihorti": [
+            [
+              "2.73--4.04 (cm)"
+            ],
+            [
+              "2.73--4.04 (cm)"
+            ]
+          ],
+          "lebar_daun|CB 96307": [
+            [
+              "2.98--3.32 cm"
+            ],
+            [
+              "2.98--3.32 cm"
+            ]
+          ],
+          "bentuk_pangkal_daun|JS CK 01": [
+            [
+              "membulat"
+            ],
+            [
+              "membulat"
+            ]
+          ],
+          "bentuk_daun|Carvi Agrihorti": [
+            [
+              "eliptical"
+            ],
+            [
+              "eliptical"
+            ]
+          ],
+          "bentuk_daun|Biocarpa Agrihorti": [
+            [
+              "lanceolate"
+            ],
+            [
+              "lanceolate"
+            ]
+          ],
+          "bentuk_daun|Biocarning-Agrihorti": [
+            [
+              "ovate"
+            ],
+            [
+              "ovate"
+            ]
+          ],
+          "bentuk_daun|JS CK 01": [
+            [
+              "lanset (lanceolate)"
+            ],
+            [
+              "lanset (lanceolate)"
+            ]
+          ],
+          "bentuk_daun|CR P1": [
+            [
+              "bulat telur"
+            ],
+            [
+              "bulat telur"
+            ]
+          ],
+          "bentuk_daun|CB 96307": [
+            [
+              "lanceolate"
+            ],
+            [
+              "lanceolate"
+            ]
+          ],
+          "warna_mahkota|Carvi Agrihorti": [
+            [
+              "hijau (rhs 142 a)"
+            ],
+            [
+              "hijau (rhs 142 a)"
+            ]
+          ],
+          "warna_mahkota|Biocarpa Agrihorti": [
+            [
+              "putih (yw nn 155c)"
+            ],
+            [
+              "putih (yw nn 155c)"
+            ]
+          ],
+          "warna_mahkota|Biocarning-Agrihorti": [
+            [
+              "putih (rhs 155c)",
+              "putih (rhs white grup nn155a)"
+            ],
+            [
+              "putih (rhs 155c)",
+              "putih (rhs white grup nn155a)"
+            ]
+          ],
+          "warna_mahkota|JS CK 01": [
+            [
+              "putih (rhs green white group 155 a)"
+            ],
+            [
+              "putih (rhs green white group 155 a)"
+            ]
+          ],
+          "warna_mahkota|CR P1": [
+            [
+              "putih kehijauan (yellow green group rhs 145 d)"
+            ],
+            [
+              "putih kehijauan (yellow green group rhs 145 d)"
+            ]
+          ],
+          "warna_mahkota|CB 96307": [
+            [
+              "putih (rhs nn155c)"
+            ],
+            [
+              "putih (rhs nn155c)"
+            ]
+          ],
+          "bentuk_bunga|Carvi Agrihorti": [
+            [
+              "bintang"
+            ],
+            [
+              "bintang"
+            ]
+          ],
+          "bentuk_bunga|Biocarning-Agrihorti": [
+            [
+              "bintang"
+            ],
+            [
+              "bintang"
+            ]
+          ],
+          "bentuk_bunga|CR P1": [
+            [
+              "seperti bintang"
+            ],
+            [
+              "seperti bintang"
+            ]
+          ],
+          "bentuk_bunga|CB 96307": [
+            [
+              "seperti bintang"
+            ],
+            [
+              "seperti bintang"
+            ]
+          ],
+          "warna_kepala_sari|JS CK 01": [
+            [
+              "hijau kebiruan (rhs blue green group 122 b)"
+            ],
+            [
+              "hijau kebiruan (rhs blue green group 122 b)"
+            ]
+          ],
+          "warna_kepala_sari|CR P1": [
+            [
+              "hijau keabuan (greyed green group rhs n189 b)"
+            ],
+            [
+              "hijau keabuan (greyed green group rhs n189 b)"
+            ]
+          ],
+          "warna_kelopak_bunga|Carvi Agrihorti": [
+            [
+              "hijau (rhs 155 a)"
+            ],
+            [
+              "hijau (rhs 155 a)"
+            ]
+          ],
+          "warna_kelopak_bunga|Biocarpa Agrihorti": [
+            [
+              "hijau (dyg 139b)"
+            ],
+            [
+              "hijau (dyg 139b)"
+            ]
+          ],
+          "warna_kelopak_bunga|Biocarning-Agrihorti": [
+            [
+              "hijau (rhs 137c)"
+            ],
+            [
+              "hijau (rhs 137c)"
+            ]
+          ],
+          "warna_kelopak_bunga|JS CK 01": [
+            [
+              "hijau gelap (rhs green group 141 a)"
+            ],
+            [
+              "hijau gelap (rhs green group 141 a)"
+            ]
+          ],
+          "warna_kelopak_bunga|CR P1": [
+            [
+              "hijau (green group rhs 143 a)"
+            ],
+            [
+              "hijau (green group rhs 143 a)"
+            ]
+          ],
+          "warna_kelopak_bunga|CB 96307": [
+            [
+              "hijau (rhs 137c)"
+            ],
+            [
+              "hijau (rhs 137c)"
+            ]
+          ],
+          "bentuk_buah|Carvi Agrihorti": [
+            [
+              "panjang rata"
+            ],
+            [
+              "panjang rata"
+            ]
+          ],
+          "bentuk_buah|Biocarning-Agrihorti": [
+            [
+              "memanjang"
+            ],
+            [
+              "memanjang"
+            ]
+          ],
+          "bentuk_buah|JS CK 01": [
+            [
+              "silindris panjang dengan permukaan buah rata"
+            ],
+            [
+              "silindris panjang dengan permukaan buah rata"
+            ]
+          ],
+          "bentuk_buah|CR P1": [
+            [
+              "berbentuk segitiga"
+            ],
+            [
+              "berbentuk segitiga"
+            ]
+          ],
+          "bentuk_buah|CB 96307": [
+            [
+              "silindris"
+            ],
+            [
+              "silindris"
+            ]
+          ],
+          "warna_buah_muda|Carvi Agrihorti": [
+            [
+              "hijau (green group rhs 139 a)"
+            ],
+            [
+              "hijau (green group rhs 139 a)"
+            ]
+          ],
+          "warna_buah_muda|Biocarpa Agrihorti": [
+            [
+              "hijau (syg 144 a)"
+            ],
+            [
+              "hijau (syg 144 a)"
+            ]
+          ],
+          "warna_buah_muda|Biocarning-Agrihorti": [
+            [
+              "hijau (rhs 1394)"
+            ],
+            [
+              "hijau (rhs 1394)"
+            ]
+          ],
+          "warna_buah_muda|JS CK 01": [
+            [
+              "hijau tua (rhs green group 137 a)"
+            ],
+            [
+              "hijau tua (rhs green group 137 a)"
+            ]
+          ],
+          "warna_buah_muda|CR P1": [
+            [
+              "kuning kehijauan (yellow green group rhs 150 c)"
+            ],
+            [
+              "kuning kehijauan (yellow green group rhs 150 c)"
+            ]
+          ],
+          "warna_buah_muda|CB 96307": [
+            [
+              "hijau (rhs 141a)"
+            ],
+            [
+              "hijau (rhs 141a)"
+            ]
+          ],
+          "warna_buah_masak|Carvi Agrihorti": [
+            [
+              "merah (red group rhs 46 a)"
+            ],
+            [
+              "merah (red group rhs 46 a)"
+            ]
+          ],
+          "warna_buah_masak|Biocarpa Agrihorti": [
+            [
+              "merah (vr 45 a)"
+            ],
+            [
+              "merah (vr 45 a)"
+            ]
+          ],
+          "warna_buah_masak|Biocarning-Agrihorti": [
+            [
+              "merah (rhs 45a)"
+            ],
+            [
+              "merah (rhs 45a)"
+            ]
+          ],
+          "warna_buah_masak|JS CK 01": [
+            [
+              "merah (rhs red group 45 a)"
+            ],
+            [
+              "merah (rhs red group 45 a)"
+            ]
+          ],
+          "warna_buah_masak|CR P1": [
+            [
+              "merah (red group rhs 45 a)"
+            ],
+            [
+              "merah (red group rhs 45 a)"
+            ]
+          ],
+          "warna_buah_masak|CB 96307": [
+            [
+              "merah (rhs 45a)"
+            ],
+            [
+              "merah (rhs 45a)"
+            ]
+          ],
+          "warna_biji|Carvi Agrihorti": [
+            [
+              "kuning jerami (rhs 2 b)"
+            ],
+            [
+              "kuning jerami (rhs 2 b)"
+            ]
+          ],
+          "warna_biji|Biocarpa Agrihorti": [
+            [
+              "kuning jerami (my 161a)"
+            ],
+            [
+              "kuning jerami (my 161a)"
+            ]
+          ],
+          "warna_biji|Biocarning-Agrihorti": [
+            [
+              "kuning (rhs 10b)"
+            ],
+            [
+              "kuning (rhs 10b)"
+            ]
+          ],
+          "warna_biji|JS CK 01": [
+            [
+              "kuning terang (rhs light yellow group 4 d)"
+            ],
+            [
+              "kuning terang (rhs light yellow group 4 d)"
+            ]
+          ],
+          "warna_biji|CR P1": [
+            [
+              "coklat kekuningan (greyed orange group rhs 163 c)"
+            ],
+            [
+              "coklat kekuningan (greyed orange group rhs 163 c)"
+            ]
+          ],
+          "warna_biji|CB 96307": [
+            [
+              "kuning (rhs 18b)"
+            ],
+            [
+              "kuning (rhs 18b)"
+            ]
+          ]
+        },
+        "normalisasi": {
+          "identik": 58,
+          "berubah_setara": 15,
+          "berbeda": 0
+        }
+      },
+      "S01": {
+        "n_varietas": 4,
+        "n_kolom": 4,
+        "kolom_benar": 4,
+        "ketat": {
+          "benar": 74,
+          "salah_tulis": 0,
+          "harapan": 78,
+          "terlewat": 4,
+          "precision": 1.0,
+          "recall": 0.9487179487179487,
+          "f1": 0.9736842105263158
+        },
+        "posisi": {
+          "benar": 74,
+          "salah_tulis": 0,
+          "harapan": 78,
+          "terlewat": 4,
+          "precision": 1.0,
+          "recall": 0.9487179487179487,
+          "f1": 0.9736842105263158
+        },
+        "sel": {
+          "habitus|Gendot": [
+            [
+              "perdu"
+            ],
+            [
+              "perdu"
+            ]
+          ],
+          "habitus|Kopay": [
+            [
+              "tegak kompak"
+            ],
+            [
+              "tegak kompak"
+            ]
+          ],
+          "habitus|Katokkon": [
+            [
+              "semak rapat"
+            ],
+            [
+              "semak rapat"
+            ]
+          ],
+          "habitus|Cabai tanjung": [
+            [
+              "tegak"
+            ],
+            [
+              "tegak"
+            ]
+          ],
+          "tinggi_tanaman|Gendot": [
+            [
+              "20 cm",
+              "˃ 100 cm"
+            ],
+            [
+              "20 cm",
+              "˃ 100 cm"
+            ]
+          ],
+          "tinggi_tanaman|Kopay": [
+            [
+              "60--89 cm"
+            ],
+            [
+              "60--89 cm"
+            ]
+          ],
+          "tinggi_tanaman|Katokkon": [
+            [
+              "90--120 cm"
+            ],
+            [
+              "90--120 cm"
+            ]
+          ],
+          "tinggi_tanaman|Cabai tanjung": [
+            [
+              "75 cm"
+            ],
+            [
+              "75 cm"
+            ]
+          ],
+          "umur|Gendot": [
+            [
+              "tahunan"
+            ],
+            [
+              "tahunan"
+            ]
+          ],
+          "umur|Kopay": [
+            [
+              "semusim"
+            ],
+            [
+              "semusim"
+            ]
+          ],
+          "umur|Katokkon": [
+            [
+              "tahunan"
+            ],
+            [
+              "tahunan"
+            ]
+          ],
+          "umur|Cabai tanjung": [
+            [
+              "semusim"
+            ],
+            [
+              "semusim"
+            ]
+          ],
+          "adaptasi_ekologi|Gendot": [
+            [
+              "dataran tinggi sejuk"
+            ],
+            [
+              "dataran tinggi sejuk"
+            ]
+          ],
+          "adaptasi_ekologi|Kopay": [
+            [
+              "dataran rendah lembap"
+            ],
+            [
+              "dataran rendah lembap"
+            ]
+          ],
+          "adaptasi_ekologi|Katokkon": [
+            [
+              "dataran tinggi"
+            ],
+            [
+              "dataran tinggi"
+            ]
+          ],
+          "adaptasi_ekologi|Cabai tanjung": [
+            [
+              "dataran menengah"
+            ],
+            [
+              "dataran menengah"
+            ]
+          ],
+          "batang|Gendot": [
+            [
+              "berbulu lebat"
+            ],
+            [
+              "berbulu lebat"
+            ]
+          ],
+          "batang|Kopay": [
+            [
+              "berbulu halus"
+            ],
+            [
+              "berbulu halus"
+            ]
+          ],
+          "batang|Katokkon": [
+            [
+              "berbulu sedang"
+            ],
+            [
+              "berbulu sedang"
+            ]
+          ],
+          "batang|Cabai tanjung": [
+            [
+              "hampir tidak berbulu"
+            ],
+            [
+              "hampir tidak berbulu"
+            ]
+          ],
+          "tekstur_daun|Gendot": [
+            [
+              "agak kasar"
+            ],
+            [
+              "agak kasar"
+            ]
+          ],
+          "tekstur_daun|Kopay": [
+            [
+              "halus"
+            ],
+            [
+              "halus"
+            ]
+          ],
+          "tekstur_daun|Katokkon": [
+            [
+              "kasar"
+            ],
+            [
+              "kasar"
+            ]
+          ],
+          "tekstur_daun|Cabai tanjung": [
+            [
+              "licin"
+            ],
+            [
+              "licin"
+            ]
+          ],
+          "warna_daun|Gendot": [
+            [
+              "hijau tua"
+            ],
+            [
+              "hijau tua"
+            ]
+          ],
+          "warna_daun|Kopay": [
+            [
+              "hijau"
+            ],
+            [
+              "hijau"
+            ]
+          ],
+          "warna_daun|Katokkon": [
+            [
+              "hijau pekat"
+            ],
+            [
+              "hijau pekat"
+            ]
+          ],
+          "warna_daun|Cabai tanjung": [
+            [
+              "hijau muda"
+            ],
+            [
+              "hijau muda"
+            ]
+          ],
+          "panjang_daun|Gendot": [
+            [
+              "14.3--16.8 cm"
+            ],
+            [
+              "14.3--16.8 cm"
+            ]
+          ],
+          "panjang_daun|Kopay": [
+            [
+              "10.2--12.4 cm"
+            ],
+            [
+              "10.2--12.4 cm"
+            ]
+          ],
+          "panjang_daun|Katokkon": [
+            [
+              "12.2 cm"
+            ],
+            [
+              "12.2 cm"
+            ]
+          ],
+          "panjang_daun|Cabai tanjung": [
+            [
+              "11.7 cm"
+            ],
+            [
+              "11.7 cm"
+            ]
+          ],
+          "lebar_daun|Gendot": [
+            [
+              "6.4--7.1 cm"
+            ],
+            [
+              "6.4--7.1 cm"
+            ]
+          ],
+          "lebar_daun|Kopay": [
+            [
+              "4.0--5.1 cm"
+            ],
+            [
+              "4.0--5.1 cm"
+            ]
+          ],
+          "lebar_daun|Katokkon": [
+            [
+              "5.8 cm"
+            ],
+            [
+              "5.8 cm"
+            ]
+          ],
+          "warna_mahkota|Gendot": [
+            [
+              "ungu pucat"
+            ],
+            [
+              "ungu pucat"
+            ]
+          ],
+          "warna_mahkota|Kopay": [
+            [
+              "putih"
+            ],
+            [
+              "putih"
+            ]
+          ],
+          "warna_mahkota|Katokkon": [
+            [
+              "ungu"
+            ],
+            [
+              "ungu"
+            ]
+          ],
+          "warna_mahkota|Cabai tanjung": [
+            [
+              "putih kehijauan"
+            ],
+            [
+              "putih kehijauan"
+            ]
+          ],
+          "jumlah_mahkota_bunga|Gendot": [
+            [
+              "5"
+            ],
+            [
+              "5"
+            ]
+          ],
+          "jumlah_mahkota_bunga|Kopay": [
+            [
+              "5"
+            ],
+            [
+              "5"
+            ]
+          ],
+          "jumlah_mahkota_bunga|Katokkon": [
+            [
+              "6"
+            ],
+            [
+              "6"
+            ]
+          ],
+          "jumlah_mahkota_bunga|Cabai tanjung": [
+            [
+              "5"
+            ],
+            [
+              "5"
+            ]
+          ],
+          "posisi_bunga|Gendot": [
+            [
+              "menggantung"
+            ],
+            [
+              "menggantung"
+            ]
+          ],
+          "posisi_bunga|Kopay": [
+            [
+              "tegak"
+            ],
+            [
+              "tegak"
+            ]
+          ],
+          "posisi_bunga|Katokkon": [
+            [
+              "menggantung"
+            ],
+            [
+              "menggantung"
+            ]
+          ],
+          "posisi_bunga|Cabai tanjung": [
+            [
+              "menyamping"
+            ],
+            [
+              "menyamping"
+            ]
+          ],
+          "panjang_buah_muda|Gendot": [
+            [
+              "5.8--7.2 cm"
+            ],
+            [
+              "5.8--7.2 cm"
+            ]
+          ],
+          "panjang_buah_muda|Kopay": [
+            [
+              "10.3--12.1 cm"
+            ],
+            [
+              "10.3--12.1 cm"
+            ]
+          ],
+          "panjang_buah_muda|Katokkon": [
+            [
+              "4.1 cm"
+            ],
+            [
+              "4.1 cm"
+            ]
+          ],
+          "panjang_buah_muda|Cabai tanjung": [
+            [
+              "8.6 cm"
+            ],
+            [
+              "8.6 cm"
+            ]
+          ],
+          "warna_buah_masak|Gendot": [
+            [
+              "merah"
+            ],
+            [
+              "merah"
+            ]
+          ],
+          "warna_buah_masak|Kopay": [
+            [
+              "merah cerah"
+            ],
+            [
+              "merah cerah"
+            ]
+          ],
+          "warna_buah_masak|Katokkon": [
+            [
+              "merah tua"
+            ],
+            [
+              "merah tua"
+            ]
+          ],
+          "warna_buah_masak|Cabai tanjung": [
+            [
+              "merah jingga"
+            ],
+            [
+              "merah jingga"
+            ]
+          ],
+          "posisi_buah_masak|Gendot": [
+            [
+              "menggantung"
+            ],
+            [
+              "menggantung"
+            ]
+          ],
+          "posisi_buah_masak|Kopay": [
+            [
+              "tegak"
+            ],
+            [
+              "tegak"
+            ]
+          ],
+          "posisi_buah_masak|Katokkon": [
+            [
+              "menggantung"
+            ],
+            [
+              "menggantung"
+            ]
+          ],
+          "posisi_buah_masak|Cabai tanjung": [
+            [
+              "menyamping"
+            ],
+            [
+              "menyamping"
+            ]
+          ],
+          "bentuk_ujung_buah|Gendot": [
+            [
+              "meruncing"
+            ],
+            [
+              "meruncing"
+            ]
+          ],
+          "bentuk_ujung_buah|Kopay": [
+            [
+              "runcing"
+            ],
+            [
+              "runcing"
+            ]
+          ],
+          "bentuk_ujung_buah|Katokkon": [
+            [
+              "tumpul"
+            ],
+            [
+              "tumpul"
+            ]
+          ],
+          "bentuk_ujung_buah|Cabai tanjung": [
+            [
+              "runcing"
+            ],
+            [
+              "runcing"
+            ]
+          ],
+          "warna_biji|Gendot": [
+            [
+              "krem"
+            ],
+            [
+              "krem"
+            ]
+          ],
+          "warna_biji|Kopay": [
+            [
+              "krem kekuningan"
+            ],
+            [
+              "krem kekuningan"
+            ]
+          ],
+          "warna_biji|Katokkon": [
+            [
+              "krem"
+            ],
+            [
+              "krem"
+            ]
+          ],
+          "warna_biji|Cabai tanjung": [
+            [
+              "kuning pucat"
+            ],
+            [
+              "kuning pucat"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Gendot": [
+            [
+              "31"
+            ],
+            [
+              "31"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Kopay": [
+            [
+              "46"
+            ],
+            [
+              "46"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Katokkon": [
+            [
+              "26"
+            ],
+            [
+              "26"
+            ]
+          ],
+          "lokasi|Gendot": [
+            [
+              "cisarua, bandung barat"
+            ],
+            [
+              "cisarua, bandung barat"
+            ]
+          ],
+          "lokasi|Kopay": [
+            [
+              "agam, sumatera barat"
+            ],
+            [
+              "agam, sumatera barat"
+            ]
+          ],
+          "lokasi|Katokkon": [
+            [
+              "toraja utara, sulawesi selatan"
+            ],
+            [
+              "toraja utara, sulawesi selatan"
+            ]
+          ],
+          "lokasi|Cabai tanjung": [
+            [
+              "garut, jawa barat"
+            ],
+            [
+              "garut, jawa barat"
+            ]
+          ]
+        },
+        "normalisasi": {
+          "identik": 47,
+          "berubah_setara": 27,
+          "berbeda": 0
+        }
+      },
+      "S02": {
+        "n_varietas": 3,
+        "n_kolom": 3,
+        "kolom_benar": 3,
+        "ketat": {
+          "benar": 66,
+          "salah_tulis": 0,
+          "harapan": 66,
+          "terlewat": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "posisi": {
+          "benar": 66,
+          "salah_tulis": 0,
+          "harapan": 66,
+          "terlewat": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "sel": {
+          "habitus|Gendot": [
+            [
+              "compact shrub",
+              "shrub-like"
+            ],
+            [
+              "compact shrub",
+              "shrub-like"
+            ]
+          ],
+          "habitus|Kopay": [
+            [
+              "herbaceous upright"
+            ],
+            [
+              "herbaceous upright"
+            ]
+          ],
+          "habitus|Katokkon": [
+            [
+              "dense bush"
+            ],
+            [
+              "dense bush"
+            ]
+          ],
+          "tinggi_tanaman|Gendot": [
+            [
+              "20 cm",
+              "98 cm",
+              "> 100 cm"
+            ],
+            [
+              "20 cm",
+              "98 cm",
+              "> 100 cm"
+            ]
+          ],
+          "tinggi_tanaman|Kopay": [
+            [
+              "60--89 cm"
+            ],
+            [
+              "60--89 cm"
+            ]
+          ],
+          "tinggi_tanaman|Katokkon": [
+            [
+              "90--120 cm"
+            ],
+            [
+              "90--120 cm"
+            ]
+          ],
+          "umur|Gendot": [
+            [
+              "perennial"
+            ],
+            [
+              "perennial"
+            ]
+          ],
+          "umur|Kopay": [
+            [
+              "annual"
+            ],
+            [
+              "annual"
+            ]
+          ],
+          "umur|Katokkon": [
+            [
+              "perennial"
+            ],
+            [
+              "perennial"
+            ]
+          ],
+          "adaptasi_ekologi|Gendot": [
+            [
+              "cool highland zone"
+            ],
+            [
+              "cool highland zone"
+            ]
+          ],
+          "adaptasi_ekologi|Kopay": [
+            [
+              "humid lowland zone"
+            ],
+            [
+              "humid lowland zone"
+            ]
+          ],
+          "adaptasi_ekologi|Katokkon": [
+            [
+              "mountain growing zone"
+            ],
+            [
+              "mountain growing zone"
+            ]
+          ],
+          "batang|Gendot": [
+            [
+              "dense fine hairs",
+              "dense hairs"
+            ],
+            [
+              "dense fine hairs",
+              "dense hairs"
+            ]
+          ],
+          "batang|Kopay": [
+            [
+              "sparse fine hairs"
+            ],
+            [
+              "sparse fine hairs"
+            ]
+          ],
+          "batang|Katokkon": [
+            [
+              "moderate hairs"
+            ],
+            [
+              "moderate hairs"
+            ]
+          ],
+          "tekstur_daun|Gendot": [
+            [
+              "slightly coarse",
+              "slightly rough"
+            ],
+            [
+              "slightly coarse",
+              "slightly rough"
+            ]
+          ],
+          "tekstur_daun|Kopay": [
+            [
+              "smooth"
+            ],
+            [
+              "smooth"
+            ]
+          ],
+          "tekstur_daun|Katokkon": [
+            [
+              "rough"
+            ],
+            [
+              "rough"
+            ]
+          ],
+          "warna_daun|Gendot": [
+            [
+              "dark green",
+              "deep green"
+            ],
+            [
+              "dark green",
+              "deep green"
+            ]
+          ],
+          "warna_daun|Kopay": [
+            [
+              "medium green"
+            ],
+            [
+              "medium green"
+            ]
+          ],
+          "warna_daun|Katokkon": [
+            [
+              "deep green"
+            ],
+            [
+              "deep green"
+            ]
+          ],
+          "panjang_daun|Gendot": [
+            [
+              "14.3--16.8 cm",
+              "14.9 cm"
+            ],
+            [
+              "14.3--16.8 cm",
+              "14.9 cm"
+            ]
+          ],
+          "panjang_daun|Kopay": [
+            [
+              "10.2--12.4 cm"
+            ],
+            [
+              "10.2--12.4 cm"
+            ]
+          ],
+          "panjang_daun|Katokkon": [
+            [
+              "12.2 cm"
+            ],
+            [
+              "12.2 cm"
+            ]
+          ],
+          "lebar_daun|Gendot": [
+            [
+              "6.4--7.1 cm",
+              "6.8 cm"
+            ],
+            [
+              "6.4--7.1 cm",
+              "6.8 cm"
+            ]
+          ],
+          "lebar_daun|Kopay": [
+            [
+              "4.0--5.1 cm"
+            ],
+            [
+              "4.0--5.1 cm"
+            ]
+          ],
+          "lebar_daun|Katokkon": [
+            [
+              "5.8 cm"
+            ],
+            [
+              "5.8 cm"
+            ]
+          ],
+          "bentuk_ujung_daun|Gendot": [
+            [
+              "tapered"
+            ],
+            [
+              "tapered"
+            ]
+          ],
+          "bentuk_ujung_daun|Kopay": [
+            [
+              "pointed"
+            ],
+            [
+              "pointed"
+            ]
+          ],
+          "bentuk_ujung_daun|Katokkon": [
+            [
+              "long-tapered"
+            ],
+            [
+              "long-tapered"
+            ]
+          ],
+          "kedudukan_daun|Gendot": [
+            [
+              "alternating"
+            ],
+            [
+              "alternating"
+            ]
+          ],
+          "kedudukan_daun|Kopay": [
+            [
+              "alternate"
+            ],
+            [
+              "alternate"
+            ]
+          ],
+          "kedudukan_daun|Katokkon": [
+            [
+              "alternating"
+            ],
+            [
+              "alternating"
+            ]
+          ],
+          "warna_mahkota|Gendot": [
+            [
+              "light violet",
+              "pale purple"
+            ],
+            [
+              "light violet",
+              "pale purple"
+            ]
+          ],
+          "warna_mahkota|Kopay": [
+            [
+              "white"
+            ],
+            [
+              "white"
+            ]
+          ],
+          "warna_mahkota|Katokkon": [
+            [
+              "purple"
+            ],
+            [
+              "purple"
+            ]
+          ],
+          "jumlah_mahkota_bunga|Gendot": [
+            [
+              "5"
+            ],
+            [
+              "5"
+            ]
+          ],
+          "jumlah_mahkota_bunga|Kopay": [
+            [
+              "5"
+            ],
+            [
+              "5"
+            ]
+          ],
+          "jumlah_mahkota_bunga|Katokkon": [
+            [
+              "6"
+            ],
+            [
+              "6"
+            ]
+          ],
+          "posisi_bunga|Gendot": [
+            [
+              "pendant"
+            ],
+            [
+              "pendant"
+            ]
+          ],
+          "posisi_bunga|Kopay": [
+            [
+              "upright"
+            ],
+            [
+              "upright"
+            ]
+          ],
+          "posisi_bunga|Katokkon": [
+            [
+              "pendant"
+            ],
+            [
+              "pendant"
+            ]
+          ],
+          "panjang_buah_muda|Gendot": [
+            [
+              "5.8--7.2 cm",
+              "6.4 cm"
+            ],
+            [
+              "5.8--7.2 cm",
+              "6.4 cm"
+            ]
+          ],
+          "panjang_buah_muda|Kopay": [
+            [
+              "10.3--12.1 cm"
+            ],
+            [
+              "10.3--12.1 cm"
+            ]
+          ],
+          "panjang_buah_muda|Katokkon": [
+            [
+              "4.1 cm"
+            ],
+            [
+              "4.1 cm"
+            ]
+          ],
+          "keliling_buah_muda|Gendot": [
+            [
+              "5.1--6.0 cm",
+              "5.5 cm"
+            ],
+            [
+              "5.1--6.0 cm",
+              "5.5 cm"
+            ]
+          ],
+          "keliling_buah_muda|Kopay": [
+            [
+              "2.8--3.4 cm"
+            ],
+            [
+              "2.8--3.4 cm"
+            ]
+          ],
+          "keliling_buah_muda|Katokkon": [
+            [
+              "4.8 cm"
+            ],
+            [
+              "4.8 cm"
+            ]
+          ],
+          "warna_buah_masak|Gendot": [
+            [
+              "dark red",
+              "red"
+            ],
+            [
+              "dark red",
+              "red"
+            ]
+          ],
+          "warna_buah_masak|Kopay": [
+            [
+              "bright red"
+            ],
+            [
+              "bright red"
+            ]
+          ],
+          "warna_buah_masak|Katokkon": [
+            [
+              "deep red"
+            ],
+            [
+              "deep red"
+            ]
+          ],
+          "posisi_buah_masak|Gendot": [
+            [
+              "pendant"
+            ],
+            [
+              "pendant"
+            ]
+          ],
+          "posisi_buah_masak|Kopay": [
+            [
+              "upright"
+            ],
+            [
+              "upright"
+            ]
+          ],
+          "posisi_buah_masak|Katokkon": [
+            [
+              "pendant"
+            ],
+            [
+              "pendant"
+            ]
+          ],
+          "bentuk_ujung_buah|Gendot": [
+            [
+              "pointed"
+            ],
+            [
+              "pointed"
+            ]
+          ],
+          "bentuk_ujung_buah|Kopay": [
+            [
+              "pointed"
+            ],
+            [
+              "pointed"
+            ]
+          ],
+          "bentuk_ujung_buah|Katokkon": [
+            [
+              "blunt"
+            ],
+            [
+              "blunt"
+            ]
+          ],
+          "warna_biji|Gendot": [
+            [
+              "cream"
+            ],
+            [
+              "cream"
+            ]
+          ],
+          "warna_biji|Kopay": [
+            [
+              "yellowish cream"
+            ],
+            [
+              "yellowish cream"
+            ]
+          ],
+          "warna_biji|Katokkon": [
+            [
+              "cream"
+            ],
+            [
+              "cream"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Gendot": [
+            [
+              "29",
+              "31"
+            ],
+            [
+              "29",
+              "31"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Kopay": [
+            [
+              "46"
+            ],
+            [
+              "46"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Katokkon": [
+            [
+              "26"
+            ],
+            [
+              "26"
+            ]
+          ],
+          "lokasi|Gendot": [
+            [
+              "cisarua, west bandung",
+              "lembang, west bandung"
+            ],
+            [
+              "cisarua, west bandung",
+              "lembang, west bandung"
+            ]
+          ],
+          "lokasi|Kopay": [
+            [
+              "agam, west sumatra"
+            ],
+            [
+              "agam, west sumatra"
+            ]
+          ],
+          "lokasi|Katokkon": [
+            [
+              "north toraja, south sulawesi"
+            ],
+            [
+              "north toraja, south sulawesi"
+            ]
+          ]
+        },
+        "normalisasi": {
+          "identik": 56,
+          "berubah_setara": 10,
+          "berbeda": 0
+        }
+      },
+      "S03": {
+        "n_varietas": 4,
+        "n_kolom": 4,
+        "kolom_benar": 4,
+        "ketat": {
+          "benar": 72,
+          "salah_tulis": 0,
+          "harapan": 112,
+          "terlewat": 40,
+          "precision": 1.0,
+          "recall": 0.6428571428571429,
+          "f1": 0.782608695652174
+        },
+        "posisi": {
+          "benar": 72,
+          "salah_tulis": 0,
+          "harapan": 112,
+          "terlewat": 40,
+          "precision": 1.0,
+          "recall": 0.6428571428571429,
+          "f1": 0.782608695652174
+        },
+        "sel": {
+          "habitus|Katokkon": [
+            [
+              "semak rapat"
+            ],
+            [
+              "semak rapat"
+            ]
+          ],
+          "habitus|Cabai tanjung": [
+            [
+              "tegak"
+            ],
+            [
+              "tegak"
+            ]
+          ],
+          "habitus|Domba": [
+            [
+              "perdu"
+            ],
+            [
+              "perdu"
+            ]
+          ],
+          "habitus|Cabai rawit NTB": [
+            [
+              "tegak bercabang"
+            ],
+            [
+              "tegak bercabang"
+            ]
+          ],
+          "umur|Katokkon": [
+            [
+              "tahunan"
+            ],
+            [
+              "tahunan"
+            ]
+          ],
+          "umur|Cabai tanjung": [
+            [
+              "semusim"
+            ],
+            [
+              "semusim"
+            ]
+          ],
+          "umur|Domba": [
+            [
+              "tahunan"
+            ],
+            [
+              "tahunan"
+            ]
+          ],
+          "umur|Cabai rawit NTB": [
+            [
+              "semusim"
+            ],
+            [
+              "semusim"
+            ]
+          ],
+          "batang|Katokkon": [
+            [
+              "berbulu sedang"
+            ],
+            [
+              "berbulu sedang"
+            ]
+          ],
+          "batang|Cabai tanjung": [
+            [
+              "hampir tidak berbulu"
+            ],
+            [
+              "hampir tidak berbulu"
+            ]
+          ],
+          "batang|Domba": [
+            [
+              "berbulu lebat"
+            ],
+            [
+              "berbulu lebat"
+            ]
+          ],
+          "batang|Cabai rawit NTB": [
+            [
+              "berbulu halus"
+            ],
+            [
+              "berbulu halus"
+            ]
+          ],
+          "tekstur_daun|Katokkon": [
+            [
+              "kasar"
+            ],
+            [
+              "kasar"
+            ]
+          ],
+          "tekstur_daun|Cabai tanjung": [
+            [
+              "licin"
+            ],
+            [
+              "licin"
+            ]
+          ],
+          "tekstur_daun|Domba": [
+            [
+              "agak kasar"
+            ],
+            [
+              "agak kasar"
+            ]
+          ],
+          "tekstur_daun|Cabai rawit NTB": [
+            [
+              "halus"
+            ],
+            [
+              "halus"
+            ]
+          ],
+          "panjang_daun|Katokkon": [
+            [
+              "12.2 cm"
+            ],
+            [
+              "12.2 cm"
+            ]
+          ],
+          "panjang_daun|Cabai tanjung": [
+            [
+              "11.7 cm"
+            ],
+            [
+              "11.7 cm"
+            ]
+          ],
+          "panjang_daun|Domba": [
+            [
+              "15.1 cm"
+            ],
+            [
+              "15.1 cm"
+            ]
+          ],
+          "panjang_daun|Cabai rawit NTB": [
+            [
+              "9.8 cm"
+            ],
+            [
+              "9.8 cm"
+            ]
+          ],
+          "warna_mahkota|Katokkon": [
+            [
+              "ungu"
+            ],
+            [
+              "ungu"
+            ]
+          ],
+          "warna_mahkota|Cabai tanjung": [
+            [
+              "putih kehijauan"
+            ],
+            [
+              "putih kehijauan"
+            ]
+          ],
+          "warna_mahkota|Domba": [
+            [
+              "ungu pucat"
+            ],
+            [
+              "ungu pucat"
+            ]
+          ],
+          "warna_mahkota|Cabai rawit NTB": [
+            [
+              "putih"
+            ],
+            [
+              "putih"
+            ]
+          ],
+          "jumlah_mahkota_bunga|Katokkon": [
+            [
+              "6"
+            ],
+            [
+              "6"
+            ]
+          ],
+          "jumlah_mahkota_bunga|Cabai tanjung": [
+            [
+              "5"
+            ],
+            [
+              "5"
+            ]
+          ],
+          "jumlah_mahkota_bunga|Domba": [
+            [
+              "5"
+            ],
+            [
+              "5"
+            ]
+          ],
+          "jumlah_mahkota_bunga|Cabai rawit NTB": [
+            [
+              "5"
+            ],
+            [
+              "5"
+            ]
+          ],
+          "panjang_tangkai_buah_muda|Katokkon": [
+            [
+              "2.3 cm"
+            ],
+            [
+              "2.3 cm"
+            ]
+          ],
+          "panjang_tangkai_buah_muda|Cabai tanjung": [
+            [
+              "3.0 cm"
+            ],
+            [
+              "3.0 cm"
+            ]
+          ],
+          "panjang_tangkai_buah_muda|Domba": [
+            [
+              "2.7 cm"
+            ],
+            [
+              "2.7 cm"
+            ]
+          ],
+          "panjang_tangkai_buah_muda|Cabai rawit NTB": [
+            [
+              "2.4 cm"
+            ],
+            [
+              "2.4 cm"
+            ]
+          ],
+          "keliling_kelopak_buah_muda|Katokkon": [
+            [
+              "3.2 cm"
+            ],
+            [
+              "3.2 cm"
+            ]
+          ],
+          "keliling_kelopak_buah_muda|Cabai tanjung": [
+            [
+              "2.7 cm"
+            ],
+            [
+              "2.7 cm"
+            ]
+          ],
+          "keliling_kelopak_buah_muda|Domba": [
+            [
+              "3.6 cm"
+            ],
+            [
+              "3.6 cm"
+            ]
+          ],
+          "keliling_kelopak_buah_muda|Cabai rawit NTB": [
+            [
+              "2.2 cm"
+            ],
+            [
+              "2.2 cm"
+            ]
+          ],
+          "bentuk_kelopak_buah_muda|Katokkon": [
+            [
+              "mangkuk"
+            ],
+            [
+              "mangkuk"
+            ]
+          ],
+          "bentuk_kelopak_buah_muda|Cabai tanjung": [
+            [
+              "datar"
+            ],
+            [
+              "datar"
+            ]
+          ],
+          "bentuk_kelopak_buah_muda|Domba": [
+            [
+              "mangkuk"
+            ],
+            [
+              "mangkuk"
+            ]
+          ],
+          "bentuk_kelopak_buah_muda|Cabai rawit NTB": [
+            [
+              "datar"
+            ],
+            [
+              "datar"
+            ]
+          ],
+          "warna_buah_masak|Katokkon": [
+            [
+              "merah tua"
+            ],
+            [
+              "merah tua"
+            ]
+          ],
+          "warna_buah_masak|Cabai tanjung": [
+            [
+              "merah jingga"
+            ],
+            [
+              "merah jingga"
+            ]
+          ],
+          "warna_buah_masak|Domba": [
+            [
+              "merah"
+            ],
+            [
+              "merah"
+            ]
+          ],
+          "warna_buah_masak|Cabai rawit NTB": [
+            [
+              "merah cerah"
+            ],
+            [
+              "merah cerah"
+            ]
+          ],
+          "posisi_buah_muda|Katokkon": [
+            [
+              "menggantung"
+            ],
+            [
+              "menggantung"
+            ]
+          ],
+          "posisi_buah_muda|Cabai tanjung": [
+            [
+              "menyamping"
+            ],
+            [
+              "menyamping"
+            ]
+          ],
+          "posisi_buah_muda|Domba": [
+            [
+              "menggantung"
+            ],
+            [
+              "menggantung"
+            ]
+          ],
+          "posisi_buah_muda|Cabai rawit NTB": [
+            [
+              "tegak"
+            ],
+            [
+              "tegak"
+            ]
+          ],
+          "posisi_buah_masak|Katokkon": [
+            [
+              "menggantung"
+            ],
+            [
+              "menggantung"
+            ]
+          ],
+          "posisi_buah_masak|Cabai tanjung": [
+            [
+              "menyamping"
+            ],
+            [
+              "menyamping"
+            ]
+          ],
+          "posisi_buah_masak|Domba": [
+            [
+              "menggantung"
+            ],
+            [
+              "menggantung"
+            ]
+          ],
+          "posisi_buah_masak|Cabai rawit NTB": [
+            [
+              "tegak"
+            ],
+            [
+              "tegak"
+            ]
+          ],
+          "panjang_buah_masak|Katokkon": [
+            [
+              "4.6 cm"
+            ],
+            [
+              "4.6 cm"
+            ]
+          ],
+          "panjang_buah_masak|Cabai tanjung": [
+            [
+              "9.1 cm"
+            ],
+            [
+              "9.1 cm"
+            ]
+          ],
+          "panjang_buah_masak|Domba": [
+            [
+              "7.4 cm"
+            ],
+            [
+              "7.4 cm"
+            ]
+          ],
+          "panjang_buah_masak|Cabai rawit NTB": [
+            [
+              "5.8 cm"
+            ],
+            [
+              "5.8 cm"
+            ]
+          ],
+          "panjang_kelopak_buah_masak|Katokkon": [
+            [
+              "1.2 cm"
+            ],
+            [
+              "1.2 cm"
+            ]
+          ],
+          "panjang_kelopak_buah_masak|Cabai tanjung": [
+            [
+              "1.0 cm"
+            ],
+            [
+              "1.0 cm"
+            ]
+          ],
+          "panjang_kelopak_buah_masak|Domba": [
+            [
+              "1.4 cm"
+            ],
+            [
+              "1.4 cm"
+            ]
+          ],
+          "panjang_kelopak_buah_masak|Cabai rawit NTB": [
+            [
+              "0.9 cm"
+            ],
+            [
+              "0.9 cm"
+            ]
+          ],
+          "warna_biji|Katokkon": [
+            [
+              "krem"
+            ],
+            [
+              "krem"
+            ]
+          ],
+          "warna_biji|Cabai tanjung": [
+            [
+              "kuning pucat"
+            ],
+            [
+              "kuning pucat"
+            ]
+          ],
+          "warna_biji|Domba": [
+            [
+              "krem"
+            ],
+            [
+              "krem"
+            ]
+          ],
+          "warna_biji|Cabai rawit NTB": [
+            [
+              "krem kekuningan"
+            ],
+            [
+              "krem kekuningan"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Katokkon": [
+            [
+              "26"
+            ],
+            [
+              "26"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Cabai tanjung": [
+            [
+              "39"
+            ],
+            [
+              "39"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Domba": [
+            [
+              "33"
+            ],
+            [
+              "33"
+            ]
+          ],
+          "jumlah_biji_buah_masak|Cabai rawit NTB": [
+            [
+              "41"
+            ],
+            [
+              "41"
+            ]
+          ],
+          "lokasi|Katokkon": [
+            [
+              "toraja utara, sulawesi selatan"
+            ],
+            [
+              "toraja utara, sulawesi selatan"
+            ]
+          ],
+          "lokasi|Cabai tanjung": [
+            [
+              "garut, jawa barat"
+            ],
+            [
+              "garut, jawa barat"
+            ]
+          ],
+          "lokasi|Domba": [
+            [
+              "bandung barat, jawa barat"
+            ],
+            [
+              "bandung barat, jawa barat"
+            ]
+          ],
+          "lokasi|Cabai rawit NTB": [
+            [
+              "lombok timur, nusa tenggara barat"
+            ],
+            [
+              "lombok timur, nusa tenggara barat"
+            ]
+          ]
+        },
+        "normalisasi": {
+          "identik": 40,
+          "berubah_setara": 32,
+          "berbeda": 0
+        }
+      }
+    },
+    "rerun_ac4f2e4": {
+      "N07": {
+        "n_varietas": 3,
+        "n_kolom": 3,
+        "kolom_benar": 3,
+        "ketat": {
+          "benar": 37,
+          "salah_tulis": 0,
+          "harapan": 37,
+          "terlewat": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "posisi": {
+          "benar": 37,
+          "salah_tulis": 0,
+          "harapan": 37,
+          "terlewat": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "sel": {
+          "habitus|Biocalya Agrihorti": [
+            [
+              "semi-tegak"
+            ],
+            [
+              "semi-tegak"
+            ]
+          ],
+          "habitus|Arisa IPB": [
+            [
+              "tegak"
+            ],
+            [
+              "tegak"
+            ]
+          ],
+          "tinggi_tanaman|Biocalya Agrihorti": [
+            [
+              "50.67--65.67 cm"
+            ],
+            [
+              "50.67--65.67 cm"
+            ]
+          ],
+          "tinggi_tanaman|ENNO009": [
+            [
+              "83.00--100.42 cm"
+            ],
+            [
+              "83.00--100.42 cm"
+            ]
+          ],
+          "tinggi_tanaman|Arisa IPB": [
+            [
+              "65.00--83.23 cm"
+            ],
+            [
+              "65.00--83.23 cm"
+            ]
+          ],
+          "adaptasi_ekologi|Biocalya Agrihorti": [
+            [
+              "sesuai untuk dataran menengah hingga dataran tinggi pada musim hujan"
+            ],
+            [
+              "sesuai untuk dataran menengah hingga dataran tinggi pada musim hujan"
+            ]
+          ],
+          "adaptasi_ekologi|ENNO009": [
+            [
+              "beradaptasi dengan baik di dataran rendah di kabupaten jember pada musim penghujan"
+            ],
+            [
+              "beradaptasi dengan baik di dataran rendah di kabupaten jember pada musim penghujan"
+            ]
+          ],
+          "adaptasi_ekologi|Arisa IPB": [
+            [
+              "sesuai di dataran rendah di musim hujan"
+            ],
+            [
+              "sesuai di dataran rendah di musim hujan"
+            ]
+          ],
+          "warna_daun|Biocalya Agrihorti": [
+            [
+              "hijau zaitun sedang (mog 147a)"
+            ],
+            [
+              "hijau zaitun sedang (mog 147a)"
+            ]
+          ],
+          "warna_daun|ENNO009": [
+            [
+              "hijau (rhs nn137a)"
+            ],
+            [
+              "hijau (rhs nn137a)"
+            ]
+          ],
+          "warna_daun|Arisa IPB": [
+            [
+              "hijau (rhs nn137a)"
+            ],
+            [
+              "hijau (rhs nn137a)"
+            ]
+          ],
+          "panjang_daun|Arisa IPB": [
+            [
+              "6.33--14.35 cm"
+            ],
+            [
+              "6.33--14.35 cm"
+            ]
+          ],
+          "lebar_daun|Arisa IPB": [
+            [
+              "2.23--3.70 cm"
+            ],
+            [
+              "2.23--3.70 cm"
+            ]
+          ],
+          "bentuk_daun|Biocalya Agrihorti": [
+            [
+              "lanceolate"
+            ],
+            [
+              "lanceolate"
+            ]
+          ],
+          "bentuk_daun|ENNO009": [
+            [
+              "lanset (lanceolate)"
+            ],
+            [
+              "lanset (lanceolate)"
+            ]
+          ],
+          "bentuk_daun|Arisa IPB": [
+            [
+              "lanceolate"
+            ],
+            [
+              "lanceolate"
+            ]
+          ],
+          "warna_mahkota|Biocalya Agrihorti": [
+            [
+              "putih kekuningan (yw nn155a)"
+            ],
+            [
+              "putih kekuningan (yw nn155a)"
+            ]
+          ],
+          "warna_mahkota|ENNO009": [
+            [
+              "hijau keputihan (rhs 145c)"
+            ],
+            [
+              "hijau keputihan (rhs 145c)"
+            ]
+          ],
+          "warna_mahkota|Arisa IPB": [
+            [
+              "putih (rhs 155a)"
+            ],
+            [
+              "putih (rhs 155a)"
+            ]
+          ],
+          "bentuk_bunga|Biocalya Agrihorti": [
+            [
+              "bintang"
+            ],
+            [
+              "bintang"
+            ]
+          ],
+          "bentuk_bunga|ENNO009": [
+            [
+              "seperti bintang"
+            ],
+            [
+              "seperti bintang"
+            ]
+          ],
+          "warna_kepala_sari|Arisa IPB": [
+            [
+              "putih (rhs n77c)"
+            ],
+            [
+              "putih (rhs n77c)"
+            ]
+          ],
+          "posisi_bunga|Arisa IPB": [
+            [
+              "pendant"
+            ],
+            [
+              "pendant"
+            ]
+          ],
+          "warna_kelopak_bunga|Biocalya Agrihorti": [
+            [
+              "hijau kekuningan kuat (syg 144a)"
+            ],
+            [
+              "hijau kekuningan kuat (syg 144a)"
+            ]
+          ],
+          "warna_kelopak_bunga|ENNO009": [
+            [
+              "hijau (rhs 143a)"
+            ],
+            [
+              "hijau (rhs 143a)"
+            ]
+          ],
+          "bentuk_buah|Biocalya Agrihorti": [
+            [
+              "memanjang"
+            ],
+            [
+              "memanjang"
+            ]
+          ],
+          "bentuk_buah|ENNO009": [
+            [
+              "segitiga sedang"
+            ],
+            [
+              "segitiga sedang"
+            ]
+          ],
+          "bentuk_buah|Arisa IPB": [
+            [
+              "segitiga menyempit"
+            ],
+            [
+              "segitiga menyempit"
+            ]
+          ],
+          "warna_buah_muda|Biocalya Agrihorti": [
+            [
+              "hijau zaitun sedang (mog 137a)"
+            ],
+            [
+              "hijau zaitun sedang (mog 137a)"
+            ]
+          ],
+          "warna_buah_muda|ENNO009": [
+            [
+              "hijau muda (rhs 150b)"
+            ],
+            [
+              "hijau muda (rhs 150b)"
+            ]
+          ],
+          "warna_buah_muda|Arisa IPB": [
+            [
+              "hijau tua (rhs 143a)"
+            ],
+            [
+              "hijau tua (rhs 143a)"
+            ]
+          ],
+          "warna_buah_masak|Biocalya Agrihorti": [
+            [
+              "merah sedang (mr n45a)"
+            ],
+            [
+              "merah sedang (mr n45a)"
+            ]
+          ],
+          "warna_buah_masak|ENNO009": [
+            [
+              "merah (rhs 42a)"
+            ],
+            [
+              "merah (rhs 42a)"
+            ]
+          ],
+          "warna_buah_masak|Arisa IPB": [
+            [
+              "merah (rhs 45a)"
+            ],
+            [
+              "merah (rhs 45a)"
+            ]
+          ],
+          "bentuk_ujung_buah|Arisa IPB": [
+            [
+              "sangat lancip"
+            ],
+            [
+              "sangat lancip"
+            ]
+          ],
+          "warna_biji|Biocalya Agrihorti": [
+            [
+              "kuning terang (yl 10c)"
+            ],
+            [
+              "kuning terang (yl 10c)"
+            ]
+          ],
+          "warna_biji|ENNO009": [
+            [
+              "krem (rhs 162d)"
+            ],
+            [
+              "krem (rhs 162d)"
+            ]
+          ]
+        },
+        "normalisasi": {
+          "identik": 31,
+          "berubah_setara": 6,
+          "berbeda": 0
+        }
+      },
+      "R02": {
+        "n_varietas": 6,
+        "n_kolom": 6,
+        "kolom_benar": 6,
+        "ketat": {
+          "benar": 79,
+          "salah_tulis": 0,
+          "harapan": 79,
+          "terlewat": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "posisi": {
+          "benar": 79,
+          "salah_tulis": 0,
+          "harapan": 79,
+          "terlewat": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "sel": {
+          "habitus|Biocarning Agrihorti": [
+            [
+              "tegak"
+            ],
+            [
+              "tegak"
+            ]
+          ],
+          "tinggi_tanaman|Carvi Agrihorti": [
+            [
+              "60--70 cm"
+            ],
+            [
+              "60--70 cm"
+            ]
+          ],
+          "tinggi_tanaman|Biocarpa Agrihorti": [
+            [
+              "46--83 cm"
+            ],
+            [
+              "46--83 cm"
+            ]
+          ],
+          "tinggi_tanaman|Biocarning Agrihorti": [
+            [
+              "50.73--67.93 (cm)"
+            ],
+            [
+              "50.73--67.93 (cm)"
+            ]
+          ],
+          "tinggi_tanaman|JS CK 01": [
+            [
+              "65.32--72.32 cm"
+            ],
+            [
+              "65.32--72.32 cm"
+            ]
+          ],
+          "tinggi_tanaman|CR P1": [
+            [
+              "87.9--109.8 cm"
+            ],
+            [
+              "87.9--109.8 cm"
+            ]
+          ],
+          "tinggi_tanaman|CB 96307": [
+            [
+              "57.27--65.34 cm"
+            ],
+            [
+              "57.27--65.34 cm"
+            ]
+          ],
+          "adaptasi_ekologi|Carvi Agrihorti": [
+            [
+              "sesuai di dataran tinggi pada musim hujan"
+            ],
+            [
+              "sesuai di dataran tinggi pada musim hujan"
+            ]
+          ],
+          "adaptasi_ekologi|Biocarpa Agrihorti": [
+            [
+              "sesuai pada musim kemarau di dataran tinggi kec. pacet, kab. cianjur, provinsi jawa barat"
+            ],
+            [
+              "sesuai pada musim kemarau di dataran tinggi kec. pacet, kab. cianjur, provinsi jawa barat"
+            ]
+          ],
+          "adaptasi_ekologi|Biocarning Agrihorti": [
+            [
+              "sesuai untuk dataran medium-tinggi pada musim hujan"
+            ],
+            [
+              "sesuai untuk dataran medium-tinggi pada musim hujan"
+            ]
+          ],
+          "adaptasi_ekologi|JS CK 01": [
+            [
+              "beradaptasi dengan baik pada dataran rendah di kabupaten sleman, d.i. yogyakarta pada musim kemarau"
+            ],
+            [
+              "beradaptasi dengan baik pada dataran rendah di kabupaten sleman, d.i. yogyakarta pada musim kemarau"
+            ]
+          ],
+          "adaptasi_ekologi|CR P1": [
+            [
+              "beradaptasi dengan baik di dataran tinggi di kabupaten semarang pada musim penghujan"
+            ],
+            [
+              "beradaptasi dengan baik di dataran tinggi di kabupaten semarang pada musim penghujan"
+            ]
+          ],
+          "adaptasi_ekologi|CB 96307": [
+            [
+              "sesuai untuk dataran rendah pada musim penghujan"
+            ],
+            [
+              "sesuai untuk dataran rendah pada musim penghujan"
+            ]
+          ],
+          "warna_daun|Carvi Agrihorti": [
+            [
+              "hijau tua (rhs n 137 a)"
+            ],
+            [
+              "hijau tua (rhs n 137 a)"
+            ]
+          ],
+          "warna_daun|Biocarpa Agrihorti": [
+            [
+              "hijau (gog nn137a)"
+            ],
+            [
+              "hijau (gog nn137a)"
+            ]
+          ],
+          "warna_daun|Biocarning Agrihorti": [
+            [
+              "hijau (rhs nn 137a)"
+            ],
+            [
+              "hijau (rhs nn 137a)"
+            ]
+          ],
+          "warna_daun|JS CK 01": [
+            [
+              "hijau gelap (rhs green group nn 137 a)"
+            ],
+            [
+              "hijau gelap (rhs green group nn 137 a)"
+            ]
+          ],
+          "warna_daun|CR P1": [
+            [
+              "hijau tua (green group rhs nn 137 a)"
+            ],
+            [
+              "hijau tua (green group rhs nn 137 a)"
+            ]
+          ],
+          "warna_daun|CB 96307": [
+            [
+              "hijau (rhs 136a)"
+            ],
+            [
+              "hijau (rhs 136a)"
+            ]
+          ],
+          "panjang_daun|Biocarpa Agrihorti": [
+            [
+              "4.10--5.10 cm"
+            ],
+            [
+              "4.10--5.10 cm"
+            ]
+          ],
+          "panjang_daun|Biocarning Agrihorti": [
+            [
+              "6.45--10.64 (cm)"
+            ],
+            [
+              "6.45--10.64 (cm)"
+            ]
+          ],
+          "panjang_daun|CB 96307": [
+            [
+              "7.72--8.78 cm"
+            ],
+            [
+              "7.72--8.78 cm"
+            ]
+          ],
+          "lebar_daun|Biocarpa Agrihorti": [
+            [
+              "1.70--2.20 cm"
+            ],
+            [
+              "1.70--2.20 cm"
+            ]
+          ],
+          "lebar_daun|Biocarning Agrihorti": [
+            [
+              "2.73--4.04 (cm)"
+            ],
+            [
+              "2.73--4.04 (cm)"
+            ]
+          ],
+          "lebar_daun|CB 96307": [
+            [
+              "2.98--3.32 cm"
+            ],
+            [
+              "2.98--3.32 cm"
+            ]
+          ],
+          "bentuk_pangkal_daun|JS CK 01": [
+            [
+              "membulat"
+            ],
+            [
+              "membulat"
+            ]
+          ],
+          "bentuk_daun|Carvi Agrihorti": [
+            [
+              "eliptical"
+            ],
+            [
+              "eliptical"
+            ]
+          ],
+          "bentuk_daun|Biocarpa Agrihorti": [
+            [
+              "lanceolate"
+            ],
+            [
+              "lanceolate"
+            ]
+          ],
+          "bentuk_daun|Biocarning Agrihorti": [
+            [
+              "ovate"
+            ],
+            [
+              "ovate"
+            ]
+          ],
+          "bentuk_daun|JS CK 01": [
+            [
+              "lanset (lanceolate)"
+            ],
+            [
+              "lanset (lanceolate)"
+            ]
+          ],
+          "bentuk_daun|CR P1": [
+            [
+              "bulat telur"
+            ],
+            [
+              "bulat telur"
+            ]
+          ],
+          "bentuk_daun|CB 96307": [
+            [
+              "lanceolate"
+            ],
+            [
+              "lanceolate"
+            ]
+          ],
+          "warna_mahkota|Carvi Agrihorti": [
+            [
+              "hijau (rhs 142 a)"
+            ],
+            [
+              "hijau (rhs 142 a)"
+            ]
+          ],
+          "warna_mahkota|Biocarpa Agrihorti": [
+            [
+              "putih (yw nn 155c)"
+            ],
+            [
+              "putih (yw nn 155c)"
+            ]
+          ],
+          "warna_mahkota|Biocarning Agrihorti": [
+            [
+              "putih (rhs 155c)",
+              "putih (rhs white grup nn155a)"
+            ],
+            [
+              "putih (rhs 155c)",
+              "putih (rhs white grup nn155a)"
+            ]
+          ],
+          "warna_mahkota|JS CK 01": [
+            [
+              "putih (rhs green white group 155 a)"
+            ],
+            [
+              "putih (rhs green white group 155 a)"
+            ]
+          ],
+          "warna_mahkota|CR P1": [
+            [
+              "putih kehijauan (yellow green group rhs 145 d)"
+            ],
+            [
+              "putih kehijauan (yellow green group rhs 145 d)"
+            ]
+          ],
+          "warna_mahkota|CB 96307": [
+            [
+              "putih (rhs nn155c)"
+            ],
+            [
+              "putih (rhs nn155c)"
+            ]
+          ],
+          "bentuk_bunga|Carvi Agrihorti": [
+            [
+              "bintang"
+            ],
+            [
+              "bintang"
+            ]
+          ],
+          "bentuk_bunga|Biocarning Agrihorti": [
+            [
+              "bintang"
+            ],
+            [
+              "bintang"
+            ]
+          ],
+          "bentuk_bunga|CR P1": [
+            [
+              "seperti bintang"
+            ],
+            [
+              "seperti bintang"
+            ]
+          ],
+          "bentuk_bunga|CB 96307": [
+            [
+              "seperti bintang"
+            ],
+            [
+              "seperti bintang"
+            ]
+          ],
+          "warna_kepala_sari|JS CK 01": [
+            [
+              "hijau kebiruan (rhs blue green group 122 b)"
+            ],
+            [
+              "hijau kebiruan (rhs blue green group 122 b)"
+            ]
+          ],
+          "warna_kepala_sari|CR P1": [
+            [
+              "hijau keabuan (greyed green group rhs n189 b)"
+            ],
+            [
+              "hijau keabuan (greyed green group rhs n189 b)"
+            ]
+          ],
+          "warna_kelopak_bunga|Carvi Agrihorti": [
+            [
+              "hijau (rhs 155 a)"
+            ],
+            [
+              "hijau (rhs 155 a)"
+            ]
+          ],
+          "warna_kelopak_bunga|Biocarpa Agrihorti": [
+            [
+              "hijau (dyg 139b)"
+            ],
+            [
+              "hijau (dyg 139b)"
+            ]
+          ],
+          "warna_kelopak_bunga|Biocarning Agrihorti": [
+            [
+              "hijau (rhs 137c)"
+            ],
+            [
+              "hijau (rhs 137c)"
+            ]
+          ],
+          "warna_kelopak_bunga|JS CK 01": [
+            [
+              "hijau gelap (rhs green group 141 a)"
+            ],
+            [
+              "hijau gelap (rhs green group 141 a)"
+            ]
+          ],
+          "warna_kelopak_bunga|CR P1": [
+            [
+              "hijau (green group rhs 143 a)"
+            ],
+            [
+              "hijau (green group rhs 143 a)"
+            ]
+          ],
+          "warna_kelopak_bunga|CB 96307": [
+            [
+              "hijau (rhs 137c)"
+            ],
+            [
+              "hijau (rhs 137c)"
+            ]
+          ],
+          "bentuk_buah|Carvi Agrihorti": [
+            [
+              "panjang rata"
+            ],
+            [
+              "panjang rata"
+            ]
+          ],
+          "bentuk_buah|Biocarning Agrihorti": [
+            [
+              "memanjang"
+            ],
+            [
+              "memanjang"
+            ]
+          ],
+          "bentuk_buah|JS CK 01": [
+            [
+              "silindris panjang dengan permukaan buah rata"
+            ],
+            [
+              "silindris panjang dengan permukaan buah rata"
+            ]
+          ],
+          "bentuk_buah|CR P1": [
+            [
+              "berbentuk segitiga"
+            ],
+            [
+              "berbentuk segitiga"
+            ]
+          ],
+          "bentuk_buah|CB 96307": [
+            [
+              "silindris"
+            ],
+            [
+              "silindris"
+            ]
+          ],
+          "warna_buah_muda|Carvi Agrihorti": [
+            [
+              "hijau (green group rhs 139 a)"
+            ],
+            [
+              "hijau (green group rhs 139 a)"
+            ]
+          ],
+          "warna_buah_muda|Biocarpa Agrihorti": [
+            [
+              "hijau (syg 144 a)"
+            ],
+            [
+              "hijau (syg 144 a)"
+            ]
+          ],
+          "warna_buah_muda|Biocarning Agrihorti": [
+            [
+              "hijau (rhs 1394)"
+            ],
+            [
+              "hijau (rhs 1394)"
+            ]
+          ],
+          "warna_buah_muda|JS CK 01": [
+            [
+              "hijau tua (rhs green group 137 a)"
+            ],
+            [
+              "hijau tua (rhs green group 137 a)"
+            ]
+          ],
+          "warna_buah_muda|CR P1": [
+            [
+              "kuning kehijauan (yellow green group rhs 150 c)"
+            ],
+            [
+              "kuning kehijauan (yellow green group rhs 150 c)"
+            ]
+          ],
+          "warna_buah_muda|CB 96307": [
+            [
+              "hijau (rhs 141a)"
+            ],
+            [
+              "hijau (rhs 141a)"
+            ]
+          ],
+          "warna_buah_masak|Carvi Agrihorti": [
+            [
+              "merah (red group rhs 46 a)"
+            ],
+            [
+              "merah (red group rhs 46 a)"
+            ]
+          ],
+          "warna_buah_masak|Biocarpa Agrihorti": [
+            [
+              "merah (vr 45 a)"
+            ],
+            [
+              "merah (vr 45 a)"
+            ]
+          ],
+          "warna_buah_masak|Biocarning Agrihorti": [
+            [
+              "merah (rhs 45a)"
+            ],
+            [
+              "merah (rhs 45a)"
+            ]
+          ],
+          "warna_buah_masak|JS CK 01": [
+            [
+              "merah (rhs red group 45 a)"
+            ],
+            [
+              "merah (rhs red group 45 a)"
+            ]
+          ],
+          "warna_buah_masak|CR P1": [
+            [
+              "merah (red group rhs 45 a)"
+            ],
+            [
+              "merah (red group rhs 45 a)"
+            ]
+          ],
+          "warna_buah_masak|CB 96307": [
+            [
+              "merah (rhs 45a)"
+            ],
+            [
+              "merah (rhs 45a)"
+            ]
+          ],
+          "panjang_buah_masak|Carvi Agrihorti": [
+            [
+              "12.14--12.52 cm"
+            ],
+            [
+              "12.14--12.52 cm"
+            ]
+          ],
+          "panjang_buah_masak|Biocarpa Agrihorti": [
+            [
+              "12.0--16.2 cm"
+            ],
+            [
+              "12.0--16.2 cm"
+            ]
+          ],
+          "panjang_buah_masak|Biocarning Agrihorti": [
+            [
+              "10.74--14.03 (cm)"
+            ],
+            [
+              "10.74--14.03 (cm)"
+            ]
+          ],
+          "panjang_buah_masak|JS CK 01": [
+            [
+              "13.87--15.63 cm"
+            ],
+            [
+              "13.87--15.63 cm"
+            ]
+          ],
+          "panjang_buah_masak|CR P1": [
+            [
+              "4.18--5.32 cm"
+            ],
+            [
+              "4.18--5.32 cm"
+            ]
+          ],
+          "panjang_buah_masak|CB 96307": [
+            [
+              "13.76--15.51 cm"
+            ],
+            [
+              "13.76--15.51 cm"
+            ]
+          ],
+          "warna_biji|Carvi Agrihorti": [
+            [
+              "kuning jerami (rhs 2 b)"
+            ],
+            [
+              "kuning jerami (rhs 2 b)"
+            ]
+          ],
+          "warna_biji|Biocarpa Agrihorti": [
+            [
+              "kuning jerami (my 161a)"
+            ],
+            [
+              "kuning jerami (my 161a)"
+            ]
+          ],
+          "warna_biji|Biocarning Agrihorti": [
+            [
+              "kuning (rhs 10b)"
+            ],
+            [
+              "kuning (rhs 10b)"
+            ]
+          ],
+          "warna_biji|JS CK 01": [
+            [
+              "kuning terang (rhs light yellow group 4 d)"
+            ],
+            [
+              "kuning terang (rhs light yellow group 4 d)"
+            ]
+          ],
+          "warna_biji|CR P1": [
+            [
+              "coklat kekuningan (greyed orange group rhs 163 c)"
+            ],
+            [
+              "coklat kekuningan (greyed orange group rhs 163 c)"
+            ]
+          ],
+          "warna_biji|CB 96307": [
+            [
+              "kuning (rhs 18b)"
+            ],
+            [
+              "kuning (rhs 18b)"
+            ]
+          ]
+        },
+        "normalisasi": {
+          "identik": 58,
+          "berubah_setara": 21,
+          "berbeda": 0
+        }
+      }
+    }
+  },
+  "gabungan": {
+    "held-out_ketat": {
+      "benar": 192,
+      "salah_tulis": 116,
+      "terlewat": 150,
+      "precision": 0.6233766233766234,
+      "recall": 0.5614035087719298,
+      "f1": 0.5907692307692307,
+      "ci": {
+        "precision": [
+          0.0,
+          1.0
+        ],
+        "recall": [
+          0.0,
+          0.85546875
+        ],
+        "f1": [
+          0.0,
+          0.9186602870813397
+        ]
+      }
+    },
+    "held-out_posisi": {
+      "benar": 307,
+      "salah_tulis": 0,
+      "terlewat": 35,
+      "precision": 1.0,
+      "recall": 0.8976608187134503,
+      "f1": 0.9460708782742681,
+      "ci": {
+        "precision": [
+          1.0,
+          1.0
+        ],
+        "recall": [
+          0.8082706766917294,
+          1.0
+        ],
+        "f1": [
+          0.893970893970894,
+          1.0
+        ]
+      }
+    },
+    "semua_ketat": {
+      "benar": 404,
+      "salah_tulis": 118,
+      "terlewat": 196,
+      "precision": 0.7739463601532567,
+      "recall": 0.6733333333333333,
+      "f1": 0.7201426024955437,
+      "ci": {
+        "precision": [
+          0.4085106382978723,
+          0.9970674486803519
+        ],
+        "recall": [
+          0.37598425196850394,
+          0.8846153846153846
+        ],
+        "f1": [
+          0.391304347826087,
+          0.930530164533821
+        ]
+      }
+    },
+    "semua_posisi": {
+      "benar": 519,
+      "salah_tulis": 2,
+      "terlewat": 81,
+      "precision": 0.9961612284069098,
+      "recall": 0.865,
+      "f1": 0.9259589652096342,
+      "ci": {
+        "precision": [
+          0.982089552238806,
+          1.0
+        ],
+        "recall": [
+          0.7605363984674329,
+          0.987012987012987
+        ],
+        "f1": [
+          0.8621597892888498,
+          0.9915254237288136
+        ]
+      }
+    }
+  }
+}

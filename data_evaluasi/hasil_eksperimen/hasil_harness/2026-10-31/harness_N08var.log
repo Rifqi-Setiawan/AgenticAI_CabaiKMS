@@ -1,0 +1,8 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4598.56it/s]
+N08 rep 1 ok 191.5 s
+lewati (sudah ada): /srv/hermes-control/eval/cabai-ui-experiment/hasil_harness/2026-10-31/rep1/atribut/N08
+lewati (sudah ada): /srv/hermes-control/eval/cabai-ui-experiment/hasil_harness/2026-10-31/rep2/atribut/N08
+N08 rep 2 ok 160.6 s
+N08 rep 3 ok 179.0 s
+lewati (sudah ada): /srv/hermes-control/eval/cabai-ui-experiment/hasil_harness/2026-10-31/rep3/atribut/N08

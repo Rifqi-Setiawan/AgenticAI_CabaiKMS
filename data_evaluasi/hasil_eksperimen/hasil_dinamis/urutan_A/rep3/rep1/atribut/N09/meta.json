@@ -1,0 +1,270 @@
+{
+  "run": "N09",
+  "kind": "atribut",
+  "rep": 1,
+  "file": "dataset_cabai_deskripsi_varietas.xlsx",
+  "sheet": "transposed",
+  "format": "transposed",
+  "header_rows": null,
+  "drive": null,
+  "max_images": 5,
+  "k": 8,
+  "commit": "01e2d08",
+  "sha256_berkas": "bd7875dd13fa2350105334a40f46ad209a6d7c1ec672c25f21f1e7e6c0913612",
+  "start": "2026-11-01 14:59:42",
+  "s2_keys": [
+    [
+      "Asal",
+      "",
+      "r_80"
+    ],
+    [
+      "Silsilah",
+      "",
+      "r_6"
+    ],
+    [
+      "Golongan varietas",
+      "",
+      "r_6"
+    ],
+    [
+      "Warna mahkota bunga",
+      "",
+      "r_74"
+    ],
+    [
+      "Warna buah tua",
+      "",
+      "r_45"
+    ],
+    [
+      "Berat 1.000 biji",
+      "",
+      "r_82"
+    ],
+    [
+      "Ketahanan terhadap hama",
+      "",
+      "r_36"
+    ],
+    [
+      "Daya simpan buah pada suhu 24-27 oC",
+      "",
+      "r_87"
+    ],
+    [
+      "Populasi per hektar",
+      "",
+      "r_65"
+    ],
+    [
+      "Kebutuhan benih per hektar",
+      "",
+      "r_88"
+    ],
+    [
+      "Penciri utama",
+      "",
+      "r_94"
+    ],
+    [
+      "Keunggulan varietas",
+      "",
+      "r_6"
+    ],
+    [
+      "Wilayah adaptasi",
+      "",
+      "r_4"
+    ],
+    [
+      "Ukuran daun Panjang",
+      "",
+      "r_73"
+    ],
+    [
+      "Ukuran daun Lebar",
+      "",
+      "r_10"
+    ],
+    [
+      "Ukuran buah Panjang",
+      "",
+      "r_78"
+    ],
+    [
+      "Ukuran buah Diameter",
+      "",
+      "r_93"
+    ],
+    [
+      "Daya simpan buah pada suhu (25-30 oC)",
+      "",
+      "r_87"
+    ],
+    [
+      "Populasi Tanaman per ha",
+      "",
+      "r_84"
+    ],
+    [
+      "Kebutuhan benih per ha",
+      "",
+      "r_34"
+    ],
+    [
+      "Tinggi tanaman (cm)",
+      "",
+      "r_2"
+    ],
+    [
+      "Habitus tanaman",
+      "",
+      "r_1"
+    ],
+    [
+      "Diameter batang (cm)",
+      "",
+      "r_28"
+    ],
+    [
+      "Warna bunga",
+      "",
+      "r_75"
+    ],
+    [
+      "Kelopak",
+      "",
+      "r_7"
+    ],
+    [
+      "Mahkota",
+      "",
+      "r_6"
+    ],
+    [
+      "Umur mulai berbunga (hari)",
+      "",
+      "r_10"
+    ],
+    [
+      "Umur mulai panen (hari)",
+      "",
+      "r_10"
+    ],
+    [
+      "Tebal kulit buah (cm)",
+      "",
+      "r_79"
+    ],
+    [
+      "Daya simpan buah pada suhu kamar (24-27 oC)",
+      "",
+      "r_87"
+    ],
+    [
+      "Hasil buah per hektar (ton)",
+      "",
+      "r_84"
+    ],
+    [
+      "Populasi per hektar (tanaman)",
+      "",
+      "r_65"
+    ],
+    [
+      "Kebutuhan benih per hektar (g)",
+      "",
+      "r_88"
+    ],
+    [
+      "Kelopak Bunga",
+      "",
+      "r_35"
+    ],
+    [
+      "Mahkota Bunga",
+      "",
+      "r_19"
+    ],
+    [
+      "Kotak Sari",
+      "",
+      "r_35"
+    ],
+    [
+      "Tipe Berbuah",
+      "",
+      "r_6"
+    ],
+    [
+      "Daya simpan buah pada suhu (25-27 oC)",
+      "",
+      "r_87"
+    ],
+    [
+      "Pemohon",
+      "",
+      "r_80"
+    ],
+    [
+      "Pemulia",
+      "",
+      "r_80"
+    ],
+    [
+      "Peneliti",
+      "",
+      "r_6"
+    ],
+    [
+      "Panjang dikotomus",
+      "",
+      "r_8"
+    ],
+    [
+      "Panjang ruas batang",
+      "",
+      "r_20"
+    ],
+    [
+      "Daya simpan buah pada suhu 25 - 27 oC",
+      "",
+      "r_87"
+    ],
+    [
+      "Profil potongan melintang",
+      "",
+      "r_56"
+    ],
+    [
+      "Orientasi pedunkulus",
+      "",
+      "r_6"
+    ],
+    [
+      "Panjang buah",
+      "",
+      "r_93"
+    ],
+    [
+      "Daya simpan buah pada suhu 27-31 oC",
+      "",
+      "r_87"
+    ]
+  ],
+  "images_discovered": 0,
+  "n_mapping": 80,
+  "n_vision": 0,
+  "fingerprint": "b3270ceb7578367f28014e20b1c0e1c93cb4943adba6c94ea8c95b083f6fc88e",
+  "errors": [
+    "akuisisi 'Penciri utama': NOT_CHARACTERISTIC Penciri utama berupa ringkasan/catatan bebas gabungan beberapa karakter pembeda varietas.",
+    "akuisisi 'Keunggulan varietas': NOT_CHARACTERISTIC Keunggulan varietas merupakan teks deskriptif catatan bebas varietas.",
+    "akuisisi 'Pemohon': NOT_CHARACTERISTIC Nama institusi pemohon adalah metadata administratif.",
+    "akuisisi 'Pemulia': NOT_CHARACTERISTIC Nama pemulia varietas adalah metadata administratif.",
+    "akuisisi 'Peneliti': NOT_CHARACTERISTIC Nama peneliti adalah metadata administratif."
+  ],
+  "status": "ok",
+  "detik": 402.1
+}

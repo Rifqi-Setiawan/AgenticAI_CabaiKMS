@@ -1,0 +1,20 @@
+{'id': 1, 'result': {}}
+{'id': 2, 'result': {}}
+{'id': 3, 'result': {'result': {'type': 'string', 'value': 'clicked'}}}
+{"method": "Page.downloadWillBegin", "params": {"frameId": "A81E1A50DC50F4E3EC450ACC0EAFA9EE", "guid": "a7487218-7f04-45a5-945e-476ceb806d3a", "url": "http://127.0.0.1:8501/media/b9a6e2a02cfb5be5ac77b9537a13784c.csv", "suggestedFilename": "vision_27e653a9a5e947e1a8c427fb80876966.csv"}}
+{"method": "Page.downloadProgress", "params": {"guid": "a7487218-7f04-45a5-945e-476ceb806d3a", "totalBytes": 16488, "receivedBytes": 0, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "a7487218-7f04-45a5-945e-476ceb806d3a", "totalBytes": 16488, "receivedBytes": 16488, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "a7487218-7f04-45a5-945e-476ceb806d3a", "totalBytes": 16488, "receivedBytes": 16488, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "a7487218-7f04-45a5-945e-476ceb806d3a", "totalBytes": 16488, "receivedBytes": 16488, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "a7487218-7f04-45a5-945e-476ceb806d3a", "totalBytes": 16488, "receivedBytes": 16488, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "a7487218-7f04-45a5-945e-476ceb806d3a", "totalBytes": 16488, "receivedBytes": 16488, "state": "completed"}}
+{'id': 1, 'result': {}}
+{'id': 2, 'result': {}}
+{'id': 3, 'result': {'result': {'type': 'string', 'value': 'clicked'}}}
+{"method": "Page.downloadWillBegin", "params": {"frameId": "A81E1A50DC50F4E3EC450ACC0EAFA9EE", "guid": "fa43a140-3463-4cd9-b6f7-613f6ef29297", "url": "http://127.0.0.1:8501/media/f1808901e41bff4f9954d16cdcb1538e.xlsx", "suggestedFilename": "spreadsheet_varietas_terdaftar_cabai_kms.xlsx"}}
+{"method": "Page.downloadProgress", "params": {"guid": "fa43a140-3463-4cd9-b6f7-613f6ef29297", "totalBytes": 10899, "receivedBytes": 0, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "fa43a140-3463-4cd9-b6f7-613f6ef29297", "totalBytes": 10899, "receivedBytes": 10899, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "fa43a140-3463-4cd9-b6f7-613f6ef29297", "totalBytes": 10899, "receivedBytes": 10899, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "fa43a140-3463-4cd9-b6f7-613f6ef29297", "totalBytes": 10899, "receivedBytes": 10899, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "fa43a140-3463-4cd9-b6f7-613f6ef29297", "totalBytes": 10899, "receivedBytes": 10899, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "fa43a140-3463-4cd9-b6f7-613f6ef29297", "totalBytes": 10899, "receivedBytes": 10899, "state": "completed"}}

@@ -1,0 +1,27 @@
+{
+  "label": "coba2",
+  "kanonik": null,
+  "run_scope": [
+    "Cabai Rawit",
+    "Jalapeno",
+    "Habanero",
+    "Cayenne",
+    "Paprika",
+    "Cabai Korea",
+    "Serrano",
+    "Hungarian Wax"
+  ],
+  "db_varieties": [],
+  "options": [
+    "Cabai Korea",
+    "Cabai Rawit",
+    "Cayenne",
+    "Habanero",
+    "Hungarian Wax",
+    "Jalapeno",
+    "Paprika",
+    "Serrano"
+  ],
+  "mulai": "2026-11-04T11:52:23.406029",
+  "selesai": "2026-11-04T11:56:08.953824"
+}

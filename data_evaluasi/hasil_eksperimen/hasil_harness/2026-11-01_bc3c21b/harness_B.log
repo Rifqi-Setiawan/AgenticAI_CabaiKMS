@@ -1,0 +1,13 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4929.81it/s]
+API call failed on attempt 1: Request timed out.
+Max retries exceeded. Total attempts: 1, Last error: Request timed out.
+S02 rep 1 ok 478.1 s
+S01 rep 1 ok 547.6 s
+S03 rep 1 ok 561.0 s
+S01 rep 2 ok 437.8 s
+S02 rep 2 ok 496.9 s
+S03 rep 2 ok 610.3 s
+S03 rep 3 ok 599.7 s
+S02 rep 3 ok 490.7 s
+S01 rep 3 ok 542.6 s

@@ -1,0 +1,156 @@
+{
+  "db": "cabai_kms_eval",
+  "kunci_jawaban": {
+    "Kadar Capsaicin (ppm)": {
+      "action": "REGISTER_NEW",
+      "organ": "buah",
+      "value_type": "number",
+      "unit": "ppm"
+    },
+    "Kandungan Vitamin C (mg/100g)": {
+      "action": "REGISTER_NEW",
+      "organ": "buah",
+      "value_type": "number",
+      "unit": "mg/100g"
+    },
+    "Aroma Buah": {
+      "action": "REGISTER_NEW",
+      "organ": "buah",
+      "value_type": "text",
+      "unit": null
+    },
+    "Tinggi Tanaman Dewasa": {
+      "action": "MAP_TO_EXISTING",
+      "attribute_id": "attr_tinggi_tanaman"
+    },
+    "Catatan Surveyor": {
+      "action": "REJECT"
+    }
+  },
+  "baseline": {
+    "dokumen": 9,
+    "review_pending": 35,
+    "kategori": {
+      "INTRA_WORKBOOK_CONFLICT": 35
+    }
+  },
+  "E-A1": {
+    "label_baru_terdeteksi": [
+      "Aroma Buah",
+      "Catatan Surveyor",
+      "Kadar Capsaicin (ppm)",
+      "Kandungan Vitamin C (mg/100g)",
+      "Tinggi Tanaman Dewasa"
+    ],
+    "sel_review_baru": 65,
+    "label_di_kunci": [
+      "Aroma Buah",
+      "Catatan Surveyor",
+      "Kadar Capsaicin (ppm)",
+      "Kandungan Vitamin C (mg/100g)",
+      "Tinggi Tanaman Dewasa"
+    ],
+    "terdeteksi_tepat": true,
+    "review_lain_pending": 40,
+    "status_item_pertama": {
+      "Kadar Capsaicin (ppm)": "approved",
+      "Kandungan Vitamin C (mg/100g)": "approved",
+      "Aroma Buah": "approved",
+      "Tinggi Tanaman Dewasa": "approved",
+      "Catatan Surveyor": "rejected"
+    },
+    "status_semua_sel": {
+      "approved": 44,
+      "rejected": 21
+    },
+    "review_lain_per_kategori": {
+      "INTRA_WORKBOOK_CONFLICT": 40
+    },
+    "pending_sisa_sebelum_commit": 0,
+    "commit": {
+      "dokumen_dibuat": 9,
+      "atribut": 57
+    }
+  },
+  "E-A2": {
+    "label_diputuskan_run1": [
+      "Kadar Capsaicin (ppm)",
+      "Kandungan Vitamin C (mg/100g)",
+      "Aroma Buah",
+      "Tinggi Tanaman Dewasa",
+      "Catatan Surveyor"
+    ],
+    "label_ditanyakan_lagi_run2": [
+      "Kadar Capsaicin Total",
+      "Ketebalan Daging Buah (mm)"
+    ],
+    "label_dikenali_otomatis": [
+      "Kadar Capsaicin (ppm)",
+      "Kandungan Vitamin C (mg/100g)",
+      "Aroma Buah",
+      "Tinggi Tanaman Dewasa",
+      "Catatan Surveyor"
+    ],
+    "tingkat_penggunaan_ulang": 1.0,
+    "review_baru_run2_sel": 26,
+    "review_baru_run1_sel": 65,
+    "label_mirip_terdeteksi_pada_item": [
+      {
+        "attribute_id": "attr_kadar_capsaicin",
+        "canonical_key": "kadar_capsaicin",
+        "label": "Kadar Capsaicin (ppm)",
+        "organ": "buah",
+        "similarity": 0.762
+      }
+    ],
+    "atribut_baru_tertulis_run2_resolusi": [
+      "HUMAN_REVIEW"
+    ]
+  },
+  "E-A3": {
+    "katalog_atribut_baru": [
+      "Aroma Buah",
+      "Kadar Capsaicin (ppm)",
+      "Kandungan Vitamin C (mg/100g)"
+    ],
+    "alias": [
+      {
+        "alias": "Tinggi Tanaman Dewasa",
+        "attribute_id": "attr_tinggi_tanaman"
+      }
+    ],
+    "ditolak": [
+      "catatan surveyor"
+    ],
+    "atribut_asli_per_dokumen_baseline": {
+      "plant_cabai_rawit:hab_sleman_pakem_hargobinangun": 8,
+      "plant_cabai_besar:hab_sleman_pakem_hargobinangun": 8,
+      "plant_cabai_rawit:hab_temanggung_parakan_campursalam": 8,
+      "plant_cabai_rawit:hab_temanggung_kedu_kutoanyar": 8,
+      "plant_cabai_rawit:hab_temanggung_bulu_gondosuli": 1,
+      "plant_cabai_rawit:hab_temanggung_bulu_pengilon": 0,
+      "plant_cabai_rawit:hab_temanggung_bulu_bulu": 8,
+      "plant_cabai_rawit:hab_wonosobo_kalikajar_lamuk": 0,
+      "plant_cabai_besar:hab_majalengka_argapura_argalingga": 0
+    },
+    "atribut_total_per_dokumen_sesudah": {
+      "plant_cabai_rawit:hab_sleman_pakem_hargobinangun": 12,
+      "plant_cabai_besar:hab_sleman_pakem_hargobinangun": 12,
+      "plant_cabai_rawit:hab_temanggung_parakan_campursalam": 12,
+      "plant_cabai_rawit:hab_temanggung_kedu_kutoanyar": 12,
+      "plant_cabai_rawit:hab_temanggung_bulu_gondosuli": 1,
+      "plant_cabai_rawit:hab_temanggung_bulu_pengilon": 0,
+      "plant_cabai_rawit:hab_temanggung_bulu_bulu": 8,
+      "plant_cabai_rawit:hab_wonosobo_kalikajar_lamuk": 0,
+      "plant_cabai_besar:hab_majalengka_argapura_argalingga": 0
+    },
+    "atribut_baru_resolusi": [
+      "HUMAN_REVIEW"
+    ],
+    "alias_menulis_ke_atribut_tinggi": true,
+    "catatan_surveyor_tidak_tersimpan": true,
+    "baris_katalog": 3,
+    "hapus_katalog_ditolak": true,
+    "commit_ulang_idempoten": true
+  }
+}

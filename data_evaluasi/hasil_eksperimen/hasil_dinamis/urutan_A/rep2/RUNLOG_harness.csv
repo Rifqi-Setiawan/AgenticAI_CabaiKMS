@@ -1,0 +1,5 @@
+﻿waktu_mulai,rep,jenis,run,berkas,sha256_berkas,commit,drive,max_foto,n_mapping,images_discovered,n_vision,fingerprint,status,detik,galat
+2026-11-01 14:28:01,1,atribut,R01,data_input.xlsx,71e86f98a416d2f269b873c3a2c96bc729837fac0b104a79089e9d70fd093056,060b29f,,5,13,0,0,59ffe6776d8a719ad40b12e500945ff761ed91c9a80e0e31806411a5bf44ef7c,ok,124.4,
+2026-11-01 14:30:05,1,atribut,N07,E07_kementan_deskripsi_ext.xlsx,c51a666839233718b301617aa03bd069acaf3aab20305aa8129a1475c246d320,060b29f,,5,69,0,0,a04ca9c3bf9b557ea5e4396ca5df4cbc514fa0dc8dddf2ecdfc53dedabb78eee,ok,506.3,
+2026-11-01 14:38:32,1,atribut,N09,dataset_cabai_deskripsi_varietas.xlsx,bd7875dd13fa2350105334a40f46ad209a6d7c1ec672c25f21f1e7e6c0913612,060b29f,,5,80,0,0,16ae6bbfecc52a79013251fa42d28aa42e4005b680bc5ea6d3cf8499ed36d247,ok,378.8,
+2026-11-01 14:44:51,1,atribut,R02,input_cabai_kms.xlsx,5b4a748b0dc99f7db66d8d95d544e8742a9a194a52eafec6ce32ca023613fb61,060b29f,,5,53,0,0,cda153ac64256dd088da7f4107dc8908a66850053d836e3f0661c7a4261c9503,ok,191.8,

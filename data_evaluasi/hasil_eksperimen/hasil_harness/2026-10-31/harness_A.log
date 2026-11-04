@@ -1,0 +1,17 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4791.07it/s]
+N09 rep 1 ok 546.1 s
+N07 rep 1 ok 432.1 s
+N08 rep 1 gagal 0.2 s
+R01 rep 1 ok 95.8 s
+R02 rep 1 ok 315.1 s
+R01 rep 2 ok 104.7 s
+R02 rep 2 ok 356.5 s
+N08 rep 2 gagal 0.2 s
+N07 rep 2 ok 425.2 s
+N09 rep 2 ok 534.5 s
+N09 rep 3 ok 524.8 s
+R02 rep 3 ok 329.8 s
+N08 rep 3 gagal 0.2 s
+N07 rep 3 ok 424.9 s
+R01 rep 3 ok 106.6 s

@@ -1,0 +1,164 @@
+{
+  "run": "S03",
+  "kind": "kombinasi",
+  "rep": 1,
+  "file": "D03_row_multilevel_indonesia.xlsx",
+  "sheet": "Data_Bertingkat",
+  "format": "row-oriented",
+  "header_rows": null,
+  "drive": "1G1DG4qfT_-EhJ_D7XZvnK1Kw1EGu8t2g",
+  "max_images": 12,
+  "k": 8,
+  "commit": "bc3c21b",
+  "start": "2026-11-01 06:23:14",
+  "s2_keys": [
+    [
+      "Kode Sampel",
+      "",
+      "r_10"
+    ],
+    [
+      "Bentuk tumbuh",
+      "Vegetatif",
+      "r_58"
+    ],
+    [
+      "Ukuran tinggi",
+      "Vegetatif",
+      "r_28"
+    ],
+    [
+      "Lama hidup",
+      "Vegetatif",
+      "r_3"
+    ],
+    [
+      "Permukaan batang",
+      "Vegetatif",
+      "r_58"
+    ],
+    [
+      "Tekstur",
+      "Daun",
+      "r_6"
+    ],
+    [
+      "Warna",
+      "Daun",
+      "r_6"
+    ],
+    [
+      "Panjang",
+      "Daun",
+      "r_20"
+    ],
+    [
+      "Lebar",
+      "Daun",
+      "r_28"
+    ],
+    [
+      "Jumlah mahkota",
+      "Bunga",
+      "r_22"
+    ],
+    [
+      "Posisi",
+      "Bunga",
+      "r_18"
+    ],
+    [
+      "Panjang",
+      "Buah Muda",
+      "r_20"
+    ],
+    [
+      "Keliling",
+      "Buah Muda",
+      "r_28"
+    ],
+    [
+      "Panjang tangkai",
+      "Buah Muda",
+      "r_28"
+    ],
+    [
+      "Panjang kelopak",
+      "Buah Muda",
+      "r_20"
+    ],
+    [
+      "Keliling kelopak",
+      "Buah Muda",
+      "r_34"
+    ],
+    [
+      "Bentuk kelopak",
+      "Buah Muda",
+      "r_6"
+    ],
+    [
+      "Posisi",
+      "Buah Muda",
+      "r_6"
+    ],
+    [
+      "Panjang",
+      "Buah Masak",
+      "r_20"
+    ],
+    [
+      "Keliling",
+      "Buah Masak",
+      "r_20"
+    ],
+    [
+      "Panjang tangkai",
+      "Buah Masak",
+      "r_20"
+    ],
+    [
+      "Panjang kelopak",
+      "Buah Masak",
+      "r_20"
+    ],
+    [
+      "Keliling kelopak",
+      "Buah Masak",
+      "r_20"
+    ],
+    [
+      "Warna",
+      "Buah Masak",
+      "r_59"
+    ],
+    [
+      "Posisi",
+      "Buah Masak",
+      "r_47"
+    ],
+    [
+      "Warna",
+      "Biji",
+      "r_54"
+    ],
+    [
+      "Jumlah",
+      "Biji",
+      "r_10"
+    ]
+  ],
+  "images_discovered": 12,
+  "n_mapping": 29,
+  "n_vision": 12,
+  "fingerprint": "b421eb1f6f0d765a8c68bbfadd87d685e09b34206e4274584e07d8abadaecc1f",
+  "errors": [
+    "atribut \"Keliling\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut sumber merujuk pada keliling buah muda, namun tidak ada kandidat baris kanonik yang mencakup dimensi atau ukuran keliling buah muda.",
+    "atribut \"Panjang kelopak\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut sumber berada dalam konteks 'Buah Muda' (kelopak buah/calyx), sedangkan kandidat yang tersedia hanyalah 'panjang kelopak bunga' (domain bunga). Karena tidak ada baris kanonik yang sesuai untuk kelopak buah pada daftar kandidat, maka dipetakan ke NULL.",
+    "atribut \"Keliling\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut sumber merujuk pada keliling buah masak, sedangkan kandidat yang tersedia hanya mencakup bagian bunga, daun, atau keliling kelopak buah muda (r_41) yang tidak cocok.",
+    "atribut \"Panjang tangkai\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut sumber merujuk pada panjang tangkai buah masak, sedangkan kandidat yang tersedia hanya panjang tangkai buah muda (r_39) dan panjang tangkai daun (r_11). Tidak ada baris kanonik yang tepat untuk panjang tangkai buah masak.",
+    "atribut \"Keliling kelopak\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut sumber merujuk pada keliling kelopak pada tahap 'Buah Masak', sedangkan kandidat yang tersedia hanya 'keliling kelopak buah muda' (r_41). Karena tidak ada baris kanonik untuk keliling kelopak buah masak di antara kandidat, atribut dipetakan ke NULL."
+  ],
+  "status": "ok",
+  "detik": 548.6
+}

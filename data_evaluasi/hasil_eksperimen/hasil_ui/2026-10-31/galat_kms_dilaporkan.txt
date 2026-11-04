@@ -1,0 +1,17 @@
+Sumber: laporan Rifqi melalui Telegram; belum direproduksi mandiri.
+Halaman: KMS.
+Run eksperimen yang terakhir dijalankan: B-S01. Hubungan sebab-akibat dengan run belum diverifikasi.
+
+Teks galat yang dilaporkan (disalin tanpa perubahan):
+streamlit.runtime.media_file_storage.MediaFileStorageError: Error opening '/media/2f4b5a4b2fc5e2bf294650e9a9ff5d985fb6a5d5e46d5fce39dcdf531eeeda13'
+Traceback:
+FileNotFoundError: [Errno 2] No such file or directory: '/media/2f4b5a4b2fc5e2bf294650e9a9ff5d985fb6a5d5e46d5fce39dcdf531eeeda13'
+During handling of the above exception, another exception occurred:
+FileNotFoundError: [Errno 2] No such file or directory: '/media/2f4b5a4b2fc5e2bf294650e9a9ff5d985fb6a5d5e46d5fce39dcdf531eeeda13'
+The above exception was the direct cause of the following exception:
+File "/srv/hermes-control/services/agentic-ai-cabai-kms/src/ui/pages/4_KMS.py", line 26, in <module>
+    render_candidates_panel()
+File "/srv/hermes-control/services/agentic-ai-cabai-kms/src/integrations/candidates_ui.py", line 90, in render_candidates_panel
+    st.image(media_url, caption=fname, use_container_width=True)
+
+Tidak ada perbaikan, perubahan aplikasi, restart, penghapusan media/kandidat, atau run ulang yang dilakukan sebagai tindak lanjut laporan ini.

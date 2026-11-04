@@ -1,0 +1,255 @@
+{
+  "run": "R02",
+  "kind": "atribut",
+  "rep": 1,
+  "file": "input_cabai_kms.xlsx",
+  "sheet": "Data Varietas",
+  "format": "row-oriented",
+  "header_rows": 1,
+  "drive": null,
+  "max_images": 5,
+  "k": 8,
+  "commit": "3705aab",
+  "sha256_berkas": "5b4a748b0dc99f7db66d8d95d544e8742a9a194a52eafec6ce32ca023613fb61",
+  "start": "2026-11-01 15:40:24",
+  "s2_keys": [
+    [
+      "Varietas Cabai",
+      "",
+      "r_6"
+    ],
+    [
+      "Leaf shape",
+      "",
+      "r_14"
+    ],
+    [
+      "Fruit diameter",
+      "",
+      "r_40"
+    ],
+    [
+      "Fruit shape",
+      "",
+      "r_59"
+    ],
+    [
+      "Stem diameter",
+      "",
+      "r_21"
+    ],
+    [
+      "Pericarp thickness",
+      "",
+      "r_20"
+    ],
+    [
+      "Leaf size as recorded",
+      "",
+      "r_9"
+    ],
+    [
+      "Mature fruit weight",
+      "",
+      "r_37"
+    ],
+    [
+      "Corolla colour",
+      "",
+      "r_19"
+    ],
+    [
+      "Mature fruit colour",
+      "",
+      "r_45"
+    ],
+    [
+      "Immature fruit colour",
+      "",
+      "r_44"
+    ],
+    [
+      "Mature fruit length",
+      "",
+      "r_37"
+    ],
+    [
+      "Plant growth habit",
+      "",
+      "r_1"
+    ],
+    [
+      "Profil potongan melintang daun",
+      "",
+      "r_63"
+    ],
+    [
+      "Warna batang",
+      "",
+      "r_29"
+    ],
+    [
+      "Bentuk penampang batang",
+      "",
+      "r_53"
+    ],
+    [
+      "Panjang dikotomus",
+      "",
+      "r_8"
+    ],
+    [
+      "Panjang ruas batang",
+      "",
+      "r_20"
+    ],
+    [
+      "Warna bunga",
+      "",
+      "r_24"
+    ],
+    [
+      "Warna kepala putik",
+      "",
+      "r_19"
+    ],
+    [
+      "Warna benang sari",
+      "",
+      "r_27"
+    ],
+    [
+      "Warna kotak sari",
+      "",
+      "r_26"
+    ],
+    [
+      "Orientasi pedunkulus",
+      "",
+      "r_6"
+    ],
+    [
+      "Tipe berbuah",
+      "",
+      "r_6"
+    ],
+    [
+      "Umur mulai berbunga",
+      "",
+      "r_3"
+    ],
+    [
+      "Umur mulai panen",
+      "",
+      "r_3"
+    ],
+    [
+      "Rasa buah",
+      "",
+      "r_59"
+    ],
+    [
+      "Bentuk biji",
+      "",
+      "r_6"
+    ],
+    [
+      "Berat 1.000 biji",
+      "",
+      "r_28"
+    ],
+    [
+      "Jumlah buah per tanaman",
+      "",
+      "r_37"
+    ],
+    [
+      "Berat buah per tanaman",
+      "",
+      "r_37"
+    ],
+    [
+      "Daya simpan buah",
+      "",
+      "r_59"
+    ],
+    [
+      "Ketahanan terhadap hama",
+      "",
+      "r_63"
+    ],
+    [
+      "Ketahanan terhadap penyakit",
+      "",
+      "r_15"
+    ],
+    [
+      "Hasil buah per hektar",
+      "",
+      "r_37"
+    ],
+    [
+      "Populasi per hektar",
+      "",
+      "r_65"
+    ],
+    [
+      "Kebutuhan benih per hektar",
+      "",
+      "r_65"
+    ],
+    [
+      "Penciri utama",
+      "",
+      "r_36"
+    ],
+    [
+      "Wilayah adaptasi",
+      "",
+      "r_4"
+    ],
+    [
+      "Asal",
+      "",
+      "r_6"
+    ],
+    [
+      "Silsilah",
+      "",
+      "r_6"
+    ],
+    [
+      "Golongan varietas",
+      "",
+      "r_6"
+    ],
+    [
+      "Pemohon",
+      "",
+      "r_56"
+    ],
+    [
+      "Pemulia",
+      "",
+      "r_6"
+    ],
+    [
+      "Peneliti",
+      "",
+      "r_6"
+    ]
+  ],
+  "images_discovered": 0,
+  "n_mapping": 53,
+  "n_vision": 0,
+  "fingerprint": "7efa6ec0734c127917aa559a2186e0753b6b4294bd958c95e1db1111f0f3e199",
+  "errors": [
+    "akuisisi 'Silsilah': NOT_CHARACTERISTIC Merupakan catatan genealogi/persilangan tetua varietas, bukan karakter yang dapat diukur langsung.",
+    "akuisisi 'Golongan varietas': NOT_CHARACTERISTIC Merupakan kategori pendaftaran/tipe varietas (seperti bersari bebas atau hibrida), bukan karakter biologis tanaman.",
+    "akuisisi 'Pemohon': NOT_CHARACTERISTIC Merupakan entitas/lembaga pendaftar pelepasan varietas.",
+    "akuisisi 'Pemulia': NOT_CHARACTERISTIC Merupakan identitas nama personil pemulia tanaman.",
+    "akuisisi 'Peneliti': NOT_CHARACTERISTIC Merupakan identitas nama personil peneliti penguji varietas."
+  ],
+  "status": "ok",
+  "detik": 377.2
+}

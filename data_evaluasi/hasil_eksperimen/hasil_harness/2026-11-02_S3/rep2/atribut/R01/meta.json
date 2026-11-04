@@ -1,0 +1,95 @@
+{
+  "run": "R01",
+  "kind": "atribut",
+  "rep": 2,
+  "file": "data_input.xlsx",
+  "sheet": "Resume Data",
+  "format": "row-oriented",
+  "header_rows": null,
+  "drive": null,
+  "max_images": 5,
+  "k": 8,
+  "commit": "6217420",
+  "sha256_berkas": "71e86f98a416d2f269b873c3a2c96bc729837fac0b104a79089e9d70fd093056",
+  "start": "2026-11-02 07:01:57",
+  "s2_keys": [
+    [
+      "No",
+      "",
+      ""
+    ],
+    [
+      "Lokasi Sampling",
+      "",
+      ""
+    ],
+    [
+      "S",
+      "Data Koordinat",
+      ""
+    ],
+    [
+      "E",
+      "Data Koordinat",
+      ""
+    ],
+    [
+      "Ketinggian Lahan Sampling (mdpl = meter diatas permukaan laut)",
+      "",
+      ""
+    ],
+    [
+      "Chlorophyll Content (SPAD)",
+      "Mean (Rerata) Data Fisiologi Tanaman. Diukur pada permukaan daun cabai",
+      ""
+    ],
+    [
+      "Nitrogen content (mg/g)",
+      "Mean (Rerata) Data Fisiologi Tanaman. Diukur pada permukaan daun cabai",
+      ""
+    ],
+    [
+      "Humidity (%)",
+      "Mean (Rerata) Data Fisiologi Tanaman. Diukur pada permukaan daun cabai",
+      ""
+    ],
+    [
+      "Suhu permukaan daun(oC)",
+      "Mean (Rerata) Data Fisiologi Tanaman. Diukur pada permukaan daun cabai",
+      ""
+    ],
+    [
+      "Kelembaban tanah (%)",
+      "Data ekologi tanah",
+      ""
+    ],
+    [
+      "pH tanah",
+      "Data ekologi tanah",
+      ""
+    ],
+    [
+      "Suhu udara (0C)",
+      "Data microclimate",
+      ""
+    ],
+    [
+      "Kelembaban udara (%)",
+      "Data microclimate",
+      ""
+    ]
+  ],
+  "images_discovered": 0,
+  "n_mapping": 13,
+  "n_vision": 0,
+  "fingerprint": "b421eb1f6f0d765a8c68bbfadd87d685e09b34206e4274584e07d8abadaecc1f",
+  "errors": [
+    "atribut \"Suhu permukaan daun(oC)\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Suhu permukaan daun(oC)' mengukur data fisiologi tanaman (suhu/temperatur), sedangkan seluruh kandidat daun yang tersedia pada skema kanonik hanya mencakup morfologi/deskriptor visual daun (ukuran, bentuk, warna, tekstur). Tidak ada kandidat kanonik yang cocok.",
+    "atribut \"Kelembaban tanah (%)\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Kelembaban tanah (%)' merupakan parameter lingkungan/edafik spesifik dan tidak tercakup dalam daftar baris kanonik morfologi tanaman cabai yang tersedia.",
+    "atribut \"pH tanah\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'pH tanah' mencakup parameter kimia/ekologi tanah, sedangkan daftar baris kanonik hanya mencakup karakteristik morfologi tanaman, foto organ, adaptasi ekologi ketinggian, dan lokasi geografis. Tidak ada kandidat yang sesuai.",
+    "atribut \"Suhu udara (0C)\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Suhu udara (0C)' merupakan data iklim mikro (suhu lingkungan) dan tidak ada baris kanonik yang mencakup parameter mikroklimat atau kondisi lingkungan pengamatan.",
+    "atribut \"Kelembaban udara (%)\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Kelembaban udara (%)' merupakan data iklim mikro (lingkungan) dan tidak ada baris kanonik yang mencakup parameter kelembaban udara pada daftar kandidat."
+  ],
+  "status": "ok",
+  "detik": 106.5
+}

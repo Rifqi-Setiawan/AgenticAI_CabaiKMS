@@ -1,0 +1,15 @@
+Sumber: UI KMS > Antrean Kandidat Varietas Baru. 2026-10-31T22:06:35.171802+07:00
+Teks UI: Terdapat 12 kandidat citra varietas baru menunggu keputusan.
+ID berikut adalah nomor kandidat yang ditampilkan UI, bukan klaim primary key DB. Tidak ada tindakan kurasi dilakukan.
+#1 | daun cabai kopay.jpg
+#2 | cabai kopay.webp
+#3 | daun cabai domba.webp
+#4 | cabai domba.jpg
+#5 | daun cabai gendot
+#6 | p9vb80t0ldt5cms.webp
+#7 | cabai katokon - bentuk daun.jpg
+#8 | cabai katokon - warna tangkai daun.jpg
+#9 | cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg
+#10 | warna tangkai daun C. chinense dan C. annuum permukaan bawah.jpg
+#11 | cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg
+#12 | C. annuum - bentuk buah, warna bh_ posisi buah menggantung.jpg

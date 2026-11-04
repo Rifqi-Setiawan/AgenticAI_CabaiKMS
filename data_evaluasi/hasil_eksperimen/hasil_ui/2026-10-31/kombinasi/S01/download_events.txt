@@ -1,0 +1,30 @@
+{'id': 1, 'result': {}}
+{'id': 2, 'result': {}}
+{'id': 3, 'result': {'result': {'type': 'string', 'value': 'clicked'}}}
+{"method": "Page.downloadWillBegin", "params": {"frameId": "A81E1A50DC50F4E3EC450ACC0EAFA9EE", "guid": "6fb5f859-beca-4a42-84bb-eee4769b8aa4", "url": "http://127.0.0.1:8501/media/470bb4e2bf1990d653055212ef28b426.csv", "suggestedFilename": "mapping_0dff7daa93974110b8ac14d3bdbb7782.csv"}}
+{"method": "Page.downloadProgress", "params": {"guid": "6fb5f859-beca-4a42-84bb-eee4769b8aa4", "totalBytes": 14999, "receivedBytes": 0, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "6fb5f859-beca-4a42-84bb-eee4769b8aa4", "totalBytes": 14999, "receivedBytes": 14999, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "6fb5f859-beca-4a42-84bb-eee4769b8aa4", "totalBytes": 14999, "receivedBytes": 14999, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "6fb5f859-beca-4a42-84bb-eee4769b8aa4", "totalBytes": 14999, "receivedBytes": 14999, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "6fb5f859-beca-4a42-84bb-eee4769b8aa4", "totalBytes": 14999, "receivedBytes": 14999, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "6fb5f859-beca-4a42-84bb-eee4769b8aa4", "totalBytes": 14999, "receivedBytes": 14999, "state": "completed"}}
+{'id': 1, 'result': {}}
+{'id': 2, 'result': {}}
+{'id': 3, 'result': {'result': {'type': 'string', 'value': 'clicked'}}}
+{"method": "Page.downloadWillBegin", "params": {"frameId": "A81E1A50DC50F4E3EC450ACC0EAFA9EE", "guid": "01b19b99-7e35-4940-825b-ba3a4001bea3", "url": "http://127.0.0.1:8501/media/97199482b2e541d39b74cde28a6926c9.csv", "suggestedFilename": "vision_0dff7daa93974110b8ac14d3bdbb7782.csv"}}
+{"method": "Page.downloadProgress", "params": {"guid": "01b19b99-7e35-4940-825b-ba3a4001bea3", "totalBytes": 10375, "receivedBytes": 0, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "01b19b99-7e35-4940-825b-ba3a4001bea3", "totalBytes": 10375, "receivedBytes": 10375, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "01b19b99-7e35-4940-825b-ba3a4001bea3", "totalBytes": 10375, "receivedBytes": 10375, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "01b19b99-7e35-4940-825b-ba3a4001bea3", "totalBytes": 10375, "receivedBytes": 10375, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "01b19b99-7e35-4940-825b-ba3a4001bea3", "totalBytes": 10375, "receivedBytes": 10375, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "01b19b99-7e35-4940-825b-ba3a4001bea3", "totalBytes": 10375, "receivedBytes": 10375, "state": "completed"}}
+{'id': 1, 'result': {}}
+{'id': 2, 'result': {}}
+{'id': 3, 'result': {'result': {'type': 'string', 'value': 'clicked'}}}
+{"method": "Page.downloadWillBegin", "params": {"frameId": "A81E1A50DC50F4E3EC450ACC0EAFA9EE", "guid": "b00f17c8-d4ae-420e-9e7f-dcaf4694012b", "url": "http://127.0.0.1:8501/media/826ef4c5b81511515f993fc03d5e0c30.xlsx", "suggestedFilename": "D01_transposed_indonesia_mixed_cabai_kms.xlsx"}}
+{"method": "Page.downloadProgress", "params": {"guid": "b00f17c8-d4ae-420e-9e7f-dcaf4694012b", "totalBytes": 11273, "receivedBytes": 0, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "b00f17c8-d4ae-420e-9e7f-dcaf4694012b", "totalBytes": 11273, "receivedBytes": 11273, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "b00f17c8-d4ae-420e-9e7f-dcaf4694012b", "totalBytes": 11273, "receivedBytes": 11273, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "b00f17c8-d4ae-420e-9e7f-dcaf4694012b", "totalBytes": 11273, "receivedBytes": 11273, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "b00f17c8-d4ae-420e-9e7f-dcaf4694012b", "totalBytes": 11273, "receivedBytes": 11273, "state": "inProgress"}}
+{"method": "Page.downloadProgress", "params": {"guid": "b00f17c8-d4ae-420e-9e7f-dcaf4694012b", "totalBytes": 11273, "receivedBytes": 11273, "state": "completed"}}

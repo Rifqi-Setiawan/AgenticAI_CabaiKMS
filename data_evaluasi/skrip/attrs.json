@@ -1,0 +1,4794 @@
+[
+ {
+  "file": "data_input.xlsx",
+  "sheet": "Resume Data",
+  "format": "row-oriented",
+  "header_rows": null,
+  "sha": "71e86f98a416d2f269b873c3a2c96bc729837fac0b104a79089e9d70fd093056",
+  "items": [
+   {
+    "display": "No",
+    "name": "No",
+    "context": null,
+    "samples": [
+     "Lokasi ke-1",
+     "Lokasi ke-2",
+     "Lokasi ke-3"
+    ],
+    "n_values": 13,
+    "item_id": "b86386fa71db4d9509b392bce863402af0b0cc775df796c1a04bbc58c15eec94",
+    "id_kind": "source_attribute_display",
+    "id_value": "No",
+    "id_issue": null
+   },
+   {
+    "display": "Lokasi Sampling",
+    "name": "Lokasi Sampling",
+    "context": null,
+    "samples": [
+     "Dusun Randu, Desa Hargobinangun, Area Sawah, Hargobinangun, ",
+     "Dusun Tenen, Desa Hargobinangun, Jl. Boyong, Area Sawah, Har",
+     "Dusun Jatisuko, Desa Campursalam, Kec. Parakan, Kabupaten Te"
+    ],
+    "n_values": 13,
+    "item_id": "5e475b18ab5885c803b111c371fabe6ca6cfcdffc5d4060dc7942b883ec17528",
+    "id_kind": "source_attribute_display",
+    "id_value": "Lokasi Sampling",
+    "id_issue": null
+   },
+   {
+    "display": "Data Koordinat / S",
+    "name": "S",
+    "context": "Data Koordinat",
+    "samples": [
+     "110.415748",
+     "110.419183",
+     "110.107272"
+    ],
+    "n_values": 13,
+    "item_id": "8dde6a0dd64e248a69217f72d2aa6f42f86b2a05a8f8582741e5fd64c53d2c6c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Data Koordinat / S",
+    "id_issue": null
+   },
+   {
+    "display": "Data Koordinat / E",
+    "name": "E",
+    "context": "Data Koordinat",
+    "samples": [
+     "-7.634808",
+     "-7.630332",
+     "-7.276687"
+    ],
+    "n_values": 13,
+    "item_id": "ee79e1b8e5adac84b4a3b6cd1edc946ec273c131e088702eb44fa0d8a937501d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Data Koordinat / E",
+    "id_issue": null
+   },
+   {
+    "display": "Ketinggian Lahan Sampling (mdpl = meter diatas permukaan laut)",
+    "name": "Ketinggian Lahan Sampling (mdpl = meter diatas permukaan laut)",
+    "context": null,
+    "samples": [
+     "573",
+     "598",
+     "758"
+    ],
+    "n_values": 13,
+    "item_id": "0dbfda277242ecd9dbb6f7318e4a7ca5f0638bdacfc095df7993996e978dc1ab",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ketinggian Lahan Sampling (mdpl = meter diatas permukaan laut)",
+    "id_issue": null
+   },
+   {
+    "display": "Jenis Cabai",
+    "name": "Jenis Cabai",
+    "context": null,
+    "samples": [
+     "Cabai rawit (Capsicum frutescens L)",
+     "cabai besar (Capsicum annum L)",
+     "Cabai rawit (Capsicum frutescens L)"
+    ],
+    "n_values": 13,
+    "item_id": "190fecc2e45e45d30a5b9b62b836be2ffdb84f14b1e754d3d2ed1cf5d7cd8262",
+    "id_kind": "source_attribute_display",
+    "id_value": "Jenis Cabai",
+    "id_issue": null
+   },
+   {
+    "display": "Mean (Rerata) Data Fisiologi Tanaman. Diukur pada permukaan daun cabai / Chlorophyll Content (SPAD)",
+    "name": "Chlorophyll Content (SPAD)",
+    "context": "Mean (Rerata) Data Fisiologi Tanaman. Diukur pada permukaan daun cabai",
+    "samples": [
+     "28.153333333333332",
+     "29.066666666666666",
+     "27.19333333333333"
+    ],
+    "n_values": 13,
+    "item_id": "bf65a2192c9e6ac25145210505147ac1fe7e749576df7eb33ea0cd1c3ec6c8fb",
+    "id_kind": "source_attribute_display",
+    "id_value": "Mean (Rerata) Data Fisiologi Tanaman. Diukur pada permukaan daun cabai / Chlorophyll Content (SPAD)",
+    "id_issue": null
+   },
+   {
+    "display": "Mean (Rerata) Data Fisiologi Tanaman. Diukur pada permukaan daun cabai / Nitrogen content (mg/g)",
+    "name": "Nitrogen content (mg/g)",
+    "context": "Mean (Rerata) Data Fisiologi Tanaman. Diukur pada permukaan daun cabai",
+    "samples": [
+     "11.546666666666665",
+     "11.84",
+     "11.266666666666664"
+    ],
+    "n_values": 13,
+    "item_id": "bd4a71165945894465b8c8eaac0d0787f6da6e98ee5fad8087aef79d3a2ca9b8",
+    "id_kind": "source_attribute_display",
+    "id_value": "Mean (Rerata) Data Fisiologi Tanaman. Diukur pada permukaan daun cabai / Nitrogen content (mg/g)",
+    "id_issue": null
+   },
+   {
+    "display": "Mean (Rerata) Data Fisiologi Tanaman. Diukur pada permukaan daun cabai / Humidity (%)",
+    "name": "Humidity (%)",
+    "context": "Mean (Rerata) Data Fisiologi Tanaman. Diukur pada permukaan daun cabai",
+    "samples": [
+     "46.18666666666666",
+     "47.36",
+     "45.066666666666656"
+    ],
+    "n_values": 13,
+    "item_id": "1a7ec6149f68da2df04a8212194c3dc4caecf27d85547181b2ed7955fe1800a3",
+    "id_kind": "source_attribute_display",
+    "id_value": "Mean (Rerata) Data Fisiologi Tanaman. Diukur pada permukaan daun cabai / Humidity (%)",
+    "id_issue": null
+   },
+   {
+    "display": "Mean (Rerata) Data Fisiologi Tanaman. Diukur pada permukaan daun cabai / Suhu permukaan daun(oC)",
+    "name": "Suhu permukaan daun(oC)",
+    "context": "Mean (Rerata) Data Fisiologi Tanaman. Diukur pada permukaan daun cabai",
+    "samples": [
+     "29.117333333333338",
+     "30.93066666666667",
+     "29.555333333333337"
+    ],
+    "n_values": 13,
+    "item_id": "c6e50316c341a61ee42d807f512c2a9ebdc8ea18a7e1b5e1787b4a4021b583f0",
+    "id_kind": "source_attribute_display",
+    "id_value": "Mean (Rerata) Data Fisiologi Tanaman. Diukur pada permukaan daun cabai / Suhu permukaan daun(oC)",
+    "id_issue": null
+   },
+   {
+    "display": "Data ekologi tanah / Kelembaban tanah (%)",
+    "name": "Kelembaban tanah (%)",
+    "context": "Data ekologi tanah",
+    "samples": [
+     "58",
+     "58",
+     "100"
+    ],
+    "n_values": 13,
+    "item_id": "ddc791a627caf72e5ac6ec5151d502b291145012aeb7d59ca80b57cafc3f2cd7",
+    "id_kind": "source_attribute_display",
+    "id_value": "Data ekologi tanah / Kelembaban tanah (%)",
+    "id_issue": null
+   },
+   {
+    "display": "Data ekologi tanah / pH tanah",
+    "name": "pH tanah",
+    "context": "Data ekologi tanah",
+    "samples": [
+     "7",
+     "6.8",
+     "6.2"
+    ],
+    "n_values": 13,
+    "item_id": "c420e54253528e2c44eac1e39c6858f83a04a7dd0cd3841eeb54a52b885b6b51",
+    "id_kind": "source_attribute_display",
+    "id_value": "Data ekologi tanah / pH tanah",
+    "id_issue": null
+   },
+   {
+    "display": "Data microclimate / Suhu udara (0C)",
+    "name": "Suhu udara (0C)",
+    "context": "Data microclimate",
+    "samples": [
+     "28.3 - 30.5",
+     "28.7 - 31.1",
+     "31.5 - 33.3"
+    ],
+    "n_values": 13,
+    "item_id": "e31b8c4ee97640ca8a518cee6503e7f9744809810fac0a7be445dd25fd1b3471",
+    "id_kind": "source_attribute_display",
+    "id_value": "Data microclimate / Suhu udara (0C)",
+    "id_issue": null
+   },
+   {
+    "display": "Data microclimate / Kelembaban udara (%)",
+    "name": "Kelembaban udara (%)",
+    "context": "Data microclimate",
+    "samples": [
+     "72 - 67",
+     "68 - 65",
+     "60 - 57"
+    ],
+    "n_values": 13,
+    "item_id": "65cd8ef79c51bd48eda70ed9a80d58f6eaa95d2b8a534da64666df7636c5a8ec",
+    "id_kind": "source_attribute_display",
+    "id_value": "Data microclimate / Kelembaban udara (%)",
+    "id_issue": null
+   }
+  ]
+ },
+ {
+  "file": "input_cabai_kms.xlsx",
+  "sheet": "Data Varietas",
+  "format": "row-oriented",
+  "header_rows": 1,
+  "sha": "5b4a748b0dc99f7db66d8d95d544e8742a9a194a52eafec6ce32ca023613fb61",
+  "items": [
+   {
+    "display": "Varietas Cabai",
+    "name": "Varietas Cabai",
+    "context": null,
+    "samples": [
+     "Carvi Agrihorti",
+     "Biocarpa Agrihorti",
+     "Biocarning Agrihorti"
+    ],
+    "n_values": 6,
+    "item_id": "b94c3e03932efcd8c3ff7551435f4e6325847d983e817f43542e979e7c91618d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Varietas Cabai",
+    "id_issue": null
+   },
+   {
+    "display": "Leaf shape",
+    "name": "Leaf shape",
+    "context": null,
+    "samples": [
+     "Eliptical",
+     "Lanceolate",
+     "Ovate"
+    ],
+    "n_values": 6,
+    "item_id": "f59c3739d3c59ff8d11606c68e4492d105ec8ed10fe792fd93fa909e4e3b6e6d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Leaf shape",
+    "id_issue": null
+   },
+   {
+    "display": "Fruit diameter",
+    "name": "Fruit diameter",
+    "context": null,
+    "samples": [
+     "14,00-14,93 mm",
+     "8,6-14,7 cm",
+     "1,47-1,64 (cm)"
+    ],
+    "n_values": 6,
+    "item_id": "76668305c959eb08f28c9e52b243ca684628c40f1c126716bd02d94a48b5ffb7",
+    "id_kind": "source_attribute_display",
+    "id_value": "Fruit diameter",
+    "id_issue": null
+   },
+   {
+    "display": "Fruit shape",
+    "name": "Fruit shape",
+    "context": null,
+    "samples": [
+     "Panjang rata",
+     "Memanjang",
+     "Silindris Panjang dengan permukaan buah rata"
+    ],
+    "n_values": 5,
+    "item_id": "9ebe3bd4e87c2f4b61cb15a6994462a374c343e705e0a66696fa471687ed6660",
+    "id_kind": "source_attribute_display",
+    "id_value": "Fruit shape",
+    "id_issue": null
+   },
+   {
+    "display": "Stem diameter",
+    "name": "Stem diameter",
+    "context": null,
+    "samples": [
+     "13,54-14,82 cm",
+     "1,30-1,70 cm",
+     "0,9-1,50 (cm)"
+    ],
+    "n_values": 6,
+    "item_id": "98303b1630cd1a609ef82e2768554d4bf0f718df1f9abebddf6bbda5303e63cd",
+    "id_kind": "source_attribute_display",
+    "id_value": "Stem diameter",
+    "id_issue": null
+   },
+   {
+    "display": "Pericarp thickness",
+    "name": "Pericarp thickness",
+    "context": null,
+    "samples": [
+     "2,91-3,37 mm",
+     "1,0-1,2 mm",
+     "1,70-3,24 (mm)"
+    ],
+    "n_values": 5,
+    "item_id": "eb9d7cd32ca356adacb68bc693609fa5abfca9a4d5dc07e3f66d820365d3e05f",
+    "id_kind": "source_attribute_display",
+    "id_value": "Pericarp thickness",
+    "id_issue": null
+   },
+   {
+    "display": "Leaf size as recorded",
+    "name": "Leaf size as recorded",
+    "context": null,
+    "samples": [
+     "Panjang 6,65-9,11 cm; Lebar 2,70-4,03 cm",
+     "Panjang 8,50 - 9,60 cm, lebar 3,29 - 3,67 cm",
+     "Panjang 9,10 - 12,50 cm; Lebar 5,30 - 7,00 cm"
+    ],
+    "n_values": 3,
+    "item_id": "6cc33633e58a7f60b5d724003a78e87273ef182da4263507a1e743f1fab8acf9",
+    "id_kind": "source_attribute_display",
+    "id_value": "Leaf size as recorded",
+    "id_issue": null
+   },
+   {
+    "display": "Mature fruit weight",
+    "name": "Mature fruit weight",
+    "context": null,
+    "samples": [
+     "12,58-12,85 gram",
+     "5,87-7,80 gram",
+     "5,64 - 7,32 gram"
+    ],
+    "n_values": 5,
+    "item_id": "572ad8ab1b3ff8875ddd1c4fbb34005ad939415aca58d48745e473a636c40d07",
+    "id_kind": "source_attribute_display",
+    "id_value": "Mature fruit weight",
+    "id_issue": null
+   },
+   {
+    "display": "Corolla colour",
+    "name": "Corolla colour",
+    "context": null,
+    "samples": [
+     "Hijau (RHS 142 A)",
+     "Putih (YW NN 155C)",
+     "Putih (RHS 155C)"
+    ],
+    "n_values": 6,
+    "item_id": "653d97019d2515433ae2e4121343cc5f3ed4b46a191175d00162d157e7f42018",
+    "id_kind": "source_attribute_display",
+    "id_value": "Corolla colour",
+    "id_issue": null
+   },
+   {
+    "display": "Mature fruit colour",
+    "name": "Mature fruit colour",
+    "context": null,
+    "samples": [
+     "Merah (Red Group RHS 46 A)",
+     "Merah (VR 45 A)",
+     "Merah (RHS 45A)"
+    ],
+    "n_values": 6,
+    "item_id": "9ba0963dc8673793237e15014d4a99349363774be627652baf5bd0395338f860",
+    "id_kind": "source_attribute_display",
+    "id_value": "Mature fruit colour",
+    "id_issue": null
+   },
+   {
+    "display": "Plant height",
+    "name": "Plant height",
+    "context": null,
+    "samples": [
+     "60-70 cm",
+     "46-83 cm",
+     "50,73-67,93 (cm)"
+    ],
+    "n_values": 6,
+    "item_id": "a549026ed2e42fec73821a7505ea541fb1fd8aa1fd564973a8eba9ceda627fea",
+    "id_kind": "source_attribute_display",
+    "id_value": "Plant height",
+    "id_issue": null
+   },
+   {
+    "display": "Immature fruit colour",
+    "name": "Immature fruit colour",
+    "context": null,
+    "samples": [
+     "Hijau (Green Group RHS 139 A)",
+     "Hijau (SYG 144 A)",
+     "Hijau (RHS 1394)"
+    ],
+    "n_values": 6,
+    "item_id": "a1bf7db40b82095a6af34ed9f5c12e7ec1af38d8c8ec3fbcc10c06ce6bc5ab7d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Immature fruit colour",
+    "id_issue": null
+   },
+   {
+    "display": "Mature fruit length",
+    "name": "Mature fruit length",
+    "context": null,
+    "samples": [
+     "12,14-12,52 cm",
+     "12,0-16,2 cm",
+     "10,74-14,03 (cm)"
+    ],
+    "n_values": 6,
+    "item_id": "fa123bcf2a9a1d9d41d2ca2ad625ca88a07145aaf34839e7ce2c9d696ad154a5",
+    "id_kind": "source_attribute_display",
+    "id_value": "Mature fruit length",
+    "id_issue": null
+   },
+   {
+    "display": "Plant growth habit",
+    "name": "Plant growth habit",
+    "context": null,
+    "samples": [
+     "Tegak"
+    ],
+    "n_values": 1,
+    "item_id": "ae86c49abf48a62960f0280455bff61e975cc4c83498b454c19d1acdbf421aed",
+    "id_kind": "source_attribute_display",
+    "id_value": "Plant growth habit",
+    "id_issue": null
+   },
+   {
+    "display": "Panjang daun",
+    "name": "Panjang daun",
+    "context": null,
+    "samples": [
+     "4,10-5,10 cm",
+     "6,45-10,64 (cm)",
+     "7,72-8,78 cm"
+    ],
+    "n_values": 3,
+    "item_id": "f923169d069667831dd95f07084db77aa8cae721b29cf99539f23b2a7b865523",
+    "id_kind": "source_attribute_display",
+    "id_value": "Panjang daun",
+    "id_issue": null
+   },
+   {
+    "display": "Lebar daun",
+    "name": "Lebar daun",
+    "context": null,
+    "samples": [
+     "1,70-2,20 cm",
+     "2,73-4,04 (cm)",
+     "2,98-3,32 cm"
+    ],
+    "n_values": 3,
+    "item_id": "ef5fc7a887ab8b4d53cd942ab576ca39d5e95cf17844b3bc95046db6465d2053",
+    "id_kind": "source_attribute_display",
+    "id_value": "Lebar daun",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk pangkal daun",
+    "name": "Bentuk pangkal daun",
+    "context": null,
+    "samples": [
+     "Membulat"
+    ],
+    "n_values": 1,
+    "item_id": "9654e9d35acd82e4a1f3ddc45107f86da342448a681b953827869b558834d390",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk pangkal daun",
+    "id_issue": null
+   },
+   {
+    "display": "Warna daun",
+    "name": "Warna daun",
+    "context": null,
+    "samples": [
+     "Hijau tua (RHS N 137 A)",
+     "Hijau (GOG NN137A)",
+     "Hijau (RHS NN 137A)"
+    ],
+    "n_values": 6,
+    "item_id": "ae5c9e57b4013c69764a61cc2826e339b65043387b755ca9f5c332ed1dab4ac0",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna daun",
+    "id_issue": null
+   },
+   {
+    "display": "Profil potongan melintang daun",
+    "name": "Profil potongan melintang daun",
+    "context": null,
+    "samples": [
+     "Strongly Concave"
+    ],
+    "n_values": 1,
+    "item_id": "c2ce05becfe24a19292040b46ef93b395d24f3eb49591992e12dc0aa2ea09e3c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Profil potongan melintang daun",
+    "id_issue": null
+   },
+   {
+    "display": "Warna batang",
+    "name": "Warna batang",
+    "context": null,
+    "samples": [
+     "Hijau keunguan (RHS N 92 C)",
+     "Abu-abu (CBG199D)",
+     "Hijau dengan antosianin rendah (RHS 137D)"
+    ],
+    "n_values": 6,
+    "item_id": "1bb3776af378e2427d111185b4704a0efa8ab50f3d2b7e353f985c398880b539",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna batang",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk penampang batang",
+    "name": "Bentuk penampang batang",
+    "context": null,
+    "samples": [
+     "Bulat",
+     "Bulat",
+     "Bulat"
+    ],
+    "n_values": 6,
+    "item_id": "f37fed1c78d34f3d7ada92b83fcd73328ebe81e8828ebb2e896a284a4e51f5d1",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk penampang batang",
+    "id_issue": null
+   },
+   {
+    "display": "Panjang dikotomus",
+    "name": "Panjang dikotomus",
+    "context": null,
+    "samples": [
+     "Pendek (26,90 - 32,40 cm)"
+    ],
+    "n_values": 1,
+    "item_id": "c79812b0de0fab6bc8b9498f8a373d485778dba3cfdb9098e01f7100bb7b3820",
+    "id_kind": "source_attribute_display",
+    "id_value": "Panjang dikotomus",
+    "id_issue": null
+   },
+   {
+    "display": "Panjang ruas batang",
+    "name": "Panjang ruas batang",
+    "context": null,
+    "samples": [
+     "Pendek (1,40 - 2,00 cm)"
+    ],
+    "n_values": 1,
+    "item_id": "31a8d1efab9cdecbcde3273bdbd6809df65649f30dbe805e456f066660db3acd",
+    "id_kind": "source_attribute_display",
+    "id_value": "Panjang ruas batang",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk bunga",
+    "name": "Bentuk bunga",
+    "context": null,
+    "samples": [
+     "Bintang",
+     "Bintang",
+     "Seperti bintang"
+    ],
+    "n_values": 4,
+    "item_id": "41769e90389be5e1dd0383c8d0ff5c8b69198954807e30a2c964e8e2309bdb4b",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk bunga",
+    "id_issue": null
+   },
+   {
+    "display": "Warna bunga",
+    "name": "Warna bunga",
+    "context": null,
+    "samples": [
+     "Putih (RHS White grup NN155A)"
+    ],
+    "n_values": 1,
+    "item_id": "80b97f142c1d09a038f3ff83a5082737d23bebd1237cf901d5853008a3b7e011",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna bunga",
+    "id_issue": null
+   },
+   {
+    "display": "Warna kelopak bunga",
+    "name": "Warna kelopak bunga",
+    "context": null,
+    "samples": [
+     "Hijau (RHS 155 A)",
+     "Hijau (DYG 139B)",
+     "Hijau (RHS 137C)"
+    ],
+    "n_values": 6,
+    "item_id": "3f1bfa592b9e99e83dc9cfa7e24143b543d6e6dd4e96b0729840c5a0ed869154",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna kelopak bunga",
+    "id_issue": null
+   },
+   {
+    "display": "Warna kepala putik",
+    "name": "Warna kepala putik",
+    "context": null,
+    "samples": [
+     "Biru keunguan (RHS 93 A)",
+     "Hijau (SYG 142A)",
+     "Putih (RHS Green White Group 157 B)"
+    ],
+    "n_values": 5,
+    "item_id": "54f4d4ca5e18ac3d5ddba6c2aa2875d35e62674527c2cee22b521394cadab80a",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna kepala putik",
+    "id_issue": null
+   },
+   {
+    "display": "Warna benang sari",
+    "name": "Warna benang sari",
+    "context": null,
+    "samples": [
+     "Ungu (RHS 96 A)",
+     "Ungu (VPB 95A)",
+     "Biru (RHS 103A)"
+    ],
+    "n_values": 5,
+    "item_id": "98d5e2739383e08d89565efd1271e428c70b14561f785d894644be75edda07d3",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna benang sari",
+    "id_issue": null
+   },
+   {
+    "display": "Warna kotak sari",
+    "name": "Warna kotak sari",
+    "context": null,
+    "samples": [
+     "Hijau kebiruan (RHS Blue Green Group 122 B)",
+     "Hijau keabuan (Greyed Green Group RHS N189 B)"
+    ],
+    "n_values": 2,
+    "item_id": "3eae4bf5a54c84169eca9850e7226a7cc28567b5aa9172ad5fe2a466aed09a4f",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna kotak sari",
+    "id_issue": null
+   },
+   {
+    "display": "Orientasi pedunkulus",
+    "name": "Orientasi pedunkulus",
+    "context": null,
+    "samples": [
+     "Drooping"
+    ],
+    "n_values": 1,
+    "item_id": "33ae1d333cdbd06d36737d88184386f5aa7ae95071d0bf3982aadb40af4a4c51",
+    "id_kind": "source_attribute_display",
+    "id_value": "Orientasi pedunkulus",
+    "id_issue": null
+   },
+   {
+    "display": "Tipe berbuah",
+    "name": "Tipe berbuah",
+    "context": null,
+    "samples": [
+     "Meghadap ke bawah"
+    ],
+    "n_values": 1,
+    "item_id": "a92ccb98e4a8ccbdd58811bdf055bccddd840e96f1d8a1c646293b0d60d13d74",
+    "id_kind": "source_attribute_display",
+    "id_value": "Tipe berbuah",
+    "id_issue": null
+   },
+   {
+    "display": "Umur mulai berbunga",
+    "name": "Umur mulai berbunga",
+    "context": null,
+    "samples": [
+     "46-51 hari setelah tanam",
+     "31-37 hst",
+     "26,67-42,25 (HST)"
+    ],
+    "n_values": 6,
+    "item_id": "f6686398d206766c154b47def8176847a58aad458879fe32fe34ce4737309644",
+    "id_kind": "source_attribute_display",
+    "id_value": "Umur mulai berbunga",
+    "id_issue": null
+   },
+   {
+    "display": "Umur mulai panen",
+    "name": "Umur mulai panen",
+    "context": null,
+    "samples": [
+     "91-96 hari setelah tanam",
+     "91-117 hst",
+     "90,33-96,76 (HST)"
+    ],
+    "n_values": 6,
+    "item_id": "ed98d16a786a0edc43ef45c60593edca5207f52af1e0f64755cb20e25c089dc6",
+    "id_kind": "source_attribute_display",
+    "id_value": "Umur mulai panen",
+    "id_issue": null
+   },
+   {
+    "display": "Rasa buah",
+    "name": "Rasa buah",
+    "context": null,
+    "samples": [
+     "Pedas",
+     "Pedas",
+     "Pedas"
+    ],
+    "n_values": 6,
+    "item_id": "90bc5dce18f655e8cea6cf91ad721118230788afd3f3e7becaf8c3f74b0eba8c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Rasa buah",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk biji",
+    "name": "Bentuk biji",
+    "context": null,
+    "samples": [
+     "Bulat gepeng",
+     "Bulat Pipih",
+     "Bulat pipih"
+    ],
+    "n_values": 5,
+    "item_id": "331c1923536173a32ce255d3904cf6a1d9824ec17b82181f5378b7245ebe977c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk biji",
+    "id_issue": null
+   },
+   {
+    "display": "Warna biji",
+    "name": "Warna biji",
+    "context": null,
+    "samples": [
+     "Kuning jerami (RHS 2 B)",
+     "Kuning jerami (MY 161A)",
+     "Kuning (RHS 10B)"
+    ],
+    "n_values": 6,
+    "item_id": "20de6a57e1b08d55641d69c2769d5d7c22e626fbefb2d763b7013c2b638b1f7f",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna biji",
+    "id_issue": null
+   },
+   {
+    "display": "Berat 1.000 biji",
+    "name": "Berat 1.000 biji",
+    "context": null,
+    "samples": [
+     "7,12-7,39 cm",
+     "5,60-5,92 gram",
+     "7.02-7,25 (gr)"
+    ],
+    "n_values": 6,
+    "item_id": "b630b6741557a0a69b552ffb1384bfecd42f0dd5d709320e314fd1f6059e07cd",
+    "id_kind": "source_attribute_display",
+    "id_value": "Berat 1.000 biji",
+    "id_issue": null
+   },
+   {
+    "display": "Jumlah buah per tanaman",
+    "name": "Jumlah buah per tanaman",
+    "context": null,
+    "samples": [
+     "84-92 buah",
+     "95-126 buah",
+     "185,00 - 211,50 buah"
+    ],
+    "n_values": 5,
+    "item_id": "ec2080989859fd2999113ab77fa074d0e8f92b478aa2c9fe0c3ebdcf56dfba9d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Jumlah buah per tanaman",
+    "id_issue": null
+   },
+   {
+    "display": "Berat buah per tanaman",
+    "name": "Berat buah per tanaman",
+    "context": null,
+    "samples": [
+     "1,076-1,130 kg",
+     "540-1.038 kg",
+     "1,02 - 1,49 kg"
+    ],
+    "n_values": 5,
+    "item_id": "bab20a1958773f00d28ffe89864485b908afea7b06c4968cc1ee8097c2308b3d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Berat buah per tanaman",
+    "id_issue": null
+   },
+   {
+    "display": "Daya simpan buah",
+    "name": "Daya simpan buah",
+    "context": null,
+    "samples": [
+     "14-15 hari setelah panen",
+     "8-14 hsp",
+     "11,00-14,20 (hari)"
+    ],
+    "n_values": 6,
+    "item_id": "bc2316b5b7af80ebd91b71d910a717f4ed959e87cb7aaa2524511ee2e1ce6a3c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Daya simpan buah",
+    "id_issue": null
+   },
+   {
+    "display": "Ketahanan terhadap hama",
+    "name": "Ketahanan terhadap hama",
+    "context": null,
+    "samples": [
+     "Agak toleran terhadap hama penghisap daun (trips)",
+     "Agak toleran terhadap hama pengisap daun (Trips)"
+    ],
+    "n_values": 2,
+    "item_id": "a321850c0ce6ea4d9d6ecda6213e8135096f0ce45316dfd4792482e8e3efc797",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ketahanan terhadap hama",
+    "id_issue": null
+   },
+   {
+    "display": "Ketahanan terhadap penyakit",
+    "name": "Ketahanan terhadap penyakit",
+    "context": null,
+    "samples": [
+     "Tahan terhadap virus belang (ChiVMV)",
+     "Tahan terhadap virus kuning (PepYLCV)",
+     "Sangat tahan terhadap layu bakteri (Ralstonia solanacearum),"
+    ],
+    "n_values": 3,
+    "item_id": "6690358794b861000312ac8e36652c9183df9b5d664e7086ec610c9ee17623cb",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ketahanan terhadap penyakit",
+    "id_issue": null
+   },
+   {
+    "display": "Hasil buah per hektar",
+    "name": "Hasil buah per hektar",
+    "context": null,
+    "samples": [
+     "21-23 ton",
+     "9,45-18,16 ton",
+     "12,34-40,37 ton/ha"
+    ],
+    "n_values": 6,
+    "item_id": "99c402389cbb7d71ace457feb267af802961b3fad0281f6acf9f7e61e8b4cbc1",
+    "id_kind": "source_attribute_display",
+    "id_value": "Hasil buah per hektar",
+    "id_issue": null
+   },
+   {
+    "display": "Populasi per hektar",
+    "name": "Populasi per hektar",
+    "context": null,
+    "samples": [
+     "23.000 tanaman",
+     "25.000 tanaman",
+     "23.000-27.000"
+    ],
+    "n_values": 6,
+    "item_id": "2e03f56716d3ed4192102bf81c07592fab35d572bf407521105e9d6f9411e7cd",
+    "id_kind": "source_attribute_display",
+    "id_value": "Populasi per hektar",
+    "id_issue": null
+   },
+   {
+    "display": "Kebutuhan benih per hektar",
+    "name": "Kebutuhan benih per hektar",
+    "context": null,
+    "samples": [
+     "200 gram",
+     "250 gram",
+     "0,20-0,24 kg"
+    ],
+    "n_values": 6,
+    "item_id": "8323f111e97cac29846c87e495021fb0026e335b8e8164a79661afdbbdaf2fcf",
+    "id_kind": "source_attribute_display",
+    "id_value": "Kebutuhan benih per hektar",
+    "id_issue": null
+   },
+   {
+    "display": "Penciri utama",
+    "name": "Penciri utama",
+    "context": null,
+    "samples": [
+     "Undulesi tepi daun sedang dan warna buah masak merah (RHS 46",
+     "1. Tipe tanaman intermediate 2. Warna buah muda hijau kekuni",
+     "Batas kelopak buah bergerigi (Shellow dan bergerigi), Predom"
+    ],
+    "n_values": 6,
+    "item_id": "0ad54d62bff35c9b351888f0f36e2e1f26366a33d02fc114cb936f8c6ceb5647",
+    "id_kind": "source_attribute_display",
+    "id_value": "Penciri utama",
+    "id_issue": null
+   },
+   {
+    "display": "Keunggulan varietas",
+    "name": "Keunggulan varietas",
+    "context": null,
+    "samples": [
+     "Tahan virus dan produksi tinggi",
+     "Tahan antraknos dan produktivitas tinggi",
+     "Hasil perhektar tinggi, tahan terhadap virus kuning (virus G"
+    ],
+    "n_values": 6,
+    "item_id": "20f9699c34c46b8ebcb006bbeed85fd15ece6913468f0b6469bfe0968eab8a6d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Keunggulan varietas",
+    "id_issue": null
+   },
+   {
+    "display": "Wilayah adaptasi",
+    "name": "Wilayah adaptasi",
+    "context": null,
+    "samples": [
+     "Sesuai di dataran tinggi pada musim hujan",
+     "Sesuai pada musim kemarau di dataran tinggi Kec. Pacet, Kab.",
+     "Sesuai untuk dataran medium-tinggi pada musim hujan"
+    ],
+    "n_values": 6,
+    "item_id": "98e40e18be7f8eb0cd27ce460fdcbc968853cc0292747a9a635affb307c241ff",
+    "id_kind": "source_attribute_display",
+    "id_value": "Wilayah adaptasi",
+    "id_issue": null
+   },
+   {
+    "display": "Asal",
+    "name": "Asal",
+    "context": null,
+    "samples": [
+     "Dalam negeri",
+     "Dalam Negeri",
+     "Dalam Negeri"
+    ],
+    "n_values": 6,
+    "item_id": "0b7028e9057af1ff842b7424eb35ad396e95793692ecffd4ebc081e43841a9a4",
+    "id_kind": "source_attribute_display",
+    "id_value": "Asal",
+    "id_issue": null
+   },
+   {
+    "display": "Silsilah",
+    "name": "Silsilah",
+    "context": null,
+    "samples": [
+     "Mutasi kimia cabai varietas Gelora menggunakan EMS",
+     "Kencana X AVPP0207",
+     "Mutasi kimia cabai varietas Gelora menggunakan EMS"
+    ],
+    "n_values": 6,
+    "item_id": "03438377912384a607e41fd2fe52db4b6414d5ca5dea2c0f6161ae4dcbcd9767",
+    "id_kind": "source_attribute_display",
+    "id_value": "Silsilah",
+    "id_issue": null
+   },
+   {
+    "display": "Golongan varietas",
+    "name": "Golongan varietas",
+    "context": null,
+    "samples": [
+     "Bersari bebas",
+     "Bersari bebas (OP)",
+     "Bersari bebas (OP)"
+    ],
+    "n_values": 6,
+    "item_id": "d301a66803cb12b94938d41e0a7ebb92661da888160c36ca8d4773d5f6319e38",
+    "id_kind": "source_attribute_display",
+    "id_value": "Golongan varietas",
+    "id_issue": null
+   },
+   {
+    "display": "Pemohon",
+    "name": "Pemohon",
+    "context": null,
+    "samples": [
+     "PT. Hibrida Jaya Unggul",
+     "CV. Herkreasi",
+     "PT East West Seed Indonesia"
+    ],
+    "n_values": 3,
+    "item_id": "ecefd0698ba0c161d31409d49b602591556f5252587ca700dfdd44e48adb7b0e",
+    "id_kind": "source_attribute_display",
+    "id_value": "Pemohon",
+    "id_issue": null
+   },
+   {
+    "display": "Pemulia",
+    "name": "Pemulia",
+    "context": null,
+    "samples": [
+     "Ari Wibowo",
+     "Ade Yatna dan Supri Hertanto, SP",
+     "Fatkhu Rokhman, Aji Supriyadi, dan Puji Syara Anggia"
+    ],
+    "n_values": 3,
+    "item_id": "58194c692465179feba192523d7011240d775bf9db2b0a58fbb42804785b40ba",
+    "id_kind": "source_attribute_display",
+    "id_value": "Pemulia",
+    "id_issue": null
+   },
+   {
+    "display": "Peneliti",
+    "name": "Peneliti",
+    "context": null,
+    "samples": [
+     "Agus Abudharin Munif, Ari Wibowo, Arif Rizki, dan Ajimas Muk",
+     "Arfan Adi Nugroho, Ade Priyono, dan Puji Priyadi",
+     "Abdul Kohar, Febryana Erlyandari, Gigin Fajaruddin dan Bagus"
+    ],
+    "n_values": 3,
+    "item_id": "0454501e3bc06d606222f67eb3612fbb735ada6e7a7fe29407abf882639ef60b",
+    "id_kind": "source_attribute_display",
+    "id_value": "Peneliti",
+    "id_issue": null
+   }
+  ]
+ },
+ {
+  "file": "D01_transposed_indonesia_mixed.xlsx",
+  "sheet": "Data_Transposed",
+  "format": "transposed",
+  "header_rows": null,
+  "sha": "7e4eb51952340a5968bfbb161325f9285b477d04924c392b1fbf988a5956e1c6",
+  "items": [
+   {
+    "display": "Bentuk pertumbuhan tanaman",
+    "name": "Bentuk pertumbuhan tanaman",
+    "context": null,
+    "samples": [
+     "Perdu",
+     "Tegak kompak",
+     "Semak rapat"
+    ],
+    "n_values": 4,
+    "item_id": "f4511b2614db3773b38f7e3e3feffbf06681b4b4b3f4ccd19408d52fbd5e9e20",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk pertumbuhan tanaman",
+    "id_issue": null
+   },
+   {
+    "display": "Tinggi keseluruhan tanaman",
+    "name": "Tinggi keseluruhan tanaman",
+    "context": null,
+    "samples": [
+     "˃ 100 cm; 20 cm",
+     "60 - 89 cm",
+     "90–120 cm"
+    ],
+    "n_values": 4,
+    "item_id": "fea1b0db6809accede584bc7e30f66c211f64afbe3905fc0872416e61d4124a9",
+    "id_kind": "source_attribute_display",
+    "id_value": "Tinggi keseluruhan tanaman",
+    "id_issue": null
+   },
+   {
+    "display": "Siklus hidup tanaman",
+    "name": "Siklus hidup tanaman",
+    "context": null,
+    "samples": [
+     "Tahunan",
+     "Semusim",
+     "Tahunan"
+    ],
+    "n_values": 4,
+    "item_id": "c2290ce8c22c62d0614a94567ec830b2532e38968010f6526aadb0ab2b5f2db8",
+    "id_kind": "source_attribute_display",
+    "id_value": "Siklus hidup tanaman",
+    "id_issue": null
+   },
+   {
+    "display": "Kesesuaian lingkungan tumbuh",
+    "name": "Kesesuaian lingkungan tumbuh",
+    "context": null,
+    "samples": [
+     "Dataran tinggi sejuk",
+     "Dataran rendah lembap",
+     "Dataran tinggi"
+    ],
+    "n_values": 4,
+    "item_id": "2cfa55729e0872f45e066df2d6ac6555ff4b4e6aa2a64c29f37305c1bcf5911f",
+    "id_kind": "source_attribute_display",
+    "id_value": "Kesesuaian lingkungan tumbuh",
+    "id_issue": null
+   },
+   {
+    "display": "Permukaan batang",
+    "name": "Permukaan batang",
+    "context": null,
+    "samples": [
+     "Berbulu lebat",
+     "Berbulu halus",
+     "Berbulu sedang"
+    ],
+    "n_values": 4,
+    "item_id": "9f58ba045d4d9d5cb1567630d1399b9e87a3da9348e8cb6a2666f328e42b34f9",
+    "id_kind": "source_attribute_display",
+    "id_value": "Permukaan batang",
+    "id_issue": null
+   },
+   {
+    "display": "Tekstur permukaan daun",
+    "name": "Tekstur permukaan daun",
+    "context": null,
+    "samples": [
+     "Agak kasar",
+     "Halus",
+     "Kasar"
+    ],
+    "n_values": 4,
+    "item_id": "89630e5132e94199ae9de28787907c649b4c776144b707bd064a7ae24f586850",
+    "id_kind": "source_attribute_display",
+    "id_value": "Tekstur permukaan daun",
+    "id_issue": null
+   },
+   {
+    "display": "Warna dominan daun",
+    "name": "Warna dominan daun",
+    "context": null,
+    "samples": [
+     "Hijau tua",
+     "Hijau",
+     "Hijau pekat"
+    ],
+    "n_values": 4,
+    "item_id": "0195a967800fc32d6d8d0b67c64c296228754fce65df435c18065e33e518c76c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna dominan daun",
+    "id_issue": null
+   },
+   {
+    "display": "Ukuran panjang helai daun",
+    "name": "Ukuran panjang helai daun",
+    "context": null,
+    "samples": [
+     "14,3–16,8 cm",
+     "10,2–12,4 cm",
+     "12,2 cm"
+    ],
+    "n_values": 4,
+    "item_id": "aa588487a5a23881aa9ce16d4a6dcf7a52206a4feba1831c0dde17664b802e46",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ukuran panjang helai daun",
+    "id_issue": null
+   },
+   {
+    "display": "Lebar helai daun",
+    "name": "Lebar helai daun",
+    "context": null,
+    "samples": [
+     "6,4–7,1 cm",
+     "4,0–5,1 cm",
+     "5,8 cm"
+    ],
+    "n_values": 3,
+    "item_id": "59c963f4d76eaa1ce7d691ff1de07a604dac056f53f80939f75154b2012c1c0b",
+    "id_kind": "source_attribute_display",
+    "id_value": "Lebar helai daun",
+    "id_issue": null
+   },
+   {
+    "display": "Warna mahkota bunga",
+    "name": "Warna mahkota bunga",
+    "context": null,
+    "samples": [
+     "Ungu pucat",
+     "Putih",
+     "Ungu"
+    ],
+    "n_values": 4,
+    "item_id": "44e82f9ff06107a648b2e830b5f887cf053ef3e4d8d98dff2dec3424cfaa9ded",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna mahkota bunga",
+    "id_issue": null
+   },
+   {
+    "display": "Jumlah helai mahkota",
+    "name": "Jumlah helai mahkota",
+    "context": null,
+    "samples": [
+     "5",
+     "5",
+     "6"
+    ],
+    "n_values": 4,
+    "item_id": "1f130dbd23950dc71939141d06bcb86a178c3ca7f56eb0a494defcce84ff24ee",
+    "id_kind": "source_attribute_display",
+    "id_value": "Jumlah helai mahkota",
+    "id_issue": null
+   },
+   {
+    "display": "Arah bunga pada tanaman",
+    "name": "Arah bunga pada tanaman",
+    "context": null,
+    "samples": [
+     "Menggantung",
+     "Tegak",
+     "Menggantung"
+    ],
+    "n_values": 4,
+    "item_id": "16b3971825ac624762e10160b4db4103cdb1d0c6c19d511d5f2b44e24679dbd5",
+    "id_kind": "source_attribute_display",
+    "id_value": "Arah bunga pada tanaman",
+    "id_issue": null
+   },
+   {
+    "display": "Panjang buah belum masak",
+    "name": "Panjang buah belum masak",
+    "context": null,
+    "samples": [
+     "5,8–7,2 cm",
+     "10,3–12,1 cm",
+     "4,1 cm"
+    ],
+    "n_values": 4,
+    "item_id": "856f7afa357de3734b8b6d422b8d03688c50376cd9363e89c23a19fc5b9e4a2e",
+    "id_kind": "source_attribute_display",
+    "id_value": "Panjang buah belum masak",
+    "id_issue": null
+   },
+   {
+    "display": "Keliling buah belum masak",
+    "name": "Keliling buah belum masak",
+    "context": null,
+    "samples": [
+     "5,1–6,0 cm",
+     "2,8–3,4 cm",
+     "4,8 cm"
+    ],
+    "n_values": 4,
+    "item_id": "d495005add2826056b027ee0879f951ea5f135b893aced49facafec58f58ecb5",
+    "id_kind": "source_attribute_display",
+    "id_value": "Keliling buah belum masak",
+    "id_issue": null
+   },
+   {
+    "display": "Warna buah ketika matang",
+    "name": "Warna buah ketika matang",
+    "context": null,
+    "samples": [
+     "Merah",
+     "Merah cerah",
+     "Merah tua"
+    ],
+    "n_values": 4,
+    "item_id": "bc114a1cbb922422fd0979436dc2bf8ee01cddea3ff9b440a899a78a4cd6fadd",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna buah ketika matang",
+    "id_issue": null
+   },
+   {
+    "display": "Posisi buah matang",
+    "name": "Posisi buah matang",
+    "context": null,
+    "samples": [
+     "Menggantung",
+     "Tegak",
+     "Menggantung"
+    ],
+    "n_values": 4,
+    "item_id": "902029b56f794b3b0534593586ba5fb555dc1599de240e1e1d44307b4105f824",
+    "id_kind": "source_attribute_display",
+    "id_value": "Posisi buah matang",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk ujung buah",
+    "name": "Bentuk ujung buah",
+    "context": null,
+    "samples": [
+     "Meruncing",
+     "Runcing",
+     "Tumpul"
+    ],
+    "n_values": 4,
+    "item_id": "fc817a84e797acb2a70be29734b85b0097feec396daf7dde33f898cec7e8b3ee",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk ujung buah",
+    "id_issue": null
+   },
+   {
+    "display": "Warna kulit biji",
+    "name": "Warna kulit biji",
+    "context": null,
+    "samples": [
+     "Krem",
+     "Krem kekuningan",
+     "Krem"
+    ],
+    "n_values": 4,
+    "item_id": "73703650db5e4ab8f69d2c6f2496627fc1a34ea1df3e5625c511f1ca35f963a6",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna kulit biji",
+    "id_issue": null
+   },
+   {
+    "display": "Jumlah biji pada buah matang",
+    "name": "Jumlah biji pada buah matang",
+    "context": null,
+    "samples": [
+     "31",
+     "46",
+     "26"
+    ],
+    "n_values": 3,
+    "item_id": "445e4c32eb662afd2ef3f0a016fb9a41de5450dd1e4a01978e8ae7138100e0c0",
+    "id_kind": "source_attribute_display",
+    "id_value": "Jumlah biji pada buah matang",
+    "id_issue": null
+   },
+   {
+    "display": "Lokasi pengambilan sampel",
+    "name": "Lokasi pengambilan sampel",
+    "context": null,
+    "samples": [
+     "Cisarua, Bandung Barat",
+     "Agam, Sumatera Barat",
+     "Toraja Utara, Sulawesi Selatan"
+    ],
+    "n_values": 4,
+    "item_id": "28ee3eb11563ed388a6a4b41fe7981dd5428774c8e36dc4f4d07c4aaf76a097f",
+    "id_kind": "source_attribute_display",
+    "id_value": "Lokasi pengambilan sampel",
+    "id_issue": null
+   },
+   {
+    "display": "Kandungan klorofil (SPAD)",
+    "name": "Kandungan klorofil (SPAD)",
+    "context": null,
+    "samples": [
+     "48.2",
+     "44.7",
+     "52.6"
+    ],
+    "n_values": 4,
+    "item_id": "4c769c02cb73cca2d92eb4b89a259a1da34af92aa363e206d9dba7b28d81f195",
+    "id_kind": "source_attribute_display",
+    "id_value": "Kandungan klorofil (SPAD)",
+    "id_issue": null
+   }
+  ]
+ },
+ {
+  "file": "D02_row_flat_english_semantic.xlsx",
+  "sheet": "English_Flat_Data",
+  "format": "row-oriented",
+  "header_rows": 1,
+  "sha": "3a0c788361e084f578c43c1a3125b2b25f62d78511db1000e342f54cc52cd559",
+  "items": [
+   {
+    "display": "Sample code",
+    "name": "Sample code",
+    "context": null,
+    "samples": [
+     "ENG-001",
+     "ENG-002",
+     "ENG-003"
+    ],
+    "n_values": 4,
+    "item_id": "07e9aad3c779830db8d1919a0e02ee2d46a5f9a1c8e873bc358104e063f98eea",
+    "id_kind": "source_attribute_display",
+    "id_value": "Sample code",
+    "id_issue": null
+   },
+   {
+    "display": "Variety",
+    "name": "Variety",
+    "context": null,
+    "samples": [
+     "Gendot",
+     "Kopay",
+     "Gendot"
+    ],
+    "n_values": 4,
+    "item_id": "a51e234f3acec8345a17b5fce1a8fa15d3992c549fc82b79c449f5b9939a21cb",
+    "id_kind": "source_attribute_display",
+    "id_value": "Variety",
+    "id_issue": null
+   },
+   {
+    "display": "Overall plant growth form",
+    "name": "Overall plant growth form",
+    "context": null,
+    "samples": [
+     "Shrub-like",
+     "Herbaceous upright",
+     "Compact shrub"
+    ],
+    "n_values": 4,
+    "item_id": "af68f7aa504ae14e3ce8c91882244fdf1d6a744e4af40253d4045df568b2d4e8",
+    "id_kind": "source_attribute_display",
+    "id_value": "Overall plant growth form",
+    "id_issue": null
+   },
+   {
+    "display": "Vertical size at maturity",
+    "name": "Vertical size at maturity",
+    "context": null,
+    "samples": [
+     "> 100 cm; 20 cm",
+     "60–89 cm",
+     "98 cm"
+    ],
+    "n_values": 4,
+    "item_id": "9197777f44b28a50ec8c805449ea202e373a30369477ce47ca7a9d93177ca0d4",
+    "id_kind": "source_attribute_display",
+    "id_value": "Vertical size at maturity",
+    "id_issue": null
+   },
+   {
+    "display": "Productive plant lifespan",
+    "name": "Productive plant lifespan",
+    "context": null,
+    "samples": [
+     "Perennial",
+     "Annual",
+     "Perennial"
+    ],
+    "n_values": 4,
+    "item_id": "79c1ea0ae66cd5071aa4eaa3d47c4d91642e71747336777252f0ddc1eef85e3e",
+    "id_kind": "source_attribute_display",
+    "id_value": "Productive plant lifespan",
+    "id_issue": null
+   },
+   {
+    "display": "Suitable growing environment",
+    "name": "Suitable growing environment",
+    "context": null,
+    "samples": [
+     "Cool highland zone",
+     "Humid lowland zone",
+     "Cool highland zone"
+    ],
+    "n_values": 4,
+    "item_id": "e5c457cf1db363c14bee4ccd1ea3a4dc540b9de7da6c30f39eee61ec5db97b90",
+    "id_kind": "source_attribute_display",
+    "id_value": "Suitable growing environment",
+    "id_issue": null
+   },
+   {
+    "display": "Hair coverage on the stem",
+    "name": "Hair coverage on the stem",
+    "context": null,
+    "samples": [
+     "Dense fine hairs",
+     "Sparse fine hairs",
+     "Dense hairs"
+    ],
+    "n_values": 4,
+    "item_id": "babee03fbdec29f38229e614113edbffc2d25c8eb7b8b7098225b3b19173286c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Hair coverage on the stem",
+    "id_issue": null
+   },
+   {
+    "display": "Leaf surface feel",
+    "name": "Leaf surface feel",
+    "context": null,
+    "samples": [
+     "Slightly rough",
+     "Smooth",
+     "Slightly coarse"
+    ],
+    "n_values": 4,
+    "item_id": "368fc5e867619792652e1e2df4ab921cf7c968be57ae0e9e29bb419c5e5833b1",
+    "id_kind": "source_attribute_display",
+    "id_value": "Leaf surface feel",
+    "id_issue": null
+   },
+   {
+    "display": "Dominant foliage shade",
+    "name": "Dominant foliage shade",
+    "context": null,
+    "samples": [
+     "Dark green",
+     "Medium green",
+     "Deep green"
+    ],
+    "n_values": 4,
+    "item_id": "695c1a49ffdbd032609139a1a50607bf5c4f0b00f312829e36052e60d26387b7",
+    "id_kind": "source_attribute_display",
+    "id_value": "Dominant foliage shade",
+    "id_issue": null
+   },
+   {
+    "display": "Leaf blade longitudinal size",
+    "name": "Leaf blade longitudinal size",
+    "context": null,
+    "samples": [
+     "14.3–16.8 cm",
+     "10.2–12.4 cm",
+     "14.9 cm"
+    ],
+    "n_values": 4,
+    "item_id": "3bc62246d4510cdafee6504a2bc29650ed09b3b6525dcc2f9830f00a6e207599",
+    "id_kind": "source_attribute_display",
+    "id_value": "Leaf blade longitudinal size",
+    "id_issue": null
+   },
+   {
+    "display": "Leaf blade crosswise span",
+    "name": "Leaf blade crosswise span",
+    "context": null,
+    "samples": [
+     "6.4–7.1 cm",
+     "4.0–5.1 cm",
+     "6.8 cm"
+    ],
+    "n_values": 4,
+    "item_id": "76c4b62bee6711ca602bbbf1724d6553afb91b28d2f9c8cb9db13f6214186196",
+    "id_kind": "source_attribute_display",
+    "id_value": "Leaf blade crosswise span",
+    "id_issue": null
+   },
+   {
+    "display": "Leaf-tip profile",
+    "name": "Leaf-tip profile",
+    "context": null,
+    "samples": [
+     "Tapered",
+     "Pointed",
+     "Tapered"
+    ],
+    "n_values": 4,
+    "item_id": "8403147eb30abc521e58705c553b65ea8e03733f2e284bca5923aa074e302c4d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Leaf-tip profile",
+    "id_issue": null
+   },
+   {
+    "display": "Leaf arrangement along the stem",
+    "name": "Leaf arrangement along the stem",
+    "context": null,
+    "samples": [
+     "Alternating",
+     "Alternate",
+     "Alternating"
+    ],
+    "n_values": 4,
+    "item_id": "94a6228bf0ee4cd5646cd80dbdf0f23095ac15edb68810673892c4a84b79a5b3",
+    "id_kind": "source_attribute_display",
+    "id_value": "Leaf arrangement along the stem",
+    "id_issue": null
+   },
+   {
+    "display": "Petal pigmentation",
+    "name": "Petal pigmentation",
+    "context": null,
+    "samples": [
+     "Pale purple",
+     "White",
+     "Light violet"
+    ],
+    "n_values": 4,
+    "item_id": "2f17cd9b04d6696b3dfdac6e77335e8ef3756af34770cadd0051e12ee6ce2d9c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Petal pigmentation",
+    "id_issue": null
+   },
+   {
+    "display": "Petals found on each bloom",
+    "name": "Petals found on each bloom",
+    "context": null,
+    "samples": [
+     "5",
+     "5",
+     "5"
+    ],
+    "n_values": 4,
+    "item_id": "3a6de7163f4664ab1a47c7e8781bdbf1d99617396f3ce5d5705b59678192e1ea",
+    "id_kind": "source_attribute_display",
+    "id_value": "Petals found on each bloom",
+    "id_issue": null
+   },
+   {
+    "display": "Flower orientation on the plant",
+    "name": "Flower orientation on the plant",
+    "context": null,
+    "samples": [
+     "Pendant",
+     "Upright",
+     "Pendant"
+    ],
+    "n_values": 4,
+    "item_id": "39d4af26691424fad4b5a0a679008674850b06f812ce8e1a2688a8affad3e63a",
+    "id_kind": "source_attribute_display",
+    "id_value": "Flower orientation on the plant",
+    "id_issue": null
+   },
+   {
+    "display": "Longitudinal size of the unripe pod",
+    "name": "Longitudinal size of the unripe pod",
+    "context": null,
+    "samples": [
+     "5.8–7.2 cm",
+     "10.3–12.1 cm",
+     "6.4 cm"
+    ],
+    "n_values": 4,
+    "item_id": "e97095a78a15901cbe6b8086b9ac9f9b120f2d59951cc593751669ebeaa853e3",
+    "id_kind": "source_attribute_display",
+    "id_value": "Longitudinal size of the unripe pod",
+    "id_issue": null
+   },
+   {
+    "display": "Girth of the unripe pod",
+    "name": "Girth of the unripe pod",
+    "context": null,
+    "samples": [
+     "5.1–6.0 cm",
+     "2.8–3.4 cm",
+     "5.5 cm"
+    ],
+    "n_values": 4,
+    "item_id": "600e7122bd2f822344210159df9881c9baeb0525475ceabbb4cec2f1be3c25d3",
+    "id_kind": "source_attribute_display",
+    "id_value": "Girth of the unripe pod",
+    "id_issue": null
+   },
+   {
+    "display": "Pigmentation of ripe pods",
+    "name": "Pigmentation of ripe pods",
+    "context": null,
+    "samples": [
+     "Red",
+     "Bright red",
+     "Dark red"
+    ],
+    "n_values": 4,
+    "item_id": "dba82b94f52d52ad1e89be1a057e346c9d3874be7c1d01b570977e12349b637a",
+    "id_kind": "source_attribute_display",
+    "id_value": "Pigmentation of ripe pods",
+    "id_issue": null
+   },
+   {
+    "display": "Orientation of ripe pods",
+    "name": "Orientation of ripe pods",
+    "context": null,
+    "samples": [
+     "Pendant",
+     "Upright",
+     "Pendant"
+    ],
+    "n_values": 4,
+    "item_id": "d93a578c01785f288769372bb073bd74f27e0394241615d3db3e47c1bacafbfd",
+    "id_kind": "source_attribute_display",
+    "id_value": "Orientation of ripe pods",
+    "id_issue": null
+   },
+   {
+    "display": "Fruit-tip profile",
+    "name": "Fruit-tip profile",
+    "context": null,
+    "samples": [
+     "Pointed",
+     "Pointed",
+     "Pointed"
+    ],
+    "n_values": 4,
+    "item_id": "40ce8fd89b25d78925a2528c3c272f7d15318917257aec2433cb13ba4893fbf3",
+    "id_kind": "source_attribute_display",
+    "id_value": "Fruit-tip profile",
+    "id_issue": null
+   },
+   {
+    "display": "Seed coat shade",
+    "name": "Seed coat shade",
+    "context": null,
+    "samples": [
+     "Cream",
+     "Yellowish cream",
+     "Cream"
+    ],
+    "n_values": 4,
+    "item_id": "06ac206f33356f282ac0805c498591e1d68bdbe907b75d28eb2e830acc60f9f6",
+    "id_kind": "source_attribute_display",
+    "id_value": "Seed coat shade",
+    "id_issue": null
+   },
+   {
+    "display": "Seed load in each ripe pod",
+    "name": "Seed load in each ripe pod",
+    "context": null,
+    "samples": [
+     "31",
+     "46",
+     "29"
+    ],
+    "n_values": 4,
+    "item_id": "4a728db0fc1fc11c1665a7ba3556d14054f40b3449072067d3aa6ebc66d2469b",
+    "id_kind": "source_attribute_display",
+    "id_value": "Seed load in each ripe pod",
+    "id_issue": null
+   },
+   {
+    "display": "Specimen collection site",
+    "name": "Specimen collection site",
+    "context": null,
+    "samples": [
+     "Cisarua, West Bandung",
+     "Agam, West Sumatra",
+     "Lembang, West Bandung"
+    ],
+    "n_values": 4,
+    "item_id": "1a1130373b961f153e1ba50a12b109bef9ea4992caada3ef896e53b23f4ad49d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Specimen collection site",
+    "id_issue": null
+   },
+   {
+    "display": "Chlorophyll reading (SPAD)",
+    "name": "Chlorophyll reading (SPAD)",
+    "context": null,
+    "samples": [
+     "48.2",
+     "44.7",
+     "49.1"
+    ],
+    "n_values": 4,
+    "item_id": "e51996c3165dd32de13b412c4e6e997812568c8e72d5778813a9b13f39630dbf",
+    "id_kind": "source_attribute_display",
+    "id_value": "Chlorophyll reading (SPAD)",
+    "id_issue": null
+   },
+   {
+    "display": "Soil acidity reading",
+    "name": "Soil acidity reading",
+    "context": null,
+    "samples": [
+     "6.1",
+     "5.8",
+     "6"
+    ],
+    "n_values": 4,
+    "item_id": "610d8bb37602bca8811749733e592ce14d4e4af1922b3b7e538fab8be66df2d5",
+    "id_kind": "source_attribute_display",
+    "id_value": "Soil acidity reading",
+    "id_issue": null
+   }
+  ]
+ },
+ {
+  "file": "D03_row_multilevel_indonesia.xlsx",
+  "sheet": "Data_Bertingkat",
+  "format": "row-oriented",
+  "header_rows": 2,
+  "sha": "b7f5fdbff40d7362df0020fafede6190ac4350d555fbb33c17206e684129e502",
+  "items": [
+   {
+    "display": "Varietas",
+    "name": "Varietas",
+    "context": null,
+    "samples": [
+     "Katokkon",
+     "Cabai tanjung",
+     "Domba"
+    ],
+    "n_values": 4,
+    "item_id": "396f273bdfa44279c3f7cd67bff5f1defac9d2bfbf401b729b0b5a7a65127f0d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Varietas",
+    "id_issue": null
+   },
+   {
+    "display": "Kode Sampel",
+    "name": "Kode Sampel",
+    "context": null,
+    "samples": [
+     "ML-001",
+     "ML-002",
+     "ML-003"
+    ],
+    "n_values": 4,
+    "item_id": "924c63d2a260060c325bb2c4f258ef3ff74ec0b3c30759a89d88430ba926161b",
+    "id_kind": "source_attribute_display",
+    "id_value": "Kode Sampel",
+    "id_issue": null
+   },
+   {
+    "display": "Vegetatif / Bentuk tumbuh",
+    "name": "Bentuk tumbuh",
+    "context": "Vegetatif",
+    "samples": [
+     "Semak rapat",
+     "Tegak",
+     "Perdu"
+    ],
+    "n_values": 4,
+    "item_id": "b536d05b96fc3c905e93254fc25ee7952c8161f0ffe0d765543a2f76bd2921bb",
+    "id_kind": "source_attribute_display",
+    "id_value": "Vegetatif / Bentuk tumbuh",
+    "id_issue": null
+   },
+   {
+    "display": "Vegetatif / Ukuran tinggi",
+    "name": "Ukuran tinggi",
+    "context": "Vegetatif",
+    "samples": [
+     "90–120 cm",
+     "75 cm",
+     "105 cm"
+    ],
+    "n_values": 4,
+    "item_id": "72bd51369d838fa613cec62b77ecbad45c17a5e1b6302943181f81b0380055a5",
+    "id_kind": "source_attribute_display",
+    "id_value": "Vegetatif / Ukuran tinggi",
+    "id_issue": null
+   },
+   {
+    "display": "Vegetatif / Lama hidup",
+    "name": "Lama hidup",
+    "context": "Vegetatif",
+    "samples": [
+     "Tahunan",
+     "Semusim",
+     "Tahunan"
+    ],
+    "n_values": 4,
+    "item_id": "3cfde8a33de5fb75340a36264d7c5edf7610a8ebe4dd040907c0fb045b593ae4",
+    "id_kind": "source_attribute_display",
+    "id_value": "Vegetatif / Lama hidup",
+    "id_issue": null
+   },
+   {
+    "display": "Vegetatif / Permukaan batang",
+    "name": "Permukaan batang",
+    "context": "Vegetatif",
+    "samples": [
+     "Berbulu sedang",
+     "Hampir tidak berbulu",
+     "Berbulu lebat"
+    ],
+    "n_values": 4,
+    "item_id": "5597349ee7cf641ee918597c67c2303aa94737ccfc3c79a46f1a1242ae424f9f",
+    "id_kind": "source_attribute_display",
+    "id_value": "Vegetatif / Permukaan batang",
+    "id_issue": null
+   },
+   {
+    "display": "Daun / Tekstur",
+    "name": "Tekstur",
+    "context": "Daun",
+    "samples": [
+     "Kasar",
+     "Licin",
+     "Agak kasar"
+    ],
+    "n_values": 4,
+    "item_id": "79e0ae1c9bb50132905186cf674b9b7db9b812365cbe9a05596318f4fda1b928",
+    "id_kind": "source_attribute_display",
+    "id_value": "Daun / Tekstur",
+    "id_issue": null
+   },
+   {
+    "display": "Daun / Warna",
+    "name": "Warna",
+    "context": "Daun",
+    "samples": [
+     "Hijau pekat",
+     "Hijau muda",
+     "Hijau tua"
+    ],
+    "n_values": 4,
+    "item_id": "b259c7bbd7a70294e8e0fd95c06ec39a6917bd61199611279118c07eb98fff43",
+    "id_kind": "source_attribute_display",
+    "id_value": "Daun / Warna",
+    "id_issue": null
+   },
+   {
+    "display": "Daun / Panjang",
+    "name": "Panjang",
+    "context": "Daun",
+    "samples": [
+     "12,2 cm",
+     "11,7 cm",
+     "15,1 cm"
+    ],
+    "n_values": 4,
+    "item_id": "5255c5bfc611814a684b7e7e11e5104d744395885c4f69ef6b6e16be55da3f13",
+    "id_kind": "source_attribute_display",
+    "id_value": "Daun / Panjang",
+    "id_issue": null
+   },
+   {
+    "display": "Daun / Lebar",
+    "name": "Lebar",
+    "context": "Daun",
+    "samples": [
+     "5,8 cm",
+     "4,6 cm",
+     "7,0 cm"
+    ],
+    "n_values": 4,
+    "item_id": "c4e86166bdb3e718d9cb2727f83256a9ff8c6de28a187c08a811c2b3f62b2cea",
+    "id_kind": "source_attribute_display",
+    "id_value": "Daun / Lebar",
+    "id_issue": null
+   },
+   {
+    "display": "Bunga / Warna mahkota",
+    "name": "Warna mahkota",
+    "context": "Bunga",
+    "samples": [
+     "Ungu",
+     "Putih kehijauan",
+     "Ungu pucat"
+    ],
+    "n_values": 4,
+    "item_id": "8da6b555803ca78b90293266dc7d2c81a52d34b5569d622155d02300875b2e0c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bunga / Warna mahkota",
+    "id_issue": null
+   },
+   {
+    "display": "Bunga / Jumlah mahkota",
+    "name": "Jumlah mahkota",
+    "context": "Bunga",
+    "samples": [
+     "6",
+     "5",
+     "5"
+    ],
+    "n_values": 4,
+    "item_id": "33778f83ba1c4e6a458c479788e3050832d8c50b8a38ae8e406b35fa98d997ac",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bunga / Jumlah mahkota",
+    "id_issue": null
+   },
+   {
+    "display": "Bunga / Posisi",
+    "name": "Posisi",
+    "context": "Bunga",
+    "samples": [
+     "Menggantung",
+     "Menyamping",
+     "Menggantung"
+    ],
+    "n_values": 4,
+    "item_id": "9cbdfba1d36546898746c3b02a5c7427faa2c7cc4844f5598dbd4a13af60a453",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bunga / Posisi",
+    "id_issue": null
+   },
+   {
+    "display": "Buah Muda / Panjang",
+    "name": "Panjang",
+    "context": "Buah Muda",
+    "samples": [
+     "4,1 cm",
+     "8,6 cm",
+     "6,9 cm"
+    ],
+    "n_values": 4,
+    "item_id": "8632746e446d744b5545f8445d82f277abca1fa1d05015736831ce51de2fa0d2",
+    "id_kind": "source_attribute_display",
+    "id_value": "Buah Muda / Panjang",
+    "id_issue": null
+   },
+   {
+    "display": "Buah Muda / Keliling",
+    "name": "Keliling",
+    "context": "Buah Muda",
+    "samples": [
+     "4,8 cm",
+     "3,1 cm",
+     "5,7 cm"
+    ],
+    "n_values": 4,
+    "item_id": "39babf6aaf1a83b1c6307d3210b4cd059a1471af236c2b3b1e7082afb7695d63",
+    "id_kind": "source_attribute_display",
+    "id_value": "Buah Muda / Keliling",
+    "id_issue": null
+   },
+   {
+    "display": "Buah Muda / Panjang tangkai",
+    "name": "Panjang tangkai",
+    "context": "Buah Muda",
+    "samples": [
+     "2,3 cm",
+     "3,0 cm",
+     "2,7 cm"
+    ],
+    "n_values": 4,
+    "item_id": "ca979ec0b9f36c0cddf1ec66fe19ec863ec8dee23fec5619a814303880f8ba6e",
+    "id_kind": "source_attribute_display",
+    "id_value": "Buah Muda / Panjang tangkai",
+    "id_issue": null
+   },
+   {
+    "display": "Buah Muda / Panjang kelopak",
+    "name": "Panjang kelopak",
+    "context": "Buah Muda",
+    "samples": [
+     "1,1 cm",
+     "0,9 cm",
+     "1,3 cm"
+    ],
+    "n_values": 4,
+    "item_id": "98d7e28102d66a4c4c2dd6a7e0c35c930a55a6f1b33c6d11b8d69a62a98ce10c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Buah Muda / Panjang kelopak",
+    "id_issue": null
+   },
+   {
+    "display": "Buah Muda / Keliling kelopak",
+    "name": "Keliling kelopak",
+    "context": "Buah Muda",
+    "samples": [
+     "3,2 cm",
+     "2,7 cm",
+     "3,6 cm"
+    ],
+    "n_values": 4,
+    "item_id": "f8370c18c0d5d0acd451485cea2f5643f26d343c19105fbc2c65af27c5ab0a85",
+    "id_kind": "source_attribute_display",
+    "id_value": "Buah Muda / Keliling kelopak",
+    "id_issue": null
+   },
+   {
+    "display": "Buah Muda / Bentuk kelopak",
+    "name": "Bentuk kelopak",
+    "context": "Buah Muda",
+    "samples": [
+     "Mangkuk",
+     "Datar",
+     "Mangkuk"
+    ],
+    "n_values": 4,
+    "item_id": "38bfa12ca85c1664dfdb6907d6350ce2f7d6c7cbbe56eecc6cb4eee41b0bf0eb",
+    "id_kind": "source_attribute_display",
+    "id_value": "Buah Muda / Bentuk kelopak",
+    "id_issue": null
+   },
+   {
+    "display": "Buah Muda / Posisi",
+    "name": "Posisi",
+    "context": "Buah Muda",
+    "samples": [
+     "Menggantung",
+     "Menyamping",
+     "Menggantung"
+    ],
+    "n_values": 4,
+    "item_id": "19c9787b9d762587b14e1b1455e7977fb30de73778a704f7209fdc4b1a9af51c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Buah Muda / Posisi",
+    "id_issue": null
+   },
+   {
+    "display": "Buah Masak / Panjang",
+    "name": "Panjang",
+    "context": "Buah Masak",
+    "samples": [
+     "4,6 cm",
+     "9,1 cm",
+     "7,4 cm"
+    ],
+    "n_values": 4,
+    "item_id": "e07e50f00f6eaef614ee071d600eaee1fe888078180b9b568473cecf23e208e8",
+    "id_kind": "source_attribute_display",
+    "id_value": "Buah Masak / Panjang",
+    "id_issue": null
+   },
+   {
+    "display": "Buah Masak / Keliling",
+    "name": "Keliling",
+    "context": "Buah Masak",
+    "samples": [
+     "5,2 cm",
+     "3,4 cm",
+     "6,2 cm"
+    ],
+    "n_values": 4,
+    "item_id": "e49afda5142a6766a62a05446daebe6e5dbd4ee67bb5835361dc6b811e14d04b",
+    "id_kind": "source_attribute_display",
+    "id_value": "Buah Masak / Keliling",
+    "id_issue": null
+   },
+   {
+    "display": "Buah Masak / Panjang tangkai",
+    "name": "Panjang tangkai",
+    "context": "Buah Masak",
+    "samples": [
+     "2,5 cm",
+     "3,2 cm",
+     "2,9 cm"
+    ],
+    "n_values": 4,
+    "item_id": "c25d43af021bd2f8ae533e4d341484928317e827608db0a7db6ee53c41367a18",
+    "id_kind": "source_attribute_display",
+    "id_value": "Buah Masak / Panjang tangkai",
+    "id_issue": null
+   },
+   {
+    "display": "Buah Masak / Panjang kelopak",
+    "name": "Panjang kelopak",
+    "context": "Buah Masak",
+    "samples": [
+     "1,2 cm",
+     "1,0 cm",
+     "1,4 cm"
+    ],
+    "n_values": 4,
+    "item_id": "2d48b09aacd632f697792a3192d26275dd4d852788f65bf447e71783c649bc25",
+    "id_kind": "source_attribute_display",
+    "id_value": "Buah Masak / Panjang kelopak",
+    "id_issue": null
+   },
+   {
+    "display": "Buah Masak / Keliling kelopak",
+    "name": "Keliling kelopak",
+    "context": "Buah Masak",
+    "samples": [
+     "3,4 cm",
+     "2,9 cm",
+     "3,8 cm"
+    ],
+    "n_values": 4,
+    "item_id": "4f611c0a1fa6cd176f61792d686626b84210a919ffe94f111616dbcdc592bbd2",
+    "id_kind": "source_attribute_display",
+    "id_value": "Buah Masak / Keliling kelopak",
+    "id_issue": null
+   },
+   {
+    "display": "Buah Masak / Warna",
+    "name": "Warna",
+    "context": "Buah Masak",
+    "samples": [
+     "Merah tua",
+     "Merah jingga",
+     "Merah"
+    ],
+    "n_values": 4,
+    "item_id": "68285f197a264c7a754ce7433277a01934fcb314958abb1e58b95c799ad410a0",
+    "id_kind": "source_attribute_display",
+    "id_value": "Buah Masak / Warna",
+    "id_issue": null
+   },
+   {
+    "display": "Buah Masak / Posisi",
+    "name": "Posisi",
+    "context": "Buah Masak",
+    "samples": [
+     "Menggantung",
+     "Menyamping",
+     "Menggantung"
+    ],
+    "n_values": 4,
+    "item_id": "8c3afb8c783cf84b8cc141c576bbc31c4c430ba5131e73067092fc71daab1ac0",
+    "id_kind": "source_attribute_display",
+    "id_value": "Buah Masak / Posisi",
+    "id_issue": null
+   },
+   {
+    "display": "Biji / Warna",
+    "name": "Warna",
+    "context": "Biji",
+    "samples": [
+     "Krem",
+     "Kuning pucat",
+     "Krem"
+    ],
+    "n_values": 4,
+    "item_id": "f37100e967be295c20883ec22cacec34a3c70d3ebe085e2454b295b71ba7e9c2",
+    "id_kind": "source_attribute_display",
+    "id_value": "Biji / Warna",
+    "id_issue": null
+   },
+   {
+    "display": "Biji / Jumlah",
+    "name": "Jumlah",
+    "context": "Biji",
+    "samples": [
+     "26",
+     "39",
+     "33"
+    ],
+    "n_values": 4,
+    "item_id": "3698d1304ef0969e2d8780c108039c6ff6b385ac6a4143c49b0ecc360dbc3959",
+    "id_kind": "source_attribute_display",
+    "id_value": "Biji / Jumlah",
+    "id_issue": null
+   },
+   {
+    "display": "Lokasi",
+    "name": "Lokasi",
+    "context": null,
+    "samples": [
+     "Toraja Utara, Sulawesi Selatan",
+     "Garut, Jawa Barat",
+     "Bandung Barat, Jawa Barat"
+    ],
+    "n_values": 4,
+    "item_id": "6b65e271ec84520ce3fd2cd7148cec89c05d9858777b1bb6d6d37123ef0d7e7d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Lokasi",
+    "id_issue": null
+   }
+  ]
+ },
+ {
+  "file": "D04_varietas_kosong_invalid.xlsx",
+  "sheet": "Data_Invalid",
+  "format": "row-oriented",
+  "header_rows": 1,
+  "sha": "7f659f4a4050177f189e5da62ce4d417a6e163e9bd0ee8164d5f1d6dab1651bd",
+  "items": [
+   {
+    "display": "Kode Sampel",
+    "name": "Kode Sampel",
+    "context": null,
+    "samples": [
+     "INV-001",
+     "INV-002",
+     "INV-003"
+    ],
+    "n_values": 3,
+    "item_id": "1bc19a909af96dc97ad1e853b3eaa3e9fce13b977944c736b1a953b18223d164",
+    "id_kind": "source_attribute_display",
+    "id_value": "Kode Sampel",
+    "id_issue": null
+   },
+   {
+    "display": "Jenis Cabai",
+    "name": "Jenis Cabai",
+    "context": null,
+    "samples": [
+     "Gendot",
+     "Kopay"
+    ],
+    "n_values": 2,
+    "item_id": "420c268093a439265a5f5639556ffc138c00bcce3f57250ff6a1374939d893c3",
+    "id_kind": "source_attribute_display",
+    "id_value": "Jenis Cabai",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk tumbuh",
+    "name": "Bentuk tumbuh",
+    "context": null,
+    "samples": [
+     "Perdu",
+     "Tegak",
+     "Tegak kompak"
+    ],
+    "n_values": 3,
+    "item_id": "d71dac3fb47e4a0f128f0400c7c3560b09ab26e5bc628f58d793606b62df810d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk tumbuh",
+    "id_issue": null
+   },
+   {
+    "display": "Ukuran tinggi",
+    "name": "Ukuran tinggi",
+    "context": null,
+    "samples": [
+     "102 cm",
+     "78 cm",
+     "68 cm"
+    ],
+    "n_values": 3,
+    "item_id": "a0b99afb4a5061a78ee676d83cb9120c63f72fdd57cad1bc4090b2718047938b",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ukuran tinggi",
+    "id_issue": null
+   },
+   {
+    "display": "Corak warna daun",
+    "name": "Corak warna daun",
+    "context": null,
+    "samples": [
+     "Hijau tua",
+     "Hijau",
+     "Hijau sedang"
+    ],
+    "n_values": 3,
+    "item_id": "5a5915c14befecece9cafbdd4f55c54b3885cf3a4db05196089cac91ebf9e94e",
+    "id_kind": "source_attribute_display",
+    "id_value": "Corak warna daun",
+    "id_issue": null
+   },
+   {
+    "display": "Panjang helai",
+    "name": "Panjang helai",
+    "context": null,
+    "samples": [
+     "15,0 cm",
+     "11,2 cm",
+     "10,8 cm"
+    ],
+    "n_values": 3,
+    "item_id": "bd213f6c7128a0389a1c5732cb2c0f9a7ebddd04541dbee111a08570a5c89a91",
+    "id_kind": "source_attribute_display",
+    "id_value": "Panjang helai",
+    "id_issue": null
+   },
+   {
+    "display": "Warna buah siap panen",
+    "name": "Warna buah siap panen",
+    "context": null,
+    "samples": [
+     "Merah",
+     "Merah jingga",
+     "Merah cerah"
+    ],
+    "n_values": 3,
+    "item_id": "f1c6fed2df664345dc8a42c8a3571b6838cfa9d056c7dc3705332b3fbf8ebcf5",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna buah siap panen",
+    "id_issue": null
+   },
+   {
+    "display": "Tempat pengamatan",
+    "name": "Tempat pengamatan",
+    "context": null,
+    "samples": [
+     "Cisarua, Bandung Barat",
+     "Garut, Jawa Barat",
+     "Agam, Sumatera Barat"
+    ],
+    "n_values": 3,
+    "item_id": "50cbd3610aef477d201a80aaa03cdcf8e918440010fa95b7a8e3e256b4f75911",
+    "id_kind": "source_attribute_display",
+    "id_value": "Tempat pengamatan",
+    "id_issue": null
+   }
+  ]
+ },
+ {
+  "file": "E07_kementan_deskripsi_ext.xlsx",
+  "sheet": "Deskripsi Varietas",
+  "format": "row-oriented",
+  "header_rows": 1,
+  "sha": "c51a666839233718b301617aa03bd069acaf3aab20305aa8129a1475c246d320",
+  "items": [
+   {
+    "display": "Varietas Cabai",
+    "name": "Varietas Cabai",
+    "context": null,
+    "samples": [
+     "Biocalya Agrihorti",
+     "ENNO009",
+     "Arisa IPB"
+    ],
+    "n_values": 3,
+    "item_id": "c4d75e86b03e45fb6da17a69fa04824967d51e548e111e783ed1b0dc96013dd4",
+    "id_kind": "source_attribute_display",
+    "id_value": "Varietas Cabai",
+    "id_issue": null
+   },
+   {
+    "display": "Asal",
+    "name": "Asal",
+    "context": null,
+    "samples": [
+     "Dalam Negeri",
+     "Dalam Negeri (CV. Enno Corporation)",
+     "Dalam Negeri (PKHT IPB)"
+    ],
+    "n_values": 3,
+    "item_id": "7d4880993304484b5c998cfe2f514a743849b39bfd333c464bd0a5b3a473e2cd",
+    "id_kind": "source_attribute_display",
+    "id_value": "Asal",
+    "id_issue": null
+   },
+   {
+    "display": "Silsilah",
+    "name": "Silsilah",
+    "context": null,
+    "samples": [
+     "Kencana x AVPP 0207",
+     "CR (02X05)-7-9-2-3-2-1-#",
+     "IPB. 136074-1-4-3-1-1"
+    ],
+    "n_values": 3,
+    "item_id": "9943910429f3064985ac2bed184ba420274ffdb36d83d1667afb70e6b7277b91",
+    "id_kind": "source_attribute_display",
+    "id_value": "Silsilah",
+    "id_issue": null
+   },
+   {
+    "display": "Golongan varietas",
+    "name": "Golongan varietas",
+    "context": null,
+    "samples": [
+     "Bersari bebas",
+     "Bersari bebas",
+     "Bersari bebas"
+    ],
+    "n_values": 3,
+    "item_id": "2bab7133fcf54970cac32866c2a8d7540b44571ad6c2c70203eb33c5f1acca63",
+    "id_kind": "source_attribute_display",
+    "id_value": "Golongan varietas",
+    "id_issue": null
+   },
+   {
+    "display": "Tinggi tanaman",
+    "name": "Tinggi tanaman",
+    "context": null,
+    "samples": [
+     "50,67-65,67 cm",
+     "83,00-100,42 cm",
+     "65.00-83.23 cm"
+    ],
+    "n_values": 3,
+    "item_id": "09009131483f95d624a16910f5b9cd97d5b414ad10721d8f23e188109ea56850",
+    "id_kind": "source_attribute_display",
+    "id_value": "Tinggi tanaman",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk penampang batang",
+    "name": "Bentuk penampang batang",
+    "context": null,
+    "samples": [
+     "Bulat",
+     "Bulat"
+    ],
+    "n_values": 2,
+    "item_id": "c15e620725f6898905ece691d4708e167aef601ebdb04b7c53de94c0439218a4",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk penampang batang",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk habitus tanaman",
+    "name": "Bentuk habitus tanaman",
+    "context": null,
+    "samples": [
+     "Semi-tegak"
+    ],
+    "n_values": 1,
+    "item_id": "1bf98dd39e7c2ef53f2374e2d4340f4b7df4bac053bd957565d1dc266918a227",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk habitus tanaman",
+    "id_issue": null
+   },
+   {
+    "display": "Diameter batang",
+    "name": "Diameter batang",
+    "context": null,
+    "samples": [
+     "1,02-1,27 cm",
+     "1,23-1,44 cm",
+     "10.96-11.32 mm"
+    ],
+    "n_values": 3,
+    "item_id": "454bf1c7dfa85f6d6b8414b62476dd01b484eaa38a085bd96fd77fe7d08333e2",
+    "id_kind": "source_attribute_display",
+    "id_value": "Diameter batang",
+    "id_issue": null
+   },
+   {
+    "display": "Warna batang",
+    "name": "Warna batang",
+    "context": null,
+    "samples": [
+     "Hijau zaitun sedang (MOG 146A)",
+     "Hijau (RHS 146A)",
+     "Hijau (RHS 143A) dengan semburat ungu (RHS N92A)"
+    ],
+    "n_values": 3,
+    "item_id": "2d2d02f86996fffbfa52b8c935896abab4f8c8e54a76090406ec8016f4db31c5",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna batang",
+    "id_issue": null
+   },
+   {
+    "display": "Intensitas pewarnaan antosianin pada buku",
+    "name": "Intensitas pewarnaan antosianin pada buku",
+    "context": null,
+    "samples": [
+     "Sedang"
+    ],
+    "n_values": 1,
+    "item_id": "ceb5a24d1d09df68d8cf3dc328a25abbd73582a5040fc8a522a24fc9ec5b306a",
+    "id_kind": "source_attribute_display",
+    "id_value": "Intensitas pewarnaan antosianin pada buku",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk daun",
+    "name": "Bentuk daun",
+    "context": null,
+    "samples": [
+     "Lanceolate",
+     "Lanset (Lanceolate)",
+     "Lanceolate"
+    ],
+    "n_values": 3,
+    "item_id": "2e943f3eea75b7e2aadc12ec4f87fc0e26ed0b692fdb7330b508301400d891a2",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk daun",
+    "id_issue": null
+   },
+   {
+    "display": "Ukuran daun",
+    "name": "Ukuran daun",
+    "context": null,
+    "samples": [
+     "P : 9,73-6,03 cm; L : 2,53-2,77 cm",
+     "Panjang : 9,32-10,12 cm ; Lebar : 4,20-5,03 cm"
+    ],
+    "n_values": 2,
+    "item_id": "9c92c10f8068409cabc726e0275a3562761606d786db69d8907748a04090398f",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ukuran daun",
+    "id_issue": null
+   },
+   {
+    "display": "Warna daun",
+    "name": "Warna daun",
+    "context": null,
+    "samples": [
+     "Hijau zaitun sedang (MOG 147A)",
+     "Hijau (RHS NN137A)",
+     "Hijau (RHS NN137A)"
+    ],
+    "n_values": 3,
+    "item_id": "b1c7329591114745dc917fb9c186f3b1d9ca7a820bdec643898e5193fc12a5be",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna daun",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk bunga",
+    "name": "Bentuk bunga",
+    "context": null,
+    "samples": [
+     "Bintang",
+     "Seperti bintang"
+    ],
+    "n_values": 2,
+    "item_id": "5e8048b468ee4ec3bddec3fdc4a5e53bb36d73b1ebd86dc75619e2355199643f",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk bunga",
+    "id_issue": null
+   },
+   {
+    "display": "Warna bunga kelopak",
+    "name": "Warna bunga kelopak",
+    "context": null,
+    "samples": [
+     "Hijau kekuningan kuat (SYG 144A)"
+    ],
+    "n_values": 1,
+    "item_id": "9e4315c936cfa50ddf37bf9db06c742cccd29176985188324bd2d3dcf1d86786",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna bunga kelopak",
+    "id_issue": null
+   },
+   {
+    "display": "Mahkota",
+    "name": "Mahkota",
+    "context": null,
+    "samples": [
+     "Putih kekuningan (YW NN155A)"
+    ],
+    "n_values": 1,
+    "item_id": "fdf415be981830c1b45283e12ff31cc1a1ec666a29b118e28180d1b9699fcf63",
+    "id_kind": "source_attribute_display",
+    "id_value": "Mahkota",
+    "id_issue": null
+   },
+   {
+    "display": "kepala putik",
+    "name": "kepala putik",
+    "context": null,
+    "samples": [
+     "Kuning kuat (SY N144B)"
+    ],
+    "n_values": 1,
+    "item_id": "0f6b3214488eaf9cbd988ed360e4fa41fcaf5a8700a51fff0b1bbfa534ce52f8",
+    "id_kind": "source_attribute_display",
+    "id_value": "kepala putik",
+    "id_issue": null
+   },
+   {
+    "display": "benang sari",
+    "name": "benang sari",
+    "context": null,
+    "samples": [
+     "Ungu gelap (DV N92C)"
+    ],
+    "n_values": 1,
+    "item_id": "5e7bcbdb188abd9b53025daa669aad7053ae796b5a217080141487757e6b209a",
+    "id_kind": "source_attribute_display",
+    "id_value": "benang sari",
+    "id_issue": null
+   },
+   {
+    "display": "Umur mulai berbunga",
+    "name": "Umur mulai berbunga",
+    "context": null,
+    "samples": [
+     "33-35 hst",
+     "37,17-40,83 hari setelah tanam"
+    ],
+    "n_values": 2,
+    "item_id": "cce6e6580ca85d08734bdb1ab447df553954f3067bda25f3087163e29a71c33d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Umur mulai berbunga",
+    "id_issue": null
+   },
+   {
+    "display": "Umur mulai panen",
+    "name": "Umur mulai panen",
+    "context": null,
+    "samples": [
+     "96-115 hst",
+     "96,83-101,00 hari setelah tanam"
+    ],
+    "n_values": 2,
+    "item_id": "7860c41da757f281680881f9e88cdeabbd697d19c7f07782f6cf3ed02c6362aa",
+    "id_kind": "source_attribute_display",
+    "id_value": "Umur mulai panen",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk buah",
+    "name": "Bentuk buah",
+    "context": null,
+    "samples": [
+     "Memanjang",
+     "Segitiga sedang",
+     "Segitiga menyempit"
+    ],
+    "n_values": 3,
+    "item_id": "0c4be1947d0c6ca33b1eeafe4822091d6d360897dbb7b3c0d6a2f61b659abaa8",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk buah",
+    "id_issue": null
+   },
+   {
+    "display": "Ukuran buah",
+    "name": "Ukuran buah",
+    "context": null,
+    "samples": [
+     "P : 11,75-14,73 cm; L : 1,05-1,32 cm",
+     "Panjang: 4,35-4,79 cm; Diameter: 1,18-1,53 cm"
+    ],
+    "n_values": 2,
+    "item_id": "91ceb66892d08c7f13442bde94684afe1c1635020062fd86ddd79c3a02e28d2f",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ukuran buah",
+    "id_issue": null
+   },
+   {
+    "display": "Warna buah muda",
+    "name": "Warna buah muda",
+    "context": null,
+    "samples": [
+     "Hijau zaitun sedang (MOG 137A)",
+     "Hijau muda (RHS 150B)",
+     "Hijau tua (RHS 143A)"
+    ],
+    "n_values": 3,
+    "item_id": "040041314fede168db68c4d38d268746372fcb3d770f982862587e9a1ea9d7f9",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna buah muda",
+    "id_issue": null
+   },
+   {
+    "display": "Warna buah tua",
+    "name": "Warna buah tua",
+    "context": null,
+    "samples": [
+     "Merah sedang (MR N45A)",
+     "Merah (RHS 42A)",
+     "Merah (RHS 45A)"
+    ],
+    "n_values": 3,
+    "item_id": "3712d40dc5cc386067aef0489106af3a36760ca1ef199c552e33ce2fe9f8a814",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna buah tua",
+    "id_issue": null
+   },
+   {
+    "display": "Tebal kulit buah",
+    "name": "Tebal kulit buah",
+    "context": null,
+    "samples": [
+     "0,78-1,11 mm",
+     "1,33-1,43 mm"
+    ],
+    "n_values": 2,
+    "item_id": "304c57d079f2ee0ca6680d17a62ef838a2f61110bb2637cfab2ca0be2b6c1c02",
+    "id_kind": "source_attribute_display",
+    "id_value": "Tebal kulit buah",
+    "id_issue": null
+   },
+   {
+    "display": "Rasa buah",
+    "name": "Rasa buah",
+    "context": null,
+    "samples": [
+     "Pedas",
+     "Pedas"
+    ],
+    "n_values": 2,
+    "item_id": "ab2070f7b95c0b8e64f28bd5bad7b2f971b8ab30ef8b0aea3e1ca1f557e39e79",
+    "id_kind": "source_attribute_display",
+    "id_value": "Rasa buah",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk biji",
+    "name": "Bentuk biji",
+    "context": null,
+    "samples": [
+     "Bulat pipih",
+     "Bulat pipih"
+    ],
+    "n_values": 2,
+    "item_id": "7a8c86dd23937213d201fe23291132e50cced5b1ad1ee0120df521a6567c193d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk biji",
+    "id_issue": null
+   },
+   {
+    "display": "Warna biji",
+    "name": "Warna biji",
+    "context": null,
+    "samples": [
+     "Kuning terang (YL 10C)",
+     "Krem (RHS 162D)"
+    ],
+    "n_values": 2,
+    "item_id": "996ae398326427b9bd9eb585674c4b37abeca9428103e1dd8da518b9bd9915e7",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna biji",
+    "id_issue": null
+   },
+   {
+    "display": "Berat 1000 biji",
+    "name": "Berat 1000 biji",
+    "context": null,
+    "samples": [
+     "9,41-5,48 g",
+     "4,96-4,99 gram"
+    ],
+    "n_values": 2,
+    "item_id": "6fb9de81af542b2b743728d90911b37d466f55acfd3ba81181996a00a41482bd",
+    "id_kind": "source_attribute_display",
+    "id_value": "Berat 1000 biji",
+    "id_issue": null
+   },
+   {
+    "display": "Berat per buah",
+    "name": "Berat per buah",
+    "context": null,
+    "samples": [
+     "5,60-6,85 g",
+     "3,47-4,29 gram"
+    ],
+    "n_values": 2,
+    "item_id": "eed30f96aaf15a1ef6490ae1d69c7fe114b11e4872e7052c246f431d5b925049",
+    "id_kind": "source_attribute_display",
+    "id_value": "Berat per buah",
+    "id_issue": null
+   },
+   {
+    "display": "Jumlah buah per tanaman",
+    "name": "Jumlah buah per tanaman",
+    "context": null,
+    "samples": [
+     "127-157",
+     "182,00-218,75 buah",
+     "53.33-86.14 buah"
+    ],
+    "n_values": 3,
+    "item_id": "e18a04acd1c4313bfeb807b01fdd2f3c844f659199cf7a019436766ea3e9b7c8",
+    "id_kind": "source_attribute_display",
+    "id_value": "Jumlah buah per tanaman",
+    "id_issue": null
+   },
+   {
+    "display": "Berat buah per tanaman",
+    "name": "Berat buah per tanaman",
+    "context": null,
+    "samples": [
+     "0,65-0,92 kg",
+     "0,51-0,69 kg"
+    ],
+    "n_values": 2,
+    "item_id": "78e8550f47e6f9fd773c2379c3a4ea70fede1e95a50594f27a1beb28f49c4311",
+    "id_kind": "source_attribute_display",
+    "id_value": "Berat buah per tanaman",
+    "id_issue": null
+   },
+   {
+    "display": "Ketahanan terhadap penyakit",
+    "name": "Ketahanan terhadap penyakit",
+    "context": null,
+    "samples": [
+     "Tahan terhadap antraknos"
+    ],
+    "n_values": 1,
+    "item_id": "bc55c0298cdd90d8d81bfbc24384f79220542b72510cc549444c2a3ef4baa0c9",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ketahanan terhadap penyakit",
+    "id_issue": null
+   },
+   {
+    "display": "Daya simpan buah pada suhu 24-27°C",
+    "name": "Daya simpan buah pada suhu 24-27°C",
+    "context": null,
+    "samples": [
+     "11-14 hsp"
+    ],
+    "n_values": 1,
+    "item_id": "40fb7612a612c182f3d0a5a79d4339d4d169c22b7faed1e878cf5ea630250b57",
+    "id_kind": "source_attribute_display",
+    "id_value": "Daya simpan buah pada suhu 24-27°C",
+    "id_issue": null
+   },
+   {
+    "display": "Hasil buah per hektar",
+    "name": "Hasil buah per hektar",
+    "context": null,
+    "samples": [
+     "12,08-18,25 ton/ha",
+     "9,19-11,68 ton/ha"
+    ],
+    "n_values": 2,
+    "item_id": "5dfc8425f63b66a908ce36fab8813e190ffdf0224a9f96e9f95388b5b23ef171",
+    "id_kind": "source_attribute_display",
+    "id_value": "Hasil buah per hektar",
+    "id_issue": null
+   },
+   {
+    "display": "Populasi per hektar",
+    "name": "Populasi per hektar",
+    "context": null,
+    "samples": [
+     "25.000 tanaman",
+     "26000-27000 tanaman"
+    ],
+    "n_values": 2,
+    "item_id": "778c7d5d73b5c4ccdbf2f6ce5e2ef6343365328968a90ddb298b5f141a39f7e1",
+    "id_kind": "source_attribute_display",
+    "id_value": "Populasi per hektar",
+    "id_issue": null
+   },
+   {
+    "display": "Kebutuhan benih per hektar",
+    "name": "Kebutuhan benih per hektar",
+    "context": null,
+    "samples": [
+     "0,23-0,25 kg",
+     "143,19-149,80 gram"
+    ],
+    "n_values": 2,
+    "item_id": "a0e7342727cd3b018b49299000a6b7ef465fb8aeff87760a3fc1d6107771f7b3",
+    "id_kind": "source_attribute_display",
+    "id_value": "Kebutuhan benih per hektar",
+    "id_issue": null
+   },
+   {
+    "display": "Penciri utama",
+    "name": "Penciri utama",
+    "context": null,
+    "samples": [
+     "1. Kedalaman rongga tangkai buah termasuk sedang, kelopak bu",
+     "Bentuk pangkal buah bulat dengan warna buah tua merah (RSH 4",
+     "Keberadaan antosianin pada batang, Warna buah muda hijau tua"
+    ],
+    "n_values": 3,
+    "item_id": "2564ecb87b6ffc4adf6f832a48f2a110123168aecb40e7e6a2dd955c5bda0158",
+    "id_kind": "source_attribute_display",
+    "id_value": "Penciri utama",
+    "id_issue": null
+   },
+   {
+    "display": "Keunggulan varietas",
+    "name": "Keunggulan varietas",
+    "context": null,
+    "samples": [
+     "Tahan terhadap antraknos",
+     "Potensi hasil buah per hektar tinggi (9,19-11,68 ton/ha)",
+     "Produktivitas tinggi"
+    ],
+    "n_values": 3,
+    "item_id": "f48d1afb85484d54bac7286ff36f0ebd4d1b1a1e08724975c51263a2548fe51e",
+    "id_kind": "source_attribute_display",
+    "id_value": "Keunggulan varietas",
+    "id_issue": null
+   },
+   {
+    "display": "Wilayah adaptasi",
+    "name": "Wilayah adaptasi",
+    "context": null,
+    "samples": [
+     "Sesuai untuk dataran menengah hingga dataran tinggi pada mus",
+     "Beradaptasi dengan baik di dataran rendah di Kabupaten Jembe",
+     "Sesuai di dataran rendah di musim hujan"
+    ],
+    "n_values": 3,
+    "item_id": "7f987fcc7c8d8743a00994e81fe4adb1d0a8a7fbb981d070d4b4e553a38b5146",
+    "id_kind": "source_attribute_display",
+    "id_value": "Wilayah adaptasi",
+    "id_issue": null
+   },
+   {
+    "display": "Warna kelopak bunga",
+    "name": "Warna kelopak bunga",
+    "context": null,
+    "samples": [
+     "Hijau (RHS 143A)"
+    ],
+    "n_values": 1,
+    "item_id": "02f181b4dbb62901f87dcd080843797f65b7f061fcd149fad653c0d4cba523ce",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna kelopak bunga",
+    "id_issue": null
+   },
+   {
+    "display": "Warna mahkota bunga",
+    "name": "Warna mahkota bunga",
+    "context": null,
+    "samples": [
+     "Hijau keputihan (RHS 145C)",
+     "Putih (RHS 155A)"
+    ],
+    "n_values": 2,
+    "item_id": "b0c6e7e4abb05eeb33f5bdb71b2893888272f2b34ba8755251020f8aba644a5b",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna mahkota bunga",
+    "id_issue": null
+   },
+   {
+    "display": "Warna kepala putik",
+    "name": "Warna kepala putik",
+    "context": null,
+    "samples": [
+     "Kuning kehijauan (RHS 153B)"
+    ],
+    "n_values": 1,
+    "item_id": "24d7b195c8db20eccc9cd0e21c4baaaabb2da34ed5d59579aef057081eca9bb4",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna kepala putik",
+    "id_issue": null
+   },
+   {
+    "display": "Warna benangsari",
+    "name": "Warna benangsari",
+    "context": null,
+    "samples": [
+     "Kuning (RHS 4C)"
+    ],
+    "n_values": 1,
+    "item_id": "7929ccae75b8b34dc2868d183dfb2c912762b4a8c462eab25c88352545d1ac6d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna benangsari",
+    "id_issue": null
+   },
+   {
+    "display": "Daya simpan buah pada suhu 25-31°C",
+    "name": "Daya simpan buah pada suhu 25-31°C",
+    "context": null,
+    "samples": [
+     "4-6 hari setelah panen"
+    ],
+    "n_values": 1,
+    "item_id": "31d7a38b7619113f137e8a43b9114749bc0b48c253d9c8309ab16b34c5e158e5",
+    "id_kind": "source_attribute_display",
+    "id_value": "Daya simpan buah pada suhu 25-31°C",
+    "id_issue": null
+   },
+   {
+    "display": "Pemohon",
+    "name": "Pemohon",
+    "context": null,
+    "samples": [
+     "CV. Enno Corporation",
+     "Pusat Kajian Hortikultura Tropika IPB"
+    ],
+    "n_values": 2,
+    "item_id": "aae87f64d2ba44467e537449f756bf7177616538547b930f54738d7a57761353",
+    "id_kind": "source_attribute_display",
+    "id_value": "Pemohon",
+    "id_issue": null
+   },
+   {
+    "display": "Pemulia",
+    "name": "Pemulia",
+    "context": null,
+    "samples": [
+     "Nur Wachid",
+     "Muhamad Syukur, Sobir, Awang Maharijaya, Arya Widura Ritonga"
+    ],
+    "n_values": 2,
+    "item_id": "469dd816f4b2a1aaedec71646b4c52a68a49d93ceb10c5ff2e996a562d3658a0",
+    "id_kind": "source_attribute_display",
+    "id_value": "Pemulia",
+    "id_issue": null
+   },
+   {
+    "display": "Peneliti",
+    "name": "Peneliti",
+    "context": null,
+    "samples": [
+     "Edi Santoso, M. Anasrul Arifin dan Aditya Ananda Putra",
+     "Yudiwanti Wahyu EK (IPB), Tobias Moniz Vicente (IPB), Deka R"
+    ],
+    "n_values": 2,
+    "item_id": "e6803e21d6b018e8f7fd937936e3e004144f674abcd5d4bb5d67f5b4ee55f55c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Peneliti",
+    "id_issue": null
+   },
+   {
+    "display": "Tinggi dikotomus",
+    "name": "Tinggi dikotomus",
+    "context": null,
+    "samples": [
+     "20.17-35.00 cm"
+    ],
+    "n_values": 1,
+    "item_id": "b2fbec995099db537ff4ad1634a728c96159b14c076be7c1642b6b8f3e0936d4",
+    "id_kind": "source_attribute_display",
+    "id_value": "Tinggi dikotomus",
+    "id_issue": null
+   },
+   {
+    "display": "Lebar tajuk",
+    "name": "Lebar tajuk",
+    "context": null,
+    "samples": [
+     "67.30-75.70 cm"
+    ],
+    "n_values": 1,
+    "item_id": "142de6363b85f8274755b5156627b2e3f33e452dec325cd9656adf4877babe1d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Lebar tajuk",
+    "id_issue": null
+   },
+   {
+    "display": "Tipe tumbuh tanaman",
+    "name": "Tipe tumbuh tanaman",
+    "context": null,
+    "samples": [
+     "Tegak"
+    ],
+    "n_values": 1,
+    "item_id": "c980e0bb4ee55fd340ebd874500bc6aba1ca1384b03ba9105cc18b3cabb18640",
+    "id_kind": "source_attribute_display",
+    "id_value": "Tipe tumbuh tanaman",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk batang",
+    "name": "Bentuk batang",
+    "context": null,
+    "samples": [
+     "Silindris"
+    ],
+    "n_values": 1,
+    "item_id": "0378f72101b74c0dfff5a66800faaa6c56e89833cb88f118a182c7988555adda",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk batang",
+    "id_issue": null
+   },
+   {
+    "display": "Pemendekan ruas-internode",
+    "name": "Pemendekan ruas-internode",
+    "context": null,
+    "samples": [
+     "Tidak ada"
+    ],
+    "n_values": 1,
+    "item_id": "39e9624b423774c64da4ed27d68ef8767e8a7d60b7d0f2c125ead1f8d7263274",
+    "id_kind": "source_attribute_display",
+    "id_value": "Pemendekan ruas-internode",
+    "id_issue": null
+   },
+   {
+    "display": "Panjang daun",
+    "name": "Panjang daun",
+    "context": null,
+    "samples": [
+     "6.33-14.35 cm"
+    ],
+    "n_values": 1,
+    "item_id": "7f7a54475bdfdcea9745325427e050e16661ea337d05f4ab7ccf541a9778adad",
+    "id_kind": "source_attribute_display",
+    "id_value": "Panjang daun",
+    "id_issue": null
+   },
+   {
+    "display": "Lebar daun",
+    "name": "Lebar daun",
+    "context": null,
+    "samples": [
+     "2.23-3.70 cm"
+    ],
+    "n_values": 1,
+    "item_id": "dbae1122b7949f7a0e1759585af2fb93137c8bafdd977841c931af7b87f7a73a",
+    "id_kind": "source_attribute_display",
+    "id_value": "Lebar daun",
+    "id_issue": null
+   },
+   {
+    "display": "Umur berbunga",
+    "name": "Umur berbunga",
+    "context": null,
+    "samples": [
+     "28.33-36.00 HST"
+    ],
+    "n_values": 1,
+    "item_id": "f4c0701513a16f6a32922c3e24ac370d03e59c5a23f74e12a1c1c84a7ebbdda9",
+    "id_kind": "source_attribute_display",
+    "id_value": "Umur berbunga",
+    "id_issue": null
+   },
+   {
+    "display": "Posisi bunga",
+    "name": "Posisi bunga",
+    "context": null,
+    "samples": [
+     "Pendant"
+    ],
+    "n_values": 1,
+    "item_id": "5156320db0d2c14820f1e7c70e26f21769eedff7ed52330da620650b2014c4c1",
+    "id_kind": "source_attribute_display",
+    "id_value": "Posisi bunga",
+    "id_issue": null
+   },
+   {
+    "display": "Warna kotak sari",
+    "name": "Warna kotak sari",
+    "context": null,
+    "samples": [
+     "Putih (RHS N77C)"
+    ],
+    "n_values": 1,
+    "item_id": "4351a68e7c3438b3f6c107bc2dfc7221c7850fb937e627df94088a77916ce59c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna kotak sari",
+    "id_issue": null
+   },
+   {
+    "display": "Posisi stigma terhadap anther",
+    "name": "Posisi stigma terhadap anther",
+    "context": null,
+    "samples": [
+     "Exserted"
+    ],
+    "n_values": 1,
+    "item_id": "c86da45bad9f37bdf46477b54c08c444909ecc4564f43e6edd4d2fee8864c3f7",
+    "id_kind": "source_attribute_display",
+    "id_value": "Posisi stigma terhadap anther",
+    "id_issue": null
+   },
+   {
+    "display": "Umur panen",
+    "name": "Umur panen",
+    "context": null,
+    "samples": [
+     "62.33-85.57 HST"
+    ],
+    "n_values": 1,
+    "item_id": "280f034399bba6f85b5af7ba33560f575296af974931310e731719fba8c0edaa",
+    "id_kind": "source_attribute_display",
+    "id_value": "Umur panen",
+    "id_issue": null
+   },
+   {
+    "display": "Panjang buah",
+    "name": "Panjang buah",
+    "context": null,
+    "samples": [
+     "12.10-16.04 cm"
+    ],
+    "n_values": 1,
+    "item_id": "917d52363df6984a577335072949708a1d4a6262695a4abe2b7ffa7986473dbc",
+    "id_kind": "source_attribute_display",
+    "id_value": "Panjang buah",
+    "id_issue": null
+   },
+   {
+    "display": "Diameter buah",
+    "name": "Diameter buah",
+    "context": null,
+    "samples": [
+     "10.70-15.69 mm"
+    ],
+    "n_values": 1,
+    "item_id": "c069eaf02868d762bca88ea3b48c65f7a30f6ccbf293e627e86edf7f0aa99d18",
+    "id_kind": "source_attribute_display",
+    "id_value": "Diameter buah",
+    "id_issue": null
+   },
+   {
+    "display": "Tebal daging buah",
+    "name": "Tebal daging buah",
+    "context": null,
+    "samples": [
+     "1.24-1.64 mm"
+    ],
+    "n_values": 1,
+    "item_id": "efac2a2f65a21119e5d95d5260bbc34a428260af3ac4af0cf4bbf57fc6d081a3",
+    "id_kind": "source_attribute_display",
+    "id_value": "Tebal daging buah",
+    "id_issue": null
+   },
+   {
+    "display": "Ujung buah",
+    "name": "Ujung buah",
+    "context": null,
+    "samples": [
+     "Sangat lancip"
+    ],
+    "n_values": 1,
+    "item_id": "7a61628760b461dacaced0cdab987423c64ce445392fab5662f7121cf5d18631",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ujung buah",
+    "id_issue": null
+   },
+   {
+    "display": "Warna buah intermediate",
+    "name": "Warna buah intermediate",
+    "context": null,
+    "samples": [
+     "Hijau kecoklatan (RHS 200C)"
+    ],
+    "n_values": 1,
+    "item_id": "76568b84bf21c530e4f5e8f26d6998c8908f2fa7530b3566811e6dfd669bdc92",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna buah intermediate",
+    "id_issue": null
+   },
+   {
+    "display": "Bobot per buah",
+    "name": "Bobot per buah",
+    "context": null,
+    "samples": [
+     "7.36-13.15 g"
+    ],
+    "n_values": 1,
+    "item_id": "3b2ab4c8543546636ec96bcdf2975818af8d1cbc962772105e36e68097a4f032",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bobot per buah",
+    "id_issue": null
+   },
+   {
+    "display": "Bobot buah pertanaman",
+    "name": "Bobot buah pertanaman",
+    "context": null,
+    "samples": [
+     "390.01-595.55 g"
+    ],
+    "n_values": 1,
+    "item_id": "3888c2a629b30ea5a769774b4b581cad9fe3d13e50273efb7bb3db7e86a9f493",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bobot buah pertanaman",
+    "id_issue": null
+   },
+   {
+    "display": "Umur daya simpan",
+    "name": "Umur daya simpan",
+    "context": null,
+    "samples": [
+     "6-12 hari"
+    ],
+    "n_values": 1,
+    "item_id": "0a5b9e0d8a9b5d000a0a25244902777b09dd1b542ddc07382e46b8d9f68e0e8a",
+    "id_kind": "source_attribute_display",
+    "id_value": "Umur daya simpan",
+    "id_issue": null
+   },
+   {
+    "display": "Produktivitas (Potensi hasil)",
+    "name": "Produktivitas (Potensi hasil)",
+    "context": null,
+    "samples": [
+     "7.63-11.64 Ton/Ha"
+    ],
+    "n_values": 1,
+    "item_id": "d1f2dfeb07afae7cd54f6a52f326c3b6c7748201989ca82070e69c802335c82d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Produktivitas (Potensi hasil)",
+    "id_issue": null
+   },
+   {
+    "display": "Populasi Tanaman per hektar",
+    "name": "Populasi Tanaman per hektar",
+    "context": null,
+    "samples": [
+     "25.000 tanaman"
+    ],
+    "n_values": 1,
+    "item_id": "e7ce0d8d1465c4f69daf9e485575b60f964fc8eac90178b73220a67f32fd05f6",
+    "id_kind": "source_attribute_display",
+    "id_value": "Populasi Tanaman per hektar",
+    "id_issue": null
+   }
+  ]
+ },
+ {
+  "file": "E08_zenodo_capsicum_en.xlsx",
+  "sheet": "Observed85_readable",
+  "format": "row-oriented",
+  "header_rows": 1,
+  "sha": "57935abbae27c274cdfa61df259fc8027ae3d10f5d78917b48de60d8b3d86be3",
+  "items": [
+   {
+    "display": "Genotype name",
+    "name": "Genotype name",
+    "context": null,
+    "samples": [
+     "Malagueta",
+     "Malagueta",
+     "Malagueta"
+    ],
+    "n_values": 85,
+    "item_id": "f7e2902945e07143a68ccd89602a84cbb5cfbdc83dc322938f50dfefe817b4c1",
+    "id_kind": "source_attribute_display",
+    "id_value": "Genotype name",
+    "id_issue": null
+   },
+   {
+    "display": "Species",
+    "name": "Species",
+    "context": null,
+    "samples": [
+     "C. frutescens",
+     "C. frutescens",
+     "C. frutescens"
+    ],
+    "n_values": 85,
+    "item_id": "635d7efbea27199d55094138ab784f46f93d21d30bd8fecaf9971b985fff7943",
+    "id_kind": "source_attribute_display",
+    "id_value": "Species",
+    "id_issue": null
+   },
+   {
+    "display": "Crown diameter",
+    "name": "Crown diameter",
+    "context": null,
+    "samples": [
+     "82",
+     "89",
+     "83"
+    ],
+    "n_values": 85,
+    "item_id": "cad7be56c6f3a04486df8b4fa0f440638e0c06d3aa4d52d5fad5b0e87f7953e2",
+    "id_kind": "source_attribute_display",
+    "id_value": "Crown diameter",
+    "id_issue": null
+   },
+   {
+    "display": "Leaf shape",
+    "name": "Leaf shape",
+    "context": null,
+    "samples": [
+     "3",
+     "3",
+     "3"
+    ],
+    "n_values": 85,
+    "item_id": "e6803512e0b45941b98170420c9321820ee9f2a1df4468c78a14afe128de6ddf",
+    "id_kind": "source_attribute_display",
+    "id_value": "Leaf shape",
+    "id_issue": null
+   },
+   {
+    "display": "Fruit diameter",
+    "name": "Fruit diameter",
+    "context": null,
+    "samples": [
+     "0.483",
+     "0.558",
+     "0.538"
+    ],
+    "n_values": 85,
+    "item_id": "b6ff6fcbff170cb724d52d25f3be78a0516abb9c72da5daf983e526a6e5f0a01",
+    "id_kind": "source_attribute_display",
+    "id_value": "Fruit diameter",
+    "id_issue": null
+   },
+   {
+    "display": "Fruit shape",
+    "name": "Fruit shape",
+    "context": null,
+    "samples": [
+     "1",
+     "1",
+     "1"
+    ],
+    "n_values": 85,
+    "item_id": "9946ea75f4687d549938f6f764763174f0cb765b96c4ea2cbbb915750a26f49f",
+    "id_kind": "source_attribute_display",
+    "id_value": "Fruit shape",
+    "id_issue": null
+   },
+   {
+    "display": "Stem diameter",
+    "name": "Stem diameter",
+    "context": null,
+    "samples": [
+     "0.781",
+     "0.735",
+     "0.666"
+    ],
+    "n_values": 85,
+    "item_id": "96c91075422c5f2e1b841c58f1af7b72c82eafc4bbd8be3325aad2380fc886ec",
+    "id_kind": "source_attribute_display",
+    "id_value": "Stem diameter",
+    "id_issue": null
+   },
+   {
+    "display": "Intermediate fruit colour",
+    "name": "Intermediate fruit colour",
+    "context": null,
+    "samples": [
+     "4",
+     "4",
+     "4"
+    ],
+    "n_values": 85,
+    "item_id": "f68f106d5af5bb4f2203598a9488c1b6069ce5bcfb3b88a0bec89d214996d227",
+    "id_kind": "source_attribute_display",
+    "id_value": "Intermediate fruit colour",
+    "id_issue": null
+   },
+   {
+    "display": "Pericarp thickness",
+    "name": "Pericarp thickness",
+    "context": null,
+    "samples": [
+     "0.07",
+     "0.05699999999999999",
+     "0.064"
+    ],
+    "n_values": 85,
+    "item_id": "02ac9726acc99e5696a6f6411a0ccea465dd1a17a0abad812d0eafcb21a4701c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Pericarp thickness",
+    "id_issue": null
+   },
+   {
+    "display": "Leaf size as recorded",
+    "name": "Leaf size as recorded",
+    "context": null,
+    "samples": [
+     "10.245999999999999",
+     "10.899",
+     "9.333"
+    ],
+    "n_values": 85,
+    "item_id": "664306787575ae0a8a7be32f3c8a948bfc8d81f40fadb6bdaa26825d7cff877a",
+    "id_kind": "source_attribute_display",
+    "id_value": "Leaf size as recorded",
+    "id_issue": null
+   },
+   {
+    "display": "Fresh mass of seedless fruit tissue",
+    "name": "Fresh mass of seedless fruit tissue",
+    "context": null,
+    "samples": [
+     "0.205",
+     "0.138",
+     "0.313"
+    ],
+    "n_values": 85,
+    "item_id": "72dc7ebdb839cfafd301eafcabbb98d1f4bd1eb8d4fb7613df5f4cb2a3a80368",
+    "id_kind": "source_attribute_display",
+    "id_value": "Fresh mass of seedless fruit tissue",
+    "id_issue": null
+   },
+   {
+    "display": "Mature fruit weight",
+    "name": "Mature fruit weight",
+    "context": null,
+    "samples": [
+     "0.326",
+     "0.23",
+     "0.494"
+    ],
+    "n_values": 85,
+    "item_id": "59c75a0c10c931bd2d214d514a0dde5000903e9713b0436bc26f7ea4bb34ef98",
+    "id_kind": "source_attribute_display",
+    "id_value": "Mature fruit weight",
+    "id_issue": null
+   },
+   {
+    "display": "Branching density",
+    "name": "Branching density",
+    "context": null,
+    "samples": [
+     "5",
+     "5",
+     "5"
+    ],
+    "n_values": 85,
+    "item_id": "bb28f2783db35b9f69b1cb49e0f4d363bf7de817f435a99414c364e1475251fc",
+    "id_kind": "source_attribute_display",
+    "id_value": "Branching density",
+    "id_issue": null
+   },
+   {
+    "display": "Corolla colour",
+    "name": "Corolla colour",
+    "context": null,
+    "samples": [
+     "4",
+     "4",
+     "4"
+    ],
+    "n_values": 85,
+    "item_id": "9fbd83d1186e27f0410374540b2a516e6ab9d319d262cfcf4e277750c13d30a1",
+    "id_kind": "source_attribute_display",
+    "id_value": "Corolla colour",
+    "id_issue": null
+   },
+   {
+    "display": "Mature fruit colour",
+    "name": "Mature fruit colour",
+    "context": null,
+    "samples": [
+     "8",
+     "8",
+     "8"
+    ],
+    "n_values": 85,
+    "item_id": "658479f4eb41a8553bc1ca87d8724b41653f75d4b9fab3232d3384b093503a58",
+    "id_kind": "source_attribute_display",
+    "id_value": "Mature fruit colour",
+    "id_issue": null
+   },
+   {
+    "display": "Dry mass of seedless fruit tissue",
+    "name": "Dry mass of seedless fruit tissue",
+    "context": null,
+    "samples": [
+     "0.043",
+     "0.0292",
+     "0.0579"
+    ],
+    "n_values": 85,
+    "item_id": "566c84f188692c8e150ab01731bb5c97474ff4aff7c64b615fc1f679aa0779e9",
+    "id_kind": "source_attribute_display",
+    "id_value": "Dry mass of seedless fruit tissue",
+    "id_issue": null
+   },
+   {
+    "display": "Plant height",
+    "name": "Plant height",
+    "context": null,
+    "samples": [
+     "105",
+     "118",
+     "121"
+    ],
+    "n_values": 85,
+    "item_id": "daa87614ae6ddee31babe86e59110c30f51a9a0328dc9a49a0c0b8143b405b13",
+    "id_kind": "source_attribute_display",
+    "id_value": "Plant height",
+    "id_issue": null
+   },
+   {
+    "display": "Stem length",
+    "name": "Stem length",
+    "context": null,
+    "samples": [
+     "51",
+     "28",
+     "32"
+    ],
+    "n_values": 85,
+    "item_id": "00a72b703d8f3cf384ea161213d9e5ec1fdab781db964585a77abbc07bef5ba3",
+    "id_kind": "source_attribute_display",
+    "id_value": "Stem length",
+    "id_issue": null
+   },
+   {
+    "display": "Immature fruit colour",
+    "name": "Immature fruit colour",
+    "context": null,
+    "samples": [
+     "4",
+     "4",
+     "4"
+    ],
+    "n_values": 85,
+    "item_id": "1a7c05a72dc1055892dee4dc9c8a57b0cadec32db5e4e8c35de0b2a74298d0b1",
+    "id_kind": "source_attribute_display",
+    "id_value": "Immature fruit colour",
+    "id_issue": null
+   },
+   {
+    "display": "Corolla diameter",
+    "name": "Corolla diameter",
+    "context": null,
+    "samples": [
+     "1.377",
+     "1.372",
+     "1.357"
+    ],
+    "n_values": 85,
+    "item_id": "c32c9fbd6b6debcd87dcce4da49c7f505efa27208409cbd133ca94f4668af4bd",
+    "id_kind": "source_attribute_display",
+    "id_value": "Corolla diameter",
+    "id_issue": null
+   },
+   {
+    "display": "Mature fruit length",
+    "name": "Mature fruit length",
+    "context": null,
+    "samples": [
+     "2.019",
+     "1.468",
+     "2.0420000000000003"
+    ],
+    "n_values": 85,
+    "item_id": "55a77f639c2e16390bbf0238c7df899a4c8a265fdc517b411cc5a54edd73b443",
+    "id_kind": "source_attribute_display",
+    "id_value": "Mature fruit length",
+    "id_issue": null
+   },
+   {
+    "display": "Seeds per fruit",
+    "name": "Seeds per fruit",
+    "context": null,
+    "samples": [
+     "12",
+     "12",
+     "21"
+    ],
+    "n_values": 85,
+    "item_id": "79b1c7aa41abe53afeaa3d340ce0655ff219bac157b1aa5135cd3e2fd965ce4f",
+    "id_kind": "source_attribute_display",
+    "id_value": "Seeds per fruit",
+    "id_issue": null
+   },
+   {
+    "display": "Plant growth habit",
+    "name": "Plant growth habit",
+    "context": null,
+    "samples": [
+     "7",
+     "7",
+     "7"
+    ],
+    "n_values": 85,
+    "item_id": "e2a0078fb2b9c0fd8ad56bc3d3aef4b20c0a5431600954ce5dce8b635fe98486",
+    "id_kind": "source_attribute_display",
+    "id_value": "Plant growth habit",
+    "id_issue": null
+   }
+  ]
+ },
+ {
+  "file": "dataset_cabai_deskripsi_varietas.xlsx",
+  "sheet": "transposed",
+  "format": "transposed",
+  "header_rows": null,
+  "sha": "bd7875dd13fa2350105334a40f46ad209a6d7c1ec672c25f21f1e7e6c0913612",
+  "items": [
+   {
+    "display": "Asal",
+    "name": "Asal",
+    "context": null,
+    "samples": [
+     "Dalam negeri",
+     "Dalam Negeri",
+     "Dalam Negeri"
+    ],
+    "n_values": 6,
+    "item_id": "77ad75c3cdf1088a79f409493fee15470e74ade39b24d97cd9046350c688a8c1",
+    "id_kind": "source_attribute_display",
+    "id_value": "Asal",
+    "id_issue": null
+   },
+   {
+    "display": "Silsilah",
+    "name": "Silsilah",
+    "context": null,
+    "samples": [
+     "Mutasi kimia cabai varietas Gelora menggunakan EMS",
+     "Kencana X AVPP0207",
+     "Mutasi kimia cabai varietas Gelora menggunakan EMS"
+    ],
+    "n_values": 6,
+    "item_id": "65c201c8c2b3b3255741c07328d5ae6e38770154a5dd1fb64f74c186b018eb29",
+    "id_kind": "source_attribute_display",
+    "id_value": "Silsilah",
+    "id_issue": null
+   },
+   {
+    "display": "Golongan varietas",
+    "name": "Golongan varietas",
+    "context": null,
+    "samples": [
+     "Bersari bebas",
+     "Bersari bebas (OP)",
+     "Bersari bebas (OP)"
+    ],
+    "n_values": 6,
+    "item_id": "f19884a7d8bd1664fdc8eed53521be10aae0fc6728060be7bc522d495c7a15d1",
+    "id_kind": "source_attribute_display",
+    "id_value": "Golongan varietas",
+    "id_issue": null
+   },
+   {
+    "display": "Tinggi tanaman",
+    "name": "Tinggi tanaman",
+    "context": null,
+    "samples": [
+     "60-70 cm",
+     "46-83 cm",
+     "65,32 - 72,32 cm"
+    ],
+    "n_values": 5,
+    "item_id": "ac3f54b5537dca02e0021825e39ee84582563e07779469c8a8a8820d36c1d0d9",
+    "id_kind": "source_attribute_display",
+    "id_value": "Tinggi tanaman",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk penampang batang",
+    "name": "Bentuk penampang batang",
+    "context": null,
+    "samples": [
+     "Bulat",
+     "Bulat",
+     "Bulat"
+    ],
+    "n_values": 6,
+    "item_id": "84b910dbbeeff611976cab95b27979ba3b380385b3a70d1fa3ae7feb5e1148fc",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk penampang batang",
+    "id_issue": null
+   },
+   {
+    "display": "Diameter batang",
+    "name": "Diameter batang",
+    "context": null,
+    "samples": [
+     "13,54-14,82 cm",
+     "1,30-1,70 cm",
+     "0,86 - 0,94 cm"
+    ],
+    "n_values": 5,
+    "item_id": "7d9caf7c9459666616ea019f07568de1b8cab72ee2200f5580ef727921123ab5",
+    "id_kind": "source_attribute_display",
+    "id_value": "Diameter batang",
+    "id_issue": null
+   },
+   {
+    "display": "Warna batang",
+    "name": "Warna batang",
+    "context": null,
+    "samples": [
+     "Hijau keunguan (RHS N 92 C)",
+     "Abu-abu (CBG199D)",
+     "Hijau dengan antosianin rendah (RHS 137D)"
+    ],
+    "n_values": 6,
+    "item_id": "f77c0355553ee098a11f131edfcdd19eb1ce401edb661017028de3aa34af733a",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna batang",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk daun",
+    "name": "Bentuk daun",
+    "context": null,
+    "samples": [
+     "Eliptical",
+     "Lanceolate",
+     "Ovate"
+    ],
+    "n_values": 6,
+    "item_id": "6888e1e00abcdad6ccc99fc36ff3aa57216a53b6272a359abbb2ae02474fa7b3",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk daun",
+    "id_issue": null
+   },
+   {
+    "display": "Ukuran daun",
+    "name": "Ukuran daun",
+    "context": null,
+    "samples": [
+     "Panjang 6,65-9,11 cm; Lebar 2,70-4,03 cm",
+     "Panjang 8,50 - 9,60 cm, lebar 3,29 - 3,67 cm",
+     "Panjang 9,10 - 12,50 cm; Lebar 5,30 - 7,00 cm"
+    ],
+    "n_values": 3,
+    "item_id": "b923accb7510af69e8facb38b0d83d673ffb6964baf05751f4750beace65945a",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ukuran daun",
+    "id_issue": null
+   },
+   {
+    "display": "Warna daun",
+    "name": "Warna daun",
+    "context": null,
+    "samples": [
+     "Hijau tua (RHS N 137 A)",
+     "Hijau (GOG NN137A)",
+     "Hijau (RHS NN 137A)"
+    ],
+    "n_values": 6,
+    "item_id": "52a15f02e43ae1bb7c74519d2d8c3cc7bc1caf78319380b1c73caef7405b25cc",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna daun",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk bunga",
+    "name": "Bentuk bunga",
+    "context": null,
+    "samples": [
+     "Bintang",
+     "Bintang",
+     "Seperti bintang"
+    ],
+    "n_values": 4,
+    "item_id": "d3723c70a8166a828bb3c75af373e943b688bdb0b09f4b76416c6eea6b6b67d1",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk bunga",
+    "id_issue": null
+   },
+   {
+    "display": "Warna kelopak bunga",
+    "name": "Warna kelopak bunga",
+    "context": null,
+    "samples": [
+     "Hijau (RHS 155 A)",
+     "Hijau (DYG 139B)",
+     "Hijau (RHS 137C)"
+    ],
+    "n_values": 3,
+    "item_id": "c826987d3e71f428fff9c5e2c555e684b4c2ed16e38a2916f00e4bba70205fed",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna kelopak bunga",
+    "id_issue": null
+   },
+   {
+    "display": "Warna mahkota bunga",
+    "name": "Warna mahkota bunga",
+    "context": null,
+    "samples": [
+     "Hijau (RHS 142 A)",
+     "Putih (YW NN 155C)",
+     "Putih (RHS NN155C)"
+    ],
+    "n_values": 3,
+    "item_id": "c7ee96f33a330b9b62d13d507bfcc1de771d72b180aa5f34c75d1c7924c7fc63",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna mahkota bunga",
+    "id_issue": null
+   },
+   {
+    "display": "Warna kepala putik",
+    "name": "Warna kepala putik",
+    "context": null,
+    "samples": [
+     "Biru keunguan (RHS 93 A)",
+     "Hijau (SYG 142A)",
+     "Kuning-Hijau (RHS 150B)"
+    ],
+    "n_values": 3,
+    "item_id": "2aafbf611369917acf8b4d61ad018966a7cbf76fd5a83498acbcb12c6dc604a2",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna kepala putik",
+    "id_issue": null
+   },
+   {
+    "display": "Warna benang sari",
+    "name": "Warna benang sari",
+    "context": null,
+    "samples": [
+     "Ungu (RHS 96 A)",
+     "Ungu (VPB 95A)",
+     "Kuning (RHS 11C)"
+    ],
+    "n_values": 3,
+    "item_id": "7c24aeb6191ff68a151f94245cccf39537d31c10f0dd2361535573f9ec3794b2",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna benang sari",
+    "id_issue": null
+   },
+   {
+    "display": "Umur mulai berbunga",
+    "name": "Umur mulai berbunga",
+    "context": null,
+    "samples": [
+     "46-51 hari setelah tanam",
+     "31-37 hst",
+     "28 - 31 hari setelah tanam"
+    ],
+    "n_values": 5,
+    "item_id": "d435b511f2517b4978e945dac050c908d5da63c0634b0baac2c823fb88d50ffe",
+    "id_kind": "source_attribute_display",
+    "id_value": "Umur mulai berbunga",
+    "id_issue": null
+   },
+   {
+    "display": "Umur mulai panen",
+    "name": "Umur mulai panen",
+    "context": null,
+    "samples": [
+     "91-96 hari setelah tanam",
+     "91-117 hst",
+     "86 - 91 hari setelah tanam"
+    ],
+    "n_values": 5,
+    "item_id": "071bd168f127d505feed060f9ca3b34980b811f3c7a6a89abd2e8b9964571fb1",
+    "id_kind": "source_attribute_display",
+    "id_value": "Umur mulai panen",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk buah",
+    "name": "Bentuk buah",
+    "context": null,
+    "samples": [
+     "Panjang rata",
+     "Memanjang",
+     "Silindris Panjang dengan permukaan buah rata"
+    ],
+    "n_values": 5,
+    "item_id": "2fb2f098629e85d0d7eed405241351286a55502f36ccad699ad2864a956d29c3",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk buah",
+    "id_issue": null
+   },
+   {
+    "display": "Ukuran buah",
+    "name": "Ukuran buah",
+    "context": null,
+    "samples": [
+     "Panjang 12,14-12,52 cm; Diameter 14,00-14,93 mm",
+     "P 10,74-14,03 (cm), L 1,47-1,64 (cm)",
+     "Panjang 13,87 - 15,63 cm, diameter 0,69 - 0,71 cm"
+    ],
+    "n_values": 4,
+    "item_id": "ce1555b8fac151b857a19fe9e8dbc63babb5ea55f32d3992e00a970185090119",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ukuran buah",
+    "id_issue": null
+   },
+   {
+    "display": "Warna buah muda",
+    "name": "Warna buah muda",
+    "context": null,
+    "samples": [
+     "Hijau (Green Group RHS 139 A)",
+     "Hijau (SYG 144 A)",
+     "Hijau (RHS 1394)"
+    ],
+    "n_values": 6,
+    "item_id": "5f9e2938d68b6749d4ced28493172c85cf24295dd7676e273f4bc04c0f804ce5",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna buah muda",
+    "id_issue": null
+   },
+   {
+    "display": "Warna buah tua",
+    "name": "Warna buah tua",
+    "context": null,
+    "samples": [
+     "Merah (Red Group RHS 46 A)",
+     "Merah (VR 45 A)",
+     "Merah (RHS 45A)"
+    ],
+    "n_values": 6,
+    "item_id": "ecf264ac4ccd1f0ee18d3535079dd2a186b2e69c2dc54463dc2837590d6e47f5",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna buah tua",
+    "id_issue": null
+   },
+   {
+    "display": "Tebal kulit buah",
+    "name": "Tebal kulit buah",
+    "context": null,
+    "samples": [
+     "2,91-3,37 mm",
+     "1,0-1,2 mm",
+     "0,05 - 0,07 cm"
+    ],
+    "n_values": 4,
+    "item_id": "5feddc7ff1dbe9497a2f2122741a78cbf61e6fb66934eeb97c34e7a0bf96cd8b",
+    "id_kind": "source_attribute_display",
+    "id_value": "Tebal kulit buah",
+    "id_issue": null
+   },
+   {
+    "display": "Rasa buah",
+    "name": "Rasa buah",
+    "context": null,
+    "samples": [
+     "Pedas",
+     "Pedas",
+     "Pedas"
+    ],
+    "n_values": 6,
+    "item_id": "bcac431826ae3a7a2e4aec31f11a0c502d1fb0363e2617f21265034fd3867d72",
+    "id_kind": "source_attribute_display",
+    "id_value": "Rasa buah",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk biji",
+    "name": "Bentuk biji",
+    "context": null,
+    "samples": [
+     "Bulat gepeng",
+     "Bulat Pipih",
+     "Bulat pipih"
+    ],
+    "n_values": 5,
+    "item_id": "27f6ef8fb1c09546186781fe7c4909d0c932b5d809bcc806ea8b679c51cdb24d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk biji",
+    "id_issue": null
+   },
+   {
+    "display": "Warna biji",
+    "name": "Warna biji",
+    "context": null,
+    "samples": [
+     "Kuning jerami (RHS 2 B)",
+     "Kuning jerami (MY 161A)",
+     "Kuning (RHS 10B)"
+    ],
+    "n_values": 6,
+    "item_id": "e36bf3d13b7f270a4d24bac665f939fcda4bac6cffec7e029d31b706f0a80e19",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna biji",
+    "id_issue": null
+   },
+   {
+    "display": "Berat 1.000 biji",
+    "name": "Berat 1.000 biji",
+    "context": null,
+    "samples": [
+     "7,12-7,39 cm",
+     "5,34 - 5,58 gram",
+     "4,80 - 5,40 gram"
+    ],
+    "n_values": 3,
+    "item_id": "25fa82fc5317f29d8995944ab3172722f38c2956b1a2c824e538dfdf5cafe238",
+    "id_kind": "source_attribute_display",
+    "id_value": "Berat 1.000 biji",
+    "id_issue": null
+   },
+   {
+    "display": "Berat per buah",
+    "name": "Berat per buah",
+    "context": null,
+    "samples": [
+     "12,58-12,85 gram",
+     "5,87-7,80 gram",
+     "5,64 - 7,32 gram"
+    ],
+    "n_values": 5,
+    "item_id": "e63afe5c9d8acd20780448eb800baa6e9b1cf9d7d7f1ae4e8209e0f470d8552b",
+    "id_kind": "source_attribute_display",
+    "id_value": "Berat per buah",
+    "id_issue": null
+   },
+   {
+    "display": "Jumlah buah per tanaman",
+    "name": "Jumlah buah per tanaman",
+    "context": null,
+    "samples": [
+     "84-92 buah",
+     "95-126 buah",
+     "185,00 - 211,50 buah"
+    ],
+    "n_values": 5,
+    "item_id": "bea51c019df82f15883e2b37dbb2798ddf1791048bc0ca48e168a67e03699df1",
+    "id_kind": "source_attribute_display",
+    "id_value": "Jumlah buah per tanaman",
+    "id_issue": null
+   },
+   {
+    "display": "Berat buah per tanaman",
+    "name": "Berat buah per tanaman",
+    "context": null,
+    "samples": [
+     "1,076-1,130 kg",
+     "540-1.038 kg",
+     "1,02 - 1,49 kg"
+    ],
+    "n_values": 5,
+    "item_id": "dd9807ade6da01c86194cd2403c0a190820f8ffde1eef184abd1072adb73fe9a",
+    "id_kind": "source_attribute_display",
+    "id_value": "Berat buah per tanaman",
+    "id_issue": null
+   },
+   {
+    "display": "Ketahanan terhadap hama",
+    "name": "Ketahanan terhadap hama",
+    "context": null,
+    "samples": [
+     "Agak toleran terhadap hama penghisap daun (trips)",
+     "Agak toleran terhadap hama pengisap daun (Trips)"
+    ],
+    "n_values": 2,
+    "item_id": "07baf23e1a759a83f71080e7f073e994037e214c0a5c52c25aa0b40cb78e4de6",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ketahanan terhadap hama",
+    "id_issue": null
+   },
+   {
+    "display": "Ketahanan terhadap penyakit",
+    "name": "Ketahanan terhadap penyakit",
+    "context": null,
+    "samples": [
+     "Tahan terhadap virus belang (ChiVMV)",
+     "Tahan terhadap virus kuning (PepYLCV)",
+     "Sangat tahan terhadap layu bakteri (Ralstonia solanacearum),"
+    ],
+    "n_values": 3,
+    "item_id": "cb1122bff125988e6d108d0aead5be06b93b86efc012dba101d734d5d9731759",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ketahanan terhadap penyakit",
+    "id_issue": null
+   },
+   {
+    "display": "Daya simpan buah pada suhu 24-27 oC",
+    "name": "Daya simpan buah pada suhu 24-27 oC",
+    "context": null,
+    "samples": [
+     "14-15 hari setelah panen"
+    ],
+    "n_values": 1,
+    "item_id": "aa2f7b88910c09a4bad7755e99a2cc001eec3f90531ce750d45542b5222aadcd",
+    "id_kind": "source_attribute_display",
+    "id_value": "Daya simpan buah pada suhu 24-27 oC",
+    "id_issue": null
+   },
+   {
+    "display": "Hasil buah per hektar",
+    "name": "Hasil buah per hektar",
+    "context": null,
+    "samples": [
+     "21-23 ton",
+     "9,45-18,16 ton",
+     "11,09 - 12,85 ton/Ha"
+    ],
+    "n_values": 5,
+    "item_id": "f4655d87a043529db03fea7e1c972f6f2465767d28becb41ba7eef239c4f6ea0",
+    "id_kind": "source_attribute_display",
+    "id_value": "Hasil buah per hektar",
+    "id_issue": null
+   },
+   {
+    "display": "Populasi per hektar",
+    "name": "Populasi per hektar",
+    "context": null,
+    "samples": [
+     "23.000 tanaman",
+     "22.333 tanaman/Ha",
+     "23.333 tanaman/Ha"
+    ],
+    "n_values": 4,
+    "item_id": "0cf54757d78f2ea390b94bc645e8ff37400149aefc5d990ba78d8624b1fc3a5c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Populasi per hektar",
+    "id_issue": null
+   },
+   {
+    "display": "Kebutuhan benih per hektar",
+    "name": "Kebutuhan benih per hektar",
+    "context": null,
+    "samples": [
+     "200 gram",
+     "140,31 - 146,61 gram/Ha",
+     "125,93 - 141,67 gr/ha"
+    ],
+    "n_values": 4,
+    "item_id": "33f33f8dbc5f04aa5885cdfba0117a00bec3bc8794eaa93d15c7fb3145a34bdd",
+    "id_kind": "source_attribute_display",
+    "id_value": "Kebutuhan benih per hektar",
+    "id_issue": null
+   },
+   {
+    "display": "Penciri utama",
+    "name": "Penciri utama",
+    "context": null,
+    "samples": [
+     "Undulesi tepi daun sedang dan warna buah masak merah (RHS 46",
+     "1. Tipe tanaman intermediate 2. Warna buah muda hijau kekuni",
+     "Batas kelopak buah bergerigi (Shellow dan bergerigi), Predom"
+    ],
+    "n_values": 6,
+    "item_id": "2f6bf2a391a3a9194ac5467b12d4c1a02f78c68604f5b915047c85e8f61bba04",
+    "id_kind": "source_attribute_display",
+    "id_value": "Penciri utama",
+    "id_issue": null
+   },
+   {
+    "display": "Keunggulan varietas",
+    "name": "Keunggulan varietas",
+    "context": null,
+    "samples": [
+     "Tahan virus dan produksi tinggi",
+     "Tahan antraknos dan produktivitas tinggi",
+     "Hasil perhektar tinggi, tahan terhadap virus kuning (virus G"
+    ],
+    "n_values": 6,
+    "item_id": "b1c81c8ea128e888398a940b4b660ac6c2e3781341f12901f404c60184c4f1d2",
+    "id_kind": "source_attribute_display",
+    "id_value": "Keunggulan varietas",
+    "id_issue": null
+   },
+   {
+    "display": "Wilayah adaptasi",
+    "name": "Wilayah adaptasi",
+    "context": null,
+    "samples": [
+     "Sesuai di dataran tinggi pada musim hujan",
+     "Sesuai pada musim kemarau di dataran tinggi Kec. Pacet, Kab.",
+     "Sesuai untuk dataran medium-tinggi pada musim hujan"
+    ],
+    "n_values": 6,
+    "item_id": "18e9e0cf04ae5ac1f6da7eea301bbb3b9d6bae91372b1285810af8254a1e975c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Wilayah adaptasi",
+    "id_issue": null
+   },
+   {
+    "display": "Ukuran daun Panjang",
+    "name": "Ukuran daun Panjang",
+    "context": null,
+    "samples": [
+     "4,10-5,10 cm"
+    ],
+    "n_values": 1,
+    "item_id": "aabd2b82e442c06e33ed34526959c3b0c5cf6413a2f82e3ee65738dc6b0fd1a5",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ukuran daun Panjang",
+    "id_issue": null
+   },
+   {
+    "display": "Ukuran daun Lebar",
+    "name": "Ukuran daun Lebar",
+    "context": null,
+    "samples": [
+     "1,70-2,20 cm"
+    ],
+    "n_values": 1,
+    "item_id": "bb1051d2971e95dad14b5440e9541493ed79c90d1ccdc776da6625a5b43907e5",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ukuran daun Lebar",
+    "id_issue": null
+   },
+   {
+    "display": "Ukuran buah Panjang",
+    "name": "Ukuran buah Panjang",
+    "context": null,
+    "samples": [
+     "12,0-16,2 cm"
+    ],
+    "n_values": 1,
+    "item_id": "df0a0a8fdeff921b78005d080cc28950a047a94ce48f77d056d6b4b83c0e9b3f",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ukuran buah Panjang",
+    "id_issue": null
+   },
+   {
+    "display": "Ukuran buah Diameter",
+    "name": "Ukuran buah Diameter",
+    "context": null,
+    "samples": [
+     "8,6-14,7 cm"
+    ],
+    "n_values": 1,
+    "item_id": "a6edf85e586387a99bee8800f69fcd927e00c8423bd33bced58c1903e873bff6",
+    "id_kind": "source_attribute_display",
+    "id_value": "Ukuran buah Diameter",
+    "id_issue": null
+   },
+   {
+    "display": "Berat 1000 biji",
+    "name": "Berat 1000 biji",
+    "context": null,
+    "samples": [
+     "5,60-5,92 gram",
+     "7.02-7,25 (gr)",
+     "4,32-5,38 g"
+    ],
+    "n_values": 3,
+    "item_id": "7a503cb680a45fadba5c8e71ec913cdeae1b787d93af99818aea9d478a9fbbdc",
+    "id_kind": "source_attribute_display",
+    "id_value": "Berat 1000 biji",
+    "id_issue": null
+   },
+   {
+    "display": "Daya simpan buah pada suhu (25-30 oC)",
+    "name": "Daya simpan buah pada suhu (25-30 oC)",
+    "context": null,
+    "samples": [
+     "8-14 hsp"
+    ],
+    "n_values": 1,
+    "item_id": "eb3fc1ce8ed0a9d59685ee65a079d13672723a6b51a1a1f2875a6b5ee7338c53",
+    "id_kind": "source_attribute_display",
+    "id_value": "Daya simpan buah pada suhu (25-30 oC)",
+    "id_issue": null
+   },
+   {
+    "display": "Populasi Tanaman per ha",
+    "name": "Populasi Tanaman per ha",
+    "context": null,
+    "samples": [
+     "25.000 tanaman"
+    ],
+    "n_values": 1,
+    "item_id": "763ab63ddb8dac1f231dbafe0d3708cb968d455ed4aa9d5a2e89a92add8f9fd4",
+    "id_kind": "source_attribute_display",
+    "id_value": "Populasi Tanaman per ha",
+    "id_issue": null
+   },
+   {
+    "display": "Kebutuhan benih per ha",
+    "name": "Kebutuhan benih per ha",
+    "context": null,
+    "samples": [
+     "250 gram"
+    ],
+    "n_values": 1,
+    "item_id": "a1491787951fd8b99169c5dfa8c5ca32ad5a7bbd40b709492354efaff172fb1a",
+    "id_kind": "source_attribute_display",
+    "id_value": "Kebutuhan benih per ha",
+    "id_issue": null
+   },
+   {
+    "display": "Tinggi tanaman (cm)",
+    "name": "Tinggi tanaman (cm)",
+    "context": null,
+    "samples": [
+     "50,73-67,93 (cm)"
+    ],
+    "n_values": 1,
+    "item_id": "c2dcd7c972577ffbd50571cf3434728e6080c72f3472e6bda9cc7574ac774b14",
+    "id_kind": "source_attribute_display",
+    "id_value": "Tinggi tanaman (cm)",
+    "id_issue": null
+   },
+   {
+    "display": "Habitus tanaman",
+    "name": "Habitus tanaman",
+    "context": null,
+    "samples": [
+     "Tegak"
+    ],
+    "n_values": 1,
+    "item_id": "456def8cfd8c2555e70d1fddb43146f14dc82aeb93dac1958c5360f402e6cdf3",
+    "id_kind": "source_attribute_display",
+    "id_value": "Habitus tanaman",
+    "id_issue": null
+   },
+   {
+    "display": "Diameter batang (cm)",
+    "name": "Diameter batang (cm)",
+    "context": null,
+    "samples": [
+     "0,9-1,50 (cm)"
+    ],
+    "n_values": 1,
+    "item_id": "f3f47419ab104bd1190dda773d8225a92797c0694ad0c4ef4e1bc95304582f73",
+    "id_kind": "source_attribute_display",
+    "id_value": "Diameter batang (cm)",
+    "id_issue": null
+   },
+   {
+    "display": "Panjang daun",
+    "name": "Panjang daun",
+    "context": null,
+    "samples": [
+     "6,45-10,64 (cm)",
+     "7,72-8,78 cm"
+    ],
+    "n_values": 2,
+    "item_id": "867dafd533e71bb97e2e63def022fdab1bb8af2110d20a9a10c70ff63d04b651",
+    "id_kind": "source_attribute_display",
+    "id_value": "Panjang daun",
+    "id_issue": null
+   },
+   {
+    "display": "Lebar daun",
+    "name": "Lebar daun",
+    "context": null,
+    "samples": [
+     "2,73-4,04 (cm)",
+     "2,98-3,32 cm"
+    ],
+    "n_values": 2,
+    "item_id": "c0a7d9a6cd26762f047a86c358dea10fc668144cbcae439951b49a1e899246c3",
+    "id_kind": "source_attribute_display",
+    "id_value": "Lebar daun",
+    "id_issue": null
+   },
+   {
+    "display": "Warna bunga",
+    "name": "Warna bunga",
+    "context": null,
+    "samples": [
+     "Putih (RHS White grup NN155A)"
+    ],
+    "n_values": 1,
+    "item_id": "8d10140fab9f30dc5e49417dfbf3740f6fa747de79291aefb72243e6e0e47c4d",
+    "id_kind": "source_attribute_display",
+    "id_value": "Warna bunga",
+    "id_issue": null
+   },
+   {
+    "display": "Kelopak",
+    "name": "Kelopak",
+    "context": null,
+    "samples": [
+     "Hijau (RHS 137C)"
+    ],
+    "n_values": 1,
+    "item_id": "6bd86a9d6a2bbf89221c0c0f1c70aeca93a792af67e9d293ea6a6e99d31f4e47",
+    "id_kind": "source_attribute_display",
+    "id_value": "Kelopak",
+    "id_issue": null
+   },
+   {
+    "display": "Mahkota",
+    "name": "Mahkota",
+    "context": null,
+    "samples": [
+     "Putih (RHS 155C)"
+    ],
+    "n_values": 1,
+    "item_id": "6cab58e6beef12003b20eccc99ae372e763dcb269688b81f7098406f270101ba",
+    "id_kind": "source_attribute_display",
+    "id_value": "Mahkota",
+    "id_issue": null
+   },
+   {
+    "display": "Benang sari",
+    "name": "Benang sari",
+    "context": null,
+    "samples": [
+     "Biru (RHS 103A)",
+     "Ungu terang kebiruan (Light blue violet RHS 93 D)"
+    ],
+    "n_values": 2,
+    "item_id": "179597b0348147ae5ee24e14f96a9beb338e9fccea731d09e8a94a20577b658e",
+    "id_kind": "source_attribute_display",
+    "id_value": "Benang sari",
+    "id_issue": null
+   },
+   {
+    "display": "Umur mulai berbunga (hari)",
+    "name": "Umur mulai berbunga (hari)",
+    "context": null,
+    "samples": [
+     "26,67-42,25 (HST)"
+    ],
+    "n_values": 1,
+    "item_id": "f5e675962c87595432541ea46082e63c8ef3c136ff0b0ad31ff7863e62959ae1",
+    "id_kind": "source_attribute_display",
+    "id_value": "Umur mulai berbunga (hari)",
+    "id_issue": null
+   },
+   {
+    "display": "Umur mulai panen (hari)",
+    "name": "Umur mulai panen (hari)",
+    "context": null,
+    "samples": [
+     "90,33-96,76 (HST)"
+    ],
+    "n_values": 1,
+    "item_id": "9051d1d65b35ce24f49d4b40471d304b0ccb46b98f2ab7634ef01837e064e2b3",
+    "id_kind": "source_attribute_display",
+    "id_value": "Umur mulai panen (hari)",
+    "id_issue": null
+   },
+   {
+    "display": "Tebal kulit buah (cm)",
+    "name": "Tebal kulit buah (cm)",
+    "context": null,
+    "samples": [
+     "1,70-3,24 (mm)"
+    ],
+    "n_values": 1,
+    "item_id": "6d02ab6eef534c66ff07839beb3863e5ae772320b1bd6a0ee5f7d05cd148aa91",
+    "id_kind": "source_attribute_display",
+    "id_value": "Tebal kulit buah (cm)",
+    "id_issue": null
+   },
+   {
+    "display": "Daya simpan buah pada suhu kamar (24-27 oC)",
+    "name": "Daya simpan buah pada suhu kamar (24-27 oC)",
+    "context": null,
+    "samples": [
+     "11,00-14,20 (hari)"
+    ],
+    "n_values": 1,
+    "item_id": "585dcc0a7d92c7ee7fad074e1791f294c9be21a0781fae6d57a180ade2e3ca9e",
+    "id_kind": "source_attribute_display",
+    "id_value": "Daya simpan buah pada suhu kamar (24-27 oC)",
+    "id_issue": null
+   },
+   {
+    "display": "Hasil buah per hektar (ton)",
+    "name": "Hasil buah per hektar (ton)",
+    "context": null,
+    "samples": [
+     "12,34-40,37 ton/ha"
+    ],
+    "n_values": 1,
+    "item_id": "69d73d7e79d6d07a301af5beb8050d514541df67f862b7918f39fca3ccc578e9",
+    "id_kind": "source_attribute_display",
+    "id_value": "Hasil buah per hektar (ton)",
+    "id_issue": null
+   },
+   {
+    "display": "Populasi per hektar (tanaman)",
+    "name": "Populasi per hektar (tanaman)",
+    "context": null,
+    "samples": [
+     "23.000-27.000"
+    ],
+    "n_values": 1,
+    "item_id": "ef14dd1ca405259826af16a6837b2d1f8768ded8931c710e925ada6e3eee4ecd",
+    "id_kind": "source_attribute_display",
+    "id_value": "Populasi per hektar (tanaman)",
+    "id_issue": null
+   },
+   {
+    "display": "Kebutuhan benih per hektar (g)",
+    "name": "Kebutuhan benih per hektar (g)",
+    "context": null,
+    "samples": [
+     "0,20-0,24 kg"
+    ],
+    "n_values": 1,
+    "item_id": "282d7e3c117eb3030c853c2311e801a4fd551000f1cc6658a45da4609e109199",
+    "id_kind": "source_attribute_display",
+    "id_value": "Kebutuhan benih per hektar (g)",
+    "id_issue": null
+   },
+   {
+    "display": "Bentuk pangkal daun",
+    "name": "Bentuk pangkal daun",
+    "context": null,
+    "samples": [
+     "Membulat"
+    ],
+    "n_values": 1,
+    "item_id": "3c4916ed96b747694c4fca9552f31c893116b78e8caf9c3a7036da02d3f138af",
+    "id_kind": "source_attribute_display",
+    "id_value": "Bentuk pangkal daun",
+    "id_issue": null
+   },
+   {
+    "display": "Kelopak Bunga",
+    "name": "Kelopak Bunga",
+    "context": null,
+    "samples": [
+     "Hijau Gelap (RHS Green Group 141 A)",
+     "Hijau (Green Group RHS 143 A)"
+    ],
+    "n_values": 2,
+    "item_id": "7461e275068c09f883e41a2da63c344703a850df056857eb772188fa73cb4f0c",
+    "id_kind": "source_attribute_display",
+    "id_value": "Kelopak Bunga",
+    "id_issue": null
+   },
+   {
+    "display": "Mahkota Bunga",
+    "name": "Mahkota Bunga",
+    "context": null,
+    "samples": [
+     "Putih (RHS Green White Group 155 A)",
+     "Putih kehijauan (Yellow Green Group RHS 145 D)"
+    ],
+    "n_values": 2,
+    "item_id": "4ed15c9fec95e8d575ccf2cf74eb8ee886b22b89554d9c0ba19ef8379b81cccb",
+    "id_kind": "source_attribute_display",
+    "id_value": "Mahkota Bunga",
+    "id_issue": null
+   },
+   {
+    "display": "Kepala Putik",
+    "name": "Kepala Putik",
+    "context": null,
+    "samples": [
+     "Putih (RHS Green White Group 157 B)",
+     "Kuning terang (Yellow Green Group RHS 154 C)"
+    ],
+    "n_values": 2,
+    "item_id": "7a4ad5239b11d52032565c2f51432ea81fb2f9546e1c164031c9fb4783dc2be7",
+    "id_kind": "source_attribute_display",
+    "id_value": "Kepala Putik",
+    "id_issue": null
+   },
+   {
+    "display": "Kotak Sari",
+    "name": "Kotak Sari",
+    "context": null,
+    "samples": [
+     "Hijau kebiruan (RHS Blue Green Group 122 B)",
+     "Hijau keabuan (Greyed Green Group RHS N189 B)"
+    ],
+    "n_values": 2,
+    "item_id": "fcd19ab2f8bc50f6d998d19ca988ca785a41819eb5bb737803d5b4f0bc9c472f",
+    "id_kind": "source_attribute_display",
+    "id_value": "Kotak Sari",
+    "id_issue": null
+   },
+   {
+    "display": "Tipe Berbuah",
+    "name": "Tipe Berbuah",
+    "context": null,
+    "samples": [
+     "Meghadap ke bawah"
+    ],
+    "n_values": 1,
+    "item_id": "a7c1ba295b6ccfdab8b94ccc48a634b0fa6ccb58ef3fc9d398bcbdb4ee53c262",
+    "id_kind": "source_attribute_display",
+    "id_value": "Tipe Berbuah",
+    "id_issue": null
+   },
+   {
+    "display": "Daya simpan buah pada suhu (25-27 oC)",
+    "name": "Daya simpan buah pada suhu (25-27 oC)",
+    "context": null,
+    "samples": [
+     "4 - 5 hari setelah panen"
+    ],
+    "n_values": 1,
+    "item_id": "4ce32c36a7dc677100b6aeb11e65b20282e0c0a59e68d6c785d06c2f9225284e",
+    "id_kind": "source_attribute_display",
+    "id_value": "Daya simpan buah pada suhu (25-27 oC)",
+    "id_issue": null
+   },
+   {
+    "display": "Pemohon",
+    "name": "Pemohon",
+    "context": null,
+    "samples": [
+     "PT. Hibrida Jaya Unggul",
+     "CV. Herkreasi",
+     "PT East West Seed Indonesia"
+    ],
+    "n_values": 3,
+    "item_id": "3bc6e5c2314332cc3fc1ec46e6a589f1128252478fb075d2679695dee467b222",
+    "id_kind": "source_attribute_display",
+    "id_value": "Pemohon",
+    "id_issue": null
+   },
+   {
+    "display": "Pemulia",
+    "name": "Pemulia",
+    "context": null,
+    "samples": [
+     "Ari Wibowo",
+     "Ade Yatna dan Supri Hertanto, SP",
+     "Fatkhu Rokhman, Aji Supriyadi, dan Puji Syara Anggia"
+    ],
+    "n_values": 3,
+    "item_id": "fa88ff3c979c363eca94d5bb999e285107abfe4930778aa476fc1c6e44a84284",
+    "id_kind": "source_attribute_display",
+    "id_value": "Pemulia",
+    "id_issue": null
+   },
+   {
+    "display": "Peneliti",
+    "name": "Peneliti",
+    "context": null,
+    "samples": [
+     "Agus Abudharin Munif, Ari Wibowo, Arif Rizki, dan Ajimas Muk",
+     "Arfan Adi Nugroho, Ade Priyono, dan Puji Priyadi",
+     "Abdul Kohar, Febryana Erlyandari, Gigin Fajaruddin dan Bagus"
+    ],
+    "n_values": 3,
+    "item_id": "55b9c1fb02a995774d1d862c1dbb792235748602ee6fb6abdcc106c0f694ab85",
+    "id_kind": "source_attribute_display",
+    "id_value": "Peneliti",
+    "id_issue": null
+   },
+   {
+    "display": "Panjang dikotomus",
+    "name": "Panjang dikotomus",
+    "context": null,
+    "samples": [
+     "Pendek (26,90 - 32,40 cm)"
+    ],
+    "n_values": 1,
+    "item_id": "da8afb98545134cf96578dc8141b71bdad2476334204732e8efbeb82ea018395",
+    "id_kind": "source_attribute_display",
+    "id_value": "Panjang dikotomus",
+    "id_issue": null
+   },
+   {
+    "display": "Panjang ruas batang",
+    "name": "Panjang ruas batang",
+    "context": null,
+    "samples": [
+     "Pendek (1,40 - 2,00 cm)"
+    ],
+    "n_values": 1,
+    "item_id": "a73d61b9cde40c6bbc0ab94eff206d597044ba0df26d4a609527a19dd114e430",
+    "id_kind": "source_attribute_display",
+    "id_value": "Panjang ruas batang",
+    "id_issue": null
+   },
+   {
+    "display": "Daya simpan buah pada suhu 25 - 27 oC",
+    "name": "Daya simpan buah pada suhu 25 - 27 oC",
+    "context": null,
+    "samples": [
+     "6 - 8 HSP"
+    ],
+    "n_values": 1,
+    "item_id": "1f01348c3fab3e4b8017032e2676286c2113519e7fbf515600e8d78951a6f1fd",
+    "id_kind": "source_attribute_display",
+    "id_value": "Daya simpan buah pada suhu 25 - 27 oC",
+    "id_issue": null
+   },
+   {
+    "display": "Profil potongan melintang",
+    "name": "Profil potongan melintang",
+    "context": null,
+    "samples": [
+     "Strongly Concave"
+    ],
+    "n_values": 1,
+    "item_id": "d7b008a3662c675e7d3080e8434df091c584756323d525f3cdb81a9929ba5aed",
+    "id_kind": "source_attribute_display",
+    "id_value": "Profil potongan melintang",
+    "id_issue": null
+   },
+   {
+    "display": "Orientasi pedunkulus",
+    "name": "Orientasi pedunkulus",
+    "context": null,
+    "samples": [
+     "Drooping"
+    ],
+    "n_values": 1,
+    "item_id": "c30e7ba842db987382a99b25ffcff254ccd5f718d840b519115d28fb7dd58d94",
+    "id_kind": "source_attribute_display",
+    "id_value": "Orientasi pedunkulus",
+    "id_issue": null
+   },
+   {
+    "display": "Panjang buah",
+    "name": "Panjang buah",
+    "context": null,
+    "samples": [
+     "13,76-15,51 cm"
+    ],
+    "n_values": 1,
+    "item_id": "a1bce84e8a82bffe025f1bf56c58ea68547c6be4a3ebfddde2f5b8810c6ea1b5",
+    "id_kind": "source_attribute_display",
+    "id_value": "Panjang buah",
+    "id_issue": null
+   },
+   {
+    "display": "Diameter buah",
+    "name": "Diameter buah",
+    "context": null,
+    "samples": [
+     "1,35-1,46 cm"
+    ],
+    "n_values": 1,
+    "item_id": "2d045e1f9f316763feea4dec133ebed5423a9af425a43bde29ecf5a183fcf0fb",
+    "id_kind": "source_attribute_display",
+    "id_value": "Diameter buah",
+    "id_issue": null
+   },
+   {
+    "display": "Daya simpan buah pada suhu 27-31 oC",
+    "name": "Daya simpan buah pada suhu 27-31 oC",
+    "context": null,
+    "samples": [
+     "5-6 hari setelah panen"
+    ],
+    "n_values": 1,
+    "item_id": "d75857456e32a0766af34bbffb7733fda23a9bd151f75fc119d3b7f98a9dfd30",
+    "id_kind": "source_attribute_display",
+    "id_value": "Daya simpan buah pada suhu 27-31 oC",
+    "id_issue": null
+   }
+  ]
+ }
+]

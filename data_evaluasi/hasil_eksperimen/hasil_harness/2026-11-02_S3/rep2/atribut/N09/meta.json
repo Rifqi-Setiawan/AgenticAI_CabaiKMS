@@ -1,0 +1,375 @@
+{
+  "run": "N09",
+  "kind": "atribut",
+  "rep": 2,
+  "file": "dataset_cabai_deskripsi_varietas.xlsx",
+  "sheet": "transposed",
+  "format": "transposed",
+  "header_rows": null,
+  "drive": null,
+  "max_images": 5,
+  "k": 8,
+  "commit": "6217420",
+  "sha256_berkas": "bd7875dd13fa2350105334a40f46ad209a6d7c1ec672c25f21f1e7e6c0913612",
+  "start": "2026-11-02 07:17:00",
+  "s2_keys": [
+    [
+      "Asal",
+      "",
+      ""
+    ],
+    [
+      "Silsilah",
+      "",
+      ""
+    ],
+    [
+      "Golongan varietas",
+      "",
+      ""
+    ],
+    [
+      "Bentuk penampang batang",
+      "",
+      ""
+    ],
+    [
+      "Diameter batang",
+      "",
+      ""
+    ],
+    [
+      "Warna batang",
+      "",
+      ""
+    ],
+    [
+      "Ukuran daun",
+      "",
+      ""
+    ],
+    [
+      "Warna mahkota bunga",
+      "",
+      ""
+    ],
+    [
+      "Warna kepala putik",
+      "",
+      ""
+    ],
+    [
+      "Warna benang sari",
+      "",
+      ""
+    ],
+    [
+      "Umur mulai berbunga",
+      "",
+      ""
+    ],
+    [
+      "Umur mulai panen",
+      "",
+      ""
+    ],
+    [
+      "Ukuran buah",
+      "",
+      ""
+    ],
+    [
+      "Warna buah tua",
+      "",
+      ""
+    ],
+    [
+      "Tebal kulit buah",
+      "",
+      ""
+    ],
+    [
+      "Rasa buah",
+      "",
+      ""
+    ],
+    [
+      "Bentuk biji",
+      "",
+      ""
+    ],
+    [
+      "Berat 1.000 biji",
+      "",
+      ""
+    ],
+    [
+      "Berat per buah",
+      "",
+      ""
+    ],
+    [
+      "Jumlah buah per tanaman",
+      "",
+      ""
+    ],
+    [
+      "Berat buah per tanaman",
+      "",
+      ""
+    ],
+    [
+      "Ketahanan terhadap hama",
+      "",
+      ""
+    ],
+    [
+      "Ketahanan terhadap penyakit",
+      "",
+      ""
+    ],
+    [
+      "Daya simpan buah pada suhu 24-27 oC",
+      "",
+      ""
+    ],
+    [
+      "Hasil buah per hektar",
+      "",
+      ""
+    ],
+    [
+      "Populasi per hektar",
+      "",
+      ""
+    ],
+    [
+      "Kebutuhan benih per hektar",
+      "",
+      ""
+    ],
+    [
+      "Penciri utama",
+      "",
+      ""
+    ],
+    [
+      "Keunggulan varietas",
+      "",
+      ""
+    ],
+    [
+      "Wilayah adaptasi",
+      "",
+      ""
+    ],
+    [
+      "Ukuran daun Panjang",
+      "",
+      ""
+    ],
+    [
+      "Ukuran daun Lebar",
+      "",
+      ""
+    ],
+    [
+      "Ukuran buah Panjang",
+      "",
+      ""
+    ],
+    [
+      "Ukuran buah Diameter",
+      "",
+      ""
+    ],
+    [
+      "Berat 1000 biji",
+      "",
+      ""
+    ],
+    [
+      "Daya simpan buah pada suhu (25-30 oC)",
+      "",
+      ""
+    ],
+    [
+      "Populasi Tanaman per ha",
+      "",
+      ""
+    ],
+    [
+      "Kebutuhan benih per ha",
+      "",
+      ""
+    ],
+    [
+      "Tinggi tanaman (cm)",
+      "",
+      ""
+    ],
+    [
+      "Habitus tanaman",
+      "",
+      ""
+    ],
+    [
+      "Diameter batang (cm)",
+      "",
+      ""
+    ],
+    [
+      "Warna bunga",
+      "",
+      ""
+    ],
+    [
+      "Kelopak",
+      "",
+      ""
+    ],
+    [
+      "Mahkota",
+      "",
+      ""
+    ],
+    [
+      "Benang sari",
+      "",
+      ""
+    ],
+    [
+      "Umur mulai berbunga (hari)",
+      "",
+      ""
+    ],
+    [
+      "Umur mulai panen (hari)",
+      "",
+      ""
+    ],
+    [
+      "Tebal kulit buah (cm)",
+      "",
+      ""
+    ],
+    [
+      "Daya simpan buah pada suhu kamar (24-27 oC)",
+      "",
+      ""
+    ],
+    [
+      "Hasil buah per hektar (ton)",
+      "",
+      ""
+    ],
+    [
+      "Populasi per hektar (tanaman)",
+      "",
+      ""
+    ],
+    [
+      "Kebutuhan benih per hektar (g)",
+      "",
+      ""
+    ],
+    [
+      "Kelopak Bunga",
+      "",
+      ""
+    ],
+    [
+      "Mahkota Bunga",
+      "",
+      ""
+    ],
+    [
+      "Kepala Putik",
+      "",
+      ""
+    ],
+    [
+      "Kotak Sari",
+      "",
+      ""
+    ],
+    [
+      "Tipe Berbuah",
+      "",
+      ""
+    ],
+    [
+      "Daya simpan buah pada suhu (25-27 oC)",
+      "",
+      ""
+    ],
+    [
+      "Pemohon",
+      "",
+      ""
+    ],
+    [
+      "Pemulia",
+      "",
+      ""
+    ],
+    [
+      "Peneliti",
+      "",
+      ""
+    ],
+    [
+      "Panjang dikotomus",
+      "",
+      ""
+    ],
+    [
+      "Panjang ruas batang",
+      "",
+      ""
+    ],
+    [
+      "Daya simpan buah pada suhu 25 - 27 oC",
+      "",
+      ""
+    ],
+    [
+      "Profil potongan melintang",
+      "",
+      ""
+    ],
+    [
+      "Orientasi pedunkulus",
+      "",
+      ""
+    ],
+    [
+      "Panjang buah",
+      "",
+      ""
+    ],
+    [
+      "Diameter buah",
+      "",
+      ""
+    ],
+    [
+      "Daya simpan buah pada suhu 27-31 oC",
+      "",
+      ""
+    ]
+  ],
+  "images_discovered": 0,
+  "n_mapping": 80,
+  "n_vision": 0,
+  "fingerprint": "b421eb1f6f0d765a8c68bbfadd87d685e09b34206e4274584e07d8abadaecc1f",
+  "errors": [
+    "atribut \"Daya simpan buah pada suhu 25 - 27 oC\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Daya simpan buah' mengukur masa simpan pascapanen (shelf life) buah, tetapi tidak ada kandidat baris kanonik dalam daftar r_1 sampai r_60 yang mencakup parameter daya simpan atau pascapanen.",
+    "atribut \"Profil potongan melintang\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Profil potongan melintang' (dengan nilai seperti 'Strongly Concave') merujuk pada profil penampang melintang (umumnya daun atau buah), yang tidak terdapat dalam daftar baris kanonik yang tersedia.",
+    "atribut \"Orientasi pedunkulus\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Orientasi pedunkulus (peduncle/pedicel orientation) dapat merujuk pada posisi bunga (r_32) maupun posisi buah (r_46/r_47). Tanpa konteks spesifik organ (bunga atau buah muda/masak), pemetaan tidak dapat ditentukan secara meyakinkan sehingga lebih tepat NULL.",
+    "atribut \"Diameter buah\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut sumber adalah diameter buah, sedangkan skema kanonik yang tersedia hanya memiliki keliling buah muda (r_38) dan keliling buah masak (r_50). Karena diameter berbeda secara geometris dari keliling dan tingkat kemasakan buah tidak dispesifikasi, atribut ini tidak memiliki padanan kanonik yang tepat.",
+    "atribut \"Daya simpan buah pada suhu 27-31 oC\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut sumber merujuk pada daya simpan (shelf life) buah pascapanen, sedangkan kandidat baris kanonik yang tersedia hanya mencakup karakter morfologi tanaman (vegetatif, daun, bunga, buah, biji), lokasi, dan gambar."
+  ],
+  "status": "ok",
+  "detik": 501.2
+}

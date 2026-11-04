@@ -1,0 +1,22 @@
+=== sekuens 1: Sun Nov  1 16:51:15 WIB 2026
+migrasi: ['0001', '0002', '0003', '0004', '0005', '0006', '0007']
+R01 rep 1 ok 130.9 s
+N07 rep 1 ok 563.6 s
+N09 rep 1 ok 446.0 s
+R02 rep 1 ok 215.9 s
+baris akhir: 40
+=== sekuens 2: Sun Nov  1 17:14:02 WIB 2026
+migrasi: ['0001', '0002', '0003', '0004', '0005', '0006', '0007']
+R01 rep 1 ok 132.4 s
+N07 rep 1 ok 572.1 s
+N09 rep 1 ok 438.4 s
+R02 rep 1 ok 230.8 s
+baris akhir: 40
+=== sekuens 3: Sun Nov  1 17:37:06 WIB 2026
+migrasi: ['0001', '0002', '0003', '0004', '0005', '0006', '0007']
+R01 rep 1 ok 143.5 s
+N07 rep 1 ok 536.6 s
+N09 rep 1 ok 584.8 s
+R02 rep 1 ok 215.3 s
+baris akhir: 40
+=== SELESAI: Sun Nov  1 18:02:00 WIB 2026

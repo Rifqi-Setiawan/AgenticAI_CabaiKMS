@@ -1,0 +1,27 @@
+{
+  "label": "ulang19",
+  "kanonik": null,
+  "run_scope": [
+    "Cabai Rawit",
+    "Jalapeno",
+    "Habanero",
+    "Cayenne",
+    "Paprika",
+    "Cabai Korea",
+    "Serrano",
+    "Hungarian Wax"
+  ],
+  "db_varieties": [],
+  "options": [
+    "Cabai Korea",
+    "Cabai Rawit",
+    "Cayenne",
+    "Habanero",
+    "Hungarian Wax",
+    "Jalapeno",
+    "Paprika",
+    "Serrano"
+  ],
+  "mulai": "2026-11-04T11:21:40.934822",
+  "selesai": "2026-11-04T11:51:50.531110"
+}

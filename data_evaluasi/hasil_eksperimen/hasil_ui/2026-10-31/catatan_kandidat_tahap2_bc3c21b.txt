@@ -1,0 +1,13 @@
+2026-10-31T22:20:05.060159+07:00 | sebelum S01 | kandidat=0
+
+2026-10-31T22:31:02.961752+07:00 | setelah S01 | kandidat=2
+#1 | daun cabai domba.webp
+#2 | cabai domba.jpg
+2026-10-31T22:41:59.103237+07:00 | setelah S02 | kandidat=2
+#1 | daun cabai domba.webp
+#2 | cabai domba.jpg
+2026-10-31T22:53:13.084263+07:00 | setelah S03 | kandidat=4
+#1 | daun cabai domba.webp
+#2 | cabai domba.jpg
+#3 | daun cabai kopay.jpg
+#4 | cabai kopay.webp
