@@ -11,6 +11,10 @@ semuanya disalin ke `inputs/` dengan isi yang sama (SHA-256 identik).
 > seperti yang diminta protokol proyek (`docs/HUMAN_ANNOTATION_GUIDE.md`, Bab III proposal); sebut ini di metodologi. Butir `perlu_adjudikasi = Y` (57 dari 326) disarankan diperiksa lebih dulu.
 > Lembar verifikasi dan skripnya: `verifikasi_gold/`, `skrip/terapkan_verifikasi.py`.
 
+> **Pembersihan level varietas (4-5 November 2026, D19).** Data yang hanya sampai spesies atau tipe buah (mis. R01, Cabai Rawit/Korea,
+> Jalapeño, Habanero, foto UNCERTAIN) sudah dipindah ke `_dikeluarkan_bukan_varietas/`. Inventaris di bawah masih menggambarkan
+> data sebelum pembersihan. Rincian: `KLASIFIKASI_LEVEL_VARIETAS.md`.
+
 ## 1. Inventaris dataset
 
 | ID | Berkas | Sheet | Format (UI) | Header | Atribut | Asal |
