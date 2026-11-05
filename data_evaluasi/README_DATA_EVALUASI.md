@@ -172,3 +172,61 @@ Rencana metrik inti dan skenario perbandingan ada di `../docs/RENCANA_EVALUASI.m
 |---|---|---|
 | `inputs/E08_zenodo_capsicum_en_variety.xlsx` | N08 dengan sel A1 diganti `Variety` (deviasi D4); berkas asli N08 ditolak parser | `6ede08a0163b26d08c094427292ea55ae1d5bca0b54783e6349c59546dee3b0a` |
 | `gambar/spreadsheet_varietas_terdaftar.xlsx` | Daftar 8 varietas terdaftar untuk run foto Commons; pembantu, bukan data penelitian | `f3a3bd949a2eae4e45ac2f67aaf1617fd2565799ecb9f41d47fa439ee3c9797f` |
+
+## Dataset berpasangan PVT: foto + spreadsheet + gold, 34 varietas terdaftar (5 November 2026)
+
+Sumber tunggal untuk kedua modalitas: 34 dokumen **Berita Resmi PVT** (Pusat PVTPP Kementan) jenis Pendaftaran
+Varietas di `dataset_eksperimen/2_input_foto/pvt_kementan_34_varietas/sumber_pdf/`. Setiap dokumen memuat nama varietas
+resmi, tabel deskripsi karakter (lapisan teks), dan foto. Karena itu foto, spreadsheet, dan gold menunjuk **varietas yang
+sama** dan semuanya level varietas terdaftar (memenuhi D19): 24 varietas hasil pemuliaan + 10 varietas lokal terdaftar.
+
+| ID | Berkas | Sheet | Format | Varietas | Atribut | SHA-256 |
+|---|---|---|---|---|---|---|
+| P01 | `inputs/P01_pvt_hasil_pemuliaan_24.xlsx` | Deskripsi Varietas | row-oriented, header 1 baris, anchor `Varietas Cabai` | 24 hasil pemuliaan | 234 (233 + anchor) | `ecb1168bbaab7959a0abf290743fc7b4fb51a120f0796d9a146f44f8719d1cce` |
+| P02 | `inputs/P02_pvt_varietas_lokal_10.xlsx` | transposed | transposed, baris `Karakter` | 10 lokal | 264 | `c430db6dacd532b648609b1e665a6aa74235d727acbbafd0a1b5448056ca4e1a` |
+
+Label dan nilai disalin apa adanya dari lapisan teks PDF (`pdftotext -layout`), sehingga variasi aslinya terjaga: empat
+gaya dokumen (format Kepmentan `: :`, format UPOV/PVT, format lokal dengan satuan di label, dan deskripsi satu paragraf),
+403 label unik untuk 34 varietas, label bersinonim (`Warna buah tua` / `Warna buah matang` / `Warna kulit buah tua` /
+`Warna buah tua/ matang`), satuan berbeda (cm vs mm), RHS ditulis berbeda-beda, salah ketik sumber (`antosinin`,
+`meliintang`). Perubahan yang dilakukan hanya: footer dokumen elektronik dan judul bagian tanpa nilai dibuang; sub-butir
+di bawah judul digabung (`Warna bunga: Kelopak Bunga`); label yang hanya beda huruf besar/kecil disatukan (parser proyek
+menganggapnya duplikat); label ganda dalam satu dokumen diberi akhiran `(2)`; `Ha?1` (superskrip terbaca salah) menjadi
+`Ha-1`; nama orang (pemohon, pemulia, pendeskripsi) tidak disalin. Sheet `sumber` tiap workbook mencatat No. Publikasi,
+No. Pendaftaran, SHA-256 PDF, dan URL per varietas.
+
+Gold:
+
+| Berkas | Isi | Status |
+|---|---|---|
+| `gold/gold_P01_P02_pvt.csv` | Pemetaan atribut, 498 butir (P01 234, P02 264): ONE_TO_ONE 124, NO_MATCH 344, AMBIGUOUS 28, COMPOSITE 2. Mencakup 41 kunci kanonik. Format sama dengan `gold_semua_dataset.csv` + kolom `rule_source` | **Usulan AI** (`ai_single_annotator_v1`). 190 butir memakai aturan lama yang sudah diverifikasi peneliti (`lama_terverifikasi`); 308 butir dari aturan baru (`pvt_baru`). 144 butir `perlu_adjudikasi = Y` |
+| `gold/kunci_sel/kunci_sel_pvt.csv` | Kunci nilai per sel (varietas × kunci kanonik) untuk atribut ONE_TO_ONE, format `kunci_sel_semua.csv`; nilai = teks dokumen resmi | Mengikuti gold atribut |
+| `gambar/manifest/gold_foto_pvt_317.csv` | 317 foto: `true_variety` (dari dokumen resmi), skenario KNOWN/OTHER, `true_part`, `ada_kartu_nama`, No. Publikasi, URL | Varietas: label resmi. Bagian tanaman dan kartu: **usulan AI** dari tinjauan visual lembar kontak (`ai_visual_review_v1`), 34 foto keyakinan rendah |
+
+Skenario registri yang disarankan untuk uji foto: jalankan foto bersama **P01** sebagai spreadsheet pendamping. 24
+varietas P01 menjadi daftar terdaftar (174 foto KNOWN), 10 varietas lokal P02 tidak ada di run (143 foto OTHER); kolom
+`label_kind_skenario_P01`. Bagian tanaman: BUAH 135, DAUN 59, BUNGA 50, BATANG 25 (269 dapat dinilai,
+`part_dinilai = Y`), ditambah HABITUS 30, BIJI 7, TIDAK_JELAS 11 yang tidak punya kelas di kontrak `VisionResult`.
+
+Keterbatasan: foto hanya 125–164 px (resolusi tertanam di PDF); 287 dari 317 foto memuat kartu nama varietas
+(bocoran label, gunakan kondisi kartu tertutup seperti `pvt_uji_40` untuk klaim visual); gold atribut dan bagian foto
+belum diverifikasi manusia; syarat penggunaan ulang foto belum diperiksa (cantumkan No. Publikasi). Keputusan pemetaan
+baru yang paling perlu diperiksa: warna daun permukaan atas → `warna_daun` (bawah → NO_MATCH); `Warna tangkai daun` →
+AMBIGUOUS pangkal atas/bawah; `Bulu pada buku` → `batang`; undulasi tepi daun → `tepi_daun`; `Lepuhan daun` →
+`tekstur_daun`; kelopak buah (menutup/terbuka) → AMBIGUOUS `bentuk_kelopak_buah_muda|kedudukan_kelopak_bunga`;
+`Sebaran Geografis` → `lokasi`.
+
+Membuat ulang (deterministik, SHA-256 sama): `python -I data_evaluasi/skrip/buat_dataset_pvt.py` dari akar repo
+(butuh `pdftotext`). Skrip: `pvt_ekstrak.py` (ekstraksi PDF), `annotations_pvt.py` (aturan pemetaan),
+`anotasi_bagian_pvt.py` (anotasi bagian foto). Tes: `tests/test_pvt_dataset.py`.
+
+### Kandidat sumber luar (belum diunduh)
+
+Situs berikut tidak bisa diakses dari sesi cloud ini (jaringan dibatasi), jadi hanya metadata dari mesin pencari:
+
+| Sumber | Isi | Kesesuaian |
+|---|---|---|
+| Kumpulan data citra telepon pintar untuk identifikasi varietas cabai merah berbasis daun (BRIN; *Data in Brief*), https://ejournal.brin.go.id/baca/article/view/7786 | 3.877 foto daun, 12 kelas varietas, kebun Balitsa | Paling relevan: varietas Indonesia, kemungkinan varietas Balitsa terdaftar. Perlu cek nama 12 varietas dan lisensi. Hanya daun, tanpa spreadsheet deskripsi |
+| JNUCLS, Mendeley Data 10.17632/sbjykmmz4s.1 (RDA Korea) | 552 foto daun, 77 aksesi berkode | Perlu cek apakah kode aksesi punya nama kultivar |
+| Bangladeshi Chili Dataset, https://data.mendeley.com/datasets/f6w29f8rvn | 779 foto, 7 kelas (Bari 1, Bijli, Bindu, Bombai, Cherry, F1, Red chili) | Campuran: Bari 1 varietas resmi, sisanya nama tipe/umum; kebanyakan gagal D19 |
+| Indian Dried Red Chillies, https://data.mendeley.com/datasets/ghtdwrfh55/4 | 1.080 foto cabai kering, 5 kelas (Kashmiri, Byadgi, Guntur, ...) | Nama dagang/landrace dan cabai kering; kurang cocok |

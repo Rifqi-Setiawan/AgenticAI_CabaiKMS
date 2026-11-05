@@ -1,0 +1,587 @@
+﻿dataset,canonical_key,varietas,atribut_sumber,nilai_sumber
+P01,habitus,DH 3,Orientasi tanaman,Tegak
+P01,batang,DH 3,Bulu pada buku,Sedang
+P01,tinggi_tanaman,DH 3,Tinggi tanaman (cm),92-97
+P01,panjang_daun,DH 3,Panjang daun (cm),"7,8-11,1"
+P01,lebar_daun,DH 3,Lebar daun (cm),"3,0-3,6"
+P01,warna_daun,DH 3,Intensitas warna hijau daun,Hijau (Green Group NN 137 B)
+P01,bentuk_daun,DH 3,Bentuk daun,Lanset
+P01,bentuk_pangkal_daun,DH 3,Bentuk pangkal daun,Runcing
+P01,tepi_daun,DH 3,Undulasi tepi daun,Sedang
+P01,tekstur_daun,DH 3,Lepuhan daun,Lemah
+P01,posisi_bunga,DH 3,Orientasi pedunkel bunga,Menggantung
+P01,warna_kepala_sari,DH 3,Warna antera sebelum pecah,Ungu (Purple Grup 79 D)
+P01,warna_mahkota,DH 3,Warna mahkota,Putih (White Group 155 C)
+P01,warna_buah_muda,DH 3,Warna buah muda,Hijau (Green Group NN 137 A)
+P01,posisi_buah_muda,DH 3,Posisi buah muda,Menggantung
+P01,posisi_buah_masak,DH 3,Posisi buah matang,Menggantung
+P01,bentuk_buah,DH 3,Bentuk potongan membujur,Hornshaped
+P01,warna_buah_masak,DH 3,Warna buah matang,Merah (Red Group 45 A)
+P01,bentuk_ujung_buah,DH 3,Bentuk ujung buah,Membulat
+P01,habitus,Gemoy IPB,Habitus tanaman,Tegak
+P01,tinggi_tanaman,Gemoy IPB,Tinggi tanaman (cm),"117,50–143,33"
+P01,bentuk_daun,Gemoy IPB,Bentuk daun,Ovate
+P01,tepi_daun,Gemoy IPB,Gelombang tepi daun,Lemah
+P01,bentuk_pangkal_daun,Gemoy IPB,Bentuk pangkal daun,Meruncing
+P01,warna_daun,Gemoy IPB,Warna daun,Hijau (RHS NN137A)
+P01,panjang_daun,Gemoy IPB,Panjang daun (cm),"11,70–15,90"
+P01,lebar_daun,Gemoy IPB,Lebar daun (cm),"5,20–9,30"
+P01,posisi_bunga,Gemoy IPB,Posisi bunga,Menggantung
+P01,bentuk_bunga,Gemoy IPB,Bentuk bunga,Bintang
+P01,warna_mahkota,Gemoy IPB,Warna mahkota bunga,Putih (RHS 157C)
+P01,warna_kelopak_bunga,Gemoy IPB,Warna kelopak bunga,Hijau kekuningan (RHS 143A)
+P01,warna_kepala_sari,Gemoy IPB,Warna kotak sari,Abu-abu (RHS N187B)
+P01,warna_tangkai_sari,Gemoy IPB,Warna tangkai sari,Putih (RHS 155A)
+P01,warna_tangkai_sari,Gemoy IPB,Warna tangkai sari (2),Hijau kekuningan (RHS 144A)
+P01,bentuk_buah,Gemoy IPB,Bentuk buah,Moderately Triangular
+P01,bentuk_ujung_buah,Gemoy IPB,Bentuk ujung buah,Moderately Acute
+P01,warna_buah_muda,Gemoy IPB,Warna buah muda,Hijau kekuningan (RHS 144A)
+P01,warna_buah_masak,Gemoy IPB,Warna buah tua,Oranye (RHS 25A)
+P01,warna_biji,Gemoy IPB,Warna biji,Kuning (RHS 19B)
+P01,habitus,Guritno IPB,Habitus tanaman,Kompak
+P01,tinggi_tanaman,Guritno IPB,Tinggi tanaman (cm),"112,10–140,50"
+P01,bentuk_daun,Guritno IPB,Bentuk daun,Ovate
+P01,tepi_daun,Guritno IPB,Gelombang tepi daun,Lemah
+P01,bentuk_pangkal_daun,Guritno IPB,Bentuk pangkal daun,Meruncing
+P01,warna_daun,Guritno IPB,Warna daun,Hijau (RHS NN137A)
+P01,panjang_daun,Guritno IPB,Panjang daun (cm),"11,50–15,20"
+P01,lebar_daun,Guritno IPB,Lebar daun (cm),"6,00–7,45"
+P01,posisi_bunga,Guritno IPB,Posisi bunga,Tegak
+P01,bentuk_bunga,Guritno IPB,Bentuk bunga,Bintang
+P01,warna_mahkota,Guritno IPB,Warna mahkota bunga,Putih (RHS 157A)
+P01,warna_kelopak_bunga,Guritno IPB,Warna kelopak bunga,Hijau kekuningan (RHS 141A)
+P01,warna_kepala_sari,Guritno IPB,Warna kotak sari,Abu-abu (RHS 202B)
+P01,warna_tangkai_sari,Guritno IPB,Warna tangkai sari,Putih (RHS 155A)
+P01,warna_tangkai_sari,Guritno IPB,Warna tangkai sari (2),Hijau kekuningan (RHS 144A)
+P01,bentuk_buah,Guritno IPB,Bentuk buah,Narrowly Triangular
+P01,bentuk_ujung_buah,Guritno IPB,Bentuk ujung buah,Moderately Acute
+P01,warna_buah_muda,Guritno IPB,Warna buah muda,Hijau kekuningan (RHS 144A)
+P01,warna_buah_masak,Guritno IPB,Warna buah tua,Oranye (RHS N25A)
+P01,warna_biji,Guritno IPB,Warna biji,Kuning (RHS 19B)
+P01,habitus,Magda IPB,Habitus tanaman,Tegak
+P01,tinggi_tanaman,Magda IPB,Tinggi tanaman (cm),"85,00-87,25"
+P01,bentuk_daun,Magda IPB,Bentuk daun,Bulat telur (Ovate)
+P01,tepi_daun,Magda IPB,Gelombang tepi daun,Tidak ada
+P01,bentuk_pangkal_daun,Magda IPB,Bentuk pangkal daun,Tumpul (obtusus)
+P01,warna_daun,Magda IPB,Warna daun,Hijau tua (RHS NN137A)
+P01,panjang_daun,Magda IPB,Panjang daun (cm),"8,40-9,06"
+P01,lebar_daun,Magda IPB,Lebar daun (cm),"4,25-4,89"
+P01,posisi_bunga,Magda IPB,Posisi bunga,Semi menggantung
+P01,bentuk_bunga,Magda IPB,Bentuk bunga,Melingkar
+P01,warna_mahkota,Magda IPB,Warna mahkota bunga,Hijau kekuningan (RHS 145C)
+P01,warna_kelopak_bunga,Magda IPB,Warna kelopak bunga,Hijau kekuningan (RHS 144A)
+P01,warna_kepala_sari,Magda IPB,Warna kotak sari,Abu tua (RHS N186A)
+P01,warna_tangkai_sari,Magda IPB,Warna tangkai sari,Abu sangat pucat (RHS 91C)
+P01,warna_gagang_bunga,Magda IPB,Warna tangkai bunga,Hijau kekuningan (RHS 144B)
+P01,bentuk_buah,Magda IPB,Bentuk buah,Square
+P01,bentuk_ujung_buah,Magda IPB,Bentuk ujung buah,Very depressed
+P01,warna_buah_muda,Magda IPB,Warna buah muda,Hijau kekuningan (RHS 144B)
+P01,warna_buah_masak,Magda IPB,Warna buah tua,Oranye kekuningan (RHS 22C)
+P01,warna_biji,Magda IPB,Warna biji,Kuning terang (RHS 11B)
+P01,adaptasi_ekologi,Magda IPB,Wilayah adaptasi,Dataran tinggi
+P01,habitus,Margi 2 IPB,Habitus tanaman,Tegak
+P01,tinggi_tanaman,Margi 2 IPB,Tinggi tanaman (cm),"155,00 - 179,00"
+P01,bentuk_daun,Margi 2 IPB,Bentuk daun,Bulat telur
+P01,tepi_daun,Margi 2 IPB,Gelombang tepi daun,Tidak ada
+P01,bentuk_pangkal_daun,Margi 2 IPB,Bentuk pangkal daun,Meruncing
+P01,warna_daun,Margi 2 IPB,Warna daun,Hijau (RHS 135A)
+P01,panjang_daun,Margi 2 IPB,Panjang daun (cm),"12,88 – 12,93"
+P01,lebar_daun,Margi 2 IPB,Lebar daun (cm),"6,10-6,50"
+P01,posisi_bunga,Margi 2 IPB,Posisi bunga,Semi menggantung
+P01,bentuk_bunga,Margi 2 IPB,Bentuk bunga,Melingkar
+P01,warna_mahkota,Margi 2 IPB,Warna mahkota bunga,Hijau kekuningan (RHS 145C)
+P01,warna_kelopak_bunga,Margi 2 IPB,Warna kelopak bunga,Hijau kekuningan (RHS N144C)
+P01,warna_kepala_sari,Margi 2 IPB,Warna kotak sari,Ungu keabuan (RHS N187B)
+P01,warna_tangkai_sari,Margi 2 IPB,Warna tangkai sari,Ungu terang (RHS 85A)
+P01,warna_gagang_bunga,Margi 2 IPB,Warna tangkai bunga,Hijau kekuningan (RHS N144C)
+P01,bentuk_buah,Margi 2 IPB,Bentuk buah,Segitiga
+P01,bentuk_ujung_buah,Margi 2 IPB,Bentuk ujung buah,Runcing
+P01,warna_buah_muda,Margi 2 IPB,Warna buah muda,Hijau kekuningan (RHS 145A)
+P01,warna_buah_masak,Margi 2 IPB,Warna buah tua,Oranye (RHS 24A)
+P01,warna_biji,Margi 2 IPB,Warna biji,Kuning (RHS 11C)
+P01,adaptasi_ekologi,Margi 2 IPB,Wilayah adaptasi,Dataran tinggi
+P01,habitus,Tabia Sala 1 IPB,Habitus tanaman,Tegak
+P01,tinggi_tanaman,Tabia Sala 1 IPB,Tinggi tanaman (cm),"156,00 – 209,00"
+P01,bentuk_daun,Tabia Sala 1 IPB,Bentuk daun,Bulat telur
+P01,tepi_daun,Tabia Sala 1 IPB,Gelombang tepi daun,Bergelombang (sedang)
+P01,bentuk_pangkal_daun,Tabia Sala 1 IPB,Bentuk pangkal daun,Meruncing
+P01,warna_daun,Tabia Sala 1 IPB,Warna daun,Hijau (RHS NN137A)
+P01,panjang_daun,Tabia Sala 1 IPB,Panjang daun (cm),"10,50 - 17,70"
+P01,lebar_daun,Tabia Sala 1 IPB,Lebar daun (cm),"6,10 - 9,40"
+P01,posisi_bunga,Tabia Sala 1 IPB,Posisi bunga,Semi menggantung
+P01,bentuk_bunga,Tabia Sala 1 IPB,Bentuk bunga,Bintang
+P01,warna_mahkota,Tabia Sala 1 IPB,Warna mahkota bunga,Hijau kekuningan RHS 145C
+P01,warna_kelopak_bunga,Tabia Sala 1 IPB,Warna kelopak bunga,Hijau kekuningan RHS N144C
+P01,warna_kepala_sari,Tabia Sala 1 IPB,Warna kotak sari,Ungu kebiruan RHS N92A
+P01,warna_tangkai_sari,Tabia Sala 1 IPB,Warna tangkai sari,Ungu terang RHS 85B
+P01,warna_gagang_bunga,Tabia Sala 1 IPB,Warna tangkai bunga,Hijau kekuningan RHS N144C
+P01,bentuk_buah,Tabia Sala 1 IPB,Bentuk buah,Moderately triangular
+P01,bentuk_ujung_buah,Tabia Sala 1 IPB,Bentuk ujung buah,Moderately acute
+P01,warna_buah_muda,Tabia Sala 1 IPB,Warna buah muda,Hijau kekuningan RHS 145A
+P01,warna_buah_masak,Tabia Sala 1 IPB,Warna buah tua,Oranye kemerahan RHS 34A
+P01,warna_biji,Tabia Sala 1 IPB,Warna biji,Oranye kekuningan RHS 18D
+P01,habitus,Tabia Sala 2 IPB,Habitus tanaman,Tegak
+P01,tinggi_tanaman,Tabia Sala 2 IPB,Tinggi tanaman (cm),"116,00 – 186,00"
+P01,bentuk_daun,Tabia Sala 2 IPB,Bentuk daun,Bulat telur
+P01,tepi_daun,Tabia Sala 2 IPB,Gelombang tepi daun,Bergelombang (sedang)
+P01,bentuk_pangkal_daun,Tabia Sala 2 IPB,Bentuk pangkal daun,Meruncing
+P01,warna_daun,Tabia Sala 2 IPB,Warna daun,Hijau (RHS NN137A)
+P01,panjang_daun,Tabia Sala 2 IPB,Panjang daun (cm),"10,00 - 17,50"
+P01,lebar_daun,Tabia Sala 2 IPB,Lebar daun (cm),"4,70 - 8,20"
+P01,posisi_bunga,Tabia Sala 2 IPB,Posisi bunga,Semi menggantung
+P01,bentuk_bunga,Tabia Sala 2 IPB,Bentuk bunga,Bintang
+P01,warna_mahkota,Tabia Sala 2 IPB,Warna mahkota bunga,Hijau kekuningan RHS 145C
+P01,warna_kelopak_bunga,Tabia Sala 2 IPB,Warna kelopak bunga,Hijau kekuningan RHS N144C
+P01,warna_kepala_sari,Tabia Sala 2 IPB,Warna kotak sari,Ungu keabuan RHS N187A
+P01,warna_tangkai_sari,Tabia Sala 2 IPB,Warna tangkai sari,Ungu kebiruan RHS 91C
+P01,warna_gagang_bunga,Tabia Sala 2 IPB,Warna tangkai bunga,Hijau kekuningan RHS N144C
+P01,bentuk_buah,Tabia Sala 2 IPB,Bentuk buah,Moderately triangular
+P01,bentuk_ujung_buah,Tabia Sala 2 IPB,Bentuk ujung buah,Moderately acute
+P01,warna_buah_muda,Tabia Sala 2 IPB,Warna buah muda,Hijau RHS 143A
+P01,warna_buah_masak,Tabia Sala 2 IPB,Warna buah tua,Oranye kemerahan RHS N34A
+P01,warna_biji,Tabia Sala 2 IPB,Warna biji,Kuning RHS 11C
+P01,bentuk_buah,Tabia Sala 2 IPB,Bentuk buah (2),Seperti gasing
+P01,habitus,Tabia Sala Kuning IPB,Habitus tanaman,Tegak
+P01,tinggi_tanaman,Tabia Sala Kuning IPB,Tinggi tanaman (cm),"157,75 - 161,25"
+P01,bentuk_daun,Tabia Sala Kuning IPB,Bentuk daun,Bulat telur
+P01,tepi_daun,Tabia Sala Kuning IPB,Gelombang tepi daun,Sedang
+P01,bentuk_pangkal_daun,Tabia Sala Kuning IPB,Bentuk pangkal daun,Meruncing
+P01,warna_daun,Tabia Sala Kuning IPB,Warna daun,Hijau (RHS 139A)
+P01,panjang_daun,Tabia Sala Kuning IPB,Panjang daun (cm),"11,25 - 11,70"
+P01,lebar_daun,Tabia Sala Kuning IPB,Lebar daun (cm),"6,23 - 7,40"
+P01,posisi_bunga,Tabia Sala Kuning IPB,Posisi bunga,Semi menggantung
+P01,bentuk_bunga,Tabia Sala Kuning IPB,Bentuk bunga,Melingkar
+P01,warna_mahkota,Tabia Sala Kuning IPB,Warna mahkota bunga,Hijau kekuningan (RHS 145C)
+P01,warna_kelopak_bunga,Tabia Sala Kuning IPB,Warna kelopak bunga,Hijau kekuningan (RHS N144C)
+P01,warna_kepala_sari,Tabia Sala Kuning IPB,Warna kotak sari,Ungu keabuan (RHS N187B)
+P01,warna_tangkai_sari,Tabia Sala Kuning IPB,Warna tangkai sari,Ungu kebiruan (RHS 91C)
+P01,warna_gagang_bunga,Tabia Sala Kuning IPB,Warna tangkai bunga,Hijau kekuningan (RHS N144A)
+P01,bentuk_buah,Tabia Sala Kuning IPB,Bentuk buah,Segitiga
+P01,bentuk_ujung_buah,Tabia Sala Kuning IPB,Bentuk ujung buah,Cekung dan runcing
+P01,warna_buah_muda,Tabia Sala Kuning IPB,Warna buah muda,Hijau (RHS NN137B)
+P01,warna_buah_masak,Tabia Sala Kuning IPB,Warna buah tua,Kuning (RHS 14A)
+P01,warna_biji,Tabia Sala Kuning IPB,Warna biji,Kuning (RHS 10C)
+P01,adaptasi_ekologi,Tabia Sala Kuning IPB,Wilayah adaptasi,Dataran tinggi
+P01,habitus,Tabia Sala Oranye IPB,Habitus tanaman,Tegak
+P01,tinggi_tanaman,Tabia Sala Oranye IPB,Tinggi tanaman (cm),"169,59 – 179,25"
+P01,bentuk_daun,Tabia Sala Oranye IPB,Bentuk daun,Bulat telur
+P01,tepi_daun,Tabia Sala Oranye IPB,Gelombang tepi daun,Tidak ada
+P01,bentuk_pangkal_daun,Tabia Sala Oranye IPB,Bentuk pangkal daun,Meruncing
+P01,bentuk_ujung_daun,Tabia Sala Oranye IPB,Bentuk ujung daun,Meruncing
+P01,warna_daun,Tabia Sala Oranye IPB,Warna daun,Hijau (RHS 139A)
+P01,panjang_daun,Tabia Sala Oranye IPB,Panjang daun (cm),"12,28 – 12,35"
+P01,lebar_daun,Tabia Sala Oranye IPB,Lebar daun (cm),"5,73 – 6,28"
+P01,posisi_bunga,Tabia Sala Oranye IPB,Posisi bunga,Semi menggantung
+P01,bentuk_bunga,Tabia Sala Oranye IPB,Bentuk bunga,Melingkar
+P01,warna_mahkota,Tabia Sala Oranye IPB,Warna mahkota bunga,Hijau kekuningan (RHS 145C)
+P01,warna_kelopak_bunga,Tabia Sala Oranye IPB,Warna kelopak bunga,Hijau kekuningan (RHS N144C)
+P01,warna_gagang_bunga,Tabia Sala Oranye IPB,Warna tangkai bunga,Hijau kekuningan (RHS N144C)
+P01,warna_kepala_sari,Tabia Sala Oranye IPB,Warna kotak sari,Ungu keabuan (RHS N187C)
+P01,warna_tangkai_sari,Tabia Sala Oranye IPB,Warna tangkai sari,Ungu kebiruan (RHS 91C)
+P01,bentuk_buah,Tabia Sala Oranye IPB,Bentuk buah,Segitiga
+P01,bentuk_ujung_buah,Tabia Sala Oranye IPB,Bentuk ujung buah,Runcing
+P01,warna_buah_muda,Tabia Sala Oranye IPB,Warna buah muda,Hijau (RHS 144A)
+P01,warna_buah_masak,Tabia Sala Oranye IPB,Warna buah tua,Oranye (RHS N25A)
+P01,warna_biji,Tabia Sala Oranye IPB,Warna biji,Kuning (RHS 11C)
+P01,adaptasi_ekologi,Tabia Sala Oranye IPB,Wilayah adaptasi,Dataran tinggi
+P01,tinggi_tanaman,CK 52358,Tinggi tanaman (cm),"91,50-93,00"
+P01,bentuk_daun,CK 52358,Bentuk daun,Lanceolate
+P01,warna_daun,CK 52358,Warna daun,Hijau (RHS 137 A)
+P01,bentuk_bunga,CK 52358,Bentuk bunga,Seperti bintang
+P01,warna_kelopak_bunga,CK 52358,Warna kelopak bunga,Hijau (RHS 137A)
+P01,warna_mahkota,CK 52358,Warna mahkota bunga,Putih (RHS 155C)
+P01,jumlah_mahkota_bunga,CK 52358,Jumlah mahkota bunga,5 –6
+P01,bentuk_buah,CK 52358,Bentuk buah,Narrowly Triangular
+P01,bentuk_ujung_buah,CK 52358,Bentuk ujung buah,Acute
+P01,warna_buah_muda,CK 52358,Warna buah muda,Hijau (RHS NN137A)
+P01,warna_buah_masak,CK 52358,Warna buah tua,Merah (RHS 45A)
+P01,warna_biji,CK 52358,Warna biji,Abu-Kuning (RHS 162D)
+P01,adaptasi_ekologi,CK 52358,Wilayah adaptasi,Sesuai untuk dataran rendah pada musim penghujan
+P01,tinggi_tanaman,GS431,Tinggi tanaman,"46,87-57,83 cm"
+P01,bentuk_daun,GS431,Bentuk daun,Lanset (lanciolate)
+P01,warna_daun,GS431,Warna daun,Hijau (RHS GG NN137A)
+P01,bentuk_bunga,GS431,Bentuk bunga,Seperti bintang
+P01,warna_kelopak_bunga,GS431,Warna kelopak bunga,Hijau (RHS YGG 146A)
+P01,warna_mahkota,GS431,Warna mahkota bunga,Putih (RHS WG NN155D)
+P01,bentuk_buah,GS431,Bentuk buah,Segitiga sempit (narrowly triangular)
+P01,warna_buah_muda,GS431,Warna buah muda,Hijau (RHS YGG 147A)
+P01,warna_buah_masak,GS431,Warna buah tua,Merah (RHS RG 44A)
+P01,warna_biji,GS431,Warna biji,Krem (RHS GYG 162D)
+P01,adaptasi_ekologi,GS431,Wilayah adaptasi,Beradaptasi dengan baik di dataran menengah di Kabupaten Jember pada musim penghujan
+P01,tinggi_tanaman,GS466,Tinggi tanaman,"85,68-101,44 cm"
+P01,bentuk_daun,GS466,Bentuk daun,Lanset (lanciolate)
+P01,warna_daun,GS466,Warna daun,Hijau (RHS YGG 147A)
+P01,bentuk_bunga,GS466,Bentuk bunga,Seperti bintang
+P01,warna_kelopak_bunga,GS466,Warna kelopak bunga,Hijau (RHS YGG N144A)
+P01,warna_mahkota,GS466,Warna mahkota bunga,Putih (RHS WG NN155A)
+P01,bentuk_buah,GS466,Bentuk buah,Segitiga sempit (narrowly triangular)
+P01,warna_buah_muda,GS466,Warna buah muda,Hijau (RHS YGG N144B)
+P01,warna_buah_masak,GS466,Warna buah tua,Merah (RHS RG 45A)
+P01,warna_biji,GS466,Warna biji,Krem (RHS GYG 162D)
+P01,adaptasi_ekologi,GS466,Wilayah adaptasi,Beradaptasi dengan baik di dataran menengah di Kabupaten Jember pada musim penghujan
+P01,tinggi_tanaman,HLB CB 0147,Tinggi tanaman (cm),"76,3 - 84,4"
+P01,bentuk_daun,HLB CB 0147,Bentuk daun,Lanset
+P01,warna_daun,HLB CB 0147,Warna daun,Hijau (RHS2015 NN 137 B)
+P01,bentuk_bunga,HLB CB 0147,Bentuk bunga,Seperti bintang
+P01,warna_kelopak_bunga,HLB CB 0147,Warna kelopak,Hijau (RHS2015 144 A)
+P01,warna_mahkota,HLB CB 0147,Warna mahkota,Putih kekuningan (RHS2015 155 A)
+P01,warna_kepala_sari,HLB CB 0147,Warna kotak sari,Biru (RHS 2015 122 C)
+P01,bentuk_buah,HLB CB 0147,Bentuk buah,Memanjang
+P01,warna_buah_muda,HLB CB 0147,Warna buah muda,Hijau (RHS2015 137 A)
+P01,warna_buah_masak,HLB CB 0147,Warna buah tua,Merah (RHS2015 N 45 A)
+P01,warna_biji,HLB CB 0147,Warna biji,Kuning (RHS 2015 18 A)
+P01,adaptasi_ekologi,HLB CB 0147,Wilayah adaptasi,"Beradaptasi dengan baik di dataran rendah Kabupaten Kediri, pada musim penghujan"
+P01,habitus,IPBrin KR 01,Habitus tanaman,Tegak
+P01,tinggi_tanaman,IPBrin KR 01,Tinggi tanaman (cm),"68,5 – 83,5"
+P01,bentuk_daun,IPBrin KR 01,Bentuk daun,Oval
+P01,panjang_daun,IPBrin KR 01,Panjang daun (cm),"7,8 – 8,6"
+P01,lebar_daun,IPBrin KR 01,Lebar daun (cm),"2,9 – 3,4"
+P01,warna_daun,IPBrin KR 01,Warna daun,Moderate Olive Green (RHS 147A)
+P01,warna_kelopak_bunga,IPBrin KR 01,Warna kelopak bunga,Strong Yellow Green (RHS 143B)
+P01,warna_mahkota,IPBrin KR 01,Warna mahkota bunga,White (RHS NN155B)
+P01,bentuk_buah,IPBrin KR 01,Bentuk buah,Elongate
+P01,bentuk_ujung_buah,IPBrin KR 01,Bentuk ujung buah,Meruncing
+P01,warna_buah_muda,IPBrin KR 01,Warna buah muda,Greyish Olive Green (RHS NN137A)
+P01,warna_buah_masak,IPBrin KR 01,Warna buah tua,Vivid Red (RHS 44A)
+P01,warna_biji,IPBrin KR 01,Warna biji,Light Greenish Yellow (RHS 6D)
+P01,adaptasi_ekologi,IPBrin KR 01,Wilayah adaptasi,Dataran rendah
+P01,habitus,IPBrin KR 03,Habitus tanaman,Semi tegak
+P01,tinggi_tanaman,IPBrin KR 03,Tinggi tanaman (cm),"98 – 135,5"
+P01,bentuk_daun,IPBrin KR 03,Bentuk daun,Lanceolate
+P01,panjang_daun,IPBrin KR 03,Panjang daun (cm),"9,5 – 10,2"
+P01,lebar_daun,IPBrin KR 03,Lebar daun (cm),"3,1 – 3,3"
+P01,warna_daun,IPBrin KR 03,Warna daun,Moderate Olive Green (RHS 137A)
+P01,warna_kelopak_bunga,IPBrin KR 03,Warna kelopak bunga,Dark Yellowish Green (RHS 139A)
+P01,warna_mahkota,IPBrin KR 03,Warna mahkota bunga,Yellowish White (RHS NN155A)
+P01,bentuk_buah,IPBrin KR 03,Bentuk buah,Elongate
+P01,bentuk_ujung_buah,IPBrin KR 03,Bentuk ujung buah,Meruncing
+P01,warna_buah_muda,IPBrin KR 03,Warna buah muda,Dark Yellowish Green (RHS 139A)
+P01,warna_buah_masak,IPBrin KR 03,Warna buah tua,Moderate Red (RHS N45A)
+P01,warna_biji,IPBrin KR 03,Warna biji,Pale Greenish Yellow (RHS 2D)
+P01,adaptasi_ekologi,IPBrin KR 03,Wilayah adaptasi,Dataran rendah
+P01,tinggi_tanaman,RCKJ 20,Tinggi tanaman,"54,29 – 60,39 cm"
+P01,bentuk_daun,RCKJ 20,Bentuk daun,Lanset
+P01,warna_daun,RCKJ 20,Warna daun,Hijau tua (Green Group RHS 137 B)
+P01,bentuk_bunga,RCKJ 20,Bentuk bunga,Seperti bintang
+P01,warna_gagang_bunga,RCKJ 20,Warna tangkai bunga,Strong Yellow Green RHS 143A bergaris Dark Purplish Red RHS N79A
+P01,warna_kelopak_bunga,RCKJ 20,Warna kelopak bunga,Hijau (Green Group RHS 143 A)
+P01,warna_mahkota,RCKJ 20,Warna mahkota bunga,Putih (Putih (White Group RHS NN155 C))
+P01,warna_kepala_sari,RCKJ 20,Warna anther,Dark Purplish Red RHS N79A
+P01,bentuk_buah,RCKJ 20,Bentuk buah,Memanjang
+P01,warna_buah_muda,RCKJ 20,Warna buah muda,Hijau tua (Green Group RHS 137 A)
+P01,warna_buah_masak,RCKJ 20,Warna buah tua,Merah (Red Group RHS N45 A)
+P01,bentuk_buah,RCKJ 20,Bentuk potongan buah membujur,Narrowly triangular
+P01,bentuk_ujung_buah,RCKJ 20,Bentuk ujung buah,Runcing
+P01,warna_biji,RCKJ 20,Warna biji,Kuning (RHS 12D)
+P01,adaptasi_ekologi,RCKJ 20,Wilayah adaptasi,Sesuai untuk dataran rendah pada musim hujan di daerah bantul
+P01,habitus,RIKUB 1,Habitus tanaman,Tegak
+P01,tinggi_tanaman,RIKUB 1,Tinggi tanaman (cm),"63,0 – 70,0"
+P01,bentuk_daun,RIKUB 1,Bentuk daun,Lanset
+P01,tepi_daun,RIKUB 1,Gelombang tepi daun,Lemah
+P01,bentuk_pangkal_daun,RIKUB 1,Bentuk pangkal daun,Runcing
+P01,warna_daun,RIKUB 1,Warna daun,Hijau (RHS 147A)
+P01,panjang_daun,RIKUB 1,Panjang daun (cm),"7,3 – 8,77"
+P01,lebar_daun,RIKUB 1,Lebar daun (cm),"2,48 – 2,89"
+P01,posisi_bunga,RIKUB 1,Posisi bunga,Semi menggantung
+P01,warna_mahkota,RIKUB 1,Warna mahkota bunga,Putih (RHS 155C)
+P01,warna_kelopak_bunga,RIKUB 1,Warna kelopak bunga,Hijau (RHS 141C)
+P01,warna_kepala_sari,RIKUB 1,Warna kotak sari,Ungu keabuan (RHS N187B)
+P01,warna_tangkai_sari,RIKUB 1,Warna tangkai sari,Putih (RHS 155C)
+P01,warna_gagang_bunga,RIKUB 1,Warna tangkai bunga,Hijau kekuningan (RHS 144A)
+P01,bentuk_buah,RIKUB 1,Bentuk buah,Memanjang
+P01,bentuk_ujung_buah,RIKUB 1,Bentuk ujung buah,Runcing
+P01,warna_buah_muda,RIKUB 1,Warna buah muda,Hijau kekuningan (RHS 144A)
+P01,warna_buah_masak,RIKUB 1,Warna buah tua,Merah (RHS 45A)
+P01,warna_biji,RIKUB 1,Warna biji,Kuning oranye RHS 18B
+P01,adaptasi_ekologi,RIKUB 1,Wilayah adaptasi,Dataran rendah
+P01,tinggi_tanaman,RIKUB 2,Tinggi tanaman (cm),"51,20 - 86,39"
+P01,habitus,RIKUB 2,Tipe tumbuh tanaman,Tegak
+P01,panjang_daun,RIKUB 2,Panjang daun (cm),"4,50 - 8,73"
+P01,lebar_daun,RIKUB 2,Lebar daun (cm),"1,60 - 3,09"
+P01,warna_daun,RIKUB 2,Warna daun,Hijau tua (RHS N137A)
+P01,bentuk_daun,RIKUB 2,Bentuk daun,Lanceolate
+P01,posisi_bunga,RIKUB 2,Posisi bunga,Tegak
+P01,posisi_bunga,RIKUB 2,Posisi tangkai bunga,Semi merunduk
+P01,warna_gagang_bunga,RIKUB 2,Warna tangkai bunga,Hijau (RHS 141B)
+P01,warna_mahkota,RIKUB 2,Warna mahkota bunga,Putih (RHS 155A)
+P01,bentuk_bunga,RIKUB 2,Bentuk mahkota bunga,Rotate/Melingkar
+P01,warna_tangkai_sari,RIKUB 2,Warna filamen,Putih (RHS N155C)
+P01,bentuk_buah,RIKUB 2,Bentuk buah,Almost round
+P01,bentuk_ujung_buah,RIKUB 2,Ujung buah,Tumpul
+P01,warna_buah_muda,RIKUB 2,Warna buah muda,Hijau (RHS 139A)
+P01,warna_buah_masak,RIKUB 2,Warna buah tua,Merah (RHS 45B)
+P01,warna_biji,RIKUB 2,Warna biji,Kuning (RHS 18B)
+P01,habitus,WP001,Orientasi tanaman,Tegak
+P01,tinggi_tanaman,WP001,Tinggi tanaman (cm),"96,98 – 114,31"
+P01,bentuk_daun,WP001,Bentuk daun,Bulat telur
+P01,warna_daun,WP001,Warna daun,Hijau gelap ( RHS Green Group NN137 A)
+P01,tepi_daun,WP001,Undulasi (gelombang) tepi daun,Lemah
+P01,tekstur_daun,WP001,Lepuhan daun,Lemah
+P01,bentuk_bunga,WP001,Bentuk bunga,Bintang
+P01,posisi_bunga,WP001,Orientasi bunga,Menggantung
+P01,warna_kelopak_bunga,WP001,Warna bunga: Kelopak Bunga,Hijau tua (RHS Green Group 137 B)
+P01,warna_mahkota,WP001,Warna bunga: Mahkota Bunga,Putih (RHS White Group 155 A)
+P01,bentuk_buah,WP001,Bentuk buah,Silindris panjang
+P01,bentuk_buah,WP001,Bentuk potongan membujur buah,Lincar (linear)
+P01,warna_buah_muda,WP001,Warna buah muda,Hijau tua (RHS Green Group 137 A)
+P01,warna_buah_masak,WP001,Warna buah tua,Merah ( RHS Red Group 45 A)
+P01,bentuk_ujung_buah,WP001,Bentuk ujung buah,Runcing
+P01,warna_biji,WP001,Warna biji,Kuning keabuan (RHS Greyed-Yellow Group 160 C)
+P01,adaptasi_ekologi,WP001,Wilayah adaptasi,Beradaptasi dengan baik di dataran tinggi di kabupaten Magelang pada musim kemarau
+P01,habitus,Carabrina 01,Orientasi,Semi tegak
+P01,batang,Carabrina 01,Bulu pada buku,Tidak ada
+P01,tinggi_tanaman,Carabrina 01,Tinggi tanaman (cm),71 – 98
+P01,panjang_daun,Carabrina 01,Panjang helai daun (cm),"14,9 – 24"
+P01,lebar_daun,Carabrina 01,Lebar helai daun (cm),"7,6 – 13,5"
+P01,panjang_tangkai_daun,Carabrina 01,Panjang tangkai daun (cm),"3 – 4,6"
+P01,bentuk_daun,Carabrina 01,Bentuk daun,Bulat telur
+P01,tepi_daun,Carabrina 01,Undulasi pada tepi daun,Sangat lemah
+P01,tekstur_daun,Carabrina 01,Lepuhan daun,Lemah
+P01,warna_daun,Carabrina 01,Warna daun atas,Hijau kekuningan gelap (RHS Green group 139 A)
+P01,warna_kelopak_bunga,Carabrina 01,Warna kelopak bunga,Hijau kekuningan kuat (RHS Green Group 143 A)
+P01,warna_mahkota,Carabrina 01,Warna mahkota bunga,Hijau kuning pusat (RHS Green-White Group 157 B)
+P01,warna_buah_muda,Carabrina 01,Warna buah muda,Hijau kekuningan muda (RHS Yellow-Green Group 145 B)
+P01,bentuk_buah,Carabrina 01,Bentuk potongan membujur,Segitiga sempit
+P01,warna_buah_masak,Carabrina 01,Warna buah matang,Merah sedang (RHS Red Group N45B)
+P01,bentuk_ujung_buah,Carabrina 01,Bentuk ujung buah,Runcing
+P01,adaptasi_ekologi,Carabrina 01,Wilayah adaptasi,Dataran rendah – menengah
+P01,tinggi_tanaman,CIN 124R,Tinggi tanaman,"92,17 – 118,24 cm"
+P01,bentuk_daun,CIN 124R,Bentuk daun,Bulat telur
+P01,bentuk_ujung_daun,CIN 124R,Bentuk ujung daun,Meruncing
+P01,warna_daun,CIN 124R,Warna daun,Hijau tua (RHS Green Group 137 A)
+P01,tepi_daun,CIN 124R,Undulasi (gelombang) tepi daun,Kuat
+P01,tekstur_daun,CIN 124R,Lepuhan daun,Kuat
+P01,bentuk_bunga,CIN 124R,Bentuk bunga,Bintang
+P01,posisi_bunga,CIN 124R,Orientasi bunga,Tegak
+P01,warna_kelopak_bunga,CIN 124R,Warna kelopak bunga,Hijau kuning kuat (RHS Yellow-Green Group 144 A)
+P01,warna_mahkota,CIN 124R,Warna mahkota bunga,Hijau kuning muda (RHS Yellow-Green Group 145 D)
+P01,warna_kepala_sari,CIN 124R,Warna kotak sari,Hijau kuning keabu-abuan (RHS Greyed-Green Group 191 A)
+P01,bentuk_buah,CIN 124R,Bentuk buah,Mengerucut
+P01,bentuk_buah,CIN 124R,Bentuk potongan membujur buah,Moderately triangular
+P01,warna_buah_muda,CIN 124R,Warna buah muda,Hijau kuning cemerlang (RHS Yellow-Green Group 150 C)
+P01,warna_buah_masak,CIN 124R,Warna buah tua,Merah cerah (RHS Red Group 45 A)
+P01,bentuk_ujung_buah,CIN 124R,Bentuk ujung buah,Membulat
+P01,warna_biji,CIN 124R,Warna biji,Kuning pucat (RHS Greyed-Yellow Group 160 C)
+P01,adaptasi_ekologi,CIN 124R,Wilayah adaptasi,Beradaptasi dengan baik di dataran menengah kabupaten Magelang pada musim penghujan :
+P01,tinggi_tanaman,HLB CR 33,Tinggi tanaman (cm),"123,9 - 135,5"
+P01,bentuk_daun,HLB CR 33,Bentuk daun,Bulat telur
+P01,warna_daun,HLB CR 33,Warna daun,Greyish Olive Green (RHS2015 NN 137 A)
+P01,bentuk_bunga,HLB CR 33,Bentuk bunga,Seperti bintang
+P01,warna_kelopak_bunga,HLB CR 33,Warna kelopak,Light Yellow Green (RHS2015 145 C)
+P01,warna_mahkota,HLB CR 33,Warna mahkota,Strong Yellow Green (RHS2015 143)
+P01,warna_kepala_sari,HLB CR 33,Warna kotak sari,Pale Green (RHS 2015 190 A)
+P01,bentuk_buah,HLB CR 33,Bentuk buah,Segitiga memanjang
+P01,bentuk_ujung_buah,HLB CR 33,Bentuk ujung buah,Agak runcing
+P01,warna_buah_muda,HLB CR 33,Warna buah muda,Strong Yellow (RHS N 144 B)
+P01,warna_buah_masak,HLB CR 33,Warna buah tua,Vivid Reddish Orange (RHS2015 N 30 A)
+P01,warna_biji,HLB CR 33,Warna biji,Pale Yellow (RHS 2015 11 C)
+P01,adaptasi_ekologi,HLB CR 33,Wilayah adaptasi,"Beradaptasi dengan baik di dataran rendah Kabupaten Kediri, pada musim penghujan"
+P01,habitus,Indina,Orientasi,Tegak
+P01,batang,Indina,Bulu pada buku,Lemah
+P01,tinggi_tanaman,Indina,Tinggi tanaman (cm),45 - 69
+P01,panjang_daun,Indina,Panjang helai daun (cm),"6,9 – 12,5"
+P01,lebar_daun,Indina,Lebar helai daun (cm),"0,9 – 5,5"
+P01,panjang_tangkai_daun,Indina,Panjang tangkai daun (cm),"1,5 – 9,5"
+P01,bentuk_daun,Indina,Bentuk daun,Lanset
+P01,tepi_daun,Indina,Undulasi pada tepi daun,Sangat lemah
+P01,tekstur_daun,Indina,Lepuhan daun,Tidak ada/Sangat lemah
+P01,warna_kelopak_bunga,Indina,Warna kelopak bunga,Hijau kuning kuat (RHS 143 B)
+P01,warna_mahkota,Indina,Warna mahkota bunga,Putih (RHS 155 D)
+P01,warna_buah_muda,Indina,Warna buah muda,Hijau kuning kuat (RHS 144 A)
+P01,bentuk_buah,Indina,Bentuk potongan membujur,Bulat
+P01,warna_buah_masak,Indina,Warna buah matang,Merah sedang (RHS N45 A)
+P01,bentuk_ujung_buah,Indina,Bentuk ujung buah,Runcing
+P01,adaptasi_ekologi,Indina,Wilayah adaptasi,Dataran medium musim kemarau
+P01,tinggi_tanaman,Sigintung 6,Tinggi tanaman,"127,28 – 142,75 cm"
+P01,bentuk_daun,Sigintung 6,Bentuk daun,Lanset
+P01,warna_daun,Sigintung 6,Warna daun,Hijau tua RHS Green Group NN137 A
+P01,tepi_daun,Sigintung 6,Undulasi (gelombang) tepi daun,Lemah
+P01,tekstur_daun,Sigintung 6,Lepuhan daun,Sedang
+P01,bentuk_bunga,Sigintung 6,Bentuk bunga,Seperti Bintang
+P01,posisi_bunga,Sigintung 6,Orientasi bunga,Tegak
+P01,warna_kelopak_bunga,Sigintung 6,Warna bunga: Kelopak Bunga,Hijau RHS Green Group 143 B
+P01,warna_mahkota,Sigintung 6,Warna bunga: Mahkota Bunga,Kuning terang kehijauan RHS Yellow Green Group 145 D
+P01,warna_tangkai_sari,Sigintung 6,Warna bunga: Tangkai sari,Ungu RHS violet Group N87 A
+P01,warna_buah_muda,Sigintung 6,Warna buah muda,Hijau kekuningan RHS Yellow Green Group 145 B
+P01,bentuk_ujung_buah,Sigintung 6,Bentuk ujung buah,Tumpul
+P01,bentuk_buah,Sigintung 6,Bentuk potongan membujur buah,Narrowly triangular
+P01,warna_buah_masak,Sigintung 6,Warna buah tua,Merah tua RHS Red Group 45 A
+P01,warna_biji,Sigintung 6,Warna biji,Coklat kekuningan RHS Greyed Orange Group 162 C
+P01,adaptasi_ekologi,Sigintung 6,Wilayah adaptasi,Beradaptasi dengan baik di dataran rendah musim penghujan di kabupaten Magelang
+P02,lokasi,AF Wonosobo,Sebaran Geografis,Kecamatan Mojotengah
+P02,tinggi_tanaman,AF Wonosobo,Tinggi tanaman (cm),87-137
+P02,batang,AF Wonosobo,Tekstur kulit batang,Kasar
+P02,bentuk_pangkal_daun,AF Wonosobo,Pangkal Daun,Tumpul
+P02,bentuk_ujung_daun,AF Wonosobo,Ujung Daun,Meruncing
+P02,warna_daun,AF Wonosobo,Warna daun bagian atas,Hijau keabuan (RHS NN137-A)
+P02,tekstur_daun,AF Wonosobo,Permukaan daun bagian atas/bawah,Rata
+P02,panjang_daun,AF Wonosobo,Panjang daun (cm),"5,4-7,5"
+P02,lebar_daun,AF Wonosobo,Lebar daun (cm),"1,9 -2,4"
+P02,bentuk_daun,AF Wonosobo,Bentuk daun,Ovate
+P02,tepi_daun,AF Wonosobo,Tepi daun,Rata
+P02,warna_gagang_bunga,AF Wonosobo,Warna tangkai bunga,Hijau keabuan (RHS 146-A)
+P02,posisi_bunga,AF Wonosobo,Posisi tangkai bunga,Menggantung
+P02,jumlah_gagang_bunga_ruas,AF Wonosobo,Jumlah bunga per nodus,1-2
+P02,warna_kelopak_bunga,AF Wonosobo,Warna kelopak bunga,Hijau keabuan (RHS 146-A)
+P02,warna_mahkota,AF Wonosobo,Warna mahkota,Putih pucat (RHS 155-A)
+P02,bentuk_buah,AF Wonosobo,Bentuk buah,Memanjang/elongate
+P02,bentuk_ujung_buah,AF Wonosobo,Penampilan ujung buah,Lancip
+P02,warna_buah_muda,AF Wonosobo,Warna kulit buah muda,Hijau keabuan (RHS NN137-A)
+P02,warna_buah_masak,AF Wonosobo,Warna kulit buah tua,Merah tua (RHS 45-A)
+P02,bentuk_ujung_buah,AF Wonosobo,Ujung Buah,Runcing
+P02,warna_biji,AF Wonosobo,Warna biji kupas kering,Putih kekuningan (RHS 155-B)
+P02,lokasi,Lemarsi,Sebaran Geografis,"Kecamatan X Koto, Batipuh"
+P02,habitus,Lemarsi,Karakter pertanaman,Tegak
+P02,tinggi_tanaman,Lemarsi,Tinggi tanaman (cm),100 - 140
+P02,bentuk_daun,Lemarsi,Bentuk daun,Lanceolate
+P02,bentuk_ujung_daun,Lemarsi,Bentuk ujung daun,Lancip
+P02,panjang_daun,Lemarsi,Panjang daun (cm),"8,1 - 11"
+P02,lebar_daun,Lemarsi,Lebar daun (cm),"2,8 - 4,8"
+P02,panjang_tangkai_daun,Lemarsi,Panjang tangkai daun (cm),"3,5 - 9,8"
+P02,warna_daun,Lemarsi,Warna daun,Green RHS 136 A
+P02,bentuk_bunga,Lemarsi,Bentuk bunga,Campanulete
+P02,warna_kelopak_bunga,Lemarsi,Warna kelopak bunga,Olive green RHS 137 B
+P02,warna_mahkota,Lemarsi,Warna mahkota bunga,Pale yellow green RHS 155 A
+P02,posisi_bunga,Lemarsi,Orientasi/ letak tangkai bunga,Semi menggantung
+P02,bentuk_buah,Lemarsi,Bentuk buah,Hornshaped
+P02,warna_buah_muda,Lemarsi,Warna buah muda,Green group RHS 137 A
+P02,warna_buah_masak,Lemarsi,Warna buah tua/ matang,Red group RHS 45 A
+P02,bentuk_ujung_buah,Lemarsi,Bentuk ujung buah,Runcing
+P02,warna_biji,Lemarsi,Warna biji,Yellow group RHS 11 B
+P02,lokasi,Humbang Roberkat,Sebaran Geografis,"Kecamatan : Pollung, Onan Ganjang, Lintong Nihuta, Kabupaten"
+P02,tinggi_tanaman,Humbang Roberkat,Tinggi tanaman (cm),150 - 153
+P02,habitus,Humbang Roberkat,Orientasi/bentuk tanaman,Semi tegak
+P02,batang,Humbang Roberkat,Bulu pada batang,Tidak ada
+P02,tepi_daun,Humbang Roberkat,Tingkat bergelombang,Medium
+P02,warna_daun,Humbang Roberkat,Warna daun atas,"Hijau gelap (RHS,Green Group-NN137A-Greyeish Olive Green)"
+P02,bentuk_daun,Humbang Roberkat,Bentuk daun,Lanset
+P02,tepi_daun,Humbang Roberkat,Tepi daun,Medium bergelombang
+P02,panjang_daun,Humbang Roberkat,Panjang daun (cm),"6,8 - 10,5"
+P02,lebar_daun,Humbang Roberkat,Lebar daun (cm),"2,8 - 3,8"
+P02,warna_kelopak_bunga,Humbang Roberkat,Warna kelopak bunga,"Hijau gelap (RHS, Green Group-136A-Drak Green)"
+P02,warna_mahkota,Humbang Roberkat,Warna mahkota bunga (petal),"Putih ( RHS, Yellowish -white Group- NN155A Olive Green )"
+P02,warna_tangkai_sari,Humbang Roberkat,Warna filament,"Putih Pucat (RHS,White Group-155A-Pale Yellow Green)"
+P02,warna_kepala_sari,Humbang Roberkat,Warna kepala sari,"Hijau gelap (RHS, Green Group-136A-Drak Green)"
+P02,panjang_benangsari,Humbang Roberkat,Panjang benang sari dan filament (mm),"2,5 - 4,0"
+P02,posisi_bunga,Humbang Roberkat,Posisi bunga terhadap batang,Menggantung (dropping)
+P02,bentuk_buah,Humbang Roberkat,Bentuk buah,Elongate
+P02,warna_buah_muda,Humbang Roberkat,Warna buah sebelum matang,"Hijau tua (RHS, Green Group-139A-Dark yellowish green)"
+P02,warna_buah_masak,Humbang Roberkat,Warna buah tua/matang,"Merah (RHS,Reed Group-45A-Vivid Red)"
+P02,bentuk_ujung_buah,Humbang Roberkat,Bentuk ujung buah,Meruncing atau Pointed
+P02,warna_biji,Humbang Roberkat,Warna biji,"Kuning pucat (RHS, Yellow Group - 4D-Pale Yellow Green)"
+P02,jumlah_biji_buah_masak,Humbang Roberkat,Jumlah biji per buah,26 - 68
+P02,adaptasi_ekologi,Humbang Roberkat,Wilayah adaptasi,Beradaptasi baik di dataran tinggi dan medium 900 - 1400 m dpl
+P02,lokasi,Turima 1,Sebaran Geografis,"Desa Sumberagung, Kecamatan Plaosan, Kabupaten Magetan, Provinsi"
+P02,habitus,Turima 1,Orientasi,Semi tegak
+P02,batang,Turima 1,Bulu pada buku,Sedang
+P02,tinggi_tanaman,Turima 1,Tinggi tanaman (cm),"39 – 58,7"
+P02,panjang_daun,Turima 1,Panjang helai daun (cm),"6 – 8,9"
+P02,lebar_daun,Turima 1,Lebar helai daun (cm),"2,5 – 3,7"
+P02,warna_daun,Turima 1,Warna daun permukaan atas,Hijau zaitun sedang (RHS Green Group 137 B)
+P02,bentuk_daun,Turima 1,Bentuk daun,Lanset
+P02,tepi_daun,Turima 1,Undulasi pada tepi daun,Lemah
+P02,tekstur_daun,Turima 1,Lepuhan daun,Lemah
+P02,warna_kelopak_bunga,Turima 1,Warna kelopak bunga,Hijau
+P02,warna_mahkota,Turima 1,Warna mahkota bunga,Putih
+P02,warna_kepala_sari,Turima 1,Warna antera,Putih
+P02,warna_buah_muda,Turima 1,Warna buah muda,Hijau kekuningan tua (RHS Green Group 139 A)
+P02,bentuk_buah,Turima 1,Bentuk potongan membujur,Segitiga sedang
+P02,warna_buah_masak,Turima 1,Warna buah matang,Merah cerah (RHS Red Group 45 B)
+P02,bentuk_ujung_buah,Turima 1,Bentuk ujung buah,Cukup tertekan ke dalam dan meruncing
+P02,adaptasi_ekologi,Turima 1,Wilayah adaptasi,Dataran rendah - medium
+P02,lokasi,Turima 2,Sebaran Geografis,"Desa Sumberagung, Kecamatan Plaosan, Kabupaten Magetan, Provinsi"
+P02,habitus,Turima 2,Orientasi,Tegak
+P02,batang,Turima 2,Bulu pada buku,Kuat
+P02,tinggi_tanaman,Turima 2,Tinggi tanaman (cm),"48 – 68,7"
+P02,panjang_daun,Turima 2,Panjang helai daun (cm),"6,5 – 8,4"
+P02,lebar_daun,Turima 2,Lebar helai daun (cm),"2,8 – 3,6"
+P02,warna_daun,Turima 2,Warna daun permukaan atas,Hijau zaitun sedang (RHS Green Group 137 A)
+P02,bentuk_daun,Turima 2,Bentuk daun,Lanset
+P02,tepi_daun,Turima 2,Undulasi pada tepi daun,Lemah
+P02,tekstur_daun,Turima 2,Lepuhan daun,Lemah
+P02,warna_kelopak_bunga,Turima 2,Warna kelopak bunga,Hijau
+P02,warna_mahkota,Turima 2,Warna mahkota bunga,Putih
+P02,warna_kepala_sari,Turima 2,Warna antera,Ungu kuat
+P02,warna_buah_muda,Turima 2,Warna buah muda,Hijau kuning kuat (RHS Green Group 143 A)
+P02,bentuk_buah,Turima 2,Bentuk potongan membujur,Persegi panjang
+P02,warna_buah_masak,Turima 2,Warna buah matang,Merah cerah (RHS Red Group 45 A)
+P02,bentuk_ujung_buah,Turima 2,Bentuk ujung buah,Sangat tertekan ke dalam
+P02,adaptasi_ekologi,Turima 2,Wilayah adaptasi,Dataran rendah - medium
+P02,lokasi,Jabung,Sebaran Geografis,"Kecamatan Leces, Kecamatan Wonomerto, Kabupaten Probolinggo"
+P02,tinggi_tanaman,Jabung,Tinggi tanaman (cm),95-125
+P02,bentuk_daun,Jabung,Bentuk daun,"Bulat telur, ujung meruncing, pangkal meruncing dan tepi berombak"
+P02,panjang_daun,Jabung,Panjang daun (cm),"6,7-9,6"
+P02,lebar_daun,Jabung,Lebar daun (cm),"3,1-3,5"
+P02,panjang_tangkai_daun,Jabung,Panjang tangkai daun (cm),"1,2-2,5"
+P02,warna_daun,Jabung,Warna daun permukaan atas,Hijau Zaitun Sedang (Yellow Green Group 147A)
+P02,bentuk_bunga,Jabung,Bentuk bunga,Seperti bintang
+P02,warna_gagang_bunga,Jabung,Warna tangkai bunga,Hijau Kekuningan Sedang (Green Group 138A)
+P02,warna_mahkota,Jabung,Warna mahkota bunga,Kuning Kehijauan Pucat (Green Yellow Group 1D)
+P02,bentuk_buah,Jabung,Bentuk buah,Memanjang
+P02,bentuk_ujung_buah,Jabung,Bentuk ujung buah,Runcing
+P02,warna_buah_muda,Jabung,Warna buah muda,Kuning Hijau Muda (Green Yellow Group 1 C)
+P02,warna_buah_masak,Jabung,Warna buah tua,Merah Jingga Cerah (Red Group 43A)
+P02,warna_biji,Jabung,Warna biji,Jingga Kekuningan Sedang (Greyed Orange Group 164 B)
+P02,adaptasi_ekologi,Jabung,Wilayah adaptasi,Sesuai di dataran rendah hingga medium (10-800 m dpl)
+P02,lokasi,Rabon Bojonegoro 1,Sebaran Geografis,"Desa Karangmangu, Kecamatan Ngambon, Kabupaten Bojonegoro,"
+P02,habitus,Rabon Bojonegoro 1,Orientasi,Semi tegak
+P02,batang,Rabon Bojonegoro 1,Bulu pada buku,Sedang
+P02,tinggi_tanaman,Rabon Bojonegoro 1,Tinggi tanaman (cm),"68,11 - 72,96"
+P02,panjang_daun,Rabon Bojonegoro 1,Panjang helai daun (cm),"6,56 - 7,94"
+P02,lebar_daun,Rabon Bojonegoro 1,Lebar helai daun (cm),"2,4 - 2,73"
+P02,bentuk_daun,Rabon Bojonegoro 1,Bentuk daun,Lanset
+P02,tepi_daun,Rabon Bojonegoro 1,Undulasi pada tepi daun,Lemah
+P02,tekstur_daun,Rabon Bojonegoro 1,Lepuhan daun,Lemah
+P02,warna_kelopak_bunga,Rabon Bojonegoro 1,Warna kelopak bunga,Hijau
+P02,warna_mahkota,Rabon Bojonegoro 1,Warna mahkota bunga,Putih berbercak ungu samar
+P02,warna_buah_muda,Rabon Bojonegoro 1,Warna buah muda,Hijau kuning cemerlang (RHS 150 B)
+P02,bentuk_buah,Rabon Bojonegoro 1,Bentuk potongan membujur,Hornshaped atau berbentuk tanduk
+P02,warna_buah_masak,Rabon Bojonegoro 1,Warna buah matang,Jingga kemerahan cerah (RHS N30A)
+P02,bentuk_ujung_buah,Rabon Bojonegoro 1,Bentuk ujung buah,Bulat
+P02,adaptasi_ekologi,Rabon Bojonegoro 1,Wilayah adaptasi,"Kecamatan Ngambon, Kabupaten Bojonegoro, Provinsi Jawa Timur"
+P02,lokasi,Rabon Bojonegoro 2,Sebaran Geografis,"Desa Karangmangu, Kecamatan Ngambon, Kabupaten Bojonegoro,"
+P02,habitus,Rabon Bojonegoro 2,Orientasi,Mendatar
+P02,batang,Rabon Bojonegoro 2,Bulu pada buku,Sedang
+P02,tinggi_tanaman,Rabon Bojonegoro 2,Tinggi tanaman (cm),"38,5 - 45,6"
+P02,panjang_daun,Rabon Bojonegoro 2,Panjang helai daun (cm),6 - 8
+P02,lebar_daun,Rabon Bojonegoro 2,Lebar helai daun (cm),"2,4 - 3"
+P02,bentuk_daun,Rabon Bojonegoro 2,Bentuk daun,Lanset
+P02,tepi_daun,Rabon Bojonegoro 2,Undulasi pada tepi daun,Lemah
+P02,tekstur_daun,Rabon Bojonegoro 2,Lepuhan daun,Lemah
+P02,warna_kelopak_bunga,Rabon Bojonegoro 2,Warna kelopak bunga,Hijau
+P02,warna_mahkota,Rabon Bojonegoro 2,Warna mahkota bunga,Putih
+P02,warna_buah_muda,Rabon Bojonegoro 2,Warna buah muda,Hijau kuning cemerlang (RHS 154 C)
+P02,bentuk_buah,Rabon Bojonegoro 2,Bentuk potongan membujur,Hornshaped atau berbentuk tanduk
+P02,warna_buah_masak,Rabon Bojonegoro 2,Warna buah matang,Merah cerah (RHS 45 B)
+P02,bentuk_ujung_buah,Rabon Bojonegoro 2,Bentuk ujung buah,Cukup Runcing
+P02,adaptasi_ekologi,Rabon Bojonegoro 2,Wilayah adaptasi,"Kecamatan Ngambon, Kabupaten Bojonegoro, Provinsi Jawa Timur"
+P02,lokasi,Rungun Tabalong Smart,Sebaran Geografis,"Seluruh desa di kecamatan Bintang Ara, kabupaten Tabalong"
+P02,habitus,Rungun Tabalong Smart,Orientasi Tanaman,Tegak
+P02,tinggi_tanaman,Rungun Tabalong Smart,Tinggi tanaman (cm),106 - 203
+P02,batang,Rungun Tabalong Smart,Bulu pada buku,Tidak ada
+P02,panjang_daun,Rungun Tabalong Smart,Panjang daun (cm),"3,9 – 12,5"
+P02,lebar_daun,Rungun Tabalong Smart,Lebar daun (cm),"2,4 – 6,0"
+P02,warna_daun,Rungun Tabalong Smart,Warna daun bagian atas,"Hijau Zaitun Keabu-abuan NN137A (Green Group, RHS 2015)"
+P02,bentuk_daun,Rungun Tabalong Smart,Bentuk daun,Bulat telur / Ovate
+P02,tepi_daun,Rungun Tabalong Smart,Undulasi / gelombang pada tepi daun,Lemah
+P02,posisi_bunga,Rungun Tabalong Smart,Posisi tangkai bunga,Tegak
+P02,warna_kelopak_bunga,Rungun Tabalong Smart,Warna kelopak bunga,"Hijau Kuning Kuat 144 A (Yellow Green Group, RHS 2015)"
+P02,warna_mahkota,Rungun Tabalong Smart,Warna mahkota bunga,"Hijau Kuning Pucat 193 A (Greyed Green Group, RHS 2015)"
+P02,warna_kepala_sari,Rungun Tabalong Smart,Warna antera/kepala sari,"Hijau Kuning keabu-abuan198 A (Greyed Green Group, RHS 2015)"
+P02,warna_tangkai_putik,Rungun Tabalong Smart,Warna tangkai kepala putik,"Putih NN155 B (White Group, RHS 2015)"
+P02,bentuk_buah,Rungun Tabalong Smart,Bentuk buah,Kerucut
+P02,bentuk_ujung_buah,Rungun Tabalong Smart,Bentuk ujung buah,Runcing
+P02,warna_buah_muda,Rungun Tabalong Smart,Warna buah muda,"Hijau Kuning Kuat 143 B (Green Group, RHS 2015)"
+P02,warna_buah_masak,Rungun Tabalong Smart,Warna buah tua,"Merah cerah 45 B (Red Group, RHS 2015)"
+P02,bentuk_buah,Rungun Tabalong Smart,Penampang membujur buah,Segitiga memanjang
+P02,warna_biji,Rungun Tabalong Smart,Warna biji,"Kuning Sedang 162 B (Greyed Yellow Group, RHS 2015)"
+P02,jumlah_biji_buah_masak,Rungun Tabalong Smart,Jumlah biji per buah (butir),17 - 29
+P02,lokasi,Sibrol Sembada,Sebaran Geografis,"Desa Condongcatur, Desa Pakembinangun, Desa Trimulyo, Desa"
+P02,habitus,Sibrol Sembada,Orientasi Tanaman,Tegak
+P02,tinggi_tanaman,Sibrol Sembada,Tinggi tanaman (cm),"± 79,67 (105 – 200)"
+P02,panjang_daun,Sibrol Sembada,Panjang helai daun (cm),"± 15,52"
+P02,bentuk_daun,Sibrol Sembada,Bentuk daun,lanceolate
+P02,posisi_bunga,Sibrol Sembada,Orientasi pedunkel pada bunga,Tegak
+P02,warna_buah_muda,Sibrol Sembada,Warna buah muda,Yellow green group 145 – Light yellow green B
+P02,bentuk_buah,Sibrol Sembada,Bentuk potongan membujur buah,Moderately triangular
+P02,warna_buah_masak,Sibrol Sembada,Warna buah matang buah,Red group 45 – Vivid red A
