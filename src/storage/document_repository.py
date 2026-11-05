@@ -28,6 +28,7 @@ from src.storage.document_contracts import (
     PhotoMismatchDecision,
     PlantIdentity,
     make_unknown_habitat,
+    require_variety_level_identity,
     validate_document,
 )
 from sqlalchemy.exc import IntegrityError
@@ -1000,8 +1001,12 @@ class DocumentRepository:
                     target_item.notes = notes
 
             elif action == "CREATE_NEW_DOCUMENT":
-                new_variety_name = dec_dict.get("new_variety_name") or "Cabai Baru"
-                identity_level = dec_dict.get("identity_level") or "cultivar"
+                try:
+                    new_variety_name, identity_level = require_variety_level_identity(
+                        dec_dict.get("new_variety_name"), dec_dict.get("identity_level")
+                    )
+                except ValueError as exc:
+                    raise InvalidState(str(exc)) from exc
                 target_habitat_id = dec_dict.get("target_habitat_id")
 
                 matching_habitat = next(
@@ -1263,16 +1268,20 @@ class DocumentRepository:
                 raise Conflict(f"Candidate '{candidate_id}' is already decided (status={row['status']}).")
 
             if action == "PROMOTE":
-                new_var_name = decision.get("new_variety_name")
-                if not new_var_name or not str(new_var_name).strip():
+                if not str(decision.get("new_variety_name") or "").strip():
                     raise InvalidState("new_variety_name is required for PROMOTE action.")
-                new_var_name = str(new_var_name).strip()
+                try:
+                    new_var_name, promote_level = require_variety_level_identity(
+                        decision.get("new_variety_name"), decision.get("identity_level")
+                    )
+                except ValueError as exc:
+                    raise InvalidState(str(exc)) from exc
                 norm_id = re.sub(r"[^a-z0-9]+", "_", new_var_name.lower()).strip("_")
                 var_id = f"plant_{norm_id}"
                 plant = PlantIdentity(
                     id=var_id,
                     label=new_var_name,
-                    identity_level=decision.get("identity_level", "cultivar"),
+                    identity_level=promote_level,
                 )
 
                 hab_dict = decision.get("habitat")

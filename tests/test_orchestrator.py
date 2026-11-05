@@ -62,7 +62,7 @@ def _wire_one_image(monkeypatch, calls):
     monkeypatch.setattr(
         runner,
         "VisionSession",
-        lambda: SimpleNamespace(knowledge_source_text="knowledge", varieties=[]),
+        lambda **kwargs: SimpleNamespace(knowledge_source_text="knowledge", varieties=[]),
     )
     monkeypatch.setattr(runner, "safe_classify_image", classify_once)
 
@@ -125,7 +125,7 @@ def test_no_drive_routes_directly_to_finalization(tmp_path, monkeypatch):
     source, calls = _source(tmp_path, "Seeds per mature fruit"), []
     monkeypatch.setattr(runner, "detect_anchor", lambda *a, **k: AnchorResult("found", "Variety", 1.0, "test"))
     monkeypatch.setattr(runner, "list_images", lambda *a, **k: pytest.fail("Drive must be skipped"))
-    monkeypatch.setattr(runner, "VisionSession", lambda: pytest.fail("vision must be skipped"))
+    monkeypatch.setattr(runner, "VisionSession", lambda **kwargs: pytest.fail("vision must be skipped"))
     result = runner._run_pipeline_ui_impl(source, checkpoint_db_path=tmp_path / "skip.sqlite")
     assert result.agent_status["vision_classification"].startswith("dilewati")
 

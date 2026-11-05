@@ -286,3 +286,57 @@ class TestVisionSession:
         )
         result = session.classify(_image("x.jpg"), image_bytes=FAKE_IMAGE_BYTES)
         assert result.classification_status == "UNCERTAIN"  # consensus mismatch applied
+
+
+# --- D20: varietas level kultivar pada sesi vision ---
+
+def _run_sheet(varieties, rows):
+    import openpyxl
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Sheet1"
+    ws.append(["Nomor", "Karakter", *varieties])
+    for i, (label, values) in enumerate(rows, start=1):
+        ws.append([i, label, *values])
+    return ws
+
+
+def test_run_sheet_descriptions_feed_varieties_outside_the_template():
+    from src.agents.vision_classification import VisionSession, variety_descriptions_from_worksheet
+
+    ws = _run_sheet(["Turima 1", "Turima 2"], [
+        ("warna buah masak", ["Merah (RHS 45A)", "Merah tua (RHS 46A)"]),
+        ("bentuk buah", ["Kerucut", None]),
+        ("Gambar Buah", ["https://drive/x", None]),  # tautan foto bukan morfologi
+    ])
+    session = VisionSession(run_descriptions=variety_descriptions_from_worksheet(ws))
+    by_name = {v.name: v.characteristics for v in session.varieties}
+    assert by_name["Turima 1"] == {"warna buah masak": "Merah (RHS 45A)", "bentuk buah": "Kerucut"}
+    assert by_name["Turima 2"] == {"warna buah masak": "Merah tua (RHS 46A)"}
+    assert "tidak ada deskripsi" not in session.knowledge_source_text
+
+
+def test_template_morphology_is_matched_by_exact_name_only():
+    from src.agents.vision_classification import VisionSession
+
+    # Template punya kolom "Cabai H." dan "Katokkon"; dulu "Cabai Hiyung" ikut memakai deskripsi "Cabai H.".
+    session = VisionSession(run_scope_varieties=["Cabai Hiyung", "katokkon"])
+    by_name = {v.name: v.characteristics for v in session.varieties}
+    assert by_name["Cabai Hiyung"] == {}
+    assert by_name["katokkon"]  # sama persis setelah huruf kecil diseragamkan
+
+
+def test_run_values_win_over_template_values_for_the_same_variety():
+    from src.agents.vision_classification import VisionSession, VarietyDescription
+
+    session = VisionSession(
+        run_scope_varieties=["Katokkon"],
+        run_descriptions=[VarietyDescription("Katokkon", {"bentuk buah": "Dari run"})],
+    )
+    assert session.varieties[0].characteristics["bentuk buah"] == "Dari run"
+
+
+def test_filename_signal_does_not_confuse_numbered_varieties():
+    assert extract_filename_signal("rikub 12 buah.jpg", ["RIKUB 1", "RIKUB 2"]).suggested_variety is None
+    assert extract_filename_signal("rikub_2_buah_01.jpg", ["RIKUB 1", "RIKUB 2"]).suggested_variety == "RIKUB 2"

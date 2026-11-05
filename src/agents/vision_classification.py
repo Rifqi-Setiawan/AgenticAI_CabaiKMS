@@ -54,6 +54,7 @@ from src.storage.document_contracts import (
 )
 from src.llm.openai_compatible import provider_mode
 from src.llm.vision_providers import call_second_voter, call_vision
+from src.agents.variety_registry import is_numbered_variety, numbered_form_match
 
 LVMCall = Callable[..., Any]
 
@@ -80,8 +81,10 @@ Dari SATU foto, tentukan dalam SATU keputusan:
    berdasarkan perbandingan ciri visual foto terhadap deskripsi morfologi
    tiap varietas (bukan berdasarkan nama berkas).
 
-Daftar varietas yang dikenal (sumber pengetahuan dinamis, dibaca ulang dari
-template kanonik setiap sesi baru):
+Daftar varietas yang dikenal (sumber pengetahuan dinamis, dibaca ulang setiap
+sesi baru dari spreadsheet run aktif dan template kanonik). Nama varietas bisa
+hanya berbeda angka (mis. "Turima 1" dan "Turima 2"): tulis matched_variety
+persis seperti di daftar.
 {knowledge_source}
 
 Aturan status klasifikasi:
@@ -114,34 +117,57 @@ class FilenameSignal:
     suggested_variety: str | None
 
 
+def variety_name_key(name: str) -> str:
+    """Exact-match key for a variety name: case, spacing and punctuation ignored, digits kept.
+
+    "Biocarning-Agrihorti" == "biocarning agrihorti", but "Turima 1" != "Turima 2" and
+    "Cabai H." != "Cabai Hiyung". Variety-level names must never be matched by substring.
+    """
+    return " ".join(re.findall(r"[a-z0-9]+", name.casefold()))
+
+
+def _descriptions_from_rows(rows_iter: Any, *, skip_image_rows: bool) -> list[VarietyDescription]:
+    header = next(rows_iter)
+    varietas_names: list[str] = []
+    for cell in header[2:]:
+        if cell is None or not str(cell).strip():
+            break
+        varietas_names.append(str(cell).strip())
+
+    characteristics: dict[str, dict[str, str]] = {name: {} for name in varietas_names}
+    for row in rows_iter:
+        label = row[1] if len(row) > 1 else None
+        if label is None:
+            continue
+        label = str(label).strip()
+        if skip_image_rows and label.casefold().startswith("gambar"):
+            continue  # photo links already written in this run are not morphology
+        for name, value in zip(varietas_names, row[2:]):
+            if value is not None and str(value).strip():
+                characteristics[name][label] = str(value).strip()
+    return [VarietyDescription(name, characteristics[name]) for name in varietas_names]
+
+
 def load_variety_descriptions(template_path: Path | str = DEFAULT_TEMPLATE_PATH) -> list[VarietyDescription]:
     """The dynamic knowledge source: the canonical template's own already-
     filled-in varietas columns, read fresh from disk every call (never
     cached across calls — only a VisionSession instance caches the *text
     built from* one such read, for its own lifetime)."""
     wb = openpyxl.load_workbook(template_path, data_only=True, read_only=True)
-    ws = wb["Sheet1"]
-    rows_iter = ws.iter_rows(values_only=True)
-    header = next(rows_iter)
+    try:
+        return _descriptions_from_rows(wb["Sheet1"].iter_rows(values_only=True), skip_image_rows=False)
+    finally:
+        wb.close()
 
-    varietas_names: list[str] = []
-    for cell in header[2:]:
-        if cell is None:
-            break
-        varietas_names.append(str(cell).strip())
 
-    characteristics: dict[str, dict[str, str]] = {name: {} for name in varietas_names}
-    for row in rows_iter:
-        label = row[1]
-        if label is None:
-            continue
-        label = str(label).strip()
-        for name, value in zip(varietas_names, row[2:]):
-            if value is not None and str(value).strip():
-                characteristics[name][label] = str(value).strip()
+def variety_descriptions_from_worksheet(ws: Any) -> list[VarietyDescription]:
+    """Morphology of the ACTIVE run's varieties, read from the canonical output sheet built for this run
+    (same layout as the template: column B = Karakter, columns C.. = varieties from the input).
 
-    wb.close()
-    return [VarietyDescription(name, characteristics[name]) for name in varietas_names]
+    This is what lets the vision model compare a photo with the description of a variety that is not
+    one of the template's own columns (e.g. varieties from a PVT/Kementan description workbook).
+    """
+    return _descriptions_from_rows(ws.iter_rows(values_only=True), skip_image_rows=True)
 
 
 def build_knowledge_source_text(varieties: list[VarietyDescription]) -> str:
@@ -155,7 +181,12 @@ def extract_filename_signal(filename: str, known_varieties: list[str]) -> Filena
         (part for part, keywords in _PART_FILENAME_HINTS.items() if any(kw in lowered for kw in keywords)),
         None,
     )
-    suggested_variety = next((name for name in known_varieties if name.lower() in lowered), None)
+    def _names_variety(name: str) -> bool:
+        if is_numbered_variety(name):  # "rikub 12.jpg" must not suggest "RIKUB 1"
+            return numbered_form_match(name, filename)[0]
+        return name.lower() in lowered
+
+    suggested_variety = next((name for name in known_varieties if _names_variety(name)), None)
 
     return FilenameSignal(suggested_part=suggested_part, suggested_variety=suggested_variety)
 
@@ -180,56 +211,18 @@ def extract_photo_context_signal(
     suggested_variety_hint = None
     is_exact_hint = True
 
+    # D20: one matching rule for every path. Without an explicit registry the run's known varieties are
+    # used; there is no hardcoded list of chili TYPE words ("rawit", "keriting", "habanero", "besar"...),
+    # because a hint is also offered as the name of a new variety document and must be variety-level.
+    if registry is None and known_varieties:
+        from src.agents.variety_registry import VarietyRegistry
+
+        registry = VarietyRegistry.build(spreadsheet_varieties=known_varieties)
     if registry is not None:
         best = registry.best_match(combined_text, threshold=0.6)
         if best is not None:
             suggested_variety_hint = best.canonical_name
             is_exact_hint = getattr(best, "is_exact", False)
-    else:
-        # Legacy fallback behavior
-        stop_words = {
-            "cabai",
-            "cabe",
-            "chili",
-            "pepper",
-            "tanaman",
-            "foto",
-            "daun",
-            "buah",
-            "batang",
-            "bunga",
-            "sample",
-            "lokasi",
-            "sp",
-            "l",
-        }
-
-        if known_varieties:
-            for variety in known_varieties:
-                v_low = variety.lower()
-                v_tokens = set(re.findall(r"[a-zA-Z0-9]+", v_low)) - stop_words
-                if any(tok in combined_text for tok in v_tokens):
-                    suggested_variety_hint = variety
-                    break
-
-        if not suggested_variety_hint:
-            for word in re.findall(r"[a-zA-Z]+", combined_text):
-                if word in stop_words or len(word) < 4:
-                    continue
-                if word in [
-                    "rawit",
-                    "keriting",
-                    "habanero",
-                    "katokkon",
-                    "jalapeno",
-                    "gendot",
-                    "kopay",
-                    "tanjung",
-                    "domba",
-                    "besar",
-                ]:
-                    suggested_variety_hint = f"Cabai {word.title()}"
-                    break
 
     return PhotoContextSignal(
         filename=filename,
@@ -676,32 +669,33 @@ class VisionSession:
         template_path: Path | str = DEFAULT_TEMPLATE_PATH,
         *,
         run_scope_varieties: list[str] | None = None,
+        run_descriptions: list[VarietyDescription] | None = None,
         lvm_call: LVMCall | None = None,
         consensus: bool = False,
         second_voter_call: LVMCall = call_second_voter,
         drive_service: Any = None,
     ):
+        if run_scope_varieties is None and run_descriptions is not None:
+            run_scope_varieties = [d.name for d in run_descriptions]
         if run_scope_varieties is not None:
             self.run_scope_varieties = list(run_scope_varieties)
             try:
                 template_varieties = load_variety_descriptions(template_path)
             except Exception:
                 template_varieties = []
+            # D20: exact name key only. Substring matching let "Cabai H." describe "Cabai Hiyung" and
+            # would let one numbered variety ("Turima 1") lend its morphology to another ("Turima 12").
+            template_by_key = {variety_name_key(tv.name): tv for tv in template_varieties}
+            run_by_key = {variety_name_key(d.name): d for d in (run_descriptions or [])}
             scoped_list = []
             for scoped_name in run_scope_varieties:
-                matched_tv = next(
-                    (
-                        tv
-                        for tv in template_varieties
-                        if tv.name.lower() in scoped_name.lower()
-                        or scoped_name.lower() in tv.name.lower()
-                    ),
-                    None,
-                )
-                if matched_tv:
-                    scoped_list.append(VarietyDescription(scoped_name, matched_tv.characteristics))
-                else:
-                    scoped_list.append(VarietyDescription(scoped_name, {}))
+                key = variety_name_key(scoped_name)
+                characteristics: dict[str, str] = {}
+                if key in template_by_key:
+                    characteristics.update(template_by_key[key].characteristics)
+                if key in run_by_key:  # this run's own values win over the template's
+                    characteristics.update(run_by_key[key].characteristics)
+                scoped_list.append(VarietyDescription(scoped_name, characteristics))
             self.varieties = scoped_list
         else:
             self.run_scope_varieties = None

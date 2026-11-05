@@ -135,7 +135,10 @@ def vision_classification(state, config):
     from src.schema.contracts import ImageMetadata
     from src.ui import pipeline_runner as r
     resources = _resources(config); wb = openpyxl.load_workbook(io.BytesIO(state["workbook_bytes"])); ws = wb[r.SHEET_NAME]
-    session = r.VisionSession(); trace = {"error_trace": list(state.get("error_trace", [])), "provider_trace": list(state.get("provider_trace", []))}; rows=[]; written=uncertain=classified=0
+    # D20: offer the model this run's varieties (the only columns a photo link can be written to),
+    # each with its morphology from the run sheet; previously only the template's own columns.
+    from src.agents.vision_classification import variety_descriptions_from_worksheet
+    session = r.VisionSession(run_descriptions=variety_descriptions_from_worksheet(ws)); trace = {"error_trace": list(state.get("error_trace", [])), "provider_trace": list(state.get("provider_trace", []))}; rows=[]; written=uncertain=classified=0
     total_images = len(state.get("image_metadata", []))
     for idx, raw in enumerate(state.get("image_metadata", []), start=1):
         image = ImageMetadata.model_validate(raw)

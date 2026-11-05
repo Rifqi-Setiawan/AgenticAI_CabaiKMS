@@ -68,6 +68,48 @@ def exact_comparison_tokens(text: str) -> frozenset[str]:
     )
 
 
+def variety_sequence_tokens(text: str) -> list[str]:
+    """Ordered tokens for variety names that carry a number (e.g. "Turima 1", "IPBrin KR 03").
+
+    Unlike exact_comparison_tokens, digits are KEPT (leading zeros dropped, so "01" == "1"),
+    and letter/digit runs are split ("turima1" -> "turima", "1"). Order matters: the number of a
+    variety must follow its name, so a photo index such as "_05" is not read as a variety number.
+    """
+    out: list[str] = []
+    for t in re.findall(r"[a-z]+|\d+", text.lower()):
+        if t in STOP_WORDS or t in _FILENAME_NOISE:
+            continue
+        if t.isdigit():
+            out.append(str(int(t)))
+        elif len(t) > 1:
+            out.append(t)
+    return out
+
+
+def is_numbered_variety(name: str) -> bool:
+    return any(t.isdigit() for t in variety_sequence_tokens(name))
+
+
+def _contains_run(haystack: list[str], needle: list[str]) -> bool:
+    n = len(needle)
+    return n > 0 and any(haystack[i:i + n] == needle for i in range(len(haystack) - n + 1))
+
+
+def numbered_form_match(form: str, query: str) -> tuple[bool, bool]:
+    """(matched, exact) for a numbered variety name/alias against free text or a filename.
+
+    matched: the form's tokens appear contiguously in the query ("turima_2_05" contains "turima 2").
+    exact: additionally, the query carries no other discriminating word.
+    """
+    form_seq = variety_sequence_tokens(form)
+    query_seq = variety_sequence_tokens(query)
+    if not _contains_run(query_seq, form_seq):
+        return False, False
+    form_words = {t for t in form_seq if not t.isdigit()}
+    query_words = {t for t in query_seq if not t.isdigit()}
+    return True, form_words == query_words
+
+
 @dataclass(frozen=True)
 class VarietyEntry:
     canonical_name: str
@@ -166,6 +208,32 @@ class VarietyRegistry:
         results: list[VarietyMatchResult] = []
 
         for name, entry in sorted(self._entries.items()):
+            # Variety-level names often differ only by a number (Turima 1 / Turima 2, RIKUB 1 / 2,
+            # IPBrin KR 01 / 03). The generic path below ignores digits, so these are matched by
+            # ordered tokens only, with no fuzzy fallback (fuzzy similarity cannot tell numbers apart).
+            numbered_forms = [f for f in [name, *entry.aliases] if is_numbered_variety(f)]
+            if numbered_forms:
+                hit = None
+                for form in numbered_forms:
+                    matched, exact = numbered_form_match(form, text)
+                    if matched:
+                        is_canonical = form == name
+                        score = (1.0 if is_canonical else 0.98) if exact else (0.95 if is_canonical else 0.90)
+                        reason = ("Exact canonical name match" if is_canonical else f"Matched alias '{form}'") \
+                            if exact else ("Numbered canonical token match" if is_canonical else f"Matched alias '{form}'")
+                        hit = VarietyMatchResult(canonical_name=name, score=score, reason=reason, is_exact=exact)
+                        break
+                if hit is not None:
+                    results.append(hit)
+                    continue
+                if is_numbered_variety(name):
+                    continue
+                # Non-numbered canonical name with numbered aliases: those aliases did not match,
+                # so only the remaining (non-numbered) aliases go through the generic path.
+                entry = VarietyEntry(canonical_name=entry.canonical_name,
+                                     aliases=[a for a in entry.aliases if not is_numbered_variety(a)],
+                                     morphology=entry.morphology, source=entry.source)
+
             cleaned_canonical = normalize_clean_string(name)
             canonical_tokens = set(normalize_variety_tokens(name))
 

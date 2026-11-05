@@ -90,17 +90,55 @@ def test_r5_matching_is_deterministic():
     ] == [(r.canonical_name, r.score, r.reason) for r in res3]
 
 
-def test_r6_legacy_context_signal_behavior_preserved():
-    """R6: extract_photo_context_signal preserves legacy behavior without registry, uses registry when supplied."""
-    # Without registry: falls back to hardcoded list if word is in hardcoded list ('rawit' -> 'Cabai Rawit')
-    signal_legacy = extract_photo_context_signal("foto_rawit_daun.jpg")
-    assert signal_legacy.suggested_variety_hint == "Cabai Rawit"
+def test_r6_context_signal_is_variety_level_only():
+    """R6 (D20): without a registry or known varieties there is no hint; no hardcoded chili TYPE words."""
+    # A type word ("rawit") is not a variety name, so it no longer becomes a hint like "Cabai Rawit".
+    assert extract_photo_context_signal("foto_rawit_daun.jpg").suggested_variety_hint is None
+    assert extract_photo_context_signal("foto_hiyung_daun.jpg").suggested_variety_hint is None
 
-    # Without registry and without hardcoded match: returns None
-    signal_legacy_unknown = extract_photo_context_signal("foto_hiyung_daun.jpg")
-    assert signal_legacy_unknown.suggested_variety_hint is None
+    # Without an explicit registry, the run's known varieties are matched with the registry rules.
+    signal_known = extract_photo_context_signal("turima_2_buah_05.jpg", known_varieties=["Turima 1", "Turima 2"])
+    assert signal_known.suggested_variety_hint == "Turima 2"
+    assert signal_known.is_exact_hint
 
     # With registry: detects custom variety not in hardcoded list
     custom_registry = VarietyRegistry.build(["Cabai Hiyung"])
     signal_custom = extract_photo_context_signal("foto_hiyung_daun.jpg", registry=custom_registry)
     assert signal_custom.suggested_variety_hint == "Cabai Hiyung"
+
+
+# --- Varietas bernomor (D20): nama yang hanya beda angka tidak boleh tertukar ---
+
+NUMBERED = ["Turima 1", "Turima 2", "IPBrin KR 01", "IPBrin KR 03", "RIKUB 1", "RIKUB 2", "Katokkon"]
+
+
+@pytest.mark.parametrize("filename, expected", [
+    ("turima_2_05.jpg", "Turima 2"),
+    ("turima_1_buah_12.png", "Turima 1"),
+    ("IPBrin_KR_03_daun.jpg", "IPBrin KR 03"),
+    ("ipbrin kr 1 bunga.png", "IPBrin KR 01"),
+    ("rikub 1 buah 12.png", "RIKUB 1"),
+    ("turima2.jpg", "Turima 2"),
+])
+def test_numbered_variety_matches_only_its_own_number(filename, expected):
+    registry = VarietyRegistry.build(spreadsheet_varieties=NUMBERED)
+    matches = registry.match(filename)
+    assert [m.canonical_name for m in matches] == [expected]
+    assert matches[0].is_exact
+
+
+@pytest.mark.parametrize("filename", ["turima_buah.jpg", "rikub12.png", "IMG_0042.jpg"])
+def test_numbered_variety_without_its_number_is_not_guessed(filename):
+    registry = VarietyRegistry.build(spreadsheet_varieties=NUMBERED)
+    assert registry.match(filename) == []
+
+
+def test_photo_index_is_not_read_as_variety_number():
+    # "_01" adalah nomor urut foto, bukan "Turima 1".
+    registry = VarietyRegistry.build(spreadsheet_varieties=NUMBERED)
+    assert [m.canonical_name for m in registry.match("turima_2_01.jpg")] == ["Turima 2"]
+
+
+def test_non_numbered_variety_behaviour_unchanged():
+    registry = VarietyRegistry.build(spreadsheet_varieties=NUMBERED)
+    assert registry.best_match("katokkon_buah_3.jpg").canonical_name == "Katokkon"

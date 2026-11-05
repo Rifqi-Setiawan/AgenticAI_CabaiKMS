@@ -790,7 +790,7 @@ def test_vision_non_write_reason_is_retained_without_losing_tabular_output(
     monkeypatch.setattr(runner, "list_images", lambda folder: [image])
     monkeypatch.setattr(
         runner, "VisionSession",
-        lambda: SimpleNamespace(knowledge_source_text="knowledge", varieties=[]),
+        lambda **kwargs: SimpleNamespace(knowledge_source_text="knowledge", varieties=[]),
     )
     monkeypatch.setattr(
         runner, "safe_classify_image",
@@ -831,7 +831,7 @@ def test_failed_image_does_not_invalidate_built_tabular_workbook(tmp_path, monke
     monkeypatch.setattr(runner, "list_images", lambda folder: [image])
     monkeypatch.setattr(
         runner, "VisionSession",
-        lambda: SimpleNamespace(knowledge_source_text="knowledge", varieties=[]),
+        lambda **kwargs: SimpleNamespace(knowledge_source_text="knowledge", varieties=[]),
     )
     monkeypatch.setattr(
         runner, "safe_classify_image",

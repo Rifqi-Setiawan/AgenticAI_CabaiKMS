@@ -75,7 +75,15 @@ def vision_classification_with_storage(state: dict[str, Any], config: dict[str, 
         registry = VarietyRegistry.build(spreadsheet_varieties=run_scope_varieties, db_varieties=db_varieties)
         # F-6: Combined variety registry options provided to VisionSession
         all_eval_options = registry.get_canonical_names()
-        vision = vision_classification.VisionSession(run_scope_varieties=all_eval_options)
+        # D20: morphology of this run's varieties comes from the run's own canonical sheet, so varieties
+        # outside the template columns are not offered to the model as bare names.
+        run_descriptions = (
+            vision_classification.variety_descriptions_from_worksheet(worksheet)
+            if worksheet.title == runner.SHEET_NAME else None
+        )
+        vision = vision_classification.VisionSession(
+            run_scope_varieties=all_eval_options, run_descriptions=run_descriptions
+        )
 
         trace = {
             'error_trace': list(state.get('error_trace', [])),

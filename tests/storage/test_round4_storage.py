@@ -552,3 +552,25 @@ def test_o1_merge_with_expected_version_mismatch_raises_conflict(app_role_db: En
             actor_role="curator",
         )
     assert "version mismatch" in str(exc.value).lower()
+
+
+@pytest.mark.parametrize("level", ["species", "source_category"])
+def test_d20_promote_rejects_non_variety_identity_level(app_role_db: Engine, admin_engine: Engine, level):
+    """D20: kandidat foto hanya bisa diangkat menjadi dokumen varietas/kultivar, bukan spesies/jenis umum."""
+    repo = DocumentRepository(app_role_db)
+    suffix = uuid.uuid4().hex[:8]
+    aid = hashlib.sha256(f"d20_a_{level}_{suffix}".encode()).hexdigest()
+    sha = hashlib.sha256(f"d20_s_{level}_{suffix}".encode()).hexdigest()
+    _register_asset(admin_engine, aid, sha)
+    cand = repo.add_candidate(
+        asset_id=aid, run_id=f"run_d20_{suffix}", source_filename="f.png", original_sha256=sha, organ_part="buah",
+        confidence=0.88,
+    )
+    with pytest.raises(InvalidState) as exc:
+        repo.resolve_candidate(
+            cand["candidate_id"],
+            {"action": "PROMOTE", "new_variety_name": "Cabai Rawit", "identity_level": level,
+             "reason": "Mencoba promote level spesies"},
+            actor="curator-1", actor_role="curator",
+        )
+    assert "identity_level" in str(exc.value)

@@ -11,6 +11,26 @@ from pydantic import Field, field_validator, model_validator
 from src.storage.contracts import Contract, Sha256
 
 
+# D19/D20: knowledge is kept at variety (cultivar) level. "species" and "source_category" stay in the
+# PlantIdentity contract only so that documents stored before D19 can still be read; a NEW variety
+# document (photo CREATE_NEW_DOCUMENT, candidate PROMOTE) must be a named cultivar.
+NEW_DOCUMENT_IDENTITY_LEVELS: tuple[str, ...] = ("cultivar",)
+
+
+def require_variety_level_identity(new_variety_name: object, identity_level: object) -> tuple[str, str]:
+    """Validate a curator's new-variety decision; returns (name, identity_level). Raises ValueError."""
+    name = str(new_variety_name or "").strip()
+    if not name:
+        raise ValueError("new_variety_name is required: a new document must name the variety (cultivar).")
+    level = str(identity_level or "cultivar").strip()
+    if level not in NEW_DOCUMENT_IDENTITY_LEVELS:
+        raise ValueError(
+            f"identity_level '{level}' is not allowed for a new document; only {NEW_DOCUMENT_IDENTITY_LEVELS} "
+            "(data is kept at variety level, see D19/D20)."
+        )
+    return name, level
+
+
 class PlantIdentity(Contract):
     """Taxonomic plant identity contract."""
 

@@ -214,7 +214,7 @@ def test_runner_passes_vision_limiter_only_to_classification(tmp_path, monkeypat
     monkeypatch.setattr(runner, "list_images", lambda folder: [image])
     monkeypatch.setattr(
         runner, "VisionSession",
-        lambda: SimpleNamespace(knowledge_source_text="knowledge", varieties=[]),
+        lambda **kwargs: SimpleNamespace(knowledge_source_text="knowledge", varieties=[]),
     )
     seen = []
 

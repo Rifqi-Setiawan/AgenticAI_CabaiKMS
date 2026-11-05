@@ -507,24 +507,25 @@ def test_a26_build_create_new_document_decision():
 
 
 def test_a26_create_new_document_enforces_valid_identity_levels():
-    """Criterion A26: Penegakan validitas taksonomi tanpa mengarang tingkat sembarangan.
+    """Criterion A26 + D20: dokumen baru hanya level varietas/kultivar.
 
-    Verifikasi bahwa fungsi pembuatan keputusan CREATE_NEW_DOCUMENT hanya menerima
-    identity_level yang sah (source_category, species, cultivar) dan menolak
-    kategori buatan yang tidak dikenal.
+    Spesies dan jenis umum (source_category) tidak lagi diterima untuk dokumen baru (D19/D20),
+    begitu juga tingkat buatan atau nama varietas kosong.
     """
-    for valid_level in ["source_category", "species", "cultivar"]:
-        dec = photo_review.build_create_new_document_decision(
-            new_variety_name="Cabai Hias Ungu",
-            identity_level=valid_level,
-        )
-        assert dec.identity_level == valid_level
+    dec = photo_review.build_create_new_document_decision(
+        new_variety_name="Turima 2",
+        identity_level="cultivar",
+    )
+    assert dec.identity_level == "cultivar"
 
-    with pytest.raises((ValueError, Exception)):
-        photo_review.build_create_new_document_decision(
-            new_variety_name="Cabai Sintetis",
-            identity_level="synthetic_rank",
-        )
+    for rejected_level in ["source_category", "species", "synthetic_rank"]:
+        with pytest.raises(ValueError):
+            photo_review.build_create_new_document_decision(
+                new_variety_name="Cabai Rawit",
+                identity_level=rejected_level,
+            )
+    with pytest.raises(ValueError):
+        photo_review.build_create_new_document_decision(new_variety_name="   ")
 
 
 def test_a26_resolve_create_new_document_calls_api():
@@ -566,13 +567,15 @@ def test_a26_render_create_new_document_form_and_submission(
     """Criterion A26, DoD S7b: Form interaktif CREATE_NEW_DOCUMENT merender input varietas baru.
 
     Verifikasi bahwa render_create_new_document_form menampilkan text_input untuk
-    nama varietas baru, selectbox untuk tingkat identitas, dan tombol pembentukan dokumen.
+    nama varietas baru dan tombol pembentukan dokumen. D20: tingkat identitas tidak lagi dipilih;
+    keputusan yang dikirim selalu "cultivar".
     """
     mock_client = MagicMock()
     mock_client.request.return_value = {"status": "approved"}
 
-    with patch("streamlit.text_input", return_value="Cabai Keriting Lokal") as mock_input, \
-         patch("streamlit.selectbox", return_value="cultivar") as mock_select, \
+    with patch("streamlit.text_input", return_value="Turima 2") as mock_input, \
+         patch("streamlit.selectbox") as mock_select, \
+         patch("streamlit.caption"), \
          patch("streamlit.button", return_value=True) as mock_button:
         photo_review.render_create_new_document_form(
             item=sample_photo_mismatch_item,
@@ -580,8 +583,21 @@ def test_a26_render_create_new_document_form_and_submission(
             client=mock_client,
         )
         assert mock_input.called
-        assert mock_select.called
+        assert not mock_select.called
         assert mock_button.called
+    sent = str(mock_client.request.call_args)
+    assert "cultivar" in sent and "species" not in sent
+
+
+def test_d20_assign_existing_form_has_no_species_level_fallback(sample_photo_mismatch_item):
+    """D20: tanpa daftar varietas run, form tidak menawarkan 'Cabai rawit'/'cabai besar'."""
+    with patch("streamlit.info") as mock_info, patch("streamlit.selectbox") as mock_select:
+        result = photo_review.render_assign_existing_form(
+            item=sample_photo_mismatch_item, run_id="run_x", available_varieties=None, client=MagicMock(),
+        )
+    assert result is None
+    assert mock_info.called
+    assert not mock_select.called
 
 
 # ============================================================================

@@ -25,12 +25,15 @@ from src.storage.document_contracts import (
     KnowledgeDocument,
     MediaReference,
     PhotoMismatchDecision,
+    NEW_DOCUMENT_IDENTITY_LEVELS,
     PlantIdentity,
+    require_variety_level_identity,
 )
 
 logger = logging.getLogger(__name__)
 
-VALID_IDENTITY_LEVELS = ("source_category", "species", "cultivar")
+# D19/D20: a new variety document is always a named cultivar (see document_contracts).
+VALID_IDENTITY_LEVELS = NEW_DOCUMENT_IDENTITY_LEVELS
 
 
 # ============================================================================
@@ -150,13 +153,10 @@ def build_create_new_document_decision(
     """Construct PhotoMismatchDecision for CREATE_NEW_DOCUMENT action (A26)."""
     if not new_variety_name or not str(new_variety_name).strip():
         raise ValueError("new_variety_name is required for CREATE_NEW_DOCUMENT")
-    if identity_level not in VALID_IDENTITY_LEVELS:
-        raise ValueError(
-            f"identity_level '{identity_level}' is invalid; must be one of {VALID_IDENTITY_LEVELS}"
-        )
+    new_variety_name, identity_level = require_variety_level_identity(new_variety_name, identity_level)
     return PhotoMismatchDecision(
         action="CREATE_NEW_DOCUMENT",
-        new_variety_name=str(new_variety_name).strip(),
+        new_variety_name=new_variety_name,
         identity_level=identity_level,  # type: ignore[arg-type]
         target_habitat_id=(
             str(target_habitat_id).strip() if target_habitat_id else None
@@ -392,10 +392,9 @@ def apply_photo_decision_to_draft(
     elif dec.action == "CREATE_NEW_DOCUMENT":
         from src.storage.identity_resolution import _slugify
 
-        new_name = dec.new_variety_name or "Cabai Baru"
+        new_name, level = require_variety_level_identity(dec.new_variety_name, dec.identity_level)
         slug = _slugify(new_name).replace("-", "_")
         plant_id = f"plant_{slug}"
-        level = dec.identity_level or "cultivar"
         plant = PlantIdentity(
             id=plant_id,
             label=new_name,
@@ -480,10 +479,14 @@ def render_assign_existing_form(
     """Render interactive form for ASSIGN_EXISTING curator decision (A25)."""
     import streamlit as st
 
-    varieties = available_varieties or [
-        {"id": "cabai_rawit", "label": "Cabai rawit (Capsicum frutescens L)"},
-        {"id": "cabai_besar", "label": "cabai besar (Capsicum annum L)"},
-    ]
+    # D20: no species-level fallback ("Cabai rawit"/"cabai besar"); only this run's registered varieties.
+    varieties = available_varieties or []
+    if not varieties:
+        st.info(
+            "Belum ada varietas terdaftar pada run ini. Gunakan 'Dokumen Baru' untuk menamai varietasnya "
+            "atau 'Tolak'."
+        )
+        return None
 
     options: list[str] = []
     id_map: dict[str, tuple[str, str]] = {}
@@ -500,7 +503,7 @@ def render_assign_existing_form(
 
     selected = st.selectbox(
         "Pilih varietas target untuk foto ini:",
-        options=options if options else ["cabai_rawit"],
+        options=options,
         key=f"sel_assign_{item.item_id}",
     )
 
@@ -545,13 +548,9 @@ def render_create_new_document_form(
         value=default_hint,
         key=f"input_new_var_{item.item_id}",
     )
-    identity_levels = ["cultivar", "species", "source_category"]
-    level = st.selectbox(
-        "Tingkat identitas taksonomi:",
-        options=identity_levels,
-        index=0,
-        key=f"sel_level_{item.item_id}",
-    )
+    # D20: dokumen baru selalu level varietas/kultivar; spesies atau jenis umum tidak lagi bisa dipilih.
+    level = "cultivar"
+    st.caption("Tingkat identitas: varietas/kultivar (nama varietas terdaftar atau kultivar bernama).")
     notes = st.text_input(
         "Catatan verifikasi:", key=f"notes_create_{item.item_id}"
     )
