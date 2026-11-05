@@ -2,7 +2,7 @@
 
 Prototipe penelitian **Adaptive Knowledge Acquisition berbasis Agentic AI** untuk mengubah spreadsheet karakterisasi cabai dan foto tanaman dari Google Drive menjadi workbook Excel berstruktur kanonik.
 
-Dokumentasi diperbarui **23 September 2026**, berdasarkan implementasi di repositori, bukan hanya rancangan proposal.
+Dokumentasi diperbarui **November 2026**, berdasarkan implementasi di repositori: mencakup penegasan identitas tanaman level varietas/kultivar (D19 & D20), katalog atribut persisten & skema kanonik dinamis (D14–D17), eliminasi silent mock visi (D18), serta rangkaian 1.314 automated tests.
 
 ## Kondisi proyek saat ini
 
@@ -12,7 +12,8 @@ Dokumentasi diperbarui **23 September 2026**, berdasarkan implementasi di reposi
 - Halaman **Hasil** menyediakan review untuk run aktif: approve usulan non-NULL, revise ke `canonical_key` aktif, atau `NO_MATCH`. Setelah seluruh item selesai, koreksi diterapkan deterministik dari output asli tanpa mengulang retrieval, LLM/reranker, verifier, atau vision; unduhan asli tetap tersedia dan event JSONL tetap append-only.
 - UI hanya menerima `.xlsx`, menjalankan preflight lokal, dan menyediakan pilihan worksheet untuk workbook multi-sheet.
 - Kontrol gambar dibatasi 1–20 (default 5). Ringkasan run, selective acceptance, review, hasil vision, unduhan, serta status tahap disajikan tanpa membuat jalur eksekusi selain LangGraph.
-- Kampanye evaluasi lanjutan masih ditunda. Evaluasi otomatis Macro-F1 belum diimplementasikan; yang tersedia adalah infrastruktur ekspor tabel untuk penilaian manual.
+- Identitas tanaman dan penulisan dokumen KMS difokuskan pada level varietas/kultivar terdaftar (D19, D20), mencegah peleburan varietas berbeda ke dalam satu dokumen jenis.
+- Suite pengujian otomatis mencakup 1.314 automated tests mencakup unit, kontrak Pydantic, regresi matriks penimpaan, integrasi PostgreSQL KMS, dan evaluasi pengenalan visi.
 
 ## Mulai menjalankan
 
