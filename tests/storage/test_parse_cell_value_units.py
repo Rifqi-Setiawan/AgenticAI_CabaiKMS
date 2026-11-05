@@ -95,7 +95,7 @@ def test_t07_planner_unit_mismatch_with_existing_attribute():
     """T-07: When cell has unit mismatch AND attribute already exists in document, create UNIT_MISMATCH."""
     planner = DocumentPlanner()
     ar = AdministrativeRegistry()
-    plant = PlantIdentity(id="plant_cabai_rawit", label="Cabai rawit", identity_level="species")
+    plant = PlantIdentity(id="plant_cabai_rawit_jabung", label="Cabai Rawit Jabung", identity_level="species")
     habitat = ar.lookup("Daerah Istimewa Yogyakarta", "Kabupaten Sleman", "Kecamatan Pakem", "Desa Hargobinangun")
     assert habitat is not None
     doc_key = f"{plant.id}:{habitat.id}"
@@ -136,7 +136,7 @@ def test_t07_planner_unit_mismatch_with_existing_attribute():
         {
             "_row": 2,
             "_sheet": "Resume Data",
-            "Varietas": "Cabai Rawit",
+            "Varietas": "Cabai Rawit Jabung",
             "Lokasi Sampling": "Dusun Karang, Desa Hargobinangun, Kec. Pakem, Sleman",
             "tinggi tanaman": "85.0 kg",
         }
@@ -170,7 +170,7 @@ def test_t08_planner_unit_mismatch_without_existing_attribute():
     """T-08: When cell has invalid unit and attribute does NOT exist, classify as VALUE_INVALID and do not write attribute."""
     planner = DocumentPlanner()
     ar = AdministrativeRegistry()
-    plant = PlantIdentity(id="plant_cabai_rawit", label="Cabai rawit", identity_level="species")
+    plant = PlantIdentity(id="plant_cabai_rawit_jabung", label="Cabai Rawit Jabung", identity_level="species")
     habitat = ar.lookup("Daerah Istimewa Yogyakarta", "Kabupaten Sleman", "Kecamatan Pakem", "Desa Hargobinangun")
     assert habitat is not None
     doc_key = f"{plant.id}:{habitat.id}"
@@ -179,7 +179,7 @@ def test_t08_planner_unit_mismatch_without_existing_attribute():
         {
             "_row": 2,
             "_sheet": "Resume Data",
-            "Varietas": "Cabai Rawit",
+            "Varietas": "Cabai Rawit Jabung",
             "Lokasi Sampling": "Dusun Karang, Desa Hargobinangun, Kec. Pakem, Sleman",
             "tinggi tanaman": "85.0 kg",
         }

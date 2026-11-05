@@ -302,102 +302,79 @@ def test_a05_arbitrary_text_without_administrative_structure_returns_unresolved(
 # ============================================================================
 
 
-def test_a06_plant_resolution_retains_source_category_for_cabai_rawit_row_3(
-    resume_data_workbook_path: Path,
-):
-    """Row 3 label 'Cabai rawit (Capsicum frutescens L)' resolves to source_category, avoiding invented cultivars."""
+R01_REAL_PATH = Path(__file__).resolve().parents[2] / "data" / "samples" / "data_input.xlsx"
+
+
+@pytest.mark.parametrize("cell", ["F3", "F4"])
+def test_a06_species_only_labels_from_real_r01_are_unresolved(cell):
+    """D19/D20: R01 'Jenis Cabai' holds only species labels; they no longer become documents."""
     import openpyxl
 
-    wb = openpyxl.load_workbook(resume_data_workbook_path, data_only=True)
-    ws = wb["Resume Data"]
-
-    raw_label = str(ws["F3"].value)
-    assert raw_label == "Cabai rawit (Capsicum frutescens L)"
+    ws = openpyxl.load_workbook(R01_REAL_PATH, data_only=True)["Resume Data"]
+    raw_label = str(ws[cell].value)
+    assert "capsicum" in raw_label.lower()
 
     res = resolve_plant(raw_label)
-
-    assert res.status == "RESOLVED"
-    assert res.plant is not None
-    assert res.plant.identity_level == "source_category"
-    assert res.plant.scientific_name == "Capsicum frutescens L"
-    # The system must not invent a specific cultivar (e.g. Maruti, Hiyung)
-    assert "maruti" not in res.plant.label.lower()
-    assert "hiyung" not in res.plant.label.lower()
-    assert res.plant.identity_level != "cultivar"
+    assert res.status == "UNRESOLVED"
+    assert res.plant is None
+    assert "spesies" in res.reason.lower()
 
 
-def test_a06_plant_resolution_retains_source_category_for_cabai_besar_row_4(
-    resume_data_workbook_path: Path,
-):
-    """Row 4 label 'cabai besar (Capsicum annum L)' resolves to source_category."""
-    import openpyxl
-
-    wb = openpyxl.load_workbook(resume_data_workbook_path, data_only=True)
-    ws = wb["Resume Data"]
-
-    raw_label = str(ws["F4"].value)
-    assert raw_label == "cabai besar (Capsicum annum L)"
-
-    res = resolve_plant(raw_label)
-
-    assert res.status == "RESOLVED"
-    assert res.plant is not None
-    assert res.plant.identity_level == "source_category"
-    assert res.plant.scientific_name in ("Capsicum annum L", "Capsicum annuum L")
-    # Must not invent cultivar
-    assert res.plant.identity_level != "cultivar"
-
-
-def test_a06_plant_catalog_does_not_promote_generic_category_to_specific_cultivar():
-    """Generic chili names ('rawit', 'cabai merah') resolve to source_category or species, never cultivar."""
-    res_rawit = resolve_plant("cabai rawit")
-    assert res_rawit.status == "RESOLVED"
-    assert res_rawit.plant is not None
-    assert res_rawit.plant.identity_level in ("source_category", "species")
-    assert res_rawit.plant.identity_level != "cultivar"
-
-    res_besar = resolve_plant("cabai besar")
-    assert res_besar.status == "RESOLVED"
-    assert res_besar.plant is not None
-    assert res_besar.plant.identity_level in ("source_category", "species")
-    assert res_besar.plant.identity_level != "cultivar"
+@pytest.mark.parametrize("label", ["cabai rawit", "cabai besar", "Cabai merah keriting", "Capsicum annuum L."])
+def test_a06_generic_type_names_are_not_varieties(label):
+    """Type/species words alone never form an identity (no 'Cabai rawit' document)."""
+    assert resolve_plant(label).status == "UNRESOLVED"
 
 
 def test_a06_plant_resolution_retains_explicit_cultivar_when_provided():
-    """When the source explicitly designates a known cultivar, identity_level can be cultivar."""
-    explicit_label = "Cabai Rawit Merah Maruti"
-    res = resolve_plant(explicit_label)
-    if res.status == "RESOLVED" and res.plant is not None:
-        assert res.plant.identity_level in ("cultivar", "source_category")
+    """A catalog cultivar named in the source resolves to that catalog entry."""
+    res = resolve_plant("Cabai Rawit Merah Maruti")
+    assert res.status == "RESOLVED"
+    assert res.plant is not None
+    assert res.plant.id == "plant_cultivar_maruti"
+    assert res.plant.identity_level == "cultivar"
 
 
-def test_a06_unknown_plant_label_returns_unresolved():
-    """Unrecognized plant label returns UNRESOLVED status without hallucinating identity."""
-    res = resolve_plant("Tanaman Misterius X999 Tidak Terdaftar")
-    assert res.status == "UNRESOLVED"
-    assert res.plant is None
+@pytest.mark.parametrize("label, plant_id", [
+    ("Turima 1", "plant_turima_1"),
+    ("Cabai rawit Jabung (Capsicum frutescens L)", "plant_cabai_rawit_jabung"),
+    ("Cabai merah keriting Jotanbar", "plant_cabai_merah_keriting_jotanbar"),
+])
+def test_a06_named_variety_becomes_its_own_cultivar(label, plant_id):
+    """D20: a named variety is kept as its own cultivar instead of collapsing into 'Cabai rawit/besar'."""
+    res = resolve_plant(label)
+    assert res.status == "RESOLVED"
+    assert res.plant is not None
+    assert res.plant.id == plant_id
+    assert res.plant.identity_level == "cultivar"
+
+
+def test_a06_varieties_sharing_a_type_word_stay_distinct():
+    """'Cabai rawit Jabung' and 'Cabai rawit Hiyung' must not merge into one document identity."""
+    jabung = resolve_plant("Cabai rawit Jabung").plant
+    hiyung = resolve_plant("Cabai rawit Hiyung").plant
+    turima_1 = resolve_plant("Turima 1").plant
+    turima_2 = resolve_plant("Turima 2").plant
+    assert len({jabung.id, hiyung.id}) == 2
+    assert turima_1.id != turima_2.id
 
 
 def test_a06_ambiguous_plant_label_returns_ambiguous():
-    """Ambiguous label containing multiple conflicting types returns AMBIGUOUS."""
+    """A label mixing two chili types without a variety name is not a variety."""
     res = resolve_plant("Campuran Cabai Rawit dan Cabai Besar")
     assert res.status in ("AMBIGUOUS", "UNRESOLVED")
-    if res.status == "AMBIGUOUS":
-        assert res.plant is None
-        assert len(res.candidates) >= 2
+    assert res.plant is None
 
 
 def test_a06_whitespace_and_casing_variations_resolve_to_canonical_plant_identity():
     """Casing and whitespace differences map to the identical canonical PlantIdentity ID."""
-    res_1 = resolve_plant("Cabai rawit (Capsicum frutescens L)")
-    res_2 = resolve_plant("  cabai RAWIT (Capsicum frutescens L) \n")
-    res_3 = resolve_plant("Cabai Rawit")
+    res_1 = resolve_plant("Cabai rawit Jabung (Capsicum frutescens L)")
+    res_2 = resolve_plant("  cabai RAWIT   jabung (Capsicum frutescens L) \n")
 
     assert res_1.status == "RESOLVED"
     assert res_2.status == "RESOLVED"
-    assert res_1.plant is not None
-    assert res_2.plant is not None
     assert res_1.plant.id == res_2.plant.id
+    assert res_1.plant.scientific_name == "Capsicum frutescens"
 
 
 # ============================================================================
@@ -657,18 +634,12 @@ def test_administrative_registry_lookup_returns_none_for_nonexistent_hierarchy()
 
 
 def test_plant_catalog_initialization_and_curated_coverage():
-    """PlantCatalog resolves curated chili categories from dataset."""
+    """PlantCatalog resolves curated cultivars; species-level catalog entries are not offered (D20)."""
     catalog = PlantCatalog()
 
-    res_rawit = catalog.resolve("Cabai rawit (Capsicum frutescens L)")
-    assert res_rawit.status == "RESOLVED"
-    assert res_rawit.plant is not None
-    assert res_rawit.plant.identity_level == "source_category"
-
-    res_besar = catalog.resolve("cabai besar (Capsicum annum L)")
-    assert res_besar.status == "RESOLVED"
-    assert res_besar.plant is not None
-    assert res_besar.plant.identity_level == "source_category"
+    assert catalog.resolve("Cabai Rawit Hiyung").plant.id == "plant_cultivar_hiyung"
+    assert catalog.resolve("Cabai rawit (Capsicum frutescens L)").status == "UNRESOLVED"
+    assert catalog.resolve("cabai besar (Capsicum annum L)").status == "UNRESOLVED"
 
 
 # ============================================================================

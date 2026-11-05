@@ -12,7 +12,7 @@ import pytest
 from src.integrations import streamlit_commit as sc
 from src.storage.attribute_policy import CatalogExtensions
 
-SAMPLE = Path(__file__).resolve().parents[2] / "data" / "samples" / "data_input.xlsx"
+SAMPLE = Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "resume_data_varietas.xlsx"
 
 
 class _Run:

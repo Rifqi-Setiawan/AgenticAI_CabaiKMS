@@ -128,7 +128,7 @@ from src.storage.migrate import migrate
 from src.storage.repository import KmsRepository
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-FIELD_SAMPLE_PATH = PROJECT_ROOT / "data" / "samples" / "data_input.xlsx"
+FIELD_SAMPLE_PATH = PROJECT_ROOT / "tests" / "fixtures" / "resume_data_varietas.xlsx"
 README_PATH = PROJECT_ROOT / "README.md"
 PROJECT_GUIDE_PATH = PROJECT_ROOT / "docs" / "PROJECT_GUIDE.md"
 
@@ -216,7 +216,7 @@ def _make_jpeg_bytes() -> bytes:
 
 def _build_plant(
     plant_id: str = "plant_rawit_frutescens_001",
-    label: str = "Cabai rawit (Capsicum frutescens L)",
+    label: str = "Cabai rawit Jabung (Capsicum frutescens L)",
     level: Literal["source_category", "species", "cultivar"] = "source_category",
     scientific_name: str = "Capsicum frutescens L",
 ) -> PlantIdentity:
@@ -560,7 +560,7 @@ def test_a05_e2e_ambiguous_location_blocks_commit(test_db: Engine):
     bad_location_records = [
         {
             "Lokasi Sampling": "Desa Hargobinangun atau Desa Pakem, Kabupaten Sleman",
-            "Varietas": "Cabai rawit (Capsicum frutescens L)",
+            "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
             "pH tanah": 7.0,
             "_row": 99,
         }
@@ -733,7 +733,7 @@ def test_a10_e2e_auto_accept_overwrites_existing_human_review(test_db: Engine):
     source_uri = "cas:///sources/survey_lamuk.xlsx"
     repo.register_source(source_sha, source_uri, 23456, actor="test-curator")
 
-    plant = _build_plant("plant_rawit_lamuk_001", "Cabai rawit (Capsicum frutescens L)")
+    plant = _build_plant("plant_rawit_lamuk_001", "Cabai rawit Jabung (Capsicum frutescens L)")
     habitat = _build_habitat("hab_wonosobo_lamuk_001", "Desa Lamuk", "Kecamatan Kalikajar", "Kabupaten Wonosobo")
     doc_key = f"{plant.id}:{habitat.id}"
 
@@ -1407,7 +1407,7 @@ def test_a24_e2e_photo_mismatch_creates_blocking_review():
     excel_records = [
         {
             "Lokasi Sampling": "Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-            "Varietas": "Cabai rawit (Capsicum frutescens L)",
+            "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
             "pH tanah": 7.0,
             "_row": 3,
         }
@@ -1672,10 +1672,10 @@ def test_a28_e2e_vision_isolation_zero_network_quota(monkeypatch: pytest.MonkeyP
         created_time=datetime.now(timezone.utc),
     )
 
-    active_vars = ["Cabai rawit (Capsicum frutescens L)", "cabai besar (Capsicum annum L)"]
+    active_vars = ["Cabai rawit Jabung (Capsicum frutescens L)", "cabai besar Arisa IPB (Capsicum annum L)"]
     mock_res = VisionClassificationResult(
         classification_status="KNOWN",
-        matched_variety="Cabai rawit (Capsicum frutescens L)",
+        matched_variety="Cabai rawit Jabung (Capsicum frutescens L)",
         identified_part="DAUN",
         visual_confidence=0.95,
         text_confidence=0.90,

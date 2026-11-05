@@ -67,10 +67,10 @@ APP_TEST_TIMEOUT = 30
 
 @pytest.fixture
 def sample_plant_rawit() -> PlantIdentity:
-    """Plant identity representing F3 Cabai rawit (Capsicum frutescens L)."""
+    """Plant identity representing F3 Cabai rawit Jabung (Capsicum frutescens L)."""
     return PlantIdentity(
         id="cabai_rawit",
-        label="Cabai rawit (Capsicum frutescens L)",
+        label="Cabai rawit Jabung (Capsicum frutescens L)",
         identity_level="source_category",
         scientific_name="Capsicum frutescens L",
         source_category="cabai_rawit",
@@ -79,10 +79,10 @@ def sample_plant_rawit() -> PlantIdentity:
 
 @pytest.fixture
 def sample_plant_besar() -> PlantIdentity:
-    """Plant identity representing F14 cabai besar (Capsicum annum L)."""
+    """Plant identity representing F14 cabai besar Arisa IPB (Capsicum annum L)."""
     return PlantIdentity(
         id="cabai_besar",
-        label="cabai besar (Capsicum annum L)",
+        label="cabai besar Arisa IPB (Capsicum annum L)",
         identity_level="source_category",
         scientific_name="Capsicum annum L",
         source_category="cabai_besar",
@@ -167,8 +167,8 @@ def sample_photo_mismatch_item() -> DocumentReviewItem:
             "suggested_variety_hint": "Cabai Merah Keriting",
             "visual_evidence": "Buah merah panjang bergelombang khas cabai keriting",
             "options_evaluated": [
-                "Cabai rawit (Capsicum frutescens L)",
-                "cabai besar (Capsicum annum L)",
+                "Cabai rawit Jabung (Capsicum frutescens L)",
+                "cabai besar Arisa IPB (Capsicum annum L)",
             ],
             "caption": "Cabai merah di kebun Argalingga",
             "identified_part": "BUAH",
@@ -369,7 +369,7 @@ def test_a25_build_assign_existing_decision():
     """
     decision = photo_review.build_assign_existing_decision(
         selected_variety_id="cabai_rawit",
-        selected_variety_label="Cabai rawit (Capsicum frutescens L)",
+        selected_variety_label="Cabai rawit Jabung (Capsicum frutescens L)",
         target_habitat_id="hab_wonosobo_kalikajar_lamuk",
         notes="Ditetapkan kurator ke varietas rawit yang terdaftar pada run aktif",
     )
@@ -402,7 +402,7 @@ def test_a25_resolve_assign_existing_calls_api():
         run_id="run_s7b_test_001",
         item_id="rev_photo_mismatch_001",
         selected_variety_id="cabai_rawit",
-        selected_variety_label="Cabai rawit (Capsicum frutescens L)",
+        selected_variety_label="Cabai rawit Jabung (Capsicum frutescens L)",
         target_habitat_id="hab_wonosobo_kalikajar_lamuk",
         notes="Penetapan manual varietas",
         client=mock_client,
@@ -465,8 +465,8 @@ def test_a25_render_assign_existing_form_and_submission(
     mock_client.request.return_value = {"status": "approved"}
 
     varieties = [
-        {"id": "cabai_rawit", "label": "Cabai rawit (Capsicum frutescens L)"},
-        {"id": "cabai_besar", "label": "cabai besar (Capsicum annum L)"},
+        {"id": "cabai_rawit", "label": "Cabai rawit Jabung (Capsicum frutescens L)"},
+        {"id": "cabai_besar", "label": "cabai besar Arisa IPB (Capsicum annum L)"},
     ]
 
     with patch("streamlit.selectbox", return_value="cabai_rawit") as mock_select, \
@@ -763,7 +763,7 @@ def test_hasil_page_renders_photo_review_ui_when_mismatch_present(
         "sheet_name": "Resume Data",
         "drive_url": "",
         "source_bytes": __import__("pathlib").Path(__file__).resolve().parents[2].joinpath(
-            "data", "samples", "data_input.xlsx"
+            "tests", "fixtures", "resume_data_varietas.xlsx"
         ).read_bytes(),
     }
     at.session_state["kms_reviewer_token"] = "w" * 40

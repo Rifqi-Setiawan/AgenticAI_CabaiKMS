@@ -12,7 +12,7 @@ def project_root() -> Path:
 
 @pytest.fixture(scope="session")
 def resume_data_workbook_path(project_root: Path) -> Path:
-    return project_root / "data" / "samples" / "data_input.xlsx"
+    return project_root / "tests" / "fixtures" / "resume_data_varietas.xlsx"
 
 
 @pytest.fixture
@@ -43,7 +43,7 @@ def valid_habitat_identity_dict(valid_administrative_path_dict: dict[str, Any]) 
 def valid_plant_identity_dict() -> dict[str, Any]:
     return {
         "id": "plant_rawit_frutescens_001",
-        "label": "Cabai rawit (Capsicum frutescens L)",
+        "label": "Cabai rawit Jabung (Capsicum frutescens L)",
         "identity_level": "source_category",
         "scientific_name": "Capsicum frutescens L",
     }

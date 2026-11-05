@@ -68,10 +68,10 @@ APP_TEST_TIMEOUT = 30
 
 @pytest.fixture
 def sample_plant_rawit() -> PlantIdentity:
-    """Plant identity representing F3 Cabai rawit (Capsicum frutescens L)."""
+    """Plant identity representing F3 Cabai rawit Jabung (Capsicum frutescens L)."""
     return PlantIdentity(
         id="cabai_rawit",
-        label="Cabai rawit (Capsicum frutescens L)",
+        label="Cabai rawit Jabung (Capsicum frutescens L)",
         identity_level="source_category",
         scientific_name="Capsicum frutescens L",
         source_category="cabai_rawit",
@@ -80,10 +80,10 @@ def sample_plant_rawit() -> PlantIdentity:
 
 @pytest.fixture
 def sample_plant_besar() -> PlantIdentity:
-    """Plant identity representing F14 cabai besar (Capsicum annum L)."""
+    """Plant identity representing F14 cabai besar Arisa IPB (Capsicum annum L)."""
     return PlantIdentity(
         id="cabai_besar",
-        label="cabai besar (Capsicum annum L)",
+        label="cabai besar Arisa IPB (Capsicum annum L)",
         identity_level="source_category",
         scientific_name="Capsicum annum L",
         source_category="cabai_besar",
@@ -302,7 +302,7 @@ def test_plant_identity_level_and_source_category_retention(
     'source_category' dan nama taksonomi asli (sel F3 Cabai rawit & sel F14 cabai besar)
     tanpa mengarang nama kultivar buatan (synthetic cultivars).
     """
-    # 1. Format identitas F3 Cabai rawit (Capsicum frutescens L)
+    # 1. Format identitas F3 Cabai rawit Jabung (Capsicum frutescens L)
     formatted_rawit = streamlit_commit.format_plant_identity(sample_plant_rawit)
     assert "source_category" in formatted_rawit.lower() or sample_plant_rawit.identity_level == "source_category"
     assert "Cabai rawit" in formatted_rawit
@@ -310,7 +310,7 @@ def test_plant_identity_level_and_source_category_retention(
     # Sistem dilarang mengarang kultivar
     assert "kultivar" not in formatted_rawit.lower() or "bukan kultivar" in formatted_rawit.lower()
 
-    # 2. Format identitas F14 cabai besar (Capsicum annum L)
+    # 2. Format identitas F14 cabai besar Arisa IPB (Capsicum annum L)
     formatted_besar = streamlit_commit.format_plant_identity(sample_plant_besar)
     assert "cabai besar" in formatted_besar
     assert "Capsicum annum L" in formatted_besar
@@ -711,7 +711,7 @@ def test_regression_pipeline_media_and_excel_export(
         "sheet_name": "Resume Data",
         "drive_url": "",
         "source_bytes": __import__("pathlib").Path(__file__).resolve().parents[2].joinpath(
-            "data", "samples", "data_input.xlsx"
+            "tests", "fixtures", "resume_data_varietas.xlsx"
         ).read_bytes(),
     }
     at.session_state["kms_reviewer_token"] = "w" * 40

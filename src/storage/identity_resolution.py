@@ -535,7 +535,16 @@ class PlantCatalog:
             self._plants.append(p)
 
     def resolve(self, raw_label: str) -> PlantResolution:
-        """Resolve taxonomic label to plant identity."""
+        """Resolve a spreadsheet variety label to a cultivar identity (D19/D20).
+
+        - A label that names only a species or chili type ("Cabai rawit (Capsicum frutescens L)",
+          "cabai besar", "Campuran cabai rawit dan cabai besar") is UNRESOLVED: knowledge is kept at
+          variety level, so it goes to curator review instead of becoming a species-level document.
+        - A catalog cultivar is returned when the label names it ("Cabai Rawit Hiyung").
+        - Any other named variety ("Turima 1", "Cabai rawit Jabung") becomes its OWN cultivar identity.
+          Previously such names were collapsed into "Cabai rawit"/"Cabai besar", merging distinct
+          varieties into one document.
+        """
         if not raw_label or not raw_label.strip():
             return PlantResolution(
                 status="UNRESOLVED",
@@ -545,116 +554,66 @@ class PlantCatalog:
                 raw_label=raw_label,
             )
 
-        lower_label = raw_label.strip().lower()
-
-        # Check for ambiguity (multiple chili types in label)
-        has_rawit = "rawit" in lower_label or "frutescens" in lower_label
-        has_besar = (
-            "besar" in lower_label
-            or "annum" in lower_label
-            or "annuum" in lower_label
-            or "merah" in lower_label
-        )
-
-        if has_rawit and has_besar:
-            plant_rawit = PlantIdentity(
-                id="plant_cabai_rawit",
-                label="Cabai rawit",
-                identity_level="source_category",
-                scientific_name="Capsicum frutescens L",
-                source_category="Cabai rawit",
-            )
-            plant_besar = PlantIdentity(
-                id="plant_cabai_besar",
-                label="Cabai besar",
-                identity_level="source_category",
-                scientific_name="Capsicum annum L",
-                source_category="Cabai besar",
-            )
+        label = " ".join(raw_label.split())
+        name_tokens = _variety_name_tokens(label)
+        if not name_tokens:
             return PlantResolution(
-                status="AMBIGUOUS",
+                status="UNRESOLVED",
                 plant=None,
-                candidates=[plant_rawit, plant_besar],
-                reason="Label contains multiple conflicting plant varieties",
+                candidates=[],
+                reason=(
+                    "Label hanya sampai spesies/jenis cabai, tanpa nama varietas "
+                    f"(D19/D20): {label}"
+                ),
                 raw_label=raw_label,
             )
 
-        # Check for explicit cultivars
-        if "maruti" in lower_label:
-            plant = PlantIdentity(
-                id="plant_cultivar_maruti",
-                label="Cabai Rawit Merah Maruti",
-                identity_level="cultivar",
-                scientific_name="Capsicum frutescens L",
-                source_category="Cabai rawit",
-            )
-            return PlantResolution(
-                status="RESOLVED",
-                plant=plant,
-                candidates=[plant],
-                reason="Resolved to cultivar Maruti",
-                raw_label=raw_label,
-            )
+        for plant in self._plants:
+            if plant.identity_level == "cultivar" and _variety_name_tokens(plant.label) == name_tokens:
+                return PlantResolution(
+                    status="RESOLVED",
+                    plant=plant,
+                    candidates=[plant],
+                    reason=f"Resolved to catalog cultivar {plant.label}",
+                    raw_label=raw_label,
+                )
 
-        if "hiyung" in lower_label:
-            plant = PlantIdentity(
-                id="plant_cultivar_hiyung",
-                label="Cabai Rawit Hiyung",
-                identity_level="cultivar",
-                scientific_name="Capsicum frutescens L",
-                source_category="Cabai rawit",
-            )
-            return PlantResolution(
-                status="RESOLVED",
-                plant=plant,
-                candidates=[plant],
-                reason="Resolved to cultivar Hiyung",
-                raw_label=raw_label,
-            )
-
-        # Check generic source categories
-        if has_rawit:
-            plant = PlantIdentity(
-                id="plant_cabai_rawit",
-                label="Cabai rawit",
-                identity_level="source_category",
-                scientific_name="Capsicum frutescens L",
-                source_category="Cabai rawit",
-            )
-            return PlantResolution(
-                status="RESOLVED",
-                plant=plant,
-                candidates=[plant],
-                reason="Resolved to source category Cabai rawit",
-                raw_label=raw_label,
-            )
-
-        if has_besar:
-            scientific_name = "Capsicum annum L"
-            if "annuum" in lower_label:
-                scientific_name = "Capsicum annuum L"
-            plant = PlantIdentity(
-                id="plant_cabai_besar",
-                label="Cabai besar",
-                identity_level="source_category",
-                scientific_name=scientific_name,
-                source_category="Cabai besar",
-            )
-            return PlantResolution(
-                status="RESOLVED",
-                plant=plant,
-                candidates=[plant],
-                reason="Resolved to source category Cabai besar",
-                raw_label=raw_label,
-            )
-
+        display = re.sub(r"\s*\([^)]*\)\s*", " ", label).strip() or label
+        binomial = re.search(r"capsicum\s+[a-z]+", label, flags=re.IGNORECASE)
+        slug = _slugify(display).replace("-", "_")[:58] or "tanpa_nama"
+        plant = PlantIdentity(
+            id=f"plant_{slug}",
+            label=display,
+            identity_level="cultivar",
+            scientific_name=binomial.group(0) if binomial else None,
+            source_category=None,
+        )
         return PlantResolution(
-            status="UNRESOLVED",
-            plant=None,
-            candidates=[],
-            reason=f"Unrecognized plant variety label: {raw_label}",
+            status="RESOLVED",
+            plant=plant,
+            candidates=[plant],
+            reason=f"Named variety from the source spreadsheet, kept as its own cultivar: {display}",
             raw_label=raw_label,
         )
+
+
+# Words that never name a variety on their own: genus/species epithets, chili type words, and
+# connectors. A label made only of these is species/type level (D19).
+_NON_VARIETY_WORDS = frozenset({
+    "cabai", "cabe", "chili", "chilli", "pepper", "lombok", "lombok", "capsicum", "annuum", "annum",
+    "frutescens", "chinense", "baccatum", "pubescens", "l", "jacq", "linn", "var", "sp", "spp",
+    "rawit", "besar", "merah", "keriting", "hijau", "kecil", "campuran", "dan", "atau", "jenis",
+})
+
+
+def _variety_name_tokens(label: str) -> frozenset[str]:
+    """Distinguishing name tokens of a variety label (digits kept, generic words dropped)."""
+    tokens = re.findall(r"[a-z]+|\d+", label.casefold())
+    return frozenset(
+        str(int(t)) if t.isdigit() else t
+        for t in tokens
+        if t.isdigit() or (t not in _NON_VARIETY_WORDS and len(t) > 1)
+    )
 
 
 _DEFAULT_REGISTRY: AdministrativeRegistry | None = None

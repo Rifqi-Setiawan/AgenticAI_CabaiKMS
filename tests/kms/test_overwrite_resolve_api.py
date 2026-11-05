@@ -77,7 +77,7 @@ def test_t21_resolve_api_roles_and_validation(api_client):
     # 1. Setup existing document with HUMAN_REVIEW
     ar = AdministrativeRegistry()
     habitat = ar.lookup("Daerah Istimewa Yogyakarta", "Kabupaten Sleman", "Kecamatan Pakem", "Desa Hargobinangun")
-    plant = PlantIdentity(id="plant_api_rawit", label="Cabai Rawit", identity_level="cultivar")
+    plant = PlantIdentity(id="plant_api_rawit", label="Cabai Rawit Jabung", identity_level="cultivar")
     doc_key = f"{plant.id}:{habitat.id}"
 
     sha1 = "9" * 64
@@ -123,7 +123,7 @@ def test_t21_resolve_api_roles_and_validation(api_client):
     records = [{
         "_row": 2,
         "_sheet": "Resume Data",
-        "Varietas": "Cabai Rawit",
+        "Varietas": "Cabai Rawit Jabung",
         "Lokasi Sampling": "Dusun Karang, Desa Hargobinangun, Kec. Pakem, Sleman",
         "tinggi tanaman": "85.0 cm",
     }]

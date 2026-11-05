@@ -562,11 +562,14 @@ def test_habitat_identity_and_administrative_path_contract(
 # ============================================================================
 
 
-def test_workbook_fixture_cell_parity_with_specification(
-    resume_data_workbook_path: Path,
-):
-    """Verify that sample workbook data_input.xlsx Resume Data cells strictly match TECH_PLAN."""
+def test_workbook_fixture_cell_parity_with_specification(project_root: Path):
+    """Verify that sample workbook data_input.xlsx Resume Data cells strictly match TECH_PLAN.
+
+    Reads the REAL R01 sample (not the variety-level test fixture used by the KMS write-path tests).
+    """
     import openpyxl
+
+    resume_data_workbook_path = project_root / "data" / "samples" / "data_input.xlsx"
 
     assert resume_data_workbook_path.exists(), f"Workbook not found at {resume_data_workbook_path}"
     wb = openpyxl.load_workbook(resume_data_workbook_path, data_only=True)

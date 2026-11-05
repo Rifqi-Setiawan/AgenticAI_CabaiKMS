@@ -55,7 +55,7 @@ from src.storage.document_planner import (
 
 def _create_plant_identity(
     variety_id: str = "plant_rawit_frutescens_001",
-    label: str = "Cabai rawit (Capsicum frutescens L)",
+    label: str = "Cabai rawit Jabung (Capsicum frutescens L)",
     level: Literal["source_category", "species", "cultivar"] = "source_category",
     scientific_name: str | None = "Capsicum frutescens L",
 ) -> PlantIdentity:
@@ -248,14 +248,14 @@ def test_intra_workbook_conflict_forbids_last_row_wins():
 
     row_a = {
         "Lokasi Sampling": "Dusun Pangempon, Desa Lamuk, Kec. Kalikajar, Kabupaten Wonosobo, Jawa Tengah",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "Chlorophyll Content (SPAD)": 49.02,
         "_row": 12,
         "_cell": "G12",
     }
     row_b = {
         "Lokasi Sampling": "Dusun Genting, Desa Lamuk, Kec. Kalikajar, Kabupaten Wonosobo, Jawa Tengah",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "Chlorophyll Content (SPAD)": 46.5417,
         "_row": 13,
         "_cell": "G13",
@@ -310,14 +310,14 @@ def test_intra_workbook_identical_values_produce_no_conflict():
 
     row_1 = {
         "Lokasi Sampling": "Dusun Randu, Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "pH tanah": 7.0,
         "_row": 3,
         "_cell": "L3",
     }
     row_2 = {
         "Lokasi Sampling": "Dusun Tenen, Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "pH tanah": 7.0,
         "_row": 4,
         "_cell": "L4",
@@ -360,14 +360,14 @@ def test_intra_workbook_different_habitats_do_not_conflict():
 
     row_lamuk = {
         "Lokasi Sampling": "Desa Lamuk, Kec. Kalikajar, Kabupaten Wonosobo, Jawa Tengah",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "Chlorophyll Content (SPAD)": 49.02,
         "_row": 12,
         "_cell": "G12",
     }
     row_argalingga = {
         "Lokasi Sampling": "Desa Argalingga, Kec. Argapura, Kabupaten Majalengka, Jawa Barat",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "Chlorophyll Content (SPAD)": 47.09,
         "_row": 14,
         "_cell": "G14",
@@ -388,14 +388,14 @@ def test_intra_workbook_multiple_attribute_conflicts_isolated():
 
     row_1 = {
         "Lokasi Sampling": "Desa Lamuk, Kec. Kalikajar, Kabupaten Wonosobo, Jawa Tengah",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "Chlorophyll Content (SPAD)": 49.02,
         "Nitrogen content (mg/g)": 18.17,
         "_row": 12,
     }
     row_2 = {
         "Lokasi Sampling": "Desa Lamuk, Kec. Kalikajar, Kabupaten Wonosobo, Jawa Tengah",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "Chlorophyll Content (SPAD)": 46.54,
         "Nitrogen content (mg/g)": 17.39,
         "_row": 13,
@@ -502,7 +502,7 @@ def test_a15_blank_cell_preserves_existing_document_value():
     planner = DocumentPlanner()
     row_with_blank = {
         "Lokasi Sampling": "Desa Lamuk, Kec. Kalikajar, Kabupaten Wonosobo, Jawa Tengah",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "Chlorophyll Content (SPAD)": "",  # Blank
         "pH tanah": 7.0,
         "_row": 16,
@@ -526,7 +526,7 @@ def test_a15_numeric_zero_float_zero_stored_as_valid_number():
 
     row_zero = {
         "Lokasi Sampling": "Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "Jumlah Buah Per Tanaman": 0,
         "_row": 3,
     }
@@ -585,7 +585,7 @@ def test_a15_invalid_unit_enqueued_to_review():
 
     row_bad_unit = {
         "Lokasi Sampling": "Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "Chlorophyll Content (SPAD)": "49.02 kuintal",
         "_row": 3,
     }
@@ -614,7 +614,7 @@ def test_photo_mismatch_creates_blocking_review_item():
     excel_records = [
         {
             "Lokasi Sampling": "Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-            "Varietas": "Cabai rawit (Capsicum frutescens L)",
+            "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
             "pH tanah": 7.0,
             "_row": 3,
         }
@@ -658,7 +658,7 @@ def test_a24_photo_matching_excel_variety_auto_linked():
     excel_records = [
         {
             "Lokasi Sampling": "Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-            "Varietas": "Cabai rawit (Capsicum frutescens L)",
+            "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
             "pH tanah": 7.0,
             "_row": 3,
         }
@@ -691,7 +691,7 @@ def test_a24_photo_matching_excel_variety_auto_linked():
 
 def test_a24_standalone_evaluate_photo_variety_alignment():
     """evaluate_photo_variety_alignment checks candidate photo signals against variety identities."""
-    plant_rawit = _create_plant_identity(variety_id="plant_rawit_001", label="Cabai rawit (Capsicum frutescens L)")
+    plant_rawit = _create_plant_identity(variety_id="plant_rawit_001", label="Cabai rawit Jabung (Capsicum frutescens L)")
     mismatched_photo = PhotoContextSignal(
         filename="cabai_habanero_01.jpg",
         caption="Buah cabai habanero bulat",
@@ -713,7 +713,7 @@ def test_a24_multiple_mismatched_photos_each_generate_review_item():
     excel_records = [
         {
             "Lokasi Sampling": "Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-            "Varietas": "Cabai rawit (Capsicum frutescens L)",
+            "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
             "_row": 3,
         }
     ]
@@ -746,13 +746,13 @@ def test_grouping_multiple_rows_same_variety_and_habitat_into_single_envelope():
 
     row_1 = {
         "Lokasi Sampling": "Dusun Randu, Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta (sampling 1)",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "pH tanah": 7.0,
         "_row": 3,
     }
     row_2 = {
         "Lokasi Sampling": "Dusun Tenen, Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta (sampling 2)",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "Kelembaban tanah (%)": 58,
         "_row": 4,
     }
@@ -774,12 +774,12 @@ def test_grouping_distinct_varieties_on_same_habitat_produce_separate_documents(
 
     row_rawit = {
         "Lokasi Sampling": "Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "_row": 3,
     }
     row_besar = {
         "Lokasi Sampling": "Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-        "Varietas": "cabai besar (Capsicum annum L)",
+        "Varietas": "cabai besar Arisa IPB (Capsicum annum L)",
         "_row": 4,
     }
 
@@ -787,8 +787,8 @@ def test_grouping_distinct_varieties_on_same_habitat_produce_separate_documents(
     assert len(draft.documents) == 2, "Distinct varieties must produce separate documents."
 
     varieties = {doc.variety.label for doc in draft.documents.values()}
-    assert "Cabai rawit (Capsicum frutescens L)" in varieties
-    assert "cabai besar (Capsicum annum L)" in varieties
+    assert "Cabai rawit Jabung (Capsicum frutescens L)" in varieties
+    assert "cabai besar Arisa IPB (Capsicum annum L)" in varieties
 
 
 def test_grouping_same_variety_on_distinct_habitats_produce_separate_documents():
@@ -797,12 +797,12 @@ def test_grouping_same_variety_on_distinct_habitats_produce_separate_documents()
 
     row_sleman = {
         "Lokasi Sampling": "Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "_row": 3,
     }
     row_wonosobo = {
         "Lokasi Sampling": "Desa Lamuk, Kec. Kalikajar, Kabupaten Wonosobo, Jawa Tengah",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "_row": 12,
     }
 
@@ -821,12 +821,12 @@ def test_document_keys_follow_strict_variety_colon_habitat_format():
     records = [
         {
             "Lokasi Sampling": "Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-            "Varietas": "Cabai rawit (Capsicum frutescens L)",
+            "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
             "_row": 3,
         },
         {
             "Lokasi Sampling": "Desa Lamuk, Kec. Kalikajar, Kabupaten Wonosobo, Jawa Tengah",
-            "Varietas": "Cabai rawit (Capsicum frutescens L)",
+            "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
             "_row": 12,
         },
     ]
@@ -843,7 +843,7 @@ def test_unresolved_location_enqueues_location_review_item():
 
     bad_location_row = {
         "Lokasi Sampling": "Desa Antah Berantah Tanpa Kabupaten Yang Jelas",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "_row": 99,
     }
 
@@ -857,12 +857,12 @@ def test_unresolved_location_enqueues_location_review_item():
 
 
 def test_unresolved_plant_identity_enqueues_plant_review_item():
-    """Unrecognized plant label triggers PLANT_IDENTITY_UNRESOLVED review item."""
+    """D20: a species-only label (no variety name) triggers PLANT_IDENTITY_UNRESOLVED review, no document."""
     planner = DocumentPlanner()
 
     bad_plant_row = {
         "Lokasi Sampling": "Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-        "Varietas": "Tanaman Misterius X99",
+        "Varietas": "Cabai rawit (Capsicum frutescens L)",
         "_row": 99,
     }
 
@@ -873,6 +873,7 @@ def test_unresolved_plant_identity_enqueues_plant_review_item():
     ]
     assert len(plant_reviews) >= 1
     assert plant_reviews[0].status == "pending"
+    assert not draft.documents
 
 
 def test_novel_attribute_enqueues_new_attribute_review_item():
@@ -881,7 +882,7 @@ def test_novel_attribute_enqueues_new_attribute_review_item():
 
     novel_attr_row = {
         "Lokasi Sampling": "Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "Atribut Baru Ekstrem Yang Belum Pernah Ada": 123.45,
         "_row": 3,
     }
@@ -907,7 +908,7 @@ def test_draft_envelope_validates_against_document_draft_contract():
     records = [
         {
             "Lokasi Sampling": "Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-            "Varietas": "Cabai rawit (Capsicum frutescens L)",
+            "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
             "pH tanah": 7.0,
             "_row": 3,
         }
@@ -939,7 +940,7 @@ def test_draft_tracks_base_versions_for_existing_documents():
     planner = DocumentPlanner()
     row = {
         "Lokasi Sampling": "Desa Lamuk, Kec. Kalikajar, Kabupaten Wonosobo, Jawa Tengah",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "pH tanah": 6.8,
         "_row": 12,
     }
@@ -961,7 +962,7 @@ def test_plan_document_changes_top_level_functional_helper():
     records = [
         {
             "Lokasi Sampling": "Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-            "Varietas": "Cabai rawit (Capsicum frutescens L)",
+            "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
             "pH tanah": 7.0,
             "_row": 3,
         }
@@ -1034,14 +1035,14 @@ def test_a11_conflict_preserves_source_coordinates_and_cells():
 
     row_12 = {
         "Lokasi Sampling": "Dusun Pangempon, Desa Lamuk, Kec. Kalikajar, Kabupaten Wonosobo, Jawa Tengah",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "Chlorophyll Content (SPAD)": 49.02,
         "_row": 12,
         "_cell": "G12",
     }
     row_13 = {
         "Lokasi Sampling": "Dusun Genting, Desa Lamuk, Kec. Kalikajar, Kabupaten Wonosobo, Jawa Tengah",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "Chlorophyll Content (SPAD)": 46.5417,
         "_row": 13,
         "_cell": "G13",
@@ -1090,7 +1091,7 @@ def test_a24_photo_signals_accepted_as_dict_or_contract():
     excel_records = [
         {
             "Lokasi Sampling": "Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-            "Varietas": "Cabai rawit (Capsicum frutescens L)",
+            "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
             "_row": 3,
         }
     ]
@@ -1118,7 +1119,7 @@ def test_grouping_preserves_sampling_coordinates():
 
     row = {
         "Lokasi Sampling": "Dusun Randu, Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta (sampling 1)",
-        "Varietas": "Cabai rawit (Capsicum frutescens L)",
+        "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
         "S": 110.415748,
         "E": -7.634808,
         "_row": 3,
@@ -1141,7 +1142,7 @@ def test_draft_template_hash_and_metadata_populated():
     records = [
         {
             "Lokasi Sampling": "Desa Hargobinangun, Kec. Pakem, Kabupaten Sleman, Daerah Istimewa Yogyakarta",
-            "Varietas": "Cabai rawit (Capsicum frutescens L)",
+            "Varietas": "Cabai rawit Jabung (Capsicum frutescens L)",
             "_row": 3,
         }
     ]

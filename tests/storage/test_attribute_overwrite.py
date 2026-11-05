@@ -173,7 +173,7 @@ def test_can_overwrite_unit_beda_dimensi_blocked_to_review():
     # Planner path integration: existing document has cm, incoming row has kg
     planner = DocumentPlanner(policy=policy)
     ar = AdministrativeRegistry()
-    plant = PlantIdentity(id="plant_cabai_rawit", label="Cabai rawit", identity_level="species")
+    plant = PlantIdentity(id="plant_cabai_rawit_jabung", label="Cabai Rawit Jabung", identity_level="species")
     habitat = ar.lookup("Daerah Istimewa Yogyakarta", "Kabupaten Sleman", "Kecamatan Pakem", "Desa Hargobinangun")
     assert habitat is not None
     doc_key = f"{plant.id}:{habitat.id}"
@@ -184,7 +184,7 @@ def test_can_overwrite_unit_beda_dimensi_blocked_to_review():
         {
             "_row": 2,
             "_sheet": "Resume Data",
-            "Varietas": "Cabai Rawit",
+            "Varietas": "Cabai Rawit Jabung",
             "Lokasi Sampling": "Dusun Karang, Desa Hargobinangun, Kec. Pakem, Sleman",
             "tinggi tanaman": "85.0 kg",
         }
@@ -221,7 +221,7 @@ def test_can_overwrite_tipe_beda_blocked_to_review():
     # Planner path integration
     planner = DocumentPlanner(policy=policy)
     ar = AdministrativeRegistry()
-    plant = PlantIdentity(id="plant_cabai_rawit", label="Cabai rawit", identity_level="species")
+    plant = PlantIdentity(id="plant_cabai_rawit_jabung", label="Cabai Rawit Jabung", identity_level="species")
     habitat = ar.lookup("Daerah Istimewa Yogyakarta", "Kabupaten Sleman", "Kecamatan Pakem", "Desa Hargobinangun")
     assert habitat is not None
     doc_key = f"{plant.id}:{habitat.id}"
@@ -232,7 +232,7 @@ def test_can_overwrite_tipe_beda_blocked_to_review():
         {
             "_row": 3,
             "_sheet": "Resume Data",
-            "Varietas": "Cabai Rawit",
+            "Varietas": "Cabai Rawit Jabung",
             "Lokasi Sampling": "Dusun Karang, Desa Hargobinangun, Kec. Pakem, Sleman",
             "tinggi tanaman": "sangat tinggi",
         }

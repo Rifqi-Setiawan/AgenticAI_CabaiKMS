@@ -134,7 +134,7 @@ def _setup_existing_doc(repo: DocumentRepository, plant: PlantIdentity, habitat:
 def test_t13_keep_existing_rejects_review_and_preserves_old(db: Engine):
     """T-13: KEEP_EXISTING -> review rejected, doc value intact, commit succeeds, 0 ledger rows."""
     repo = DocumentRepository(db)
-    plant = _build_plant("plant_rawit_13", "Cabai Rawit")
+    plant = _build_plant("plant_rawit_13", "Cabai Rawit Jabung")
     habitat = _build_habitat("hab_13")
     doc_key = f"{plant.id}:{habitat.id}"
     _setup_existing_doc(repo, plant, habitat)
@@ -144,7 +144,7 @@ def test_t13_keep_existing_rejects_review_and_preserves_old(db: Engine):
     records = [{
         "_row": 2,
         "_sheet": "Resume Data",
-        "Varietas": "Cabai Rawit",
+        "Varietas": "Cabai Rawit Jabung",
         "Lokasi Sampling": "Dusun Karang, Desa Hargobinangun, Kec. Pakem, Sleman",
         "tinggi tanaman": "sangat tinggi",
     }]
@@ -197,7 +197,7 @@ def test_t13_keep_existing_rejects_review_and_preserves_old(db: Engine):
 def test_t14_apply_incoming_updates_draft_and_writes_ledger(db: Engine):
     """T-14: APPLY_INCOMING on OVERWRITE_BLOCKED -> new value applied, HUMAN_REVIEW resolution, commit logs ledger."""
     repo = DocumentRepository(db)
-    plant = _build_plant("plant_rawit_14", "Cabai Rawit")
+    plant = _build_plant("plant_rawit_14", "Cabai Rawit Jabung")
     habitat = _build_habitat("hab_14")
     doc_key = f"{plant.id}:{habitat.id}"
     _setup_existing_doc(repo, plant, habitat)
@@ -207,7 +207,7 @@ def test_t14_apply_incoming_updates_draft_and_writes_ledger(db: Engine):
     records = [{
         "_row": 2,
         "_sheet": "Resume Data",
-        "Varietas": "Cabai Rawit",
+        "Varietas": "Cabai Rawit Jabung",
         "Lokasi Sampling": "Dusun Karang, Desa Hargobinangun, Kec. Pakem, Sleman",
         "tinggi tanaman": "tinggi_moderat",
     }]
@@ -263,7 +263,7 @@ def test_t14_apply_incoming_updates_draft_and_writes_ledger(db: Engine):
 def test_t15_unit_mismatch_apply_incoming_without_correction_raises_invalid_state(db: Engine):
     """T-15: UNIT_MISMATCH + APPLY_INCOMING without correction raises InvalidState."""
     repo = DocumentRepository(db)
-    plant = _build_plant("plant_rawit_15", "Cabai Rawit")
+    plant = _build_plant("plant_rawit_15", "Cabai Rawit Jabung")
     habitat = _build_habitat("hab_15")
     doc_key = f"{plant.id}:{habitat.id}"
     _setup_existing_doc(repo, plant, habitat)
@@ -272,7 +272,7 @@ def test_t15_unit_mismatch_apply_incoming_without_correction_raises_invalid_stat
     records = [{
         "_row": 2,
         "_sheet": "Resume Data",
-        "Varietas": "Cabai Rawit",
+        "Varietas": "Cabai Rawit Jabung",
         "Lokasi Sampling": "Dusun Karang, Desa Hargobinangun, Kec. Pakem, Sleman",
         "tinggi tanaman": "85.0 kg",
     }]
@@ -309,7 +309,7 @@ def test_t15_unit_mismatch_apply_incoming_without_correction_raises_invalid_stat
 def test_t16_unit_mismatch_revise_applies_compatible_correction(db: Engine):
     """T-16: UNIT_MISMATCH + REVISE with compatible correction -> revised, corrected value/unit applied."""
     repo = DocumentRepository(db)
-    plant = _build_plant("plant_rawit_16", "Cabai Rawit")
+    plant = _build_plant("plant_rawit_16", "Cabai Rawit Jabung")
     habitat = _build_habitat("hab_16")
     doc_key = f"{plant.id}:{habitat.id}"
     _setup_existing_doc(repo, plant, habitat)
@@ -318,7 +318,7 @@ def test_t16_unit_mismatch_revise_applies_compatible_correction(db: Engine):
     records = [{
         "_row": 2,
         "_sheet": "Resume Data",
-        "Varietas": "Cabai Rawit",
+        "Varietas": "Cabai Rawit Jabung",
         "Lokasi Sampling": "Dusun Karang, Desa Hargobinangun, Kec. Pakem, Sleman",
         "tinggi tanaman": "85.0 kg",
     }]
@@ -368,7 +368,7 @@ def test_t16_unit_mismatch_revise_applies_compatible_correction(db: Engine):
 def test_t17_unknown_action_raises_invalid_state(db: Engine):
     """T-17: Unknown review resolution action raises InvalidState and item stays pending."""
     repo = DocumentRepository(db)
-    plant = _build_plant("plant_rawit_17", "Cabai Rawit")
+    plant = _build_plant("plant_rawit_17", "Cabai Rawit Jabung")
     habitat = _build_habitat("hab_17")
     doc_key = f"{plant.id}:{habitat.id}"
     _setup_existing_doc(repo, plant, habitat)
@@ -377,7 +377,7 @@ def test_t17_unknown_action_raises_invalid_state(db: Engine):
     records = [{
         "_row": 2,
         "_sheet": "Resume Data",
-        "Varietas": "Cabai Rawit",
+        "Varietas": "Cabai Rawit Jabung",
         "Lokasi Sampling": "Dusun Karang, Desa Hargobinangun, Kec. Pakem, Sleman",
         "tinggi tanaman": "85.0 kg",
     }]
@@ -416,7 +416,7 @@ def test_t17_unknown_action_raises_invalid_state(db: Engine):
 def test_t18_commit_before_resolved_raises_conflict(db: Engine):
     """T-18: Committing draft before resolving pending overwrite review item raises Conflict."""
     repo = DocumentRepository(db)
-    plant = _build_plant("plant_rawit_18", "Cabai Rawit")
+    plant = _build_plant("plant_rawit_18", "Cabai Rawit Jabung")
     habitat = _build_habitat("hab_18")
     doc_key = f"{plant.id}:{habitat.id}"
     _setup_existing_doc(repo, plant, habitat)
@@ -425,7 +425,7 @@ def test_t18_commit_before_resolved_raises_conflict(db: Engine):
     records = [{
         "_row": 2,
         "_sheet": "Resume Data",
-        "Varietas": "Cabai Rawit",
+        "Varietas": "Cabai Rawit Jabung",
         "Lokasi Sampling": "Dusun Karang, Desa Hargobinangun, Kec. Pakem, Sleman",
         "tinggi tanaman": "85.0 kg",
     }]
@@ -453,7 +453,7 @@ def test_t18_commit_before_resolved_raises_conflict(db: Engine):
 def test_t19_resolve_twice_raises_conflict(db: Engine):
     """T-19: Resolving an already-resolved review item raises Conflict."""
     repo = DocumentRepository(db)
-    plant = _build_plant("plant_rawit_19", "Cabai Rawit")
+    plant = _build_plant("plant_rawit_19", "Cabai Rawit Jabung")
     habitat = _build_habitat("hab_19")
     doc_key = f"{plant.id}:{habitat.id}"
     _setup_existing_doc(repo, plant, habitat)
@@ -462,7 +462,7 @@ def test_t19_resolve_twice_raises_conflict(db: Engine):
     records = [{
         "_row": 2,
         "_sheet": "Resume Data",
-        "Varietas": "Cabai Rawit",
+        "Varietas": "Cabai Rawit Jabung",
         "Lokasi Sampling": "Dusun Karang, Desa Hargobinangun, Kec. Pakem, Sleman",
         "tinggi tanaman": "tinggi_sekali",
     }]
@@ -492,7 +492,7 @@ def test_t19_resolve_twice_raises_conflict(db: Engine):
 def test_t20_overwriting_human_protected_requires_curator_and_reason(db: Engine):
     """T-20: Overwriting EXISTING_HUMAN_PROTECTED: non-curator rejected, curator without reason rejected, curator with reason accepted."""
     repo = DocumentRepository(db)
-    plant = _build_plant("plant_rawit_20", "Cabai Rawit")
+    plant = _build_plant("plant_rawit_20", "Cabai Rawit Jabung")
     habitat = _build_habitat("hab_20")
     doc_key = f"{plant.id}:{habitat.id}"
     _setup_existing_doc(repo, plant, habitat, resolution="HUMAN_REVIEW")
@@ -502,7 +502,7 @@ def test_t20_overwriting_human_protected_requires_curator_and_reason(db: Engine)
     records = [{
         "_row": 2,
         "_sheet": "Resume Data",
-        "Varietas": "Cabai Rawit",
+        "Varietas": "Cabai Rawit Jabung",
         "Lokasi Sampling": "Dusun Karang, Desa Hargobinangun, Kec. Pakem, Sleman",
         "tinggi tanaman": "85.0 cm",
     }]

@@ -34,7 +34,7 @@ LOC = "Dusun Karang, Desa Hargobinangun, Kec. Pakem, Sleman"
 
 def _records(label: str, values: list[object]) -> list[dict]:
     return [
-        {"_row": 2 + i, "_sheet": "Resume Data", "Varietas": "Cabai Rawit",
+        {"_row": 2 + i, "_sheet": "Resume Data", "Varietas": "Cabai Rawit Jabung",
          "Lokasi Sampling": f"{LOC} (sampling {i + 1})", label: v}
         for i, v in enumerate(values)
     ]

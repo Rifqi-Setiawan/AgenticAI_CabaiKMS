@@ -159,7 +159,7 @@ def test_t12_planner_existing_human_incoming_auto_creates_review_and_preserves_o
     policy = AttributePolicy()
     planner = DocumentPlanner(policy=policy)
     ar = AdministrativeRegistry()
-    plant = PlantIdentity(id="plant_cabai_rawit", label="Cabai rawit", identity_level="species")
+    plant = PlantIdentity(id="plant_cabai_rawit_jabung", label="Cabai Rawit Jabung", identity_level="species")
     habitat = ar.lookup("Daerah Istimewa Yogyakarta", "Kabupaten Sleman", "Kecamatan Pakem", "Desa Hargobinangun")
     assert habitat is not None
     doc_key = f"{plant.id}:{habitat.id}"
@@ -193,7 +193,7 @@ def test_t12_planner_existing_human_incoming_auto_creates_review_and_preserves_o
         {
             "_row": 2,
             "_sheet": "Resume Data",
-            "Varietas": "Cabai Rawit",
+            "Varietas": "Cabai Rawit Jabung",
             "Lokasi Sampling": "Dusun Karang, Desa Hargobinangun, Kec. Pakem, Sleman",
             "tinggi tanaman": "85.0 cm",
         }
