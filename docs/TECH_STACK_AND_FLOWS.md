@@ -13,7 +13,7 @@ Runtime yang dipakai UI saat ini adalah:
 | Parser spreadsheet | `openpyxl`; `pandas` untuk tabel hasil |
 | Backend ingestion | `legacy` |
 | Backend retrieval | ChromaDB HNSW cosine |
-| Model embedding | `paraphrase-multilingual-MiniLM-L12-v2` |
+| Model embedding | `BAAI/bge-m3` (sejak D22; sebelumnya `paraphrase-multilingual-MiniLM-L12-v2`) |
 | Gateway model generatif | 9Router melalui API OpenAI-compatible |
 | Model teks | `ag/gemini-3.8-flash-medium` |
 | Model vision | `ag/gemini-3.8-flash-high` |
@@ -126,7 +126,7 @@ Pada format transposed, baris tanpa label atribut di kolom pertama dilewati. Pos
 |---|---|---|---|
 | `ag/gemini-3.8-flash-medium` | LLM teks | Reranking atribut yang tidak selesai melalui exact-name; juga Structure Understanding bila `source-ir-gated` atau structure shadow diaktifkan | Exact-name unik; parser legacy biasa; normalisasi; verifier; review/replay |
 | `ag/gemini-3.8-flash-high` | Model vision/multimodal | Klasifikasi setiap foto yang ditemukan Drive | Folder Drive kosong, tidak ada gambar, atau tahap vision dilewati |
-| `paraphrase-multilingual-MiniLM-L12-v2` | Model embedding lokal | Deteksi anchor varietas, embedding skema kanonik, retrieval profil lengkap, dan retrieval header-only | Bukan model generatif; tidak menghasilkan keputusan akhir mapping |
+| `BAAI/bge-m3` (D22) | Model embedding lokal | Deteksi anchor varietas, embedding skema kanonik, retrieval profil lengkap, dan retrieval header-only | Bukan model generatif; tidak menghasilkan keputusan akhir mapping |
 
 Mode 9Router tidak otomatis jatuh ke provider legacy. Bila request 9Router gagal, reliability layer mengklasifikasikan error, melakukan retry hanya untuk kegagalan transien, lalu fail closed ke review/no-write sesuai konteks.
 

@@ -95,6 +95,33 @@ class TestEnsureIndexed:
         # left behind as orphans
         assert "r_60" not in stored_ids
 
+    def test_model_change_recreates_collection_with_new_dimension(self, schema, client, monkeypatch):
+        """D22: vectors from another model (different space and dimension) must not be reused,
+        and chromadb cannot upsert a new dimension into an existing collection."""
+        dims = {"fake-a": 3, "fake-b": 5}
+
+        def fake_encode(texts, model_name=indexing.EMBEDDING_MODEL_NAME):
+            d = dims[model_name]
+            return [[1.0 if j == i % d else 0.0 for j in range(d)] for i, _ in enumerate(texts)]
+
+        monkeypatch.setattr(indexing, "encode", fake_encode)
+        first = indexing.ensure_indexed(schema, client=client, model_name="fake-a")
+        assert first.metadata["embedding_model"] == "fake-a"
+        assert not indexing._is_up_to_date(first, schema, "fake-b")
+
+        second = indexing.ensure_indexed(schema, client=client, model_name="fake-b")
+        assert second.count() == len(schema.rows)
+        assert second.metadata["embedding_model"] == "fake-b"
+        stored = second.get(include=["embeddings"])
+        assert len(stored["embeddings"][0]) == 5
+
+    def test_collection_without_recorded_model_is_rebuilt(self, schema, client, monkeypatch):
+        monkeypatch.setattr(indexing, "encode", lambda texts, model_name=None: [[1.0, 0.0]] * len(texts))
+        col = indexing.ensure_indexed(schema, client=client, model_name="fake-a")
+        meta = {k: v for k, v in col.metadata.items() if k not in ("embedding_model", "hnsw:space")}
+        col.modify(metadata=meta)  # simulate an index built before D22
+        assert indexing._built_with_other_model(indexing.get_collection(client), "fake-a")
+
     def test_representation_hash_changes_when_alias_changes(self, schema):
         row = dataclasses.replace(schema.rows[0], alt_labels=("growth habit",))
         changed = dataclasses.replace(schema, rows=[row, *schema.rows[1:]])

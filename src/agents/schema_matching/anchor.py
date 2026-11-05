@@ -25,6 +25,13 @@ data_input_sintetis_1.xlsx (the header-only score for "Jenis Cabai" clears
 0.74 in both, with the next-highest real candidate — "Lokasi Sampling" —
 around 0.64, hence DEFAULT_THRESHOLD sitting between the two).
 
+Recalibrated for bge-m3 (D22, 5 Nov 2026) over every row-oriented evaluation
+workbook: the lowest true anchor scores 0.753 ("Varietas"), while the best
+header of a workbook WITHOUT an anchor (the original Zenodo E08, "Species")
+scores 0.676, so it must still escalate. 0.7 sits in that gap and is kept.
+Non-anchor headers above 0.7 exist ("Bentuk Buah Cabai" 0.808, "Accession
+name" 0.727) but only in workbooks whose real anchor scores 1.0 and wins.
+
 Headers are compared case-insensitively (stripped and casefolded) because
 the multilingual encoder is case-sensitive: "Varietas Cabai" scored only
 0.749 against the concept "varietas cabai", so "Keunggulan varietas" (0.886)

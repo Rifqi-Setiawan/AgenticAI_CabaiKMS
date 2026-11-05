@@ -1,0 +1,20 @@
+{
+ "template_hash": "8ba7cf35b2de23dedad5d5b639f1cef06846c304f18809de8dfec34e0bf397d9",
+ "n_baris_kanonik": 60,
+ "n_butir": 271,
+ "tak_cocok": [],
+ "models": [
+  "paraphrase-multilingual-MiniLM-L12-v2",
+  "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+  "intfloat/multilingual-e5-base",
+  "BAAI/bge-m3",
+  "Qwen/Qwen3-Embedding-0.6B"
+ ],
+ "k": [
+  1,
+  3,
+  5,
+  8
+ ],
+ "catatan": "Retrieval murni (cosine, tanpa Chroma, tanpa LLM). Subset semantik = butir yang tidak selesai lewat exact-name."
+}

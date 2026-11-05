@@ -177,7 +177,7 @@ Nama filenya **sengaja diatur** untuk menguji apakah sistem terlalu percaya nama
 | Foto Indonesia | Lewat website, bersama S01, S02, S03 (31 Okt), plus harness | 1x lewat website + 3x harness; jumlah benar sama di semua run |
 
 Model yang dipakai: teks `gemini-3.8-flash-medium`, visi `gemini-3.8-flash-high`, embedding
-`paraphrase-multilingual-MiniLM-L12-v2`.
+`paraphrase-multilingual-MiniLM-L12-v2` (run sebelum D22; sejak 5 Nov 2026 sistem memakai `BAAI/bge-m3`).
 
 ### Pembanding (varian)
 

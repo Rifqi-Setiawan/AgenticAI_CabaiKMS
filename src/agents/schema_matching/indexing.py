@@ -23,7 +23,10 @@ from src.schema.canonical import CanonicalSchema
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_CHROMA_DIR = PROJECT_ROOT / "data" / ".chroma"
 COLLECTION_NAME = "canonical_rows"
-EMBEDDING_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
+# D22 (5 Nov 2026): bge-m3 replaces paraphrase-multilingual-MiniLM-L12-v2. On the verified gold's
+# semantic items it raised retrieval Hit@1 0.38 -> 0.83 and Hit@8 0.79 -> 1.00
+# (data_evaluasi/skrip/banding_embedding.py). It embeds without query/passage prefixes.
+EMBEDDING_MODEL_NAME = "BAAI/bge-m3"
 
 _model_cache: dict[str, Any] = {}
 
@@ -69,7 +72,7 @@ def _representation_hash(schema: CanonicalSchema) -> str:
     return hashlib.sha256(source.encode("utf-8")).hexdigest()
 
 
-def _collection_metadata(schema: CanonicalSchema) -> dict[str, Any]:
+def _collection_metadata(schema: CanonicalSchema, model_name: str = EMBEDDING_MODEL_NAME) -> dict[str, Any]:
     # NOTE: "hnsw:space" is intentionally excluded — chromadb bakes the
     # distance function in at collection creation and rejects any modify()
     # call that even mentions the key again, matching value or not.
@@ -77,11 +80,27 @@ def _collection_metadata(schema: CanonicalSchema) -> dict[str, Any]:
         "template_hash": schema.template_hash,
         "representation_hash": _representation_hash(schema),
         "n_rows": len(schema.rows),
+        "embedding_model": model_name,
     }
 
 
-def _is_up_to_date(collection: chromadb.api.models.Collection.Collection, schema: CanonicalSchema) -> bool:
+def _built_with_other_model(collection: chromadb.api.models.Collection.Collection, model_name: str) -> bool:
+    """A non-empty collection embedded by another (or an unrecorded, pre-D22) model.
+    Its vectors live in a different space and usually a different dimension, so it
+    must be dropped and recreated, not re-upserted."""
+    if collection.count() == 0:
+        return False
+    return (collection.metadata or {}).get("embedding_model") != model_name
+
+
+def _is_up_to_date(
+    collection: chromadb.api.models.Collection.Collection,
+    schema: CanonicalSchema,
+    model_name: str = EMBEDDING_MODEL_NAME,
+) -> bool:
     if collection.count() != len(schema.rows):
+        return False
+    if collection.metadata.get("embedding_model") != model_name:
         return False
     if collection.metadata.get("template_hash") != schema.template_hash:
         return False
@@ -104,10 +123,17 @@ def ensure_indexed(
     startup: it re-embeds only if the collection is missing rows, stale
     (template drifted), or `force=True`."""
     schema = schema or CanonicalSchema.from_template()
-    collection = get_collection(client, persist_dir=persist_dir, collection_name=collection_name)
+    client = client or get_client(persist_dir)
+    collection = get_collection(client, collection_name=collection_name)
 
-    if not force and _is_up_to_date(collection, schema):
+    if not force and _is_up_to_date(collection, schema, model_name):
         return collection
+
+    if _built_with_other_model(collection, model_name):
+        # chromadb fixes a collection's dimensionality at first insert; vectors
+        # from a different model cannot be upserted into it.
+        client.delete_collection(collection_name)
+        collection = get_collection(client, collection_name=collection_name)
 
     # Rebuild from scratch rather than a partial upsert: row ids are
     # positional (r_1..r_N), so if the template shrank, stale trailing ids
@@ -122,5 +148,5 @@ def ensure_indexed(
     ids = [row.id for row in schema.rows]
 
     collection.upsert(ids=ids, embeddings=embeddings, documents=documents, metadatas=metadatas)
-    collection.modify(metadata=_collection_metadata(schema))
+    collection.modify(metadata=_collection_metadata(schema, model_name))
     return collection

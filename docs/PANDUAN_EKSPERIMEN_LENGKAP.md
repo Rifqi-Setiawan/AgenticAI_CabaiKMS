@@ -56,7 +56,7 @@ Catatan penting: model visi **hanya menerima nama** varietas dari spreadsheet; d
 kolom referensi template (Gendot, Kopay, Katokkon, Cabai rawit NTB, dst.).
 
 Model: teks `ag/gemini-3.8-flash-medium`, visi `ag/gemini-3.8-flash-high` (lewat gateway 9Router), embedding
-`paraphrase-multilingual-MiniLM-L12-v2`.
+`paraphrase-multilingual-MiniLM-L12-v2` (run sebelum D22; sejak 5 Nov 2026 sistem memakai `BAAI/bge-m3`).
 
 ### 2.2 Varian pembanding
 | Varian | Isi |

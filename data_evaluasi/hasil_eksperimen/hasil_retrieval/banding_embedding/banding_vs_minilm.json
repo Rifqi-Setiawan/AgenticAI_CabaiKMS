@@ -1,0 +1,386 @@
+[
+ {
+  "model": "paraphrase-multilingual-MiniLM-L12-v2 + BM25 (RRF)",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "terverifikasi",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.11926605504587157,
+   0.027522935779816515,
+   0.21100917431192662
+  ],
+  "delta_mrr": [
+   0.12531284353864272,
+   0.050972287317589446,
+   0.19539798706226602
+  ]
+ },
+ {
+  "model": "paraphrase-multilingual-MiniLM-L12-v2 + BM25 (RRF)",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "pvt_usulan_ai",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.14583333333333334,
+   0.0625,
+   0.22916666666666666
+  ],
+  "delta_mrr": [
+   0.15714039319608006,
+   0.09842929582570852,
+   0.2169951915102777
+  ]
+ },
+ {
+  "model": "BM25",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "terverifikasi",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.2018348623853211,
+   0.08256880733944955,
+   0.3119266055045872
+  ],
+  "delta_mrr": [
+   0.1645711732361828,
+   0.07192651712993194,
+   0.26406146411428244
+  ]
+ },
+ {
+  "model": "BM25",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "pvt_usulan_ai",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.2916666666666667,
+   0.17708333333333334,
+   0.40625
+  ],
+  "delta_mrr": [
+   0.24695305874403975,
+   0.16116395886279092,
+   0.33570395032088585
+  ]
+ },
+ {
+  "model": "BAAI/bge-m3",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "terverifikasi",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.44954128440366975,
+   0.3577981651376147,
+   0.5412844036697247
+  ],
+  "delta_mrr": [
+   0.36617454988574677,
+   0.28685078562979266,
+   0.44556743475388916
+  ]
+ },
+ {
+  "model": "BAAI/bge-m3",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "pvt_usulan_ai",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.34375,
+   0.23958333333333334,
+   0.4583333333333333
+  ],
+  "delta_mrr": [
+   0.2850035357796174,
+   0.2010434195944595,
+   0.3693781930199587
+  ]
+ },
+ {
+  "model": "BAAI/bge-m3 + BM25 (RRF)",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "terverifikasi",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.3211009174311927,
+   0.21100917431192662,
+   0.43119266055045874
+  ],
+  "delta_mrr": [
+   0.26444336353360437,
+   0.17251275336904923,
+   0.3614102908739691
+  ]
+ },
+ {
+  "model": "BAAI/bge-m3 + BM25 (RRF)",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "pvt_usulan_ai",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.3020833333333333,
+   0.19791666666666666,
+   0.40625
+  ],
+  "delta_mrr": [
+   0.2691036614093483,
+   0.18528203334150917,
+   0.3549830827144162
+  ]
+ },
+ {
+  "model": "Qwen/Qwen3-Embedding-0.6B",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "terverifikasi",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.3761467889908257,
+   0.26605504587155965,
+   0.48623853211009177
+  ],
+  "delta_mrr": [
+   0.30757267775176456,
+   0.22112693626455096,
+   0.3924624020168261
+  ]
+ },
+ {
+  "model": "Qwen/Qwen3-Embedding-0.6B",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "pvt_usulan_ai",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.3333333333333333,
+   0.21875,
+   0.4479166666666667
+  ],
+  "delta_mrr": [
+   0.244586745179409,
+   0.15322834207874547,
+   0.3358911462928525
+  ]
+ },
+ {
+  "model": "Qwen/Qwen3-Embedding-0.6B + BM25 (RRF)",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "terverifikasi",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.29357798165137616,
+   0.1834862385321101,
+   0.41284403669724773
+  ],
+  "delta_mrr": [
+   0.24127852507819694,
+   0.14979125856678752,
+   0.33474035351049064
+  ]
+ },
+ {
+  "model": "Qwen/Qwen3-Embedding-0.6B + BM25 (RRF)",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "pvt_usulan_ai",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.2916666666666667,
+   0.1875,
+   0.40625
+  ],
+  "delta_mrr": [
+   0.23073579129773267,
+   0.13989354994330558,
+   0.320739634938762
+  ]
+ },
+ {
+  "model": "Qwen/Qwen3-Embedding-0.6B+instr",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "terverifikasi",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.3302752293577982,
+   0.22018348623853212,
+   0.44954128440366975
+  ],
+  "delta_mrr": [
+   0.28097587067451324,
+   0.18999865686412706,
+   0.3711313285810576
+  ]
+ },
+ {
+  "model": "Qwen/Qwen3-Embedding-0.6B+instr",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "pvt_usulan_ai",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.3125,
+   0.19791666666666666,
+   0.4375
+  ],
+  "delta_mrr": [
+   0.24034937772913578,
+   0.1424073029730454,
+   0.33747644936699966
+  ]
+ },
+ {
+  "model": "Qwen/Qwen3-Embedding-0.6B+instr + BM25 (RRF)",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "terverifikasi",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.28440366972477066,
+   0.1743119266055046,
+   0.3944954128440367
+  ],
+  "delta_mrr": [
+   0.22996605497788958,
+   0.13865717741840844,
+   0.3256301273947115
+  ]
+ },
+ {
+  "model": "Qwen/Qwen3-Embedding-0.6B+instr + BM25 (RRF)",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "pvt_usulan_ai",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.3020833333333333,
+   0.1875,
+   0.4270833333333333
+  ],
+  "delta_mrr": [
+   0.24332832677057517,
+   0.14931876788728507,
+   0.33715560440808057
+  ]
+ },
+ {
+  "model": "microsoft/harrier-oss-v1-270m",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "terverifikasi",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.26605504587155965,
+   0.14678899082568808,
+   0.3761467889908257
+  ],
+  "delta_mrr": [
+   0.2249818948290164,
+   0.1351992385170539,
+   0.3214997433902148
+  ]
+ },
+ {
+  "model": "microsoft/harrier-oss-v1-270m",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "pvt_usulan_ai",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.2604166666666667,
+   0.14583333333333334,
+   0.3854166666666667
+  ],
+  "delta_mrr": [
+   0.19475771326918742,
+   0.0882652559035683,
+   0.2899292764673723
+  ]
+ },
+ {
+  "model": "microsoft/harrier-oss-v1-270m + BM25 (RRF)",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "terverifikasi",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.23853211009174313,
+   0.11926605504587157,
+   0.3577981651376147
+  ],
+  "delta_mrr": [
+   0.21154173713259974,
+   0.11674283330260526,
+   0.3039219119736489
+  ]
+ },
+ {
+  "model": "microsoft/harrier-oss-v1-270m + BM25 (RRF)",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "pvt_usulan_ai",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.3020833333333333,
+   0.1875,
+   0.4270833333333333
+  ],
+  "delta_mrr": [
+   0.24685063731487167,
+   0.1454577564167173,
+   0.34215505585859
+  ]
+ },
+ {
+  "model": "microsoft/harrier-oss-v1-0.6b",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "terverifikasi",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.3761467889908257,
+   0.27522935779816515,
+   0.48623853211009177
+  ],
+  "delta_mrr": [
+   0.3085587662034138,
+   0.2212023490753573,
+   0.3964690769692647
+  ]
+ },
+ {
+  "model": "microsoft/harrier-oss-v1-0.6b",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "pvt_usulan_ai",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.25,
+   0.13541666666666666,
+   0.375
+  ],
+  "delta_mrr": [
+   0.1953409574148152,
+   0.0966255863421422,
+   0.2930001631611913
+  ]
+ },
+ {
+  "model": "microsoft/harrier-oss-v1-0.6b + BM25 (RRF)",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "terverifikasi",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.30275229357798167,
+   0.1926605504587156,
+   0.41284403669724773
+  ],
+  "delta_mrr": [
+   0.252349968065251,
+   0.16012665704327372,
+   0.34604452154798576
+  ]
+ },
+ {
+  "model": "microsoft/harrier-oss-v1-0.6b + BM25 (RRF)",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "pvt_usulan_ai",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.28125,
+   0.16666666666666666,
+   0.3958333333333333
+  ],
+  "delta_mrr": [
+   0.22657747581089102,
+   0.13239879540024965,
+   0.31828475594087785
+  ]
+ }
+]

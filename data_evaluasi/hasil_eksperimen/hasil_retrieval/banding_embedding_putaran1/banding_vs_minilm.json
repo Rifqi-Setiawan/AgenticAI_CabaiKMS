@@ -1,0 +1,130 @@
+[
+ {
+  "model": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "terverifikasi",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.09174311926605505,
+   -0.009174311926605505,
+   0.1926605504587156
+  ],
+  "delta_mrr": [
+   0.10530434585580177,
+   0.0275349350183931,
+   0.18654064018162192
+  ]
+ },
+ {
+  "model": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "pvt_usulan_ai",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.08333333333333333,
+   -0.041666666666666664,
+   0.20833333333333334
+  ],
+  "delta_mrr": [
+   0.05404765773445611,
+   -0.0368059755084945,
+   0.14977092559212163
+  ]
+ },
+ {
+  "model": "intfloat/multilingual-e5-base",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "terverifikasi",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.3669724770642202,
+   0.26605504587155965,
+   0.46788990825688076
+  ],
+  "delta_mrr": [
+   0.2992372480920954,
+   0.21614146182413857,
+   0.38019470335984096
+  ]
+ },
+ {
+  "model": "intfloat/multilingual-e5-base",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "pvt_usulan_ai",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.3541666666666667,
+   0.25,
+   0.4583333333333333
+  ],
+  "delta_mrr": [
+   0.2667008018724427,
+   0.18026976566092578,
+   0.3566858502229629
+  ]
+ },
+ {
+  "model": "BAAI/bge-m3",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "terverifikasi",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.44954128440366975,
+   0.3577981651376147,
+   0.5412844036697247
+  ],
+  "delta_mrr": [
+   0.36617454988574677,
+   0.28685078562979266,
+   0.44556743475388916
+  ]
+ },
+ {
+  "model": "BAAI/bge-m3",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "pvt_usulan_ai",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.34375,
+   0.23958333333333334,
+   0.4583333333333333
+  ],
+  "delta_mrr": [
+   0.2850035357796174,
+   0.2010434195944595,
+   0.3693781930199587
+  ]
+ },
+ {
+  "model": "Qwen/Qwen3-Embedding-0.6B",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "terverifikasi",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.3761467889908257,
+   0.26605504587155965,
+   0.48623853211009177
+  ],
+  "delta_mrr": [
+   0.30757267775176456,
+   0.22112693626455096,
+   0.3924624020168261
+  ]
+ },
+ {
+  "model": "Qwen/Qwen3-Embedding-0.6B",
+  "vs": "paraphrase-multilingual-MiniLM-L12-v2",
+  "gold": "pvt_usulan_ai",
+  "subset": "semantik",
+  "delta_hit1": [
+   0.3333333333333333,
+   0.21875,
+   0.4479166666666667
+  ],
+  "delta_mrr": [
+   0.244586745179409,
+   0.15322834207874547,
+   0.3358911462928525
+  ]
+ }
+]

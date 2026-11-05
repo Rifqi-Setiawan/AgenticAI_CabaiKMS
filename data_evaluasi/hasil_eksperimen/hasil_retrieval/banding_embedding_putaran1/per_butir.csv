@@ -1,0 +1,1356 @@
+model,gold,dataset,display,key,exact,rank,top1,top1_skor,skor_gold
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Leaf shape,bentuk_daun,False,2,bentuk_ujung_daun,0.7898,0.6946
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Fruit shape,bentuk_buah,False,5,gambar_buah,0.8208,0.7383
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Corolla colour,warna_mahkota,False,1,warna_mahkota,0.8162,0.8162
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Mature fruit colour,warna_buah_masak,False,1,warna_buah_masak,0.7203,0.7203
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Plant height,tinggi_tanaman,True,1,tinggi_tanaman,0.8598,0.8598
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Immature fruit colour,warna_buah_muda,False,1,warna_buah_muda,0.8291,0.8291
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Mature fruit length,panjang_buah_masak,False,4,panjang_buah_muda,0.8796,0.8249
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Plant growth habit,habitus,False,1,habitus,0.8031,0.8031
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Panjang daun,panjang_daun,True,1,panjang_daun,0.8688,0.8688
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Lebar daun,lebar_daun,True,11,luas_daun,0.7985,0.6169
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Bentuk pangkal daun,bentuk_pangkal_daun,True,28,kedudukan_daun,0.6599,0.4645
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Warna daun,warna_daun,True,1,warna_daun,0.7774,0.7774
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.7886,0.7886
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Warna bunga,warna_mahkota,False,2,warna_tangkai_putik,0.7038,0.6837
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.7667,0.7667
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Warna kotak sari,warna_kepala_sari,False,1,warna_kepala_sari,0.8234,0.8234
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Warna biji,warna_biji,True,1,warna_biji,0.7574,0.7574
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,R02,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.525,0.525
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Tinggi tanaman,tinggi_tanaman,True,1,tinggi_tanaman,0.8371,0.8371
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Bentuk habitus tanaman,habitus,False,1,habitus,0.6853,0.6853
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Bentuk daun,bentuk_daun,True,11,bentuk_ujung_daun,0.6584,0.5686
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Warna daun,warna_daun,True,2,warna_pangkal_tangkai_daun_bag_atas,0.658,0.6527
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.8328,0.8328
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Warna bunga kelopak,warna_kelopak_bunga,False,7,warna_pangkal_tangkai_daun_bag_bawah,0.7102,0.6618
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Mahkota,warna_mahkota,False,13,gambar_daun,0.567,0.4095
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Bentuk buah,bentuk_buah,True,6,gambar_buah,0.7982,0.6768
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Warna buah muda,warna_buah_muda,True,4,warna_mahkota,0.6836,0.6661
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.7414,0.7414
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Warna biji,warna_biji,True,1,warna_biji,0.6997,0.6997
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.5036,0.5036
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Warna kelopak bunga,warna_kelopak_bunga,True,4,warna_mahkota,0.6972,0.6543
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.6831,0.6831
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Tipe tumbuh tanaman,habitus,False,1,habitus,0.6831,0.6831
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Panjang daun,panjang_daun,True,2,panjang_benangsari,0.7632,0.7572
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Lebar daun,lebar_daun,True,11,luas_daun,0.7069,0.52
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Posisi bunga,posisi_bunga,True,10,tekstur_daun,0.6712,0.5589
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Warna kotak sari,warna_kepala_sari,False,1,warna_kepala_sari,0.6918,0.6918
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N07,Ujung buah,bentuk_ujung_buah,False,2,gambar_buah,0.7321,0.681
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N08,Leaf shape,bentuk_daun,False,30,bentuk_ujung_daun,0.7171,0.5283
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N08,Fruit shape,bentuk_buah,False,15,gambar_buah,0.8093,0.6644
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N08,Corolla colour,warna_mahkota,False,2,warna_pangkal_tangkai_daun_bag_bawah,0.6276,0.6212
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N08,Mature fruit colour,warna_buah_masak,False,9,warna_buah_muda,0.7237,0.6573
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N08,Plant height,tinggi_tanaman,True,1,tinggi_tanaman,0.7851,0.7851
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N08,Immature fruit colour,warna_buah_muda,False,4,gambar_buah,0.7691,0.6827
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N08,Mature fruit length,panjang_buah_masak,False,7,panjang_buah_muda,0.8248,0.7503
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N08,Seeds per fruit,jumlah_biji_buah_masak,True,1,jumlah_biji_buah_masak,0.7814,0.7814
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N08,Plant growth habit,habitus,False,1,habitus,0.7167,0.7167
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Tinggi tanaman,tinggi_tanaman,True,1,tinggi_tanaman,0.8478,0.8478
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Bentuk daun,bentuk_daun,True,1,bentuk_daun,0.7395,0.7395
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Warna daun,warna_daun,True,1,warna_daun,0.7774,0.7774
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.7886,0.7886
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Warna kelopak bunga,warna_kelopak_bunga,True,5,warna_mahkota,0.6719,0.6462
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.697,0.697
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Bentuk buah,bentuk_buah,True,5,posisi_buah_muda,0.8072,0.744
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Warna buah muda,warna_buah_muda,True,7,warna_daun,0.831,0.7474
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.8286,0.8286
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Warna biji,warna_biji,True,1,warna_biji,0.7574,0.7574
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.525,0.525
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Ukuran daun Panjang,panjang_daun,False,5,panjang_benangsari,0.7732,0.7305
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Ukuran daun Lebar,lebar_daun,False,12,luas_daun,0.6979,0.5605
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Tinggi tanaman (cm),tinggi_tanaman,False,1,tinggi_tanaman,0.7094,0.7094
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Habitus tanaman,habitus,False,1,habitus,0.6744,0.6744
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Panjang daun,panjang_daun,True,1,panjang_daun,0.8176,0.8176
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Lebar daun,lebar_daun,True,12,luas_daun,0.7737,0.5417
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Warna bunga,warna_mahkota,False,2,warna_tangkai_putik,0.7038,0.6837
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Kelopak,warna_kelopak_bunga,False,2,warna_daun,0.5718,0.5695
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Mahkota,warna_mahkota,False,4,gambar_daun,0.5746,0.5273
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Bentuk pangkal daun,bentuk_pangkal_daun,True,28,kedudukan_daun,0.6599,0.4645
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Kelopak Bunga,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.7552,0.7552
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Mahkota Bunga,warna_mahkota,False,1,warna_mahkota,0.8302,0.8302
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,N09,Kotak Sari,warna_kepala_sari,False,5,warna_kelopak_bunga,0.792,0.7487
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Bentuk pertumbuhan tanaman,habitus,True,1,habitus,0.7218,0.7218
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Tinggi keseluruhan tanaman,tinggi_tanaman,False,1,tinggi_tanaman,0.8044,0.8044
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Siklus hidup tanaman,umur,False,2,habitus,0.6424,0.6345
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Kesesuaian lingkungan tumbuh,adaptasi_ekologi,False,1,adaptasi_ekologi,0.5193,0.5193
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Permukaan batang,batang,False,7,tekstur_daun,0.6824,0.5709
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Tekstur permukaan daun,tekstur_daun,False,1,tekstur_daun,0.7157,0.7157
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Warna dominan daun,warna_daun,True,4,warna_pangkal_tangkai_daun_bag_bawah,0.7196,0.6893
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Ukuran panjang helai daun,panjang_daun,False,1,panjang_daun,0.8474,0.8474
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Lebar helai daun,lebar_daun,False,6,panjang_benangsari,0.7893,0.7197
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.6551,0.6551
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Jumlah helai mahkota,jumlah_mahkota_bunga,False,1,jumlah_mahkota_bunga,0.6944,0.6944
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Arah bunga pada tanaman,posisi_bunga,True,1,posisi_bunga,0.7558,0.7558
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Panjang buah belum masak,panjang_buah_muda,False,8,panjang_kelopak_buah_masak,0.8641,0.7908
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Keliling buah belum masak,keliling_buah_muda,False,10,keliling_buah_masak,0.8604,0.7772
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Warna buah ketika matang,warna_buah_masak,False,3,gambar_buah,0.7108,0.6791
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Posisi buah matang,posisi_buah_masak,False,2,posisi_buah_muda,0.7962,0.7566
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Bentuk ujung buah,bentuk_ujung_buah,True,1,bentuk_ujung_buah,0.8343,0.8343
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Warna kulit biji,warna_biji,False,1,warna_biji,0.654,0.654
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Jumlah biji pada buah matang,jumlah_biji_buah_masak,False,6,panjang_buah_muda,0.7371,0.6871
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S01,Lokasi pengambilan sampel,lokasi,False,1,lokasi,0.6056,0.6056
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Overall plant growth form,habitus,False,1,habitus,0.69,0.69
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Vertical size at maturity,tinggi_tanaman,False,9,panjang_mahkota,0.7116,0.6697
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Productive plant lifespan,umur,False,3,habitus,0.607,0.5422
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Suitable growing environment,adaptasi_ekologi,False,1,adaptasi_ekologi,0.5254,0.5254
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Hair coverage on the stem,batang,False,1,batang,0.6243,0.6243
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Leaf surface feel,tekstur_daun,False,10,bentuk_ujung_daun,0.6639,0.487
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Dominant foliage shade,warna_daun,False,3,warna_pangkal_tangkai_daun_bag_bawah,0.6489,0.6384
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Leaf blade longitudinal size,panjang_daun,False,2,lebar_daun,0.7629,0.757
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Leaf blade crosswise span,lebar_daun,False,1,lebar_daun,0.7354,0.7354
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Leaf-tip profile,bentuk_ujung_daun,False,1,bentuk_ujung_daun,0.6203,0.6203
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Leaf arrangement along the stem,kedudukan_daun,False,2,posisi_bunga,0.7236,0.6984
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Petal pigmentation,warna_mahkota,False,5,batang,0.5985,0.5259
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Petals found on each bloom,jumlah_mahkota_bunga,False,3,gambar_bunga,0.7712,0.755
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Flower orientation on the plant,posisi_bunga,False,1,posisi_bunga,0.8701,0.8701
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Longitudinal size of the unripe pod,panjang_buah_muda,False,11,panjang_mahkota,0.6958,0.6053
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Girth of the unripe pod,keliling_buah_muda,False,7,panjang_putik,0.6695,0.6077
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Pigmentation of ripe pods,warna_buah_masak,False,6,warna_buah_muda,0.5843,0.5748
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Orientation of ripe pods,posisi_buah_masak,False,3,posisi_buah_muda,0.7195,0.6762
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Fruit-tip profile,bentuk_ujung_buah,False,4,gambar_buah,0.7244,0.6627
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Seed coat shade,warna_biji,False,2,bentuk_buah,0.523,0.4996
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Seed load in each ripe pod,jumlah_biji_buah_masak,False,1,jumlah_biji_buah_masak,0.6118,0.6118
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S02,Specimen collection site,lokasi,False,1,lokasi,0.5407,0.5407
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Vegetatif / Bentuk tumbuh,habitus,False,2,gambar_batang,0.64,0.6225
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Vegetatif / Ukuran tinggi,tinggi_tanaman,False,10,panjang_benangsari,0.6106,0.5499
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Vegetatif / Lama hidup,umur,False,1,umur,0.7371,0.7371
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Vegetatif / Permukaan batang,batang,False,3,gambar_batang,0.7149,0.6215
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Daun / Tekstur,tekstur_daun,False,1,tekstur_daun,0.6645,0.6645
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Daun / Warna,warna_daun,False,13,gambar_daun,0.714,0.5002
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Daun / Panjang,panjang_daun,False,8,gambar_daun,0.6545,0.5794
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Daun / Lebar,lebar_daun,False,12,gambar_daun,0.6711,0.5277
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Bunga / Warna mahkota,warna_mahkota,True,2,warna_tangkai_sari,0.6946,0.6789
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Bunga / Jumlah mahkota,jumlah_mahkota_bunga,False,1,jumlah_mahkota_bunga,0.6974,0.6974
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Bunga / Posisi,posisi_bunga,False,14,lokasi,0.6829,0.5198
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Buah Muda / Panjang,panjang_buah_muda,False,23,panjang_benangsari,0.6923,0.5203
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Buah Muda / Keliling,keliling_buah_muda,False,30,panjang_benangsari,0.6414,0.4613
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Buah Muda / Panjang tangkai,panjang_tangkai_buah_muda,False,7,panjang_benangsari,0.7213,0.6549
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Buah Muda / Panjang kelopak,panjang_kelopak_buah_muda,False,7,panjang_benangsari,0.7257,0.6757
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Buah Muda / Keliling kelopak,keliling_kelopak_buah_muda,False,14,panjang_kelopak_bunga,0.6599,0.5558
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Buah Muda / Bentuk kelopak,bentuk_kelopak_buah_muda,False,7,tekstur_daun,0.6706,0.5735
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Buah Muda / Posisi,posisi_buah_muda,False,2,lokasi,0.678,0.6191
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Buah Masak / Panjang,panjang_buah_masak,False,16,panjang_benangsari,0.736,0.6497
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Buah Masak / Keliling,keliling_buah_masak,False,28,panjang_benangsari,0.634,0.4812
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Buah Masak / Panjang tangkai,panjang_tangkai_buah_masak,False,11,panjang_benangsari,0.7002,0.6188
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Buah Masak / Panjang kelopak,panjang_kelopak_buah_masak,False,4,panjang_kelopak_buah_muda,0.7416,0.7181
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Buah Masak / Keliling kelopak,keliling_kelopak_buah_masak,False,17,panjang_kelopak_bunga,0.6585,0.5539
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Buah Masak / Warna,warna_buah_masak,False,14,warna_tangkai_sari,0.6918,0.5808
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Buah Masak / Posisi,posisi_buah_masak,False,6,lokasi,0.6539,0.5905
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Biji / Warna,warna_biji,False,1,warna_biji,0.6893,0.6893
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Biji / Jumlah,jumlah_biji_buah_masak,False,3,luas_daun,0.5767,0.5227
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S03,Lokasi,lokasi,True,1,lokasi,0.5128,0.5128
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S04,Bentuk tumbuh,habitus,False,12,tekstur_daun,0.5781,0.4745
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S04,Ukuran tinggi,tinggi_tanaman,False,21,panjang_benangsari,0.7133,0.4687
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S04,Corak warna daun,warna_daun,False,5,warna_pangkal_tangkai_daun_bag_bawah,0.6596,0.6384
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S04,Panjang helai,panjang_daun,False,3,panjang_mahkota,0.7745,0.7515
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S04,Warna buah siap panen,warna_buah_masak,False,3,gambar_buah,0.7649,0.698
+paraphrase-multilingual-MiniLM-L12-v2,terverifikasi,S04,Tempat pengamatan,lokasi,False,1,lokasi,0.6144,0.6144
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Orientasi tanaman,habitus,False,3,posisi_bunga,0.6402,0.5996
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Bulu pada buku,batang,False,31,tekstur_daun,0.5565,0.3058
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Tinggi tanaman (cm),tinggi_tanaman,False,1,tinggi_tanaman,0.7318,0.7318
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Panjang daun (cm),panjang_daun,False,1,panjang_daun,0.7852,0.7852
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Lebar daun (cm),lebar_daun,False,10,luas_daun,0.7752,0.5216
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Intensitas warna hijau daun,warna_daun,False,5,warna_gagang_bunga,0.731,0.7217
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Bentuk daun,bentuk_daun,True,1,bentuk_daun,0.8464,0.8464
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Bentuk pangkal daun,bentuk_pangkal_daun,True,37,bentuk_ujung_buah,0.7302,0.4569
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Undulasi tepi daun,tepi_daun,False,1,tepi_daun,0.5976,0.5976
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Lepuhan daun,tekstur_daun,False,1,tekstur_daun,0.6511,0.6511
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Orientasi pedunkel bunga,posisi_bunga,False,10,kedudukan_daun,0.6453,0.5464
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna antera sebelum pecah,warna_kepala_sari,False,6,warna_tangkai_putik,0.6046,0.56
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna mahkota,warna_mahkota,True,1,warna_mahkota,0.7919,0.7919
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna buah muda,warna_buah_muda,True,2,warna_daun,0.8079,0.8061
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Posisi buah muda,posisi_buah_muda,True,1,posisi_buah_muda,0.824,0.824
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Posisi buah matang,posisi_buah_masak,False,2,posisi_buah_muda,0.8262,0.7792
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Bentuk potongan membujur,bentuk_buah,False,12,tekstur_daun,0.6432,0.4919
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna buah matang,warna_buah_masak,False,1,warna_buah_masak,0.8508,0.8508
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Bentuk ujung buah,bentuk_ujung_buah,True,2,posisi_buah_muda,0.6131,0.5785
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Habitus tanaman,habitus,False,1,habitus,0.5508,0.5508
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Gelombang tepi daun,tepi_daun,False,3,kedudukan_daun,0.6091,0.5658
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna daun,warna_daun,True,1,warna_daun,0.6626,0.6626
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Posisi bunga,posisi_bunga,True,10,posisi_buah_muda,0.6915,0.5799
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.758,0.758
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna mahkota bunga,warna_mahkota,False,3,warna_pangkal_tangkai_daun_bag_atas,0.7604,0.7504
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna kelopak bunga,warna_kelopak_bunga,True,4,warna_pangkal_tangkai_daun_bag_atas,0.8054,0.7782
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna kotak sari,warna_kepala_sari,False,1,warna_kepala_sari,0.7443,0.7443
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna tangkai sari,warna_tangkai_sari,True,1,warna_tangkai_sari,0.7855,0.7855
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna tangkai sari (2),warna_tangkai_sari,False,9,warna_pangkal_tangkai_daun_bag_bawah,0.744,0.6918
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Bentuk buah,bentuk_buah,True,5,posisi_buah_muda,0.7595,0.6537
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.7853,0.7853
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna biji,warna_biji,True,2,warna_tangkai_putik,0.6898,0.6867
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna tangkai bunga,warna_gagang_bunga,False,3,warna_pangkal_tangkai_daun_bag_atas,0.8293,0.8123
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.4023,0.4023
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Bentuk buah (2),bentuk_buah,False,5,bentuk_ujung_buah,0.7253,0.6394
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Bentuk ujung daun,bentuk_ujung_daun,True,7,kedudukan_daun,0.7235,0.5981
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Jumlah mahkota bunga,jumlah_mahkota_bunga,True,1,jumlah_mahkota_bunga,0.8232,0.8232
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Tinggi tanaman,tinggi_tanaman,True,1,tinggi_tanaman,0.8391,0.8391
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna kelopak,warna_kelopak_bunga,False,2,warna_mahkota,0.7482,0.7402
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna anther,warna_kepala_sari,False,1,warna_kepala_sari,0.6396,0.6396
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Bentuk potongan buah membujur,bentuk_buah,False,5,posisi_buah_muda,0.8032,0.7147
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Tipe tumbuh tanaman,habitus,False,1,habitus,0.6831,0.6831
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Posisi tangkai bunga,posisi_bunga,False,11,posisi_buah_muda,0.643,0.545
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Bentuk mahkota bunga,bentuk_bunga,False,2,gambar_bunga,0.6605,0.6442
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna filamen,warna_tangkai_sari,False,3,warna_tangkai_putik,0.6733,0.6576
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Ujung buah,bentuk_ujung_buah,False,1,bentuk_ujung_buah,0.7386,0.7386
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Undulasi (gelombang) tepi daun,tepi_daun,False,3,tekstur_daun,0.5919,0.5416
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Orientasi bunga,posisi_bunga,False,12,tekstur_daun,0.6202,0.5484
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna bunga: Kelopak Bunga,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.8452,0.8452
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna bunga: Mahkota Bunga,warna_mahkota,False,1,warna_mahkota,0.8583,0.8583
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Bentuk potongan membujur buah,bentuk_buah,False,5,posisi_buah_muda,0.7245,0.6202
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Orientasi,habitus,False,24,kedudukan_daun,0.6296,0.407
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Panjang helai daun (cm),panjang_daun,False,1,panjang_daun,0.7757,0.7757
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Lebar helai daun (cm),lebar_daun,False,11,luas_daun,0.6709,0.5471
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Panjang tangkai daun (cm),panjang_tangkai_daun,False,3,lebar_daun,0.7657,0.7426
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Undulasi pada tepi daun,tepi_daun,False,15,kedudukan_daun,0.5796,0.423
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna daun atas,warna_daun,False,5,warna_pangkal_tangkai_daun_bag_bawah,0.7839,0.7417
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P01,Warna bunga: Tangkai sari,warna_tangkai_sari,False,1,warna_tangkai_sari,0.7985,0.7985
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Sebaran Geografis,lokasi,False,1,lokasi,0.3991,0.3991
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Tinggi tanaman (cm),tinggi_tanaman,False,1,tinggi_tanaman,0.7361,0.7361
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Tekstur kulit batang,batang,False,13,tekstur_daun,0.6778,0.4971
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Pangkal Daun,bentuk_pangkal_daun,False,4,gambar_daun,0.673,0.541
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Ujung Daun,bentuk_ujung_daun,False,30,gambar_daun,0.6716,0.3767
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna daun bagian atas,warna_daun,False,4,warna_pangkal_tangkai_daun_bag_atas,0.8094,0.7911
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Permukaan daun bagian atas/bawah,tekstur_daun,False,6,bentuk_ujung_daun,0.6887,0.597
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Panjang daun (cm),panjang_daun,False,1,panjang_daun,0.8205,0.8205
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Lebar daun (cm),lebar_daun,False,11,luas_daun,0.7179,0.5548
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Bentuk daun,bentuk_daun,True,1,bentuk_daun,0.7179,0.7179
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Tepi daun,tepi_daun,True,14,tekstur_daun,0.6001,0.4985
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna tangkai bunga,warna_gagang_bunga,False,4,warna_kelopak_bunga,0.8159,0.8122
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Posisi tangkai bunga,posisi_bunga,False,7,lokasi,0.6452,0.5966
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Jumlah bunga per nodus,jumlah_gagang_bunga_ruas,False,1,jumlah_gagang_bunga_ruas,0.7408,0.7408
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.8522,0.8522
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna mahkota,warna_mahkota,True,1,warna_mahkota,0.6205,0.6205
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Bentuk buah,bentuk_buah,True,7,bentuk_ujung_buah,0.7655,0.6455
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Penampilan ujung buah,bentuk_ujung_buah,False,2,gambar_buah,0.7768,0.7616
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna kulit buah muda,warna_buah_muda,False,1,warna_buah_muda,0.7339,0.7339
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna kulit buah tua,warna_buah_masak,False,10,gambar_buah,0.7083,0.6377
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Ujung Buah,bentuk_ujung_buah,False,6,tekstur_daun,0.6236,0.5854
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna biji kupas kering,warna_biji,False,1,warna_biji,0.6166,0.6166
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Karakter pertanaman,habitus,False,31,tekstur_daun,0.5883,0.3872
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Bentuk ujung daun,bentuk_ujung_daun,True,2,kedudukan_daun,0.7101,0.6621
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Panjang tangkai daun (cm),panjang_tangkai_daun,False,3,lebar_daun,0.7526,0.7413
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna daun,warna_daun,True,7,warna_pangkal_tangkai_daun_bag_bawah,0.7912,0.7631
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.8085,0.8085
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.8639,0.8639
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Orientasi/ letak tangkai bunga,posisi_bunga,False,3,posisi_buah_muda,0.6511,0.6182
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna buah muda,warna_buah_muda,True,5,warna_gagang_bunga,0.8988,0.8628
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna buah tua/ matang,warna_buah_masak,False,1,warna_buah_masak,0.7352,0.7352
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Bentuk ujung buah,bentuk_ujung_buah,True,1,bentuk_ujung_buah,0.6986,0.6986
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna biji,warna_biji,True,1,warna_biji,0.8491,0.8491
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Orientasi/bentuk tanaman,habitus,False,13,posisi_buah_muda,0.6834,0.5433
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Bulu pada batang,batang,False,29,kedudukan_daun,0.5505,0.4051
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Tingkat bergelombang,tepi_daun,False,15,lokasi,0.5307,0.3873
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna daun atas,warna_daun,False,6,warna_pangkal_tangkai_daun_bag_bawah,0.7693,0.728
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna mahkota bunga (petal),warna_mahkota,False,1,warna_mahkota,0.7897,0.7897
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna filament,warna_tangkai_sari,False,4,warna_mahkota,0.7141,0.6827
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna kepala sari,warna_kepala_sari,True,1,warna_kepala_sari,0.7697,0.7697
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Panjang benang sari dan filament (mm),panjang_benangsari,False,3,panjang_kelopak_bunga,0.6657,0.6534
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Posisi bunga terhadap batang,posisi_bunga,False,2,kedudukan_daun,0.7807,0.7045
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna buah sebelum matang,warna_buah_muda,False,1,warna_buah_muda,0.7686,0.7686
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna buah tua/matang,warna_buah_masak,False,3,gambar_buah,0.7004,0.6729
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Jumlah biji per buah,jumlah_biji_buah_masak,False,5,panjang_buah_muda,0.6975,0.6739
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.5578,0.5578
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Orientasi,habitus,False,36,kedudukan_daun,0.6648,0.4119
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Bulu pada buku,batang,False,30,tekstur_daun,0.5986,0.3466
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Panjang helai daun (cm),panjang_daun,False,1,panjang_daun,0.8141,0.8141
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Lebar helai daun (cm),lebar_daun,False,9,luas_daun,0.6617,0.605
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna daun permukaan atas,warna_daun,False,4,warna_pangkal_tangkai_daun_bag_atas,0.8308,0.8031
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Undulasi pada tepi daun,tepi_daun,False,3,kedudukan_daun,0.5401,0.5136
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Lepuhan daun,tekstur_daun,False,1,tekstur_daun,0.5546,0.5546
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna antera,warna_kepala_sari,False,8,warna_tangkai_putik,0.6565,0.5832
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Bentuk potongan membujur,bentuk_buah,False,15,tekstur_daun,0.6294,0.475
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna buah matang,warna_buah_masak,False,1,warna_buah_masak,0.8173,0.8173
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.7859,0.7859
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Orientasi Tanaman,habitus,False,5,posisi_bunga,0.6558,0.6015
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Undulasi / gelombang pada tepi daun,tepi_daun,False,4,kedudukan_daun,0.5189,0.4659
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna antera/kepala sari,warna_kepala_sari,False,2,warna_kelopak_bunga,0.6915,0.6852
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna tangkai kepala putik,warna_tangkai_putik,False,1,warna_tangkai_putik,0.6884,0.6884
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Penampang membujur buah,bentuk_buah,False,5,gambar_buah,0.7344,0.6851
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Jumlah biji per buah (butir),jumlah_biji_buah_masak,False,3,panjang_buah_muda,0.7197,0.6933
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Orientasi pedunkel pada bunga,posisi_bunga,False,1,posisi_bunga,0.7053,0.7053
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Bentuk potongan membujur buah,bentuk_buah,False,5,gambar_buah,0.7973,0.6741
+paraphrase-multilingual-MiniLM-L12-v2,pvt_usulan_ai,P02,Warna buah matang buah,warna_buah_masak,False,2,gambar_buah,0.7521,0.7033
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Leaf shape,bentuk_daun,False,2,bentuk_ujung_daun,0.7492,0.7388
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Fruit shape,bentuk_buah,False,2,bentuk_ujung_buah,0.7628,0.7357
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Corolla colour,warna_mahkota,False,2,warna_buah_muda,0.7054,0.7027
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Mature fruit colour,warna_buah_masak,False,1,warna_buah_masak,0.8433,0.8433
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Plant height,tinggi_tanaman,True,1,tinggi_tanaman,0.8628,0.8628
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Immature fruit colour,warna_buah_muda,False,1,warna_buah_muda,0.8843,0.8843
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Mature fruit length,panjang_buah_masak,False,3,panjang_buah_muda,0.8894,0.8644
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Plant growth habit,habitus,False,1,habitus,0.8156,0.8156
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Panjang daun,panjang_daun,True,1,panjang_daun,0.8828,0.8828
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Lebar daun,lebar_daun,True,2,luas_daun,0.8483,0.8381
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Bentuk pangkal daun,bentuk_pangkal_daun,True,1,bentuk_pangkal_daun,0.7065,0.7065
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Warna daun,warna_daun,True,7,warna_buah_muda,0.8137,0.7064
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.8344,0.8344
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Warna bunga,warna_mahkota,False,4,gambar_bunga,0.6181,0.5615
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Warna kelopak bunga,warna_kelopak_bunga,True,2,warna_buah_muda,0.8372,0.8296
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Warna kotak sari,warna_kepala_sari,False,4,warna_kelopak_bunga,0.7685,0.734
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Warna biji,warna_biji,True,4,warna_buah_masak,0.7374,0.6883
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,R02,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.6451,0.6451
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Tinggi tanaman,tinggi_tanaman,True,1,tinggi_tanaman,0.8792,0.8792
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Bentuk habitus tanaman,habitus,False,1,habitus,0.7886,0.7886
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Bentuk daun,bentuk_daun,True,10,bentuk_ujung_daun,0.6381,0.4663
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Warna daun,warna_daun,True,9,warna_buah_muda,0.7572,0.5726
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.8651,0.8651
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Warna bunga kelopak,warna_kelopak_bunga,False,4,warna_buah_muda,0.6767,0.6403
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Mahkota,warna_mahkota,False,6,jumlah_mahkota_bunga,0.4703,0.4309
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Bentuk buah,bentuk_buah,True,15,bentuk_ujung_buah,0.7944,0.6614
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Warna buah muda,warna_buah_muda,True,1,warna_buah_muda,0.7899,0.7899
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.7746,0.7746
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Warna biji,warna_biji,True,6,warna_buah_muda,0.6152,0.5672
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.6799,0.6799
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Warna kelopak bunga,warna_kelopak_bunga,True,2,warna_buah_muda,0.7172,0.6894
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Warna mahkota bunga,warna_mahkota,False,3,warna_pangkal_tangkai_daun_bag_bawah,0.6323,0.6144
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Tipe tumbuh tanaman,habitus,False,1,habitus,0.7229,0.7229
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Panjang daun,panjang_daun,True,1,panjang_daun,0.8422,0.8422
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Lebar daun,lebar_daun,True,3,luas_daun,0.808,0.7877
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Posisi bunga,posisi_bunga,True,2,gambar_bunga,0.6788,0.675
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Warna kotak sari,warna_kepala_sari,False,1,warna_kepala_sari,0.5888,0.5888
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N07,Ujung buah,bentuk_ujung_buah,False,2,gambar_buah,0.6956,0.6822
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N08,Leaf shape,bentuk_daun,False,20,lebar_daun,0.685,0.5792
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N08,Fruit shape,bentuk_buah,False,18,keliling_kelopak_buah_masak,0.7437,0.6002
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N08,Corolla colour,warna_mahkota,False,1,warna_mahkota,0.6416,0.6416
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N08,Mature fruit colour,warna_buah_masak,False,1,warna_buah_masak,0.7441,0.7441
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N08,Plant height,tinggi_tanaman,True,1,tinggi_tanaman,0.7644,0.7644
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N08,Immature fruit colour,warna_buah_muda,False,5,warna_buah_masak,0.7589,0.6674
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N08,Mature fruit length,panjang_buah_masak,False,4,panjang_buah_muda,0.8056,0.7895
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N08,Seeds per fruit,jumlah_biji_buah_masak,True,1,jumlah_biji_buah_masak,0.7243,0.7243
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N08,Plant growth habit,habitus,False,5,jumlah_gagang_bunga_ruas,0.6642,0.6203
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Tinggi tanaman,tinggi_tanaman,True,1,tinggi_tanaman,0.8714,0.8714
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Bentuk daun,bentuk_daun,True,1,bentuk_daun,0.7334,0.7334
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Warna daun,warna_daun,True,7,warna_buah_muda,0.8137,0.7064
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.8344,0.8344
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Warna kelopak bunga,warna_kelopak_bunga,True,2,warna_buah_muda,0.7767,0.7599
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Warna mahkota bunga,warna_mahkota,False,4,warna_pangkal_tangkai_daun_bag_bawah,0.6757,0.6526
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Bentuk buah,bentuk_buah,True,3,bentuk_ujung_buah,0.7243,0.6748
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Warna buah muda,warna_buah_muda,True,1,warna_buah_muda,0.8866,0.8866
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.8228,0.8228
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Warna biji,warna_biji,True,4,warna_buah_masak,0.7374,0.6883
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.6451,0.6451
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Ukuran daun Panjang,panjang_daun,False,1,panjang_daun,0.8207,0.8207
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Ukuran daun Lebar,lebar_daun,False,3,panjang_daun,0.7835,0.7709
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Tinggi tanaman (cm),tinggi_tanaman,False,1,tinggi_tanaman,0.8323,0.8323
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Habitus tanaman,habitus,False,1,habitus,0.7322,0.7322
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Panjang daun,panjang_daun,True,1,panjang_daun,0.8331,0.8331
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Lebar daun,lebar_daun,True,2,luas_daun,0.7919,0.7656
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Warna bunga,warna_mahkota,False,4,gambar_bunga,0.6181,0.5615
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Kelopak,warna_kelopak_bunga,False,3,warna_pangkal_tangkai_daun_bag_atas,0.5978,0.5943
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Mahkota,warna_mahkota,False,4,jumlah_mahkota_bunga,0.4627,0.4321
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Bentuk pangkal daun,bentuk_pangkal_daun,True,1,bentuk_pangkal_daun,0.7065,0.7065
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Kelopak Bunga,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.7779,0.7779
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Mahkota Bunga,warna_mahkota,False,1,warna_mahkota,0.7337,0.7337
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,N09,Kotak Sari,warna_kepala_sari,False,4,warna_kelopak_bunga,0.7221,0.6986
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Bentuk pertumbuhan tanaman,habitus,True,1,habitus,0.7121,0.7121
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Tinggi keseluruhan tanaman,tinggi_tanaman,False,1,tinggi_tanaman,0.8499,0.8499
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Siklus hidup tanaman,umur,False,1,umur,0.6519,0.6519
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Kesesuaian lingkungan tumbuh,adaptasi_ekologi,False,1,adaptasi_ekologi,0.5617,0.5617
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Permukaan batang,batang,False,4,tekstur_daun,0.6208,0.5857
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Tekstur permukaan daun,tekstur_daun,False,1,tekstur_daun,0.8112,0.8112
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Warna dominan daun,warna_daun,True,10,warna_buah_muda,0.7721,0.591
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Ukuran panjang helai daun,panjang_daun,False,1,panjang_daun,0.8335,0.8335
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Lebar helai daun,lebar_daun,False,1,lebar_daun,0.8127,0.8127
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Warna mahkota bunga,warna_mahkota,False,10,gambar_bunga,0.6839,0.5835
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Jumlah helai mahkota,jumlah_mahkota_bunga,False,1,jumlah_mahkota_bunga,0.7595,0.7595
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Arah bunga pada tanaman,posisi_bunga,True,1,posisi_bunga,0.7507,0.7507
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Panjang buah belum masak,panjang_buah_muda,False,2,panjang_kelopak_buah_masak,0.8487,0.8331
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Keliling buah belum masak,keliling_buah_muda,False,2,panjang_kelopak_buah_masak,0.8056,0.7964
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Warna buah ketika matang,warna_buah_masak,False,1,warna_buah_masak,0.7365,0.7365
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Posisi buah matang,posisi_buah_masak,False,2,posisi_buah_muda,0.7798,0.7719
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Bentuk ujung buah,bentuk_ujung_buah,True,1,bentuk_ujung_buah,0.7354,0.7354
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Warna kulit biji,warna_biji,False,3,tekstur_daun,0.5953,0.5543
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Jumlah biji pada buah matang,jumlah_biji_buah_masak,False,11,panjang_buah_muda,0.7064,0.6379
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S01,Lokasi pengambilan sampel,lokasi,False,1,lokasi,0.6182,0.6182
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Overall plant growth form,habitus,False,2,tinggi_tanaman,0.692,0.6572
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Vertical size at maturity,tinggi_tanaman,False,1,tinggi_tanaman,0.5916,0.5916
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Productive plant lifespan,umur,False,1,umur,0.6227,0.6227
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Suitable growing environment,adaptasi_ekologi,False,1,adaptasi_ekologi,0.7282,0.7282
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Hair coverage on the stem,batang,False,1,batang,0.7024,0.7024
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Leaf surface feel,tekstur_daun,False,1,tekstur_daun,0.7802,0.7802
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Dominant foliage shade,warna_daun,False,7,warna_buah_muda,0.684,0.5477
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Leaf blade longitudinal size,panjang_daun,False,1,panjang_daun,0.7688,0.7688
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Leaf blade crosswise span,lebar_daun,False,1,lebar_daun,0.7363,0.7363
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Leaf-tip profile,bentuk_ujung_daun,False,1,bentuk_ujung_daun,0.5944,0.5944
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Leaf arrangement along the stem,kedudukan_daun,False,3,bentuk_ujung_daun,0.686,0.6261
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Petal pigmentation,warna_mahkota,False,7,warna_kepala_sari,0.6166,0.4999
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Petals found on each bloom,jumlah_mahkota_bunga,False,2,jumlah_gagang_bunga_ruas,0.7399,0.7259
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Flower orientation on the plant,posisi_bunga,False,1,posisi_bunga,0.8405,0.8405
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Longitudinal size of the unripe pod,panjang_buah_muda,False,1,panjang_buah_muda,0.5632,0.5632
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Girth of the unripe pod,keliling_buah_muda,False,1,keliling_buah_muda,0.5658,0.5658
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Pigmentation of ripe pods,warna_buah_masak,False,1,warna_buah_masak,0.5883,0.5883
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Orientation of ripe pods,posisi_buah_masak,False,6,posisi_buah_muda,0.6405,0.5975
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Fruit-tip profile,bentuk_ujung_buah,False,4,gambar_buah,0.7147,0.6326
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Seed coat shade,warna_biji,False,8,tekstur_daun,0.5601,0.4815
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Seed load in each ripe pod,jumlah_biji_buah_masak,False,4,tinggi_tanaman,0.6239,0.5573
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S02,Specimen collection site,lokasi,False,1,lokasi,0.4911,0.4911
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Vegetatif / Bentuk tumbuh,habitus,False,1,habitus,0.7149,0.7149
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Vegetatif / Ukuran tinggi,tinggi_tanaman,False,1,tinggi_tanaman,0.7097,0.7097
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Vegetatif / Lama hidup,umur,False,1,umur,0.7762,0.7762
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Vegetatif / Permukaan batang,batang,False,13,gambar_batang,0.6749,0.5822
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Daun / Tekstur,tekstur_daun,False,4,bentuk_ujung_buah,0.5324,0.5067
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Daun / Warna,warna_daun,False,10,warna_buah_muda,0.7358,0.6052
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Daun / Panjang,panjang_daun,False,6,panjang_kelopak_bunga,0.7439,0.7025
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Daun / Lebar,lebar_daun,False,9,panjang_benangsari,0.6725,0.6208
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Bunga / Warna mahkota,warna_mahkota,True,11,gambar_bunga,0.6963,0.5908
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Bunga / Jumlah mahkota,jumlah_mahkota_bunga,False,1,jumlah_mahkota_bunga,0.7978,0.7978
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Bunga / Posisi,posisi_bunga,False,1,posisi_bunga,0.6594,0.6594
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Buah Muda / Panjang,panjang_buah_muda,False,1,panjang_buah_muda,0.836,0.836
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Buah Muda / Keliling,keliling_buah_muda,False,3,panjang_kelopak_buah_masak,0.8147,0.807
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Buah Muda / Panjang tangkai,panjang_tangkai_buah_muda,False,3,panjang_kelopak_buah_masak,0.8249,0.8047
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Buah Muda / Panjang kelopak,panjang_kelopak_buah_muda,False,2,panjang_kelopak_buah_masak,0.8475,0.8406
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Buah Muda / Keliling kelopak,keliling_kelopak_buah_muda,False,1,keliling_kelopak_buah_muda,0.7969,0.7969
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Buah Muda / Bentuk kelopak,bentuk_kelopak_buah_muda,False,2,bentuk_ujung_buah,0.7596,0.7547
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Buah Muda / Posisi,posisi_buah_muda,False,1,posisi_buah_muda,0.7568,0.7568
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Buah Masak / Panjang,panjang_buah_masak,False,2,panjang_kelopak_buah_masak,0.8669,0.8133
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Buah Masak / Keliling,keliling_buah_masak,False,3,panjang_kelopak_buah_masak,0.7218,0.7036
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Buah Masak / Panjang tangkai,panjang_tangkai_buah_masak,False,2,panjang_kelopak_buah_masak,0.8304,0.8063
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Buah Masak / Panjang kelopak,panjang_kelopak_buah_masak,False,1,panjang_kelopak_buah_masak,0.8576,0.8576
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Buah Masak / Keliling kelopak,keliling_kelopak_buah_masak,False,3,panjang_kelopak_buah_masak,0.8067,0.7842
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Buah Masak / Warna,warna_buah_masak,False,2,gambar_buah,0.7167,0.7165
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Buah Masak / Posisi,posisi_buah_masak,False,1,posisi_buah_masak,0.7476,0.7476
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Biji / Warna,warna_biji,False,3,gambar_bunga,0.6261,0.6148
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Biji / Jumlah,jumlah_biji_buah_masak,False,3,jumlah_gagang_bunga_ruas,0.6422,0.575
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S03,Lokasi,lokasi,True,1,lokasi,0.5099,0.5099
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S04,Bentuk tumbuh,habitus,False,5,bentuk_pangkal_daun,0.5455,0.5166
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S04,Ukuran tinggi,tinggi_tanaman,False,17,panjang_benangsari,0.5965,0.5103
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S04,Corak warna daun,warna_daun,False,9,warna_buah_muda,0.7755,0.6077
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S04,Panjang helai,panjang_daun,False,12,panjang_benangsari,0.7165,0.6402
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S04,Warna buah siap panen,warna_buah_masak,False,2,gambar_buah,0.7581,0.7491
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,terverifikasi,S04,Tempat pengamatan,lokasi,False,1,lokasi,0.5488,0.5488
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Orientasi tanaman,habitus,False,1,habitus,0.651,0.651
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Bulu pada buku,batang,False,17,tepi_daun,0.5336,0.3584
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Tinggi tanaman (cm),tinggi_tanaman,False,1,tinggi_tanaman,0.787,0.787
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Panjang daun (cm),panjang_daun,False,3,lebar_daun,0.8334,0.8237
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Lebar daun (cm),lebar_daun,False,1,lebar_daun,0.7532,0.7532
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Intensitas warna hijau daun,warna_daun,False,7,warna_buah_muda,0.7671,0.611
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Bentuk daun,bentuk_daun,True,1,bentuk_daun,0.7865,0.7865
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Bentuk pangkal daun,bentuk_pangkal_daun,True,3,bentuk_ujung_daun,0.6547,0.5927
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Undulasi tepi daun,tepi_daun,False,48,tekstur_daun,0.5712,0.3925
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Lepuhan daun,tekstur_daun,False,1,tekstur_daun,0.6232,0.6232
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Orientasi pedunkel bunga,posisi_bunga,False,1,posisi_bunga,0.6751,0.6751
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna antera sebelum pecah,warna_kepala_sari,False,1,warna_kepala_sari,0.6906,0.6906
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna mahkota,warna_mahkota,True,1,warna_mahkota,0.7176,0.7176
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna buah muda,warna_buah_muda,True,1,warna_buah_muda,0.8846,0.8846
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Posisi buah muda,posisi_buah_muda,True,1,posisi_buah_muda,0.7686,0.7686
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Posisi buah matang,posisi_buah_masak,False,3,posisi_buah_muda,0.7622,0.748
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Bentuk potongan membujur,bentuk_buah,False,31,bentuk_ujung_buah,0.637,0.439
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna buah matang,warna_buah_masak,False,1,warna_buah_masak,0.8557,0.8557
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Bentuk ujung buah,bentuk_ujung_buah,True,1,bentuk_ujung_buah,0.6154,0.6154
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Habitus tanaman,habitus,False,1,habitus,0.6308,0.6308
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Gelombang tepi daun,tepi_daun,False,17,bentuk_ujung_daun,0.6054,0.4826
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna daun,warna_daun,True,7,warna_buah_muda,0.8093,0.6665
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Posisi bunga,posisi_bunga,True,3,bentuk_ujung_daun,0.6,0.5437
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.7806,0.7806
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna mahkota bunga,warna_mahkota,False,4,warna_buah_muda,0.7058,0.6668
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna kelopak bunga,warna_kelopak_bunga,True,2,warna_buah_muda,0.7897,0.7559
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna kotak sari,warna_kepala_sari,False,1,warna_kepala_sari,0.6948,0.6948
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna tangkai sari,warna_tangkai_sari,True,9,warna_buah_masak,0.6244,0.5344
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna tangkai sari (2),warna_tangkai_sari,False,16,warna_buah_muda,0.7147,0.5082
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Bentuk buah,bentuk_buah,True,1,bentuk_buah,0.6253,0.6253
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.7902,0.7902
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna biji,warna_biji,True,6,warna_buah_masak,0.7035,0.6441
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna tangkai bunga,warna_gagang_bunga,False,6,warna_buah_muda,0.7672,0.6323
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.6686,0.6686
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Bentuk buah (2),bentuk_buah,False,3,bentuk_ujung_buah,0.7016,0.6409
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Bentuk ujung daun,bentuk_ujung_daun,True,2,bentuk_pangkal_daun,0.6944,0.6855
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Jumlah mahkota bunga,jumlah_mahkota_bunga,True,1,jumlah_mahkota_bunga,0.7717,0.7717
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Tinggi tanaman,tinggi_tanaman,True,1,tinggi_tanaman,0.8685,0.8685
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna kelopak,warna_kelopak_bunga,False,5,warna_buah_muda,0.7104,0.667
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna anther,warna_kepala_sari,False,2,warna_buah_masak,0.5737,0.5126
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Bentuk potongan buah membujur,bentuk_buah,False,7,bentuk_ujung_buah,0.7193,0.6327
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Tipe tumbuh tanaman,habitus,False,1,habitus,0.7229,0.7229
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Posisi tangkai bunga,posisi_bunga,False,1,posisi_bunga,0.7292,0.7292
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Bentuk mahkota bunga,bentuk_bunga,False,1,bentuk_bunga,0.6815,0.6815
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna filamen,warna_tangkai_sari,False,4,warna_biji,0.5511,0.5188
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Ujung buah,bentuk_ujung_buah,False,1,bentuk_ujung_buah,0.5914,0.5914
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Undulasi (gelombang) tepi daun,tepi_daun,False,34,bentuk_ujung_daun,0.6198,0.4461
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Orientasi bunga,posisi_bunga,False,1,posisi_bunga,0.681,0.681
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna bunga: Kelopak Bunga,warna_kelopak_bunga,False,2,warna_buah_muda,0.7849,0.7819
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna bunga: Mahkota Bunga,warna_mahkota,False,2,warna_buah_muda,0.7649,0.736
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Bentuk potongan membujur buah,bentuk_buah,False,7,bentuk_ujung_buah,0.6722,0.5852
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Orientasi,habitus,False,44,warna_tangkai_sari,0.4295,0.2897
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Panjang helai daun (cm),panjang_daun,False,1,panjang_daun,0.8148,0.8148
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Lebar helai daun (cm),lebar_daun,False,2,luas_daun,0.7661,0.7575
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Panjang tangkai daun (cm),panjang_tangkai_daun,False,1,panjang_tangkai_daun,0.8018,0.8018
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Undulasi pada tepi daun,tepi_daun,False,43,bentuk_pangkal_daun,0.5456,0.3412
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna daun atas,warna_daun,False,10,warna_buah_muda,0.7278,0.5634
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P01,Warna bunga: Tangkai sari,warna_tangkai_sari,False,3,warna_kepala_sari,0.6839,0.636
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Sebaran Geografis,lokasi,False,9,warna_tangkai_putik,0.5424,0.4518
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Tinggi tanaman (cm),tinggi_tanaman,False,1,tinggi_tanaman,0.8181,0.8181
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Tekstur kulit batang,batang,False,2,tekstur_daun,0.6574,0.6027
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Pangkal Daun,bentuk_pangkal_daun,False,4,bentuk_ujung_buah,0.5299,0.5097
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Ujung Daun,bentuk_ujung_daun,False,16,bentuk_ujung_buah,0.496,0.4228
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna daun bagian atas,warna_daun,False,9,warna_buah_muda,0.7408,0.5777
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Permukaan daun bagian atas/bawah,tekstur_daun,False,2,bentuk_ujung_daun,0.6048,0.592
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Panjang daun (cm),panjang_daun,False,3,lebar_daun,0.855,0.8457
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Lebar daun (cm),lebar_daun,False,1,lebar_daun,0.7727,0.7727
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Bentuk daun,bentuk_daun,True,1,bentuk_daun,0.6676,0.6676
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Tepi daun,tepi_daun,True,56,tekstur_daun,0.6329,0.423
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna tangkai bunga,warna_gagang_bunga,False,7,warna_buah_muda,0.7754,0.6712
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Posisi tangkai bunga,posisi_bunga,False,1,posisi_bunga,0.7244,0.7244
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Jumlah bunga per nodus,jumlah_gagang_bunga_ruas,False,1,jumlah_gagang_bunga_ruas,0.7519,0.7519
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna kelopak bunga,warna_kelopak_bunga,True,2,warna_buah_muda,0.8527,0.8157
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna mahkota,warna_mahkota,True,9,warna_biji,0.5552,0.489
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Bentuk buah,bentuk_buah,True,3,bentuk_ujung_buah,0.7873,0.6895
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Penampilan ujung buah,bentuk_ujung_buah,False,1,bentuk_ujung_buah,0.699,0.699
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna kulit buah muda,warna_buah_muda,False,1,warna_buah_muda,0.7156,0.7156
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna kulit buah tua,warna_buah_masak,False,1,warna_buah_masak,0.7099,0.7099
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Ujung Buah,bentuk_ujung_buah,False,1,bentuk_ujung_buah,0.6788,0.6788
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna biji kupas kering,warna_biji,False,7,tekstur_daun,0.6136,0.5407
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Karakter pertanaman,habitus,False,28,lokasi,0.4205,0.2656
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Bentuk ujung daun,bentuk_ujung_daun,True,1,bentuk_ujung_daun,0.7229,0.7229
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Panjang tangkai daun (cm),panjang_tangkai_daun,False,1,panjang_tangkai_daun,0.8254,0.8254
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna daun,warna_daun,True,11,warna_buah_muda,0.6972,0.5476
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.8196,0.8196
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna mahkota bunga,warna_mahkota,False,3,warna_buah_muda,0.8031,0.752
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Orientasi/ letak tangkai bunga,posisi_bunga,False,1,posisi_bunga,0.7262,0.7262
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna buah muda,warna_buah_muda,True,1,warna_buah_muda,0.9075,0.9075
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna buah tua/ matang,warna_buah_masak,False,1,warna_buah_masak,0.7851,0.7851
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Bentuk ujung buah,bentuk_ujung_buah,True,1,bentuk_ujung_buah,0.7164,0.7164
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna biji,warna_biji,True,7,warna_buah_muda,0.7714,0.7286
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Orientasi/bentuk tanaman,habitus,False,2,posisi_bunga,0.6401,0.6212
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Bulu pada batang,batang,False,1,batang,0.534,0.534
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Tingkat bergelombang,tepi_daun,False,9,umur,0.4748,0.3558
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna daun atas,warna_daun,False,11,warna_buah_muda,0.7433,0.5317
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna mahkota bunga (petal),warna_mahkota,False,4,warna_buah_muda,0.7003,0.6443
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna filament,warna_tangkai_sari,False,8,warna_mahkota,0.6121,0.5431
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna kepala sari,warna_kepala_sari,True,5,warna_pangkal_tangkai_daun_bag_bawah,0.7112,0.653
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Panjang benang sari dan filament (mm),panjang_benangsari,False,1,panjang_benangsari,0.6232,0.6232
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Posisi bunga terhadap batang,posisi_bunga,False,1,posisi_bunga,0.782,0.782
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna buah sebelum matang,warna_buah_muda,False,1,warna_buah_muda,0.8231,0.8231
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna buah tua/matang,warna_buah_masak,False,1,warna_buah_masak,0.7084,0.7084
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Jumlah biji per buah,jumlah_biji_buah_masak,False,11,panjang_buah_muda,0.6808,0.6203
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.6817,0.6817
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Orientasi,habitus,False,53,bentuk_ujung_buah,0.5248,0.325
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Bulu pada buku,batang,False,12,tepi_daun,0.5061,0.4012
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Panjang helai daun (cm),panjang_daun,False,3,lebar_daun,0.8722,0.8688
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Lebar helai daun (cm),lebar_daun,False,1,lebar_daun,0.8067,0.8067
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna daun permukaan atas,warna_daun,False,9,warna_buah_muda,0.8061,0.6362
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Undulasi pada tepi daun,tepi_daun,False,27,bentuk_ujung_daun,0.5477,0.3934
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Lepuhan daun,tekstur_daun,False,4,bentuk_ujung_daun,0.6037,0.5278
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna antera,warna_kepala_sari,False,2,warna_biji,0.5905,0.5683
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Bentuk potongan membujur,bentuk_buah,False,27,bentuk_ujung_buah,0.6411,0.4567
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna buah matang,warna_buah_masak,False,1,warna_buah_masak,0.8377,0.8377
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.8174,0.8174
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Orientasi Tanaman,habitus,False,1,habitus,0.6524,0.6524
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Undulasi / gelombang pada tepi daun,tepi_daun,False,42,tekstur_daun,0.5495,0.3798
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna antera/kepala sari,warna_kepala_sari,False,6,warna_pangkal_tangkai_daun_bag_bawah,0.7464,0.7219
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna tangkai kepala putik,warna_tangkai_putik,False,4,warna_kepala_sari,0.5906,0.5478
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Penampang membujur buah,bentuk_buah,False,16,bentuk_ujung_buah,0.7088,0.6294
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Jumlah biji per buah (butir),jumlah_biji_buah_masak,False,7,panjang_buah_muda,0.6798,0.6312
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Orientasi pedunkel pada bunga,posisi_bunga,False,1,posisi_bunga,0.6925,0.6925
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Bentuk potongan membujur buah,bentuk_buah,False,16,bentuk_ujung_buah,0.7498,0.6276
+sentence-transformers/paraphrase-multilingual-mpnet-base-v2,pvt_usulan_ai,P02,Warna buah matang buah,warna_buah_masak,False,1,warna_buah_masak,0.8016,0.8016
+intfloat/multilingual-e5-base,terverifikasi,R02,Leaf shape,bentuk_daun,False,1,bentuk_daun,0.8922,0.8922
+intfloat/multilingual-e5-base,terverifikasi,R02,Fruit shape,bentuk_buah,False,1,bentuk_buah,0.8845,0.8845
+intfloat/multilingual-e5-base,terverifikasi,R02,Corolla colour,warna_mahkota,False,2,warna_biji,0.8397,0.8325
+intfloat/multilingual-e5-base,terverifikasi,R02,Mature fruit colour,warna_buah_masak,False,1,warna_buah_masak,0.8935,0.8935
+intfloat/multilingual-e5-base,terverifikasi,R02,Plant height,tinggi_tanaman,True,1,tinggi_tanaman,0.894,0.894
+intfloat/multilingual-e5-base,terverifikasi,R02,Immature fruit colour,warna_buah_muda,False,1,warna_buah_muda,0.866,0.866
+intfloat/multilingual-e5-base,terverifikasi,R02,Mature fruit length,panjang_buah_masak,False,3,panjang_buah_muda,0.8866,0.8746
+intfloat/multilingual-e5-base,terverifikasi,R02,Plant growth habit,habitus,False,1,habitus,0.8891,0.8891
+intfloat/multilingual-e5-base,terverifikasi,R02,Panjang daun,panjang_daun,True,1,panjang_daun,0.8925,0.8925
+intfloat/multilingual-e5-base,terverifikasi,R02,Lebar daun,lebar_daun,True,1,lebar_daun,0.8817,0.8817
+intfloat/multilingual-e5-base,terverifikasi,R02,Bentuk pangkal daun,bentuk_pangkal_daun,True,1,bentuk_pangkal_daun,0.8669,0.8669
+intfloat/multilingual-e5-base,terverifikasi,R02,Warna daun,warna_daun,True,1,warna_daun,0.8875,0.8875
+intfloat/multilingual-e5-base,terverifikasi,R02,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.8967,0.8967
+intfloat/multilingual-e5-base,terverifikasi,R02,Warna bunga,warna_mahkota,False,3,warna_tangkai_putik,0.8619,0.8451
+intfloat/multilingual-e5-base,terverifikasi,R02,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.9077,0.9077
+intfloat/multilingual-e5-base,terverifikasi,R02,Warna kotak sari,warna_kepala_sari,False,1,warna_kepala_sari,0.8636,0.8636
+intfloat/multilingual-e5-base,terverifikasi,R02,Warna biji,warna_biji,True,1,warna_biji,0.8858,0.8858
+intfloat/multilingual-e5-base,terverifikasi,R02,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.8619,0.8619
+intfloat/multilingual-e5-base,terverifikasi,N07,Tinggi tanaman,tinggi_tanaman,True,1,tinggi_tanaman,0.8925,0.8925
+intfloat/multilingual-e5-base,terverifikasi,N07,Bentuk habitus tanaman,habitus,False,1,habitus,0.8787,0.8787
+intfloat/multilingual-e5-base,terverifikasi,N07,Bentuk daun,bentuk_daun,True,3,bentuk_ujung_daun,0.8871,0.874
+intfloat/multilingual-e5-base,terverifikasi,N07,Warna daun,warna_daun,True,1,warna_daun,0.8625,0.8625
+intfloat/multilingual-e5-base,terverifikasi,N07,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.9002,0.9002
+intfloat/multilingual-e5-base,terverifikasi,N07,Warna bunga kelopak,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.8624,0.8624
+intfloat/multilingual-e5-base,terverifikasi,N07,Mahkota,warna_mahkota,False,1,warna_mahkota,0.8318,0.8318
+intfloat/multilingual-e5-base,terverifikasi,N07,Bentuk buah,bentuk_buah,True,7,bentuk_ujung_buah,0.8708,0.8525
+intfloat/multilingual-e5-base,terverifikasi,N07,Warna buah muda,warna_buah_muda,True,1,warna_buah_muda,0.8745,0.8745
+intfloat/multilingual-e5-base,terverifikasi,N07,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.8811,0.8811
+intfloat/multilingual-e5-base,terverifikasi,N07,Warna biji,warna_biji,True,1,warna_biji,0.8743,0.8743
+intfloat/multilingual-e5-base,terverifikasi,N07,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.857,0.857
+intfloat/multilingual-e5-base,terverifikasi,N07,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.865,0.865
+intfloat/multilingual-e5-base,terverifikasi,N07,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.8722,0.8722
+intfloat/multilingual-e5-base,terverifikasi,N07,Tipe tumbuh tanaman,habitus,False,1,habitus,0.8688,0.8688
+intfloat/multilingual-e5-base,terverifikasi,N07,Panjang daun,panjang_daun,True,1,panjang_daun,0.8764,0.8764
+intfloat/multilingual-e5-base,terverifikasi,N07,Lebar daun,lebar_daun,True,1,lebar_daun,0.8682,0.8682
+intfloat/multilingual-e5-base,terverifikasi,N07,Posisi bunga,posisi_bunga,True,1,posisi_bunga,0.865,0.865
+intfloat/multilingual-e5-base,terverifikasi,N07,Warna kotak sari,warna_kepala_sari,False,1,warna_kepala_sari,0.8412,0.8412
+intfloat/multilingual-e5-base,terverifikasi,N07,Ujung buah,bentuk_ujung_buah,False,1,bentuk_ujung_buah,0.848,0.848
+intfloat/multilingual-e5-base,terverifikasi,N08,Leaf shape,bentuk_daun,False,4,bentuk_ujung_daun,0.8677,0.8472
+intfloat/multilingual-e5-base,terverifikasi,N08,Fruit shape,bentuk_buah,False,4,bentuk_ujung_buah,0.8719,0.8572
+intfloat/multilingual-e5-base,terverifikasi,N08,Corolla colour,warna_mahkota,False,20,jumlah_mahkota_bunga,0.8363,0.8105
+intfloat/multilingual-e5-base,terverifikasi,N08,Mature fruit colour,warna_buah_masak,False,3,bentuk_ujung_buah,0.8589,0.8509
+intfloat/multilingual-e5-base,terverifikasi,N08,Plant height,tinggi_tanaman,True,1,tinggi_tanaman,0.8755,0.8755
+intfloat/multilingual-e5-base,terverifikasi,N08,Immature fruit colour,warna_buah_muda,False,38,bentuk_ujung_buah,0.8509,0.8144
+intfloat/multilingual-e5-base,terverifikasi,N08,Mature fruit length,panjang_buah_masak,False,5,keliling_buah_muda,0.8701,0.8617
+intfloat/multilingual-e5-base,terverifikasi,N08,Seeds per fruit,jumlah_biji_buah_masak,True,1,jumlah_biji_buah_masak,0.8755,0.8755
+intfloat/multilingual-e5-base,terverifikasi,N08,Plant growth habit,habitus,False,1,habitus,0.8745,0.8745
+intfloat/multilingual-e5-base,terverifikasi,N09,Tinggi tanaman,tinggi_tanaman,True,1,tinggi_tanaman,0.8989,0.8989
+intfloat/multilingual-e5-base,terverifikasi,N09,Bentuk daun,bentuk_daun,True,1,bentuk_daun,0.9095,0.9095
+intfloat/multilingual-e5-base,terverifikasi,N09,Warna daun,warna_daun,True,1,warna_daun,0.8875,0.8875
+intfloat/multilingual-e5-base,terverifikasi,N09,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.8967,0.8967
+intfloat/multilingual-e5-base,terverifikasi,N09,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.8855,0.8855
+intfloat/multilingual-e5-base,terverifikasi,N09,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.8855,0.8855
+intfloat/multilingual-e5-base,terverifikasi,N09,Bentuk buah,bentuk_buah,True,1,bentuk_buah,0.8827,0.8827
+intfloat/multilingual-e5-base,terverifikasi,N09,Warna buah muda,warna_buah_muda,True,1,warna_buah_muda,0.8931,0.8931
+intfloat/multilingual-e5-base,terverifikasi,N09,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.8983,0.8983
+intfloat/multilingual-e5-base,terverifikasi,N09,Warna biji,warna_biji,True,1,warna_biji,0.8858,0.8858
+intfloat/multilingual-e5-base,terverifikasi,N09,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.8619,0.8619
+intfloat/multilingual-e5-base,terverifikasi,N09,Ukuran daun Panjang,panjang_daun,False,1,panjang_daun,0.8811,0.8811
+intfloat/multilingual-e5-base,terverifikasi,N09,Ukuran daun Lebar,lebar_daun,False,1,lebar_daun,0.8683,0.8683
+intfloat/multilingual-e5-base,terverifikasi,N09,Tinggi tanaman (cm),tinggi_tanaman,False,1,tinggi_tanaman,0.8785,0.8785
+intfloat/multilingual-e5-base,terverifikasi,N09,Habitus tanaman,habitus,False,1,habitus,0.8696,0.8696
+intfloat/multilingual-e5-base,terverifikasi,N09,Panjang daun,panjang_daun,True,1,panjang_daun,0.881,0.881
+intfloat/multilingual-e5-base,terverifikasi,N09,Lebar daun,lebar_daun,True,1,lebar_daun,0.8759,0.8759
+intfloat/multilingual-e5-base,terverifikasi,N09,Warna bunga,warna_mahkota,False,3,warna_tangkai_putik,0.8619,0.8451
+intfloat/multilingual-e5-base,terverifikasi,N09,Kelopak,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.8495,0.8495
+intfloat/multilingual-e5-base,terverifikasi,N09,Mahkota,warna_mahkota,False,1,warna_mahkota,0.8375,0.8375
+intfloat/multilingual-e5-base,terverifikasi,N09,Bentuk pangkal daun,bentuk_pangkal_daun,True,1,bentuk_pangkal_daun,0.8669,0.8669
+intfloat/multilingual-e5-base,terverifikasi,N09,Kelopak Bunga,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.8951,0.8951
+intfloat/multilingual-e5-base,terverifikasi,N09,Mahkota Bunga,warna_mahkota,False,1,warna_mahkota,0.8883,0.8883
+intfloat/multilingual-e5-base,terverifikasi,N09,Kotak Sari,warna_kepala_sari,False,1,warna_kepala_sari,0.8556,0.8556
+intfloat/multilingual-e5-base,terverifikasi,S01,Bentuk pertumbuhan tanaman,habitus,True,1,habitus,0.8716,0.8716
+intfloat/multilingual-e5-base,terverifikasi,S01,Tinggi keseluruhan tanaman,tinggi_tanaman,False,1,tinggi_tanaman,0.8839,0.8839
+intfloat/multilingual-e5-base,terverifikasi,S01,Siklus hidup tanaman,umur,False,2,habitus,0.8672,0.8668
+intfloat/multilingual-e5-base,terverifikasi,S01,Kesesuaian lingkungan tumbuh,adaptasi_ekologi,False,1,adaptasi_ekologi,0.8498,0.8498
+intfloat/multilingual-e5-base,terverifikasi,S01,Permukaan batang,batang,False,2,tekstur_daun,0.8582,0.8533
+intfloat/multilingual-e5-base,terverifikasi,S01,Tekstur permukaan daun,tekstur_daun,False,1,tekstur_daun,0.8817,0.8817
+intfloat/multilingual-e5-base,terverifikasi,S01,Warna dominan daun,warna_daun,True,1,warna_daun,0.8515,0.8515
+intfloat/multilingual-e5-base,terverifikasi,S01,Ukuran panjang helai daun,panjang_daun,False,1,panjang_daun,0.8822,0.8822
+intfloat/multilingual-e5-base,terverifikasi,S01,Lebar helai daun,lebar_daun,False,1,lebar_daun,0.8697,0.8697
+intfloat/multilingual-e5-base,terverifikasi,S01,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.8628,0.8628
+intfloat/multilingual-e5-base,terverifikasi,S01,Jumlah helai mahkota,jumlah_mahkota_bunga,False,1,jumlah_mahkota_bunga,0.8666,0.8666
+intfloat/multilingual-e5-base,terverifikasi,S01,Arah bunga pada tanaman,posisi_bunga,True,1,posisi_bunga,0.8837,0.8837
+intfloat/multilingual-e5-base,terverifikasi,S01,Panjang buah belum masak,panjang_buah_muda,False,7,panjang_buah_masak,0.8843,0.8684
+intfloat/multilingual-e5-base,terverifikasi,S01,Keliling buah belum masak,keliling_buah_muda,False,4,keliling_buah_masak,0.8776,0.8645
+intfloat/multilingual-e5-base,terverifikasi,S01,Warna buah ketika matang,warna_buah_masak,False,1,warna_buah_masak,0.8577,0.8577
+intfloat/multilingual-e5-base,terverifikasi,S01,Posisi buah matang,posisi_buah_masak,False,1,posisi_buah_masak,0.8726,0.8726
+intfloat/multilingual-e5-base,terverifikasi,S01,Bentuk ujung buah,bentuk_ujung_buah,True,1,bentuk_ujung_buah,0.8915,0.8915
+intfloat/multilingual-e5-base,terverifikasi,S01,Warna kulit biji,warna_biji,False,1,warna_biji,0.862,0.862
+intfloat/multilingual-e5-base,terverifikasi,S01,Jumlah biji pada buah matang,jumlah_biji_buah_masak,False,1,jumlah_biji_buah_masak,0.8696,0.8696
+intfloat/multilingual-e5-base,terverifikasi,S01,Lokasi pengambilan sampel,lokasi,False,1,lokasi,0.8484,0.8484
+intfloat/multilingual-e5-base,terverifikasi,S02,Overall plant growth form,habitus,False,1,habitus,0.8596,0.8596
+intfloat/multilingual-e5-base,terverifikasi,S02,Vertical size at maturity,tinggi_tanaman,False,1,tinggi_tanaman,0.8655,0.8655
+intfloat/multilingual-e5-base,terverifikasi,S02,Productive plant lifespan,umur,False,1,umur,0.8759,0.8759
+intfloat/multilingual-e5-base,terverifikasi,S02,Suitable growing environment,adaptasi_ekologi,False,2,habitus,0.8553,0.8537
+intfloat/multilingual-e5-base,terverifikasi,S02,Hair coverage on the stem,batang,False,1,batang,0.8529,0.8529
+intfloat/multilingual-e5-base,terverifikasi,S02,Leaf surface feel,tekstur_daun,False,1,tekstur_daun,0.8759,0.8759
+intfloat/multilingual-e5-base,terverifikasi,S02,Dominant foliage shade,warna_daun,False,6,habitus,0.8444,0.8312
+intfloat/multilingual-e5-base,terverifikasi,S02,Leaf blade longitudinal size,panjang_daun,False,1,panjang_daun,0.8597,0.8597
+intfloat/multilingual-e5-base,terverifikasi,S02,Leaf blade crosswise span,lebar_daun,False,2,bentuk_ujung_daun,0.8446,0.8445
+intfloat/multilingual-e5-base,terverifikasi,S02,Leaf-tip profile,bentuk_ujung_daun,False,1,bentuk_ujung_daun,0.8678,0.8678
+intfloat/multilingual-e5-base,terverifikasi,S02,Leaf arrangement along the stem,kedudukan_daun,False,1,kedudukan_daun,0.8716,0.8716
+intfloat/multilingual-e5-base,terverifikasi,S02,Petal pigmentation,warna_mahkota,False,35,tekstur_daun,0.8522,0.8096
+intfloat/multilingual-e5-base,terverifikasi,S02,Petals found on each bloom,jumlah_mahkota_bunga,False,4,posisi_bunga,0.8535,0.8381
+intfloat/multilingual-e5-base,terverifikasi,S02,Flower orientation on the plant,posisi_bunga,False,1,posisi_bunga,0.8846,0.8846
+intfloat/multilingual-e5-base,terverifikasi,S02,Longitudinal size of the unripe pod,panjang_buah_muda,False,1,panjang_buah_muda,0.8623,0.8623
+intfloat/multilingual-e5-base,terverifikasi,S02,Girth of the unripe pod,keliling_buah_muda,False,1,keliling_buah_muda,0.8801,0.8801
+intfloat/multilingual-e5-base,terverifikasi,S02,Pigmentation of ripe pods,warna_buah_masak,False,15,tekstur_daun,0.8457,0.8299
+intfloat/multilingual-e5-base,terverifikasi,S02,Orientation of ripe pods,posisi_buah_masak,False,1,posisi_buah_masak,0.8764,0.8764
+intfloat/multilingual-e5-base,terverifikasi,S02,Fruit-tip profile,bentuk_ujung_buah,False,1,bentuk_ujung_buah,0.8748,0.8748
+intfloat/multilingual-e5-base,terverifikasi,S02,Seed coat shade,warna_biji,False,2,tekstur_daun,0.8513,0.8468
+intfloat/multilingual-e5-base,terverifikasi,S02,Seed load in each ripe pod,jumlah_biji_buah_masak,False,6,posisi_buah_masak,0.8434,0.8384
+intfloat/multilingual-e5-base,terverifikasi,S02,Specimen collection site,lokasi,False,1,lokasi,0.8449,0.8449
+intfloat/multilingual-e5-base,terverifikasi,S03,Vegetatif / Bentuk tumbuh,habitus,False,1,habitus,0.8701,0.8701
+intfloat/multilingual-e5-base,terverifikasi,S03,Vegetatif / Ukuran tinggi,tinggi_tanaman,False,1,tinggi_tanaman,0.886,0.886
+intfloat/multilingual-e5-base,terverifikasi,S03,Vegetatif / Lama hidup,umur,False,1,umur,0.859,0.859
+intfloat/multilingual-e5-base,terverifikasi,S03,Vegetatif / Permukaan batang,batang,False,3,gambar_batang,0.8629,0.8542
+intfloat/multilingual-e5-base,terverifikasi,S03,Daun / Tekstur,tekstur_daun,False,1,tekstur_daun,0.8575,0.8575
+intfloat/multilingual-e5-base,terverifikasi,S03,Daun / Warna,warna_daun,False,16,tekstur_daun,0.8478,0.8277
+intfloat/multilingual-e5-base,terverifikasi,S03,Daun / Panjang,panjang_daun,False,1,panjang_daun,0.8603,0.8603
+intfloat/multilingual-e5-base,terverifikasi,S03,Daun / Lebar,lebar_daun,False,1,lebar_daun,0.8452,0.8452
+intfloat/multilingual-e5-base,terverifikasi,S03,Bunga / Warna mahkota,warna_mahkota,True,1,warna_mahkota,0.8579,0.8579
+intfloat/multilingual-e5-base,terverifikasi,S03,Bunga / Jumlah mahkota,jumlah_mahkota_bunga,False,1,jumlah_mahkota_bunga,0.875,0.875
+intfloat/multilingual-e5-base,terverifikasi,S03,Bunga / Posisi,posisi_bunga,False,1,posisi_bunga,0.8627,0.8627
+intfloat/multilingual-e5-base,terverifikasi,S03,Buah Muda / Panjang,panjang_buah_muda,False,2,keliling_buah_muda,0.8801,0.8795
+intfloat/multilingual-e5-base,terverifikasi,S03,Buah Muda / Keliling,keliling_buah_muda,False,1,keliling_buah_muda,0.8739,0.8739
+intfloat/multilingual-e5-base,terverifikasi,S03,Buah Muda / Panjang tangkai,panjang_tangkai_buah_muda,False,1,panjang_tangkai_buah_muda,0.8904,0.8904
+intfloat/multilingual-e5-base,terverifikasi,S03,Buah Muda / Panjang kelopak,panjang_kelopak_buah_muda,False,1,panjang_kelopak_buah_muda,0.8902,0.8902
+intfloat/multilingual-e5-base,terverifikasi,S03,Buah Muda / Keliling kelopak,keliling_kelopak_buah_muda,False,1,keliling_kelopak_buah_muda,0.8936,0.8936
+intfloat/multilingual-e5-base,terverifikasi,S03,Buah Muda / Bentuk kelopak,bentuk_kelopak_buah_muda,False,1,bentuk_kelopak_buah_muda,0.881,0.881
+intfloat/multilingual-e5-base,terverifikasi,S03,Buah Muda / Posisi,posisi_buah_muda,False,1,posisi_buah_muda,0.8587,0.8587
+intfloat/multilingual-e5-base,terverifikasi,S03,Buah Masak / Panjang,panjang_buah_masak,False,1,panjang_buah_masak,0.8775,0.8775
+intfloat/multilingual-e5-base,terverifikasi,S03,Buah Masak / Keliling,keliling_buah_masak,False,1,keliling_buah_masak,0.8769,0.8769
+intfloat/multilingual-e5-base,terverifikasi,S03,Buah Masak / Panjang tangkai,panjang_tangkai_buah_masak,False,1,panjang_tangkai_buah_masak,0.8894,0.8894
+intfloat/multilingual-e5-base,terverifikasi,S03,Buah Masak / Panjang kelopak,panjang_kelopak_buah_masak,False,1,panjang_kelopak_buah_masak,0.8954,0.8954
+intfloat/multilingual-e5-base,terverifikasi,S03,Buah Masak / Keliling kelopak,keliling_kelopak_buah_masak,False,1,keliling_kelopak_buah_masak,0.8897,0.8897
+intfloat/multilingual-e5-base,terverifikasi,S03,Buah Masak / Warna,warna_buah_masak,False,1,warna_buah_masak,0.8651,0.8651
+intfloat/multilingual-e5-base,terverifikasi,S03,Buah Masak / Posisi,posisi_buah_masak,False,1,posisi_buah_masak,0.8693,0.8693
+intfloat/multilingual-e5-base,terverifikasi,S03,Biji / Warna,warna_biji,False,1,warna_biji,0.8582,0.8582
+intfloat/multilingual-e5-base,terverifikasi,S03,Biji / Jumlah,jumlah_biji_buah_masak,False,3,gambar_buah,0.8481,0.842
+intfloat/multilingual-e5-base,terverifikasi,S03,Lokasi,lokasi,True,1,lokasi,0.84,0.84
+intfloat/multilingual-e5-base,terverifikasi,S04,Bentuk tumbuh,habitus,False,1,habitus,0.8585,0.8585
+intfloat/multilingual-e5-base,terverifikasi,S04,Ukuran tinggi,tinggi_tanaman,False,1,tinggi_tanaman,0.8474,0.8474
+intfloat/multilingual-e5-base,terverifikasi,S04,Corak warna daun,warna_daun,False,13,tekstur_daun,0.8543,0.8374
+intfloat/multilingual-e5-base,terverifikasi,S04,Panjang helai,panjang_daun,False,2,panjang_buah_masak,0.8487,0.848
+intfloat/multilingual-e5-base,terverifikasi,S04,Warna buah siap panen,warna_buah_masak,False,1,warna_buah_masak,0.8627,0.8627
+intfloat/multilingual-e5-base,terverifikasi,S04,Tempat pengamatan,lokasi,False,1,lokasi,0.8442,0.8442
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Orientasi tanaman,habitus,False,1,habitus,0.8692,0.8692
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Bulu pada buku,batang,False,1,batang,0.8465,0.8465
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Tinggi tanaman (cm),tinggi_tanaman,False,1,tinggi_tanaman,0.8931,0.8931
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Panjang daun (cm),panjang_daun,False,1,panjang_daun,0.8974,0.8974
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Lebar daun (cm),lebar_daun,False,1,lebar_daun,0.8778,0.8778
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Intensitas warna hijau daun,warna_daun,False,1,warna_daun,0.8757,0.8757
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Bentuk daun,bentuk_daun,True,1,bentuk_daun,0.9218,0.9218
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Bentuk pangkal daun,bentuk_pangkal_daun,True,4,bentuk_daun,0.8874,0.8743
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Undulasi tepi daun,tepi_daun,False,11,bentuk_pangkal_daun,0.8513,0.8368
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Lepuhan daun,tekstur_daun,False,1,tekstur_daun,0.8646,0.8646
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Orientasi pedunkel bunga,posisi_bunga,False,1,posisi_bunga,0.8459,0.8459
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna antera sebelum pecah,warna_kepala_sari,False,3,warna_biji,0.8431,0.8319
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna mahkota,warna_mahkota,True,1,warna_mahkota,0.8767,0.8767
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna buah muda,warna_buah_muda,True,1,warna_buah_muda,0.8955,0.8955
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Posisi buah muda,posisi_buah_muda,True,1,posisi_buah_muda,0.8619,0.8619
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Posisi buah matang,posisi_buah_masak,False,1,posisi_buah_masak,0.8626,0.8626
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Bentuk potongan membujur,bentuk_buah,False,7,bentuk_ujung_buah,0.8535,0.8399
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna buah matang,warna_buah_masak,False,1,warna_buah_masak,0.8985,0.8985
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Bentuk ujung buah,bentuk_ujung_buah,True,1,bentuk_ujung_buah,0.8858,0.8858
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Habitus tanaman,habitus,False,1,habitus,0.8709,0.8709
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Gelombang tepi daun,tepi_daun,False,14,bentuk_ujung_daun,0.8615,0.8365
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna daun,warna_daun,True,1,warna_daun,0.8764,0.8764
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Posisi bunga,posisi_bunga,True,1,posisi_bunga,0.8865,0.8865
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.8871,0.8871
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.8823,0.8823
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.8923,0.8923
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna kotak sari,warna_kepala_sari,False,1,warna_kepala_sari,0.855,0.855
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna tangkai sari,warna_tangkai_sari,True,1,warna_tangkai_sari,0.8808,0.8808
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna tangkai sari (2),warna_tangkai_sari,False,1,warna_tangkai_sari,0.8522,0.8522
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Bentuk buah,bentuk_buah,True,1,bentuk_buah,0.8805,0.8805
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.8918,0.8918
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna biji,warna_biji,True,1,warna_biji,0.8785,0.8785
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna tangkai bunga,warna_gagang_bunga,False,5,warna_pangkal_tangkai_daun_bag_bawah,0.8701,0.8532
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.8548,0.8548
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Bentuk buah (2),bentuk_buah,False,9,gambar_buah,0.8573,0.8389
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Bentuk ujung daun,bentuk_ujung_daun,True,1,bentuk_ujung_daun,0.8793,0.8793
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Jumlah mahkota bunga,jumlah_mahkota_bunga,True,1,jumlah_mahkota_bunga,0.8883,0.8883
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Tinggi tanaman,tinggi_tanaman,True,1,tinggi_tanaman,0.8992,0.8992
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna kelopak,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.8723,0.8723
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna anther,warna_kepala_sari,False,9,warna_biji,0.8376,0.8226
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Bentuk potongan buah membujur,bentuk_buah,False,7,bentuk_ujung_buah,0.8547,0.8422
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Tipe tumbuh tanaman,habitus,False,1,habitus,0.8688,0.8688
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Posisi tangkai bunga,posisi_bunga,False,1,posisi_bunga,0.868,0.868
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Bentuk mahkota bunga,bentuk_bunga,False,3,bentuk_kelopak_bunga,0.8508,0.8478
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna filamen,warna_tangkai_sari,False,10,warna_tangkai_putik,0.8366,0.82
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Ujung buah,bentuk_ujung_buah,False,1,bentuk_ujung_buah,0.8588,0.8588
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Undulasi (gelombang) tepi daun,tepi_daun,False,19,bentuk_ujung_daun,0.8664,0.8241
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Orientasi bunga,posisi_bunga,False,1,posisi_bunga,0.8671,0.8671
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna bunga: Kelopak Bunga,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.8939,0.8939
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna bunga: Mahkota Bunga,warna_mahkota,False,1,warna_mahkota,0.8907,0.8907
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Bentuk potongan membujur buah,bentuk_buah,False,3,bentuk_ujung_buah,0.8645,0.8543
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Orientasi,habitus,False,3,posisi_buah_masak,0.858,0.8508
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Panjang helai daun (cm),panjang_daun,False,1,panjang_daun,0.8791,0.8791
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Lebar helai daun (cm),lebar_daun,False,1,lebar_daun,0.8761,0.8761
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Panjang tangkai daun (cm),panjang_tangkai_daun,False,1,panjang_tangkai_daun,0.9105,0.9105
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Undulasi pada tepi daun,tepi_daun,False,16,bentuk_pangkal_daun,0.8541,0.8235
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna daun atas,warna_daun,False,1,warna_daun,0.8736,0.8736
+intfloat/multilingual-e5-base,pvt_usulan_ai,P01,Warna bunga: Tangkai sari,warna_tangkai_sari,False,1,warna_tangkai_sari,0.8831,0.8831
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Sebaran Geografis,lokasi,False,8,habitus,0.8265,0.818
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Tinggi tanaman (cm),tinggi_tanaman,False,1,tinggi_tanaman,0.8948,0.8948
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Tekstur kulit batang,batang,False,6,tekstur_daun,0.8545,0.8363
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Pangkal Daun,bentuk_pangkal_daun,False,1,bentuk_pangkal_daun,0.8488,0.8488
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Ujung Daun,bentuk_ujung_daun,False,6,bentuk_ujung_buah,0.8432,0.8334
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna daun bagian atas,warna_daun,False,1,warna_daun,0.8712,0.8712
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Permukaan daun bagian atas/bawah,tekstur_daun,False,2,bentuk_pangkal_daun,0.854,0.845
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Panjang daun (cm),panjang_daun,False,1,panjang_daun,0.8982,0.8982
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Lebar daun (cm),lebar_daun,False,1,lebar_daun,0.8862,0.8862
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Bentuk daun,bentuk_daun,True,1,bentuk_daun,0.9127,0.9127
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Tepi daun,tepi_daun,True,15,tekstur_daun,0.8573,0.8323
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna tangkai bunga,warna_gagang_bunga,False,5,warna_pangkal_tangkai_daun_bag_bawah,0.8716,0.862
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Posisi tangkai bunga,posisi_bunga,False,1,posisi_bunga,0.876,0.876
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Jumlah bunga per nodus,jumlah_gagang_bunga_ruas,False,1,jumlah_gagang_bunga_ruas,0.8528,0.8528
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.8932,0.8932
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna mahkota,warna_mahkota,True,1,warna_mahkota,0.845,0.845
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Bentuk buah,bentuk_buah,True,2,bentuk_ujung_buah,0.8815,0.8739
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Penampilan ujung buah,bentuk_ujung_buah,False,1,bentuk_ujung_buah,0.8618,0.8618
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna kulit buah muda,warna_buah_muda,False,1,warna_buah_muda,0.8603,0.8603
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna kulit buah tua,warna_buah_masak,False,1,warna_buah_masak,0.8675,0.8675
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Ujung Buah,bentuk_ujung_buah,False,1,bentuk_ujung_buah,0.8635,0.8635
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna biji kupas kering,warna_biji,False,1,warna_biji,0.8551,0.8551
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Karakter pertanaman,habitus,False,1,habitus,0.8497,0.8497
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Bentuk ujung daun,bentuk_ujung_daun,True,1,bentuk_ujung_daun,0.879,0.879
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Panjang tangkai daun (cm),panjang_tangkai_daun,False,1,panjang_tangkai_daun,0.9039,0.9039
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna daun,warna_daun,True,1,warna_daun,0.8738,0.8738
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.8918,0.8918
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.8872,0.8872
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Orientasi/ letak tangkai bunga,posisi_bunga,False,1,posisi_bunga,0.8723,0.8723
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna buah muda,warna_buah_muda,True,1,warna_buah_muda,0.8948,0.8948
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna buah tua/ matang,warna_buah_masak,False,1,warna_buah_masak,0.8866,0.8866
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Bentuk ujung buah,bentuk_ujung_buah,True,1,bentuk_ujung_buah,0.8976,0.8976
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna biji,warna_biji,True,1,warna_biji,0.879,0.879
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Orientasi/bentuk tanaman,habitus,False,2,posisi_bunga,0.867,0.8666
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Bulu pada batang,batang,False,1,batang,0.8494,0.8494
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Tingkat bergelombang,tepi_daun,False,19,habitus,0.8403,0.8122
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna daun atas,warna_daun,False,1,warna_daun,0.8699,0.8699
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna mahkota bunga (petal),warna_mahkota,False,1,warna_mahkota,0.8765,0.8765
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna filament,warna_tangkai_sari,False,5,warna_tangkai_putik,0.845,0.8282
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna kepala sari,warna_kepala_sari,True,1,warna_kepala_sari,0.8642,0.8642
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Panjang benang sari dan filament (mm),panjang_benangsari,False,1,panjang_benangsari,0.8619,0.8619
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Posisi bunga terhadap batang,posisi_bunga,False,1,posisi_bunga,0.8749,0.8749
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna buah sebelum matang,warna_buah_muda,False,1,warna_buah_muda,0.8665,0.8665
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna buah tua/matang,warna_buah_masak,False,1,warna_buah_masak,0.881,0.881
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Jumlah biji per buah,jumlah_biji_buah_masak,False,1,jumlah_biji_buah_masak,0.8701,0.8701
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.8727,0.8727
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Orientasi,habitus,False,5,posisi_buah_muda,0.8591,0.8537
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Bulu pada buku,batang,False,1,batang,0.8535,0.8535
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Panjang helai daun (cm),panjang_daun,False,1,panjang_daun,0.8791,0.8791
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Lebar helai daun (cm),lebar_daun,False,1,lebar_daun,0.8802,0.8802
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna daun permukaan atas,warna_daun,False,1,warna_daun,0.8766,0.8766
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Undulasi pada tepi daun,tepi_daun,False,18,tekstur_daun,0.8609,0.8266
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Lepuhan daun,tekstur_daun,False,1,tekstur_daun,0.8639,0.8639
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna antera,warna_kepala_sari,False,13,bentuk_pangkal_daun,0.8467,0.8283
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Bentuk potongan membujur,bentuk_buah,False,4,bentuk_ujung_daun,0.8654,0.8536
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna buah matang,warna_buah_masak,False,1,warna_buah_masak,0.9008,0.9008
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.8826,0.8826
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Orientasi Tanaman,habitus,False,1,habitus,0.8675,0.8675
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Undulasi / gelombang pada tepi daun,tepi_daun,False,12,bentuk_pangkal_daun,0.8509,0.829
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna antera/kepala sari,warna_kepala_sari,False,1,warna_kepala_sari,0.8551,0.8551
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna tangkai kepala putik,warna_tangkai_putik,False,1,warna_tangkai_putik,0.8761,0.8761
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Penampang membujur buah,bentuk_buah,False,12,gambar_buah,0.8401,0.8247
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Jumlah biji per buah (butir),jumlah_biji_buah_masak,False,1,jumlah_biji_buah_masak,0.87,0.87
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Orientasi pedunkel pada bunga,posisi_bunga,False,1,posisi_bunga,0.8591,0.8591
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Bentuk potongan membujur buah,bentuk_buah,False,7,bentuk_ujung_buah,0.8528,0.8387
+intfloat/multilingual-e5-base,pvt_usulan_ai,P02,Warna buah matang buah,warna_buah_masak,False,1,warna_buah_masak,0.8868,0.8868
+BAAI/bge-m3,terverifikasi,R02,Leaf shape,bentuk_daun,False,2,bentuk_ujung_daun,0.7565,0.7556
+BAAI/bge-m3,terverifikasi,R02,Fruit shape,bentuk_buah,False,1,bentuk_buah,0.7409,0.7409
+BAAI/bge-m3,terverifikasi,R02,Corolla colour,warna_mahkota,False,6,warna_buah_muda,0.6478,0.6138
+BAAI/bge-m3,terverifikasi,R02,Mature fruit colour,warna_buah_masak,False,1,warna_buah_masak,0.7627,0.7627
+BAAI/bge-m3,terverifikasi,R02,Plant height,tinggi_tanaman,True,1,tinggi_tanaman,0.8622,0.8622
+BAAI/bge-m3,terverifikasi,R02,Immature fruit colour,warna_buah_muda,False,1,warna_buah_muda,0.7409,0.7409
+BAAI/bge-m3,terverifikasi,R02,Mature fruit length,panjang_buah_masak,False,2,panjang_buah_muda,0.8323,0.8296
+BAAI/bge-m3,terverifikasi,R02,Plant growth habit,habitus,False,1,habitus,0.6619,0.6619
+BAAI/bge-m3,terverifikasi,R02,Panjang daun,panjang_daun,True,1,panjang_daun,0.8607,0.8607
+BAAI/bge-m3,terverifikasi,R02,Lebar daun,lebar_daun,True,1,lebar_daun,0.8625,0.8625
+BAAI/bge-m3,terverifikasi,R02,Bentuk pangkal daun,bentuk_pangkal_daun,True,2,bentuk_ujung_daun,0.6879,0.6781
+BAAI/bge-m3,terverifikasi,R02,Warna daun,warna_daun,True,1,warna_daun,0.7899,0.7899
+BAAI/bge-m3,terverifikasi,R02,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.7769,0.7769
+BAAI/bge-m3,terverifikasi,R02,Warna bunga,warna_mahkota,False,4,warna_tangkai_putik,0.7012,0.6546
+BAAI/bge-m3,terverifikasi,R02,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.8417,0.8417
+BAAI/bge-m3,terverifikasi,R02,Warna kotak sari,warna_kepala_sari,False,1,warna_kepala_sari,0.7114,0.7114
+BAAI/bge-m3,terverifikasi,R02,Warna biji,warna_biji,True,2,warna_buah_muda,0.7223,0.6877
+BAAI/bge-m3,terverifikasi,R02,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.6063,0.6063
+BAAI/bge-m3,terverifikasi,N07,Tinggi tanaman,tinggi_tanaman,True,1,tinggi_tanaman,0.8419,0.8419
+BAAI/bge-m3,terverifikasi,N07,Bentuk habitus tanaman,habitus,False,1,habitus,0.7002,0.7002
+BAAI/bge-m3,terverifikasi,N07,Bentuk daun,bentuk_daun,True,2,bentuk_ujung_daun,0.737,0.731
+BAAI/bge-m3,terverifikasi,N07,Warna daun,warna_daun,True,1,warna_daun,0.6774,0.6774
+BAAI/bge-m3,terverifikasi,N07,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.7982,0.7982
+BAAI/bge-m3,terverifikasi,N07,Warna bunga kelopak,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.7112,0.7112
+BAAI/bge-m3,terverifikasi,N07,Mahkota,warna_mahkota,False,1,warna_mahkota,0.622,0.622
+BAAI/bge-m3,terverifikasi,N07,Bentuk buah,bentuk_buah,True,1,bentuk_buah,0.7053,0.7053
+BAAI/bge-m3,terverifikasi,N07,Warna buah muda,warna_buah_muda,True,1,warna_buah_muda,0.7463,0.7463
+BAAI/bge-m3,terverifikasi,N07,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.742,0.742
+BAAI/bge-m3,terverifikasi,N07,Warna biji,warna_biji,True,1,warna_biji,0.6746,0.6746
+BAAI/bge-m3,terverifikasi,N07,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.6269,0.6269
+BAAI/bge-m3,terverifikasi,N07,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.7495,0.7495
+BAAI/bge-m3,terverifikasi,N07,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.7788,0.7788
+BAAI/bge-m3,terverifikasi,N07,Tipe tumbuh tanaman,habitus,False,1,habitus,0.6576,0.6576
+BAAI/bge-m3,terverifikasi,N07,Panjang daun,panjang_daun,True,1,panjang_daun,0.809,0.809
+BAAI/bge-m3,terverifikasi,N07,Lebar daun,lebar_daun,True,1,lebar_daun,0.8028,0.8028
+BAAI/bge-m3,terverifikasi,N07,Posisi bunga,posisi_bunga,True,1,posisi_bunga,0.6778,0.6778
+BAAI/bge-m3,terverifikasi,N07,Warna kotak sari,warna_kepala_sari,False,1,warna_kepala_sari,0.6055,0.6055
+BAAI/bge-m3,terverifikasi,N07,Ujung buah,bentuk_ujung_buah,False,3,bentuk_ujung_daun,0.6674,0.6428
+BAAI/bge-m3,terverifikasi,N08,Leaf shape,bentuk_daun,False,3,bentuk_ujung_daun,0.6404,0.6129
+BAAI/bge-m3,terverifikasi,N08,Fruit shape,bentuk_buah,False,2,jumlah_biji_buah_masak,0.6533,0.6279
+BAAI/bge-m3,terverifikasi,N08,Corolla colour,warna_mahkota,False,8,warna_kelopak_bunga,0.6067,0.5592
+BAAI/bge-m3,terverifikasi,N08,Mature fruit colour,warna_buah_masak,False,3,jumlah_biji_buah_masak,0.697,0.6344
+BAAI/bge-m3,terverifikasi,N08,Plant height,tinggi_tanaman,True,1,tinggi_tanaman,0.7433,0.7433
+BAAI/bge-m3,terverifikasi,N08,Immature fruit colour,warna_buah_muda,False,4,jumlah_biji_buah_masak,0.643,0.5912
+BAAI/bge-m3,terverifikasi,N08,Mature fruit length,panjang_buah_masak,False,4,panjang_tangkai_buah_masak,0.7473,0.7412
+BAAI/bge-m3,terverifikasi,N08,Seeds per fruit,jumlah_biji_buah_masak,True,1,jumlah_biji_buah_masak,0.7491,0.7491
+BAAI/bge-m3,terverifikasi,N08,Plant growth habit,habitus,False,1,habitus,0.6535,0.6535
+BAAI/bge-m3,terverifikasi,N09,Tinggi tanaman,tinggi_tanaman,True,1,tinggi_tanaman,0.8762,0.8762
+BAAI/bge-m3,terverifikasi,N09,Bentuk daun,bentuk_daun,True,1,bentuk_daun,0.8209,0.8209
+BAAI/bge-m3,terverifikasi,N09,Warna daun,warna_daun,True,1,warna_daun,0.7899,0.7899
+BAAI/bge-m3,terverifikasi,N09,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.7769,0.7769
+BAAI/bge-m3,terverifikasi,N09,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.7887,0.7887
+BAAI/bge-m3,terverifikasi,N09,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.7869,0.7869
+BAAI/bge-m3,terverifikasi,N09,Bentuk buah,bentuk_buah,True,1,bentuk_buah,0.7582,0.7582
+BAAI/bge-m3,terverifikasi,N09,Warna buah muda,warna_buah_muda,True,1,warna_buah_muda,0.8327,0.8327
+BAAI/bge-m3,terverifikasi,N09,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.7817,0.7817
+BAAI/bge-m3,terverifikasi,N09,Warna biji,warna_biji,True,2,warna_buah_muda,0.7223,0.6877
+BAAI/bge-m3,terverifikasi,N09,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.6063,0.6063
+BAAI/bge-m3,terverifikasi,N09,Ukuran daun Panjang,panjang_daun,False,1,panjang_daun,0.8257,0.8257
+BAAI/bge-m3,terverifikasi,N09,Ukuran daun Lebar,lebar_daun,False,1,lebar_daun,0.8205,0.8205
+BAAI/bge-m3,terverifikasi,N09,Tinggi tanaman (cm),tinggi_tanaman,False,1,tinggi_tanaman,0.7621,0.7621
+BAAI/bge-m3,terverifikasi,N09,Habitus tanaman,habitus,False,1,habitus,0.6731,0.6731
+BAAI/bge-m3,terverifikasi,N09,Panjang daun,panjang_daun,True,1,panjang_daun,0.8102,0.8102
+BAAI/bge-m3,terverifikasi,N09,Lebar daun,lebar_daun,True,1,lebar_daun,0.8164,0.8164
+BAAI/bge-m3,terverifikasi,N09,Warna bunga,warna_mahkota,False,4,warna_tangkai_putik,0.7012,0.6546
+BAAI/bge-m3,terverifikasi,N09,Kelopak,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.6306,0.6306
+BAAI/bge-m3,terverifikasi,N09,Mahkota,warna_mahkota,False,1,warna_mahkota,0.6205,0.6205
+BAAI/bge-m3,terverifikasi,N09,Bentuk pangkal daun,bentuk_pangkal_daun,True,2,bentuk_ujung_daun,0.6879,0.6781
+BAAI/bge-m3,terverifikasi,N09,Kelopak Bunga,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.7773,0.7773
+BAAI/bge-m3,terverifikasi,N09,Mahkota Bunga,warna_mahkota,False,1,warna_mahkota,0.7925,0.7925
+BAAI/bge-m3,terverifikasi,N09,Kotak Sari,warna_kepala_sari,False,1,warna_kepala_sari,0.6462,0.6462
+BAAI/bge-m3,terverifikasi,S01,Bentuk pertumbuhan tanaman,habitus,True,1,habitus,0.6576,0.6576
+BAAI/bge-m3,terverifikasi,S01,Tinggi keseluruhan tanaman,tinggi_tanaman,False,1,tinggi_tanaman,0.7747,0.7747
+BAAI/bge-m3,terverifikasi,S01,Siklus hidup tanaman,umur,False,1,umur,0.7009,0.7009
+BAAI/bge-m3,terverifikasi,S01,Kesesuaian lingkungan tumbuh,adaptasi_ekologi,False,1,adaptasi_ekologi,0.6853,0.6853
+BAAI/bge-m3,terverifikasi,S01,Permukaan batang,batang,False,1,batang,0.7002,0.7002
+BAAI/bge-m3,terverifikasi,S01,Tekstur permukaan daun,tekstur_daun,False,1,tekstur_daun,0.7142,0.7142
+BAAI/bge-m3,terverifikasi,S01,Warna dominan daun,warna_daun,True,1,warna_daun,0.7275,0.7275
+BAAI/bge-m3,terverifikasi,S01,Ukuran panjang helai daun,panjang_daun,False,1,panjang_daun,0.8,0.8
+BAAI/bge-m3,terverifikasi,S01,Lebar helai daun,lebar_daun,False,1,lebar_daun,0.7914,0.7914
+BAAI/bge-m3,terverifikasi,S01,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.7554,0.7554
+BAAI/bge-m3,terverifikasi,S01,Jumlah helai mahkota,jumlah_mahkota_bunga,False,1,jumlah_mahkota_bunga,0.7008,0.7008
+BAAI/bge-m3,terverifikasi,S01,Arah bunga pada tanaman,posisi_bunga,True,1,posisi_bunga,0.8213,0.8213
+BAAI/bge-m3,terverifikasi,S01,Panjang buah belum masak,panjang_buah_muda,False,5,panjang_buah_masak,0.7256,0.6848
+BAAI/bge-m3,terverifikasi,S01,Keliling buah belum masak,keliling_buah_muda,False,3,keliling_kelopak_buah_masak,0.7226,0.6824
+BAAI/bge-m3,terverifikasi,S01,Warna buah ketika matang,warna_buah_masak,False,1,warna_buah_masak,0.7108,0.7108
+BAAI/bge-m3,terverifikasi,S01,Posisi buah matang,posisi_buah_masak,False,1,posisi_buah_masak,0.7324,0.7324
+BAAI/bge-m3,terverifikasi,S01,Bentuk ujung buah,bentuk_ujung_buah,True,1,bentuk_ujung_buah,0.7911,0.7911
+BAAI/bge-m3,terverifikasi,S01,Warna kulit biji,warna_biji,False,1,warna_biji,0.6265,0.6265
+BAAI/bge-m3,terverifikasi,S01,Jumlah biji pada buah matang,jumlah_biji_buah_masak,False,1,jumlah_biji_buah_masak,0.7652,0.7652
+BAAI/bge-m3,terverifikasi,S01,Lokasi pengambilan sampel,lokasi,False,1,lokasi,0.6676,0.6676
+BAAI/bge-m3,terverifikasi,S02,Overall plant growth form,habitus,False,1,habitus,0.6687,0.6687
+BAAI/bge-m3,terverifikasi,S02,Vertical size at maturity,tinggi_tanaman,False,1,tinggi_tanaman,0.7113,0.7113
+BAAI/bge-m3,terverifikasi,S02,Productive plant lifespan,umur,False,1,umur,0.6784,0.6784
+BAAI/bge-m3,terverifikasi,S02,Suitable growing environment,adaptasi_ekologi,False,1,adaptasi_ekologi,0.6052,0.6052
+BAAI/bge-m3,terverifikasi,S02,Hair coverage on the stem,batang,False,1,batang,0.6864,0.6864
+BAAI/bge-m3,terverifikasi,S02,Leaf surface feel,tekstur_daun,False,1,tekstur_daun,0.6605,0.6605
+BAAI/bge-m3,terverifikasi,S02,Dominant foliage shade,warna_daun,False,1,warna_daun,0.6843,0.6843
+BAAI/bge-m3,terverifikasi,S02,Leaf blade longitudinal size,panjang_daun,False,1,panjang_daun,0.7181,0.7181
+BAAI/bge-m3,terverifikasi,S02,Leaf blade crosswise span,lebar_daun,False,1,lebar_daun,0.6786,0.6786
+BAAI/bge-m3,terverifikasi,S02,Leaf-tip profile,bentuk_ujung_daun,False,1,bentuk_ujung_daun,0.6565,0.6565
+BAAI/bge-m3,terverifikasi,S02,Leaf arrangement along the stem,kedudukan_daun,False,1,kedudukan_daun,0.6548,0.6548
+BAAI/bge-m3,terverifikasi,S02,Petal pigmentation,warna_mahkota,False,8,warna_tangkai_putik,0.6205,0.5569
+BAAI/bge-m3,terverifikasi,S02,Petals found on each bloom,jumlah_mahkota_bunga,False,1,jumlah_mahkota_bunga,0.6668,0.6668
+BAAI/bge-m3,terverifikasi,S02,Flower orientation on the plant,posisi_bunga,False,1,posisi_bunga,0.7118,0.7118
+BAAI/bge-m3,terverifikasi,S02,Longitudinal size of the unripe pod,panjang_buah_muda,False,1,panjang_buah_muda,0.6259,0.6259
+BAAI/bge-m3,terverifikasi,S02,Girth of the unripe pod,keliling_buah_muda,False,1,keliling_buah_muda,0.6681,0.6681
+BAAI/bge-m3,terverifikasi,S02,Pigmentation of ripe pods,warna_buah_masak,False,2,batang,0.5642,0.5604
+BAAI/bge-m3,terverifikasi,S02,Orientation of ripe pods,posisi_buah_masak,False,3,posisi_buah_muda,0.5925,0.5862
+BAAI/bge-m3,terverifikasi,S02,Fruit-tip profile,bentuk_ujung_buah,False,2,bentuk_ujung_daun,0.6245,0.5814
+BAAI/bge-m3,terverifikasi,S02,Seed coat shade,warna_biji,False,1,warna_biji,0.636,0.636
+BAAI/bge-m3,terverifikasi,S02,Seed load in each ripe pod,jumlah_biji_buah_masak,False,1,jumlah_biji_buah_masak,0.642,0.642
+BAAI/bge-m3,terverifikasi,S02,Specimen collection site,lokasi,False,1,lokasi,0.6482,0.6482
+BAAI/bge-m3,terverifikasi,S03,Vegetatif / Bentuk tumbuh,habitus,False,1,habitus,0.6865,0.6865
+BAAI/bge-m3,terverifikasi,S03,Vegetatif / Ukuran tinggi,tinggi_tanaman,False,1,tinggi_tanaman,0.7189,0.7189
+BAAI/bge-m3,terverifikasi,S03,Vegetatif / Lama hidup,umur,False,1,umur,0.725,0.725
+BAAI/bge-m3,terverifikasi,S03,Vegetatif / Permukaan batang,batang,False,1,batang,0.7461,0.7461
+BAAI/bge-m3,terverifikasi,S03,Daun / Tekstur,tekstur_daun,False,1,tekstur_daun,0.6729,0.6729
+BAAI/bge-m3,terverifikasi,S03,Daun / Warna,warna_daun,False,1,warna_daun,0.6355,0.6355
+BAAI/bge-m3,terverifikasi,S03,Daun / Panjang,panjang_daun,False,1,panjang_daun,0.7339,0.7339
+BAAI/bge-m3,terverifikasi,S03,Daun / Lebar,lebar_daun,False,1,lebar_daun,0.7328,0.7328
+BAAI/bge-m3,terverifikasi,S03,Bunga / Warna mahkota,warna_mahkota,True,1,warna_mahkota,0.7433,0.7433
+BAAI/bge-m3,terverifikasi,S03,Bunga / Jumlah mahkota,jumlah_mahkota_bunga,False,1,jumlah_mahkota_bunga,0.7545,0.7545
+BAAI/bge-m3,terverifikasi,S03,Bunga / Posisi,posisi_bunga,False,1,posisi_bunga,0.7274,0.7274
+BAAI/bge-m3,terverifikasi,S03,Buah Muda / Panjang,panjang_buah_muda,False,2,panjang_tangkai_buah_muda,0.7771,0.7661
+BAAI/bge-m3,terverifikasi,S03,Buah Muda / Keliling,keliling_buah_muda,False,1,keliling_buah_muda,0.7613,0.7613
+BAAI/bge-m3,terverifikasi,S03,Buah Muda / Panjang tangkai,panjang_tangkai_buah_muda,False,1,panjang_tangkai_buah_muda,0.8242,0.8242
+BAAI/bge-m3,terverifikasi,S03,Buah Muda / Panjang kelopak,panjang_kelopak_buah_muda,False,1,panjang_kelopak_buah_muda,0.8067,0.8067
+BAAI/bge-m3,terverifikasi,S03,Buah Muda / Keliling kelopak,keliling_kelopak_buah_muda,False,1,keliling_kelopak_buah_muda,0.8325,0.8325
+BAAI/bge-m3,terverifikasi,S03,Buah Muda / Bentuk kelopak,bentuk_kelopak_buah_muda,False,1,bentuk_kelopak_buah_muda,0.7101,0.7101
+BAAI/bge-m3,terverifikasi,S03,Buah Muda / Posisi,posisi_buah_muda,False,1,posisi_buah_muda,0.7183,0.7183
+BAAI/bge-m3,terverifikasi,S03,Buah Masak / Panjang,panjang_buah_masak,False,1,panjang_buah_masak,0.7753,0.7753
+BAAI/bge-m3,terverifikasi,S03,Buah Masak / Keliling,keliling_buah_masak,False,1,keliling_buah_masak,0.7809,0.7809
+BAAI/bge-m3,terverifikasi,S03,Buah Masak / Panjang tangkai,panjang_tangkai_buah_masak,False,1,panjang_tangkai_buah_masak,0.8111,0.8111
+BAAI/bge-m3,terverifikasi,S03,Buah Masak / Panjang kelopak,panjang_kelopak_buah_masak,False,1,panjang_kelopak_buah_masak,0.7912,0.7912
+BAAI/bge-m3,terverifikasi,S03,Buah Masak / Keliling kelopak,keliling_kelopak_buah_masak,False,1,keliling_kelopak_buah_masak,0.8256,0.8256
+BAAI/bge-m3,terverifikasi,S03,Buah Masak / Warna,warna_buah_masak,False,1,warna_buah_masak,0.6937,0.6937
+BAAI/bge-m3,terverifikasi,S03,Buah Masak / Posisi,posisi_buah_masak,False,1,posisi_buah_masak,0.7331,0.7331
+BAAI/bge-m3,terverifikasi,S03,Biji / Warna,warna_biji,False,1,warna_biji,0.6317,0.6317
+BAAI/bge-m3,terverifikasi,S03,Biji / Jumlah,jumlah_biji_buah_masak,False,1,jumlah_biji_buah_masak,0.6713,0.6713
+BAAI/bge-m3,terverifikasi,S03,Lokasi,lokasi,True,1,lokasi,0.5929,0.5929
+BAAI/bge-m3,terverifikasi,S04,Bentuk tumbuh,habitus,False,1,habitus,0.6605,0.6605
+BAAI/bge-m3,terverifikasi,S04,Ukuran tinggi,tinggi_tanaman,False,1,tinggi_tanaman,0.6417,0.6417
+BAAI/bge-m3,terverifikasi,S04,Corak warna daun,warna_daun,False,1,warna_daun,0.6806,0.6806
+BAAI/bge-m3,terverifikasi,S04,Panjang helai,panjang_daun,False,1,panjang_daun,0.6679,0.6679
+BAAI/bge-m3,terverifikasi,S04,Warna buah siap panen,warna_buah_masak,False,1,warna_buah_masak,0.6803,0.6803
+BAAI/bge-m3,terverifikasi,S04,Tempat pengamatan,lokasi,False,1,lokasi,0.6173,0.6173
+BAAI/bge-m3,pvt_usulan_ai,P01,Orientasi tanaman,habitus,False,2,posisi_bunga,0.7007,0.66
+BAAI/bge-m3,pvt_usulan_ai,P01,Bulu pada buku,batang,False,1,batang,0.6339,0.6339
+BAAI/bge-m3,pvt_usulan_ai,P01,Tinggi tanaman (cm),tinggi_tanaman,False,1,tinggi_tanaman,0.8169,0.8169
+BAAI/bge-m3,pvt_usulan_ai,P01,Panjang daun (cm),panjang_daun,False,1,panjang_daun,0.907,0.907
+BAAI/bge-m3,pvt_usulan_ai,P01,Lebar daun (cm),lebar_daun,False,1,lebar_daun,0.8804,0.8804
+BAAI/bge-m3,pvt_usulan_ai,P01,Intensitas warna hijau daun,warna_daun,False,1,warna_daun,0.7279,0.7279
+BAAI/bge-m3,pvt_usulan_ai,P01,Bentuk daun,bentuk_daun,True,1,bentuk_daun,0.8329,0.8329
+BAAI/bge-m3,pvt_usulan_ai,P01,Bentuk pangkal daun,bentuk_pangkal_daun,True,3,bentuk_ujung_daun,0.7705,0.7099
+BAAI/bge-m3,pvt_usulan_ai,P01,Undulasi tepi daun,tepi_daun,False,6,bentuk_ujung_daun,0.6409,0.6164
+BAAI/bge-m3,pvt_usulan_ai,P01,Lepuhan daun,tekstur_daun,False,1,tekstur_daun,0.6438,0.6438
+BAAI/bge-m3,pvt_usulan_ai,P01,Orientasi pedunkel bunga,posisi_bunga,False,1,posisi_bunga,0.7032,0.7032
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna antera sebelum pecah,warna_kepala_sari,False,4,warna_buah_muda,0.6118,0.603
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna mahkota,warna_mahkota,True,1,warna_mahkota,0.7495,0.7495
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna buah muda,warna_buah_muda,True,1,warna_buah_muda,0.8251,0.8251
+BAAI/bge-m3,pvt_usulan_ai,P01,Posisi buah muda,posisi_buah_muda,True,1,posisi_buah_muda,0.7221,0.7221
+BAAI/bge-m3,pvt_usulan_ai,P01,Posisi buah matang,posisi_buah_masak,False,1,posisi_buah_masak,0.6885,0.6885
+BAAI/bge-m3,pvt_usulan_ai,P01,Bentuk potongan membujur,bentuk_buah,False,4,bentuk_ujung_daun,0.6421,0.5886
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna buah matang,warna_buah_masak,False,1,warna_buah_masak,0.8239,0.8239
+BAAI/bge-m3,pvt_usulan_ai,P01,Bentuk ujung buah,bentuk_ujung_buah,True,3,bentuk_ujung_daun,0.7477,0.7243
+BAAI/bge-m3,pvt_usulan_ai,P01,Habitus tanaman,habitus,False,1,habitus,0.6637,0.6637
+BAAI/bge-m3,pvt_usulan_ai,P01,Gelombang tepi daun,tepi_daun,False,15,bentuk_ujung_daun,0.6413,0.5615
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna daun,warna_daun,True,1,warna_daun,0.7618,0.7618
+BAAI/bge-m3,pvt_usulan_ai,P01,Posisi bunga,posisi_bunga,True,1,posisi_bunga,0.7682,0.7682
+BAAI/bge-m3,pvt_usulan_ai,P01,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.7513,0.7513
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.7914,0.7914
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.7999,0.7999
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna kotak sari,warna_kepala_sari,False,1,warna_kepala_sari,0.7315,0.7315
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna tangkai sari,warna_tangkai_sari,True,1,warna_tangkai_sari,0.8048,0.8048
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna tangkai sari (2),warna_tangkai_sari,False,1,warna_tangkai_sari,0.7344,0.7344
+BAAI/bge-m3,pvt_usulan_ai,P01,Bentuk buah,bentuk_buah,True,1,bentuk_buah,0.7499,0.7499
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.7779,0.7779
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna biji,warna_biji,True,1,warna_biji,0.7096,0.7096
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna tangkai bunga,warna_gagang_bunga,False,4,warna_tangkai_putik,0.7572,0.7305
+BAAI/bge-m3,pvt_usulan_ai,P01,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.6322,0.6322
+BAAI/bge-m3,pvt_usulan_ai,P01,Bentuk buah (2),bentuk_buah,False,1,bentuk_buah,0.6433,0.6433
+BAAI/bge-m3,pvt_usulan_ai,P01,Bentuk ujung daun,bentuk_ujung_daun,True,1,bentuk_ujung_daun,0.7661,0.7661
+BAAI/bge-m3,pvt_usulan_ai,P01,Jumlah mahkota bunga,jumlah_mahkota_bunga,True,1,jumlah_mahkota_bunga,0.765,0.765
+BAAI/bge-m3,pvt_usulan_ai,P01,Tinggi tanaman,tinggi_tanaman,True,1,tinggi_tanaman,0.8741,0.8741
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna kelopak,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.7037,0.7037
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna anther,warna_kepala_sari,False,3,warna_buah_muda,0.5531,0.5411
+BAAI/bge-m3,pvt_usulan_ai,P01,Bentuk potongan buah membujur,bentuk_buah,False,1,bentuk_buah,0.6437,0.6437
+BAAI/bge-m3,pvt_usulan_ai,P01,Tipe tumbuh tanaman,habitus,False,1,habitus,0.6576,0.6576
+BAAI/bge-m3,pvt_usulan_ai,P01,Posisi tangkai bunga,posisi_bunga,False,1,posisi_bunga,0.69,0.69
+BAAI/bge-m3,pvt_usulan_ai,P01,Bentuk mahkota bunga,bentuk_bunga,False,1,bentuk_bunga,0.6815,0.6815
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna filamen,warna_tangkai_sari,False,7,warna_tangkai_putik,0.5959,0.5479
+BAAI/bge-m3,pvt_usulan_ai,P01,Ujung buah,bentuk_ujung_buah,False,1,bentuk_ujung_buah,0.6924,0.6924
+BAAI/bge-m3,pvt_usulan_ai,P01,Undulasi (gelombang) tepi daun,tepi_daun,False,11,bentuk_daun,0.6628,0.5731
+BAAI/bge-m3,pvt_usulan_ai,P01,Orientasi bunga,posisi_bunga,False,1,posisi_bunga,0.7644,0.7644
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna bunga: Kelopak Bunga,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.813,0.813
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna bunga: Mahkota Bunga,warna_mahkota,False,1,warna_mahkota,0.8428,0.8428
+BAAI/bge-m3,pvt_usulan_ai,P01,Bentuk potongan membujur buah,bentuk_buah,False,1,bentuk_buah,0.6965,0.6965
+BAAI/bge-m3,pvt_usulan_ai,P01,Orientasi,habitus,False,10,posisi_bunga,0.6142,0.5496
+BAAI/bge-m3,pvt_usulan_ai,P01,Panjang helai daun (cm),panjang_daun,False,1,panjang_daun,0.8458,0.8458
+BAAI/bge-m3,pvt_usulan_ai,P01,Lebar helai daun (cm),lebar_daun,False,1,lebar_daun,0.8323,0.8323
+BAAI/bge-m3,pvt_usulan_ai,P01,Panjang tangkai daun (cm),panjang_tangkai_daun,False,1,panjang_tangkai_daun,0.8787,0.8787
+BAAI/bge-m3,pvt_usulan_ai,P01,Undulasi pada tepi daun,tepi_daun,False,11,bentuk_ujung_daun,0.6365,0.5546
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna daun atas,warna_daun,False,3,warna_pangkal_tangkai_daun_bag_atas,0.757,0.7285
+BAAI/bge-m3,pvt_usulan_ai,P01,Warna bunga: Tangkai sari,warna_tangkai_sari,False,1,warna_tangkai_sari,0.7832,0.7832
+BAAI/bge-m3,pvt_usulan_ai,P02,Sebaran Geografis,lokasi,False,1,lokasi,0.4945,0.4945
+BAAI/bge-m3,pvt_usulan_ai,P02,Tinggi tanaman (cm),tinggi_tanaman,False,1,tinggi_tanaman,0.8611,0.8611
+BAAI/bge-m3,pvt_usulan_ai,P02,Tekstur kulit batang,batang,False,1,batang,0.6493,0.6493
+BAAI/bge-m3,pvt_usulan_ai,P02,Pangkal Daun,bentuk_pangkal_daun,False,3,bentuk_ujung_daun,0.6288,0.5835
+BAAI/bge-m3,pvt_usulan_ai,P02,Ujung Daun,bentuk_ujung_daun,False,1,bentuk_ujung_daun,0.6873,0.6873
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna daun bagian atas,warna_daun,False,1,warna_daun,0.7267,0.7267
+BAAI/bge-m3,pvt_usulan_ai,P02,Permukaan daun bagian atas/bawah,tekstur_daun,False,6,bentuk_ujung_daun,0.6588,0.6172
+BAAI/bge-m3,pvt_usulan_ai,P02,Panjang daun (cm),panjang_daun,False,1,panjang_daun,0.8874,0.8874
+BAAI/bge-m3,pvt_usulan_ai,P02,Lebar daun (cm),lebar_daun,False,1,lebar_daun,0.8619,0.8619
+BAAI/bge-m3,pvt_usulan_ai,P02,Bentuk daun,bentuk_daun,True,1,bentuk_daun,0.8154,0.8154
+BAAI/bge-m3,pvt_usulan_ai,P02,Tepi daun,tepi_daun,True,7,bentuk_ujung_daun,0.6246,0.5744
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna tangkai bunga,warna_gagang_bunga,False,5,warna_kelopak_bunga,0.7508,0.7417
+BAAI/bge-m3,pvt_usulan_ai,P02,Posisi tangkai bunga,posisi_bunga,False,1,posisi_bunga,0.7636,0.7636
+BAAI/bge-m3,pvt_usulan_ai,P02,Jumlah bunga per nodus,jumlah_gagang_bunga_ruas,False,1,jumlah_gagang_bunga_ruas,0.6802,0.6802
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.8096,0.8096
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna mahkota,warna_mahkota,True,1,warna_mahkota,0.6873,0.6873
+BAAI/bge-m3,pvt_usulan_ai,P02,Bentuk buah,bentuk_buah,True,1,bentuk_buah,0.7537,0.7537
+BAAI/bge-m3,pvt_usulan_ai,P02,Penampilan ujung buah,bentuk_ujung_buah,False,3,bentuk_ujung_daun,0.6949,0.6529
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna kulit buah muda,warna_buah_muda,False,1,warna_buah_muda,0.7265,0.7265
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna kulit buah tua,warna_buah_masak,False,1,warna_buah_masak,0.6864,0.6864
+BAAI/bge-m3,pvt_usulan_ai,P02,Ujung Buah,bentuk_ujung_buah,False,2,bentuk_ujung_daun,0.6659,0.6636
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna biji kupas kering,warna_biji,False,4,warna_tangkai_putik,0.635,0.6089
+BAAI/bge-m3,pvt_usulan_ai,P02,Karakter pertanaman,habitus,False,1,habitus,0.6191,0.6191
+BAAI/bge-m3,pvt_usulan_ai,P02,Bentuk ujung daun,bentuk_ujung_daun,True,1,bentuk_ujung_daun,0.774,0.774
+BAAI/bge-m3,pvt_usulan_ai,P02,Panjang tangkai daun (cm),panjang_tangkai_daun,False,1,panjang_tangkai_daun,0.8765,0.8765
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna daun,warna_daun,True,1,warna_daun,0.6818,0.6818
+BAAI/bge-m3,pvt_usulan_ai,P02,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.7512,0.7512
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.8013,0.8013
+BAAI/bge-m3,pvt_usulan_ai,P02,Orientasi/ letak tangkai bunga,posisi_bunga,False,1,posisi_bunga,0.7218,0.7218
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna buah muda,warna_buah_muda,True,1,warna_buah_muda,0.8544,0.8544
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna buah tua/ matang,warna_buah_masak,False,1,warna_buah_masak,0.7164,0.7164
+BAAI/bge-m3,pvt_usulan_ai,P02,Bentuk ujung buah,bentuk_ujung_buah,True,1,bentuk_ujung_buah,0.7509,0.7509
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna biji,warna_biji,True,2,warna_buah_muda,0.7357,0.726
+BAAI/bge-m3,pvt_usulan_ai,P02,Orientasi/bentuk tanaman,habitus,False,2,posisi_bunga,0.6577,0.6284
+BAAI/bge-m3,pvt_usulan_ai,P02,Bulu pada batang,batang,False,1,batang,0.666,0.666
+BAAI/bge-m3,pvt_usulan_ai,P02,Tingkat bergelombang,tepi_daun,False,38,lokasi,0.5585,0.4756
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna daun atas,warna_daun,False,2,warna_pangkal_tangkai_daun_bag_atas,0.7337,0.7236
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna mahkota bunga (petal),warna_mahkota,False,1,warna_mahkota,0.7345,0.7345
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna filament,warna_tangkai_sari,False,5,warna_tangkai_putik,0.6433,0.6039
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna kepala sari,warna_kepala_sari,True,1,warna_kepala_sari,0.6946,0.6946
+BAAI/bge-m3,pvt_usulan_ai,P02,Panjang benang sari dan filament (mm),panjang_benangsari,False,1,panjang_benangsari,0.6743,0.6743
+BAAI/bge-m3,pvt_usulan_ai,P02,Posisi bunga terhadap batang,posisi_bunga,False,1,posisi_bunga,0.7439,0.7439
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna buah sebelum matang,warna_buah_muda,False,1,warna_buah_muda,0.7244,0.7244
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna buah tua/matang,warna_buah_masak,False,1,warna_buah_masak,0.695,0.695
+BAAI/bge-m3,pvt_usulan_ai,P02,Jumlah biji per buah,jumlah_biji_buah_masak,False,1,jumlah_biji_buah_masak,0.7658,0.7658
+BAAI/bge-m3,pvt_usulan_ai,P02,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.6804,0.6804
+BAAI/bge-m3,pvt_usulan_ai,P02,Orientasi,habitus,False,6,posisi_bunga,0.6147,0.5681
+BAAI/bge-m3,pvt_usulan_ai,P02,Bulu pada buku,batang,False,1,batang,0.6339,0.6339
+BAAI/bge-m3,pvt_usulan_ai,P02,Panjang helai daun (cm),panjang_daun,False,1,panjang_daun,0.8597,0.8597
+BAAI/bge-m3,pvt_usulan_ai,P02,Lebar helai daun (cm),lebar_daun,False,1,lebar_daun,0.8476,0.8476
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna daun permukaan atas,warna_daun,False,2,warna_pangkal_tangkai_daun_bag_atas,0.7252,0.7244
+BAAI/bge-m3,pvt_usulan_ai,P02,Undulasi pada tepi daun,tepi_daun,False,12,bentuk_ujung_daun,0.6564,0.5607
+BAAI/bge-m3,pvt_usulan_ai,P02,Lepuhan daun,tekstur_daun,False,1,tekstur_daun,0.6654,0.6654
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna antera,warna_kepala_sari,False,5,warna_tangkai_putik,0.6,0.5769
+BAAI/bge-m3,pvt_usulan_ai,P02,Bentuk potongan membujur,bentuk_buah,False,3,bentuk_ujung_daun,0.6935,0.6212
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna buah matang,warna_buah_masak,False,1,warna_buah_masak,0.8377,0.8377
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.767,0.767
+BAAI/bge-m3,pvt_usulan_ai,P02,Orientasi Tanaman,habitus,False,2,posisi_bunga,0.6913,0.6559
+BAAI/bge-m3,pvt_usulan_ai,P02,Undulasi / gelombang pada tepi daun,tepi_daun,False,9,bentuk_ujung_daun,0.6282,0.5694
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna antera/kepala sari,warna_kepala_sari,False,1,warna_kepala_sari,0.6741,0.6741
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna tangkai kepala putik,warna_tangkai_putik,False,1,warna_tangkai_putik,0.7208,0.7208
+BAAI/bge-m3,pvt_usulan_ai,P02,Penampang membujur buah,bentuk_buah,False,2,bentuk_ujung_daun,0.6218,0.6146
+BAAI/bge-m3,pvt_usulan_ai,P02,Jumlah biji per buah (butir),jumlah_biji_buah_masak,False,1,jumlah_biji_buah_masak,0.7621,0.7621
+BAAI/bge-m3,pvt_usulan_ai,P02,Orientasi pedunkel pada bunga,posisi_bunga,False,1,posisi_bunga,0.7277,0.7277
+BAAI/bge-m3,pvt_usulan_ai,P02,Bentuk potongan membujur buah,bentuk_buah,False,1,bentuk_buah,0.6578,0.6578
+BAAI/bge-m3,pvt_usulan_ai,P02,Warna buah matang buah,warna_buah_masak,False,1,warna_buah_masak,0.7554,0.7554
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Leaf shape,bentuk_daun,False,2,bentuk_ujung_daun,0.6072,0.6004
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Fruit shape,bentuk_buah,False,8,panjang_buah_muda,0.5772,0.5256
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Corolla colour,warna_mahkota,False,4,warna_buah_muda,0.5367,0.5212
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Mature fruit colour,warna_buah_masak,False,1,warna_buah_masak,0.7846,0.7846
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Plant height,tinggi_tanaman,True,1,tinggi_tanaman,0.7098,0.7098
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Immature fruit colour,warna_buah_muda,False,1,warna_buah_muda,0.7649,0.7649
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Mature fruit length,panjang_buah_masak,False,3,panjang_buah_muda,0.7365,0.6316
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Plant growth habit,habitus,False,1,habitus,0.6514,0.6514
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Panjang daun,panjang_daun,True,1,panjang_daun,0.7949,0.7949
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Lebar daun,lebar_daun,True,1,lebar_daun,0.8069,0.8069
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Bentuk pangkal daun,bentuk_pangkal_daun,True,4,bentuk_daun,0.7188,0.676
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Warna daun,warna_daun,True,1,warna_daun,0.6942,0.6942
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.8457,0.8457
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Warna bunga,warna_mahkota,False,5,warna_tangkai_sari,0.612,0.5791
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.7278,0.7278
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Warna kotak sari,warna_kepala_sari,False,1,warna_kepala_sari,0.6797,0.6797
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Warna biji,warna_biji,True,1,warna_biji,0.6037,0.6037
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,R02,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.601,0.601
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Tinggi tanaman,tinggi_tanaman,True,1,tinggi_tanaman,0.703,0.703
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Bentuk habitus tanaman,habitus,False,1,habitus,0.6578,0.6578
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Bentuk daun,bentuk_daun,True,3,bentuk_ujung_daun,0.675,0.5727
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Warna daun,warna_daun,True,1,warna_daun,0.5926,0.5926
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.8252,0.8252
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Warna bunga kelopak,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.6408,0.6408
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Mahkota,warna_mahkota,False,1,warna_mahkota,0.5654,0.5654
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Bentuk buah,bentuk_buah,True,9,bentuk_ujung_buah,0.6749,0.5344
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Warna buah muda,warna_buah_muda,True,1,warna_buah_muda,0.7285,0.7285
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.7103,0.7103
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Warna biji,warna_biji,True,1,warna_biji,0.5913,0.5913
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.5967,0.5967
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.6895,0.6895
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.6539,0.6539
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Tipe tumbuh tanaman,habitus,False,2,bentuk_ujung_buah,0.5807,0.5582
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Panjang daun,panjang_daun,True,1,panjang_daun,0.7812,0.7812
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Lebar daun,lebar_daun,True,1,lebar_daun,0.7903,0.7903
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Posisi bunga,posisi_bunga,True,1,posisi_bunga,0.6542,0.6542
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Warna kotak sari,warna_kepala_sari,False,1,warna_kepala_sari,0.6015,0.6015
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N07,Ujung buah,bentuk_ujung_buah,False,1,bentuk_ujung_buah,0.6448,0.6448
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N08,Leaf shape,bentuk_daun,False,7,bentuk_ujung_daun,0.5953,0.4299
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N08,Fruit shape,bentuk_buah,False,13,bentuk_ujung_daun,0.5589,0.4492
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N08,Corolla colour,warna_mahkota,False,22,warna_buah_masak,0.4743,0.3484
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N08,Mature fruit colour,warna_buah_masak,False,3,jumlah_biji_buah_masak,0.5974,0.5245
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N08,Plant height,tinggi_tanaman,True,1,tinggi_tanaman,0.6266,0.6266
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N08,Immature fruit colour,warna_buah_muda,False,1,warna_buah_muda,0.5427,0.5427
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N08,Mature fruit length,panjang_buah_masak,False,5,panjang_buah_muda,0.6399,0.5621
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N08,Seeds per fruit,jumlah_biji_buah_masak,True,1,jumlah_biji_buah_masak,0.6174,0.6174
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N08,Plant growth habit,habitus,False,1,habitus,0.6185,0.6185
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Tinggi tanaman,tinggi_tanaman,True,1,tinggi_tanaman,0.7369,0.7369
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Bentuk daun,bentuk_daun,True,1,bentuk_daun,0.7105,0.7105
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Warna daun,warna_daun,True,1,warna_daun,0.6942,0.6942
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.8457,0.8457
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.659,0.659
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.6414,0.6414
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Bentuk buah,bentuk_buah,True,2,bentuk_ujung_buah,0.7251,0.6207
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Warna buah muda,warna_buah_muda,True,1,warna_buah_muda,0.8184,0.8184
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.7832,0.7832
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Warna biji,warna_biji,True,1,warna_biji,0.6037,0.6037
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.601,0.601
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Ukuran daun Panjang,panjang_daun,False,1,panjang_daun,0.6936,0.6936
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Ukuran daun Lebar,lebar_daun,False,1,lebar_daun,0.7256,0.7256
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Tinggi tanaman (cm),tinggi_tanaman,False,1,tinggi_tanaman,0.6655,0.6655
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Habitus tanaman,habitus,False,1,habitus,0.6566,0.6566
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Panjang daun,panjang_daun,True,1,panjang_daun,0.8122,0.8122
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Lebar daun,lebar_daun,True,1,lebar_daun,0.7554,0.7554
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Warna bunga,warna_mahkota,False,5,warna_tangkai_sari,0.612,0.5791
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Kelopak,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.5583,0.5583
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Mahkota,warna_mahkota,False,1,warna_mahkota,0.5623,0.5623
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Bentuk pangkal daun,bentuk_pangkal_daun,True,4,bentuk_daun,0.7188,0.676
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Kelopak Bunga,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.7512,0.7512
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Mahkota Bunga,warna_mahkota,False,1,warna_mahkota,0.6977,0.6977
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,N09,Kotak Sari,warna_kepala_sari,False,1,warna_kepala_sari,0.5989,0.5989
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Bentuk pertumbuhan tanaman,habitus,True,3,bentuk_ujung_buah,0.6215,0.5955
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Tinggi keseluruhan tanaman,tinggi_tanaman,False,1,tinggi_tanaman,0.733,0.733
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Siklus hidup tanaman,umur,False,1,umur,0.6153,0.6153
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Kesesuaian lingkungan tumbuh,adaptasi_ekologi,False,1,adaptasi_ekologi,0.5988,0.5988
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Permukaan batang,batang,False,1,batang,0.6366,0.6366
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Tekstur permukaan daun,tekstur_daun,False,1,tekstur_daun,0.6888,0.6888
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Warna dominan daun,warna_daun,True,1,warna_daun,0.6849,0.6849
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Ukuran panjang helai daun,panjang_daun,False,1,panjang_daun,0.7156,0.7156
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Lebar helai daun,lebar_daun,False,1,lebar_daun,0.706,0.706
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.773,0.773
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Jumlah helai mahkota,jumlah_mahkota_bunga,False,1,jumlah_mahkota_bunga,0.591,0.591
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Arah bunga pada tanaman,posisi_bunga,True,1,posisi_bunga,0.7571,0.7571
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Panjang buah belum masak,panjang_buah_muda,False,2,panjang_buah_masak,0.7176,0.6848
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Keliling buah belum masak,keliling_buah_muda,False,3,keliling_buah_masak,0.7728,0.6639
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Warna buah ketika matang,warna_buah_masak,False,1,warna_buah_masak,0.6462,0.6462
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Posisi buah matang,posisi_buah_masak,False,1,posisi_buah_masak,0.7209,0.7209
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Bentuk ujung buah,bentuk_ujung_buah,True,1,bentuk_ujung_buah,0.8033,0.8033
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Warna kulit biji,warna_biji,False,1,warna_biji,0.6097,0.6097
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Jumlah biji pada buah matang,jumlah_biji_buah_masak,False,1,jumlah_biji_buah_masak,0.6537,0.6537
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S01,Lokasi pengambilan sampel,lokasi,False,1,lokasi,0.62,0.62
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Overall plant growth form,habitus,False,2,batang,0.5761,0.5679
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Vertical size at maturity,tinggi_tanaman,False,1,tinggi_tanaman,0.6859,0.6859
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Productive plant lifespan,umur,False,1,umur,0.5187,0.5187
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Suitable growing environment,adaptasi_ekologi,False,1,adaptasi_ekologi,0.4787,0.4787
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Hair coverage on the stem,batang,False,1,batang,0.5543,0.5543
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Leaf surface feel,tekstur_daun,False,15,batang,0.4773,0.3304
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Dominant foliage shade,warna_daun,False,1,warna_daun,0.5875,0.5875
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Leaf blade longitudinal size,panjang_daun,False,1,panjang_daun,0.6247,0.6247
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Leaf blade crosswise span,lebar_daun,False,2,panjang_daun,0.5494,0.5179
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Leaf-tip profile,bentuk_ujung_daun,False,1,bentuk_ujung_daun,0.6204,0.6204
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Leaf arrangement along the stem,kedudukan_daun,False,13,bentuk_ujung_daun,0.5609,0.3901
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Petal pigmentation,warna_mahkota,False,7,warna_kepala_sari,0.529,0.4582
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Petals found on each bloom,jumlah_mahkota_bunga,False,1,jumlah_mahkota_bunga,0.6116,0.6116
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Flower orientation on the plant,posisi_bunga,False,1,posisi_bunga,0.5845,0.5845
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Longitudinal size of the unripe pod,panjang_buah_muda,False,1,panjang_buah_muda,0.7327,0.7327
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Girth of the unripe pod,keliling_buah_muda,False,1,keliling_buah_muda,0.6876,0.6876
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Pigmentation of ripe pods,warna_buah_masak,False,1,warna_buah_masak,0.5453,0.5453
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Orientation of ripe pods,posisi_buah_masak,False,7,bentuk_ujung_daun,0.5334,0.4603
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Fruit-tip profile,bentuk_ujung_buah,False,2,bentuk_ujung_daun,0.5345,0.48
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Seed coat shade,warna_biji,False,1,warna_biji,0.4805,0.4805
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Seed load in each ripe pod,jumlah_biji_buah_masak,False,1,jumlah_biji_buah_masak,0.5672,0.5672
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S02,Specimen collection site,lokasi,False,1,lokasi,0.5808,0.5808
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Vegetatif / Bentuk tumbuh,habitus,False,1,habitus,0.6235,0.6235
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Vegetatif / Ukuran tinggi,tinggi_tanaman,False,1,tinggi_tanaman,0.7585,0.7585
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Vegetatif / Lama hidup,umur,False,2,batang,0.5327,0.5229
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Vegetatif / Permukaan batang,batang,False,1,batang,0.7119,0.7119
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Daun / Tekstur,tekstur_daun,False,1,tekstur_daun,0.6299,0.6299
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Daun / Warna,warna_daun,False,1,warna_daun,0.6178,0.6178
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Daun / Panjang,panjang_daun,False,1,panjang_daun,0.7386,0.7386
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Daun / Lebar,lebar_daun,False,1,lebar_daun,0.6614,0.6614
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Bunga / Warna mahkota,warna_mahkota,True,1,warna_mahkota,0.759,0.759
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Bunga / Jumlah mahkota,jumlah_mahkota_bunga,False,1,jumlah_mahkota_bunga,0.7184,0.7184
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Bunga / Posisi,posisi_bunga,False,1,posisi_bunga,0.7003,0.7003
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Buah Muda / Panjang,panjang_buah_muda,False,1,panjang_buah_muda,0.7269,0.7269
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Buah Muda / Keliling,keliling_buah_muda,False,2,keliling_kelopak_buah_muda,0.7326,0.7189
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Buah Muda / Panjang tangkai,panjang_tangkai_buah_muda,False,1,panjang_tangkai_buah_muda,0.8048,0.8048
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Buah Muda / Panjang kelopak,panjang_kelopak_buah_muda,False,1,panjang_kelopak_buah_muda,0.7832,0.7832
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Buah Muda / Keliling kelopak,keliling_kelopak_buah_muda,False,1,keliling_kelopak_buah_muda,0.8091,0.8091
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Buah Muda / Bentuk kelopak,bentuk_kelopak_buah_muda,False,1,bentuk_kelopak_buah_muda,0.6991,0.6991
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Buah Muda / Posisi,posisi_buah_muda,False,1,posisi_buah_muda,0.8168,0.8168
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Buah Masak / Panjang,panjang_buah_masak,False,1,panjang_buah_masak,0.7709,0.7709
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Buah Masak / Keliling,keliling_buah_masak,False,1,keliling_buah_masak,0.8095,0.8095
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Buah Masak / Panjang tangkai,panjang_tangkai_buah_masak,False,2,panjang_buah_masak,0.7969,0.78
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Buah Masak / Panjang kelopak,panjang_kelopak_buah_masak,False,1,panjang_kelopak_buah_masak,0.8161,0.8161
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Buah Masak / Keliling kelopak,keliling_kelopak_buah_masak,False,1,keliling_kelopak_buah_masak,0.8098,0.8098
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Buah Masak / Warna,warna_buah_masak,False,1,warna_buah_masak,0.707,0.707
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Buah Masak / Posisi,posisi_buah_masak,False,1,posisi_buah_masak,0.8074,0.8074
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Biji / Warna,warna_biji,False,1,warna_biji,0.6141,0.6141
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Biji / Jumlah,jumlah_biji_buah_masak,False,4,gambar_bunga,0.5501,0.5163
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S03,Lokasi,lokasi,True,1,lokasi,0.4949,0.4949
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S04,Bentuk tumbuh,habitus,False,7,bentuk_ujung_buah,0.6137,0.5203
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S04,Ukuran tinggi,tinggi_tanaman,False,1,tinggi_tanaman,0.5108,0.5108
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S04,Corak warna daun,warna_daun,False,3,warna_buah_muda,0.5934,0.5871
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S04,Panjang helai,panjang_daun,False,1,panjang_daun,0.551,0.551
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S04,Warna buah siap panen,warna_buah_masak,False,1,warna_buah_masak,0.6345,0.6345
+Qwen/Qwen3-Embedding-0.6B,terverifikasi,S04,Tempat pengamatan,lokasi,False,1,lokasi,0.4605,0.4605
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Orientasi tanaman,habitus,False,7,posisi_bunga,0.5909,0.5192
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Bulu pada buku,batang,False,1,batang,0.5491,0.5491
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Tinggi tanaman (cm),tinggi_tanaman,False,1,tinggi_tanaman,0.686,0.686
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Panjang daun (cm),panjang_daun,False,1,panjang_daun,0.8373,0.8373
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Lebar daun (cm),lebar_daun,False,1,lebar_daun,0.7961,0.7961
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Intensitas warna hijau daun,warna_daun,False,1,warna_daun,0.7767,0.7767
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Bentuk daun,bentuk_daun,True,1,bentuk_daun,0.7806,0.7806
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Bentuk pangkal daun,bentuk_pangkal_daun,True,3,bentuk_ujung_buah,0.6755,0.6362
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Undulasi tepi daun,tepi_daun,False,9,bentuk_ujung_daun,0.6382,0.511
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Lepuhan daun,tekstur_daun,False,23,bentuk_ujung_daun,0.4727,0.3711
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Orientasi pedunkel bunga,posisi_bunga,False,1,posisi_bunga,0.6835,0.6835
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna antera sebelum pecah,warna_kepala_sari,False,1,warna_kepala_sari,0.6418,0.6418
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna mahkota,warna_mahkota,True,1,warna_mahkota,0.7241,0.7241
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna buah muda,warna_buah_muda,True,1,warna_buah_muda,0.798,0.798
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Posisi buah muda,posisi_buah_muda,True,1,posisi_buah_muda,0.78,0.78
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Posisi buah matang,posisi_buah_masak,False,1,posisi_buah_masak,0.7057,0.7057
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Bentuk potongan membujur,bentuk_buah,False,10,bentuk_ujung_buah,0.6725,0.4922
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna buah matang,warna_buah_masak,False,1,warna_buah_masak,0.8228,0.8228
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Bentuk ujung buah,bentuk_ujung_buah,True,1,bentuk_ujung_buah,0.7108,0.7108
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Habitus tanaman,habitus,False,1,habitus,0.6258,0.6258
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Gelombang tepi daun,tepi_daun,False,17,batang,0.5425,0.4161
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna daun,warna_daun,True,1,warna_daun,0.6457,0.6457
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Posisi bunga,posisi_bunga,True,1,posisi_bunga,0.7296,0.7296
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.7924,0.7924
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.6765,0.6765
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.6647,0.6647
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna kotak sari,warna_kepala_sari,False,1,warna_kepala_sari,0.6214,0.6214
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna tangkai sari,warna_tangkai_sari,True,1,warna_tangkai_sari,0.6807,0.6807
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna tangkai sari (2),warna_tangkai_sari,False,1,warna_tangkai_sari,0.5695,0.5695
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Bentuk buah,bentuk_buah,True,11,bentuk_ujung_daun,0.5238,0.4322
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.6459,0.6459
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna biji,warna_biji,True,2,warna_kepala_sari,0.5006,0.495
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna tangkai bunga,warna_gagang_bunga,False,3,warna_kelopak_bunga,0.5955,0.5885
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.6473,0.6473
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Bentuk buah (2),bentuk_buah,False,8,bentuk_bunga,0.6654,0.5588
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Bentuk ujung daun,bentuk_ujung_daun,True,2,bentuk_ujung_buah,0.744,0.7143
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Jumlah mahkota bunga,jumlah_mahkota_bunga,True,1,jumlah_mahkota_bunga,0.7825,0.7825
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Tinggi tanaman,tinggi_tanaman,True,1,tinggi_tanaman,0.7108,0.7108
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna kelopak,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.5683,0.5683
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna anther,warna_kepala_sari,False,2,warna_buah_masak,0.4896,0.4895
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Bentuk potongan buah membujur,bentuk_buah,False,7,bentuk_ujung_buah,0.7075,0.5626
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Tipe tumbuh tanaman,habitus,False,2,bentuk_ujung_buah,0.5807,0.5582
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Posisi tangkai bunga,posisi_bunga,False,1,posisi_bunga,0.6203,0.6203
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Bentuk mahkota bunga,bentuk_bunga,False,3,bentuk_kelopak_bunga,0.6835,0.6493
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna filamen,warna_tangkai_sari,False,2,warna_kepala_sari,0.5202,0.5142
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Ujung buah,bentuk_ujung_buah,False,1,bentuk_ujung_buah,0.6844,0.6844
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Undulasi (gelombang) tepi daun,tepi_daun,False,40,bentuk_ujung_daun,0.5426,0.3702
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Orientasi bunga,posisi_bunga,False,1,posisi_bunga,0.7525,0.7525
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna bunga: Kelopak Bunga,warna_kelopak_bunga,False,1,warna_kelopak_bunga,0.8291,0.8291
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna bunga: Mahkota Bunga,warna_mahkota,False,1,warna_mahkota,0.7678,0.7678
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Bentuk potongan membujur buah,bentuk_buah,False,8,bentuk_ujung_buah,0.6716,0.5354
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Orientasi,habitus,False,17,bentuk_ujung_buah,0.5059,0.4133
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Panjang helai daun (cm),panjang_daun,False,1,panjang_daun,0.7051,0.7051
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Lebar helai daun (cm),lebar_daun,False,1,lebar_daun,0.74,0.74
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Panjang tangkai daun (cm),panjang_tangkai_daun,False,1,panjang_tangkai_daun,0.8351,0.8351
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Undulasi pada tepi daun,tepi_daun,False,25,bentuk_ujung_daun,0.6025,0.4404
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna daun atas,warna_daun,False,1,warna_daun,0.7155,0.7155
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P01,Warna bunga: Tangkai sari,warna_tangkai_sari,False,1,warna_tangkai_sari,0.8028,0.8028
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Sebaran Geografis,lokasi,False,1,lokasi,0.4013,0.4013
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Tinggi tanaman (cm),tinggi_tanaman,False,1,tinggi_tanaman,0.6892,0.6892
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Tekstur kulit batang,batang,False,1,batang,0.5199,0.5199
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Pangkal Daun,bentuk_pangkal_daun,False,1,bentuk_pangkal_daun,0.5825,0.5825
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Ujung Daun,bentuk_ujung_daun,False,1,bentuk_ujung_daun,0.6169,0.6169
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna daun bagian atas,warna_daun,False,1,warna_daun,0.6581,0.6581
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Permukaan daun bagian atas/bawah,tekstur_daun,False,26,bentuk_ujung_daun,0.6305,0.461
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Panjang daun (cm),panjang_daun,False,1,panjang_daun,0.8356,0.8356
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Lebar daun (cm),lebar_daun,False,1,lebar_daun,0.7808,0.7808
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Bentuk daun,bentuk_daun,True,1,bentuk_daun,0.724,0.724
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Tepi daun,tepi_daun,True,1,tepi_daun,0.5332,0.5332
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna tangkai bunga,warna_gagang_bunga,False,2,warna_kelopak_bunga,0.7098,0.7003
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Posisi tangkai bunga,posisi_bunga,False,1,posisi_bunga,0.7923,0.7923
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Jumlah bunga per nodus,jumlah_gagang_bunga_ruas,False,1,jumlah_gagang_bunga_ruas,0.6178,0.6178
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna kelopak bunga,warna_kelopak_bunga,True,1,warna_kelopak_bunga,0.7766,0.7766
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna mahkota,warna_mahkota,True,1,warna_mahkota,0.6044,0.6044
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Bentuk buah,bentuk_buah,True,5,bentuk_ujung_buah,0.7046,0.5919
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Penampilan ujung buah,bentuk_ujung_buah,False,1,bentuk_ujung_buah,0.71,0.71
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna kulit buah muda,warna_buah_muda,False,1,warna_buah_muda,0.6565,0.6565
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna kulit buah tua,warna_buah_masak,False,1,warna_buah_masak,0.6606,0.6606
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Ujung Buah,bentuk_ujung_buah,False,1,bentuk_ujung_buah,0.6377,0.6377
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna biji kupas kering,warna_biji,False,1,warna_biji,0.5038,0.5038
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Karakter pertanaman,habitus,False,8,gambar_bunga,0.5571,0.5006
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Bentuk ujung daun,bentuk_ujung_daun,True,1,bentuk_ujung_daun,0.7682,0.7682
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Panjang tangkai daun (cm),panjang_tangkai_daun,False,1,panjang_tangkai_daun,0.8012,0.8012
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna daun,warna_daun,True,1,warna_daun,0.6857,0.6857
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Bentuk bunga,bentuk_bunga,True,1,bentuk_bunga,0.7121,0.7121
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna mahkota bunga,warna_mahkota,False,1,warna_mahkota,0.7454,0.7454
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Orientasi/ letak tangkai bunga,posisi_bunga,False,1,posisi_bunga,0.6689,0.6689
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna buah muda,warna_buah_muda,True,1,warna_buah_muda,0.8209,0.8209
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna buah tua/ matang,warna_buah_masak,False,1,warna_buah_masak,0.7493,0.7493
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Bentuk ujung buah,bentuk_ujung_buah,True,1,bentuk_ujung_buah,0.7628,0.7628
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna biji,warna_biji,True,1,warna_biji,0.7301,0.7301
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Orientasi/bentuk tanaman,habitus,False,9,bentuk_ujung_buah,0.5967,0.5299
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Bulu pada batang,batang,False,5,bentuk_ujung_buah,0.6386,0.5608
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Tingkat bergelombang,tepi_daun,False,53,jumlah_gagang_bunga_ruas,0.4582,0.313
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna daun atas,warna_daun,False,1,warna_daun,0.6766,0.6766
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna mahkota bunga (petal),warna_mahkota,False,1,warna_mahkota,0.6942,0.6942
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna filament,warna_tangkai_sari,False,1,warna_tangkai_sari,0.5858,0.5858
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna kepala sari,warna_kepala_sari,True,1,warna_kepala_sari,0.7083,0.7083
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Panjang benang sari dan filament (mm),panjang_benangsari,False,1,panjang_benangsari,0.5669,0.5669
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Posisi bunga terhadap batang,posisi_bunga,False,1,posisi_bunga,0.7522,0.7522
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna buah sebelum matang,warna_buah_muda,False,1,warna_buah_muda,0.7549,0.7549
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna buah tua/matang,warna_buah_masak,False,1,warna_buah_masak,0.7002,0.7002
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Jumlah biji per buah,jumlah_biji_buah_masak,False,1,jumlah_biji_buah_masak,0.6069,0.6069
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Wilayah adaptasi,adaptasi_ekologi,False,1,adaptasi_ekologi,0.5724,0.5724
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Orientasi,habitus,False,12,posisi_buah_masak,0.5144,0.4387
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Bulu pada buku,batang,False,3,bentuk_ujung_buah,0.5565,0.5433
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Panjang helai daun (cm),panjang_daun,False,1,panjang_daun,0.728,0.728
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Lebar helai daun (cm),lebar_daun,False,1,lebar_daun,0.7631,0.7631
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna daun permukaan atas,warna_daun,False,1,warna_daun,0.7033,0.7033
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Undulasi pada tepi daun,tepi_daun,False,38,bentuk_ujung_daun,0.5589,0.3974
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Lepuhan daun,tekstur_daun,False,47,bentuk_ujung_daun,0.4836,0.3253
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna antera,warna_kepala_sari,False,1,warna_kepala_sari,0.5855,0.5855
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Bentuk potongan membujur,bentuk_buah,False,8,bentuk_ujung_buah,0.6197,0.4719
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna buah matang,warna_buah_masak,False,1,warna_buah_masak,0.7751,0.7751
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna buah tua,warna_buah_masak,False,1,warna_buah_masak,0.7896,0.7896
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Orientasi Tanaman,habitus,False,6,posisi_bunga,0.5948,0.5135
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Undulasi / gelombang pada tepi daun,tepi_daun,False,46,bentuk_ujung_daun,0.5513,0.3513
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna antera/kepala sari,warna_kepala_sari,False,1,warna_kepala_sari,0.6648,0.6648
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna tangkai kepala putik,warna_tangkai_putik,False,1,warna_tangkai_putik,0.6566,0.6566
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Penampang membujur buah,bentuk_buah,False,13,bentuk_ujung_buah,0.6216,0.4992
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Jumlah biji per buah (butir),jumlah_biji_buah_masak,False,1,jumlah_biji_buah_masak,0.6059,0.6059
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Orientasi pedunkel pada bunga,posisi_bunga,False,1,posisi_bunga,0.6128,0.6128
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Bentuk potongan membujur buah,bentuk_buah,False,9,bentuk_ujung_buah,0.6933,0.5465
+Qwen/Qwen3-Embedding-0.6B,pvt_usulan_ai,P02,Warna buah matang buah,warna_buah_masak,False,1,warna_buah_masak,0.7744,0.7744

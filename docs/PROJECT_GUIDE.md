@@ -454,7 +454,7 @@ dapat mengubah keputusan legacy `REVIEW` menjadi `AUTO_ACCEPT`. Soft verifier
 acceptance lama. Dataset kalibrasi dapat dibangun melalui
 `eval/mapping_verifier_dataset.py`; gold hanya dimasukkan bila diberikan eksplisit.
 
-Runtime default memakai model teks 9Router `ag/gemini-3.8-flash-medium` untuk reranking dan pemahaman struktur opt-in, serta model vision 9Router `ag/gemini-3.8-flash-high` untuk klasifikasi foto. Nama model legacy yang menjadi konstanta kode adalah teks Groq `openai/gpt-oss-120b`, teks Ollama `llama3.1:8b`, voter kedua OpenRouter `qwen/qwen2.5-vl-72b-instruct`, dan fallback vision Ollama `qwen2.5-vl:7b`; vision utama legacy memakai `GEMINI_MODEL_NAME` dengan default `gemini-flash-latest`. Embedding lokal menggunakan `paraphrase-multilingual-MiniLM-L12-v2` dan bukan LLM generatif.
+Runtime default memakai model teks 9Router `ag/gemini-3.8-flash-medium` untuk reranking dan pemahaman struktur opt-in, serta model vision 9Router `ag/gemini-3.8-flash-high` untuk klasifikasi foto. Nama model legacy yang menjadi konstanta kode adalah teks Groq `openai/gpt-oss-120b`, teks Ollama `llama3.1:8b`, voter kedua OpenRouter `qwen/qwen2.5-vl-72b-instruct`, dan fallback vision Ollama `qwen2.5-vl:7b`; vision utama legacy memakai `GEMINI_MODEL_NAME` dengan default `gemini-flash-latest`. Embedding lokal menggunakan `BAAI/bge-m3` (D22; sebelumnya `paraphrase-multilingual-MiniLM-L12-v2`) dan bukan LLM generatif.
 
 `.env` dimuat ketika modul provider/crawler diimpor. Restart aplikasi setelah mengganti konfigurasi. Lihat [DRIVE_SETUP.md](DRIVE_SETUP.md) untuk pengaturan akun dan akses folder.
 
