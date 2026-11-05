@@ -12,10 +12,12 @@ Keutuhan berkas: SHA256SUMS.txt. Dibuat ulang dengan: data_evaluasi/skrip/kumpul
 =====================================================================
 STRUKTUR FOLDER
 =====================================================================
-1_input_spreadsheet/      13 workbook input (.xlsx) + sumber_grin/ (halaman sumber aksesi GRIN untuk G01/G02)
+1_input_spreadsheet/      12 workbook input (.xlsx) + sumber_grin/ (halaman sumber aksesi GRIN untuk G01/G02)
 2_input_foto/
-   commons_8_folder/F1-F8 160 foto Wikimedia Commons, 20 per folder (+ ATRIBUSI_LISENSI.csv, pembagian_8_folder.csv)
-   foto_indonesia_drive1/ 12 foto cabai Indonesia koleksi peneliti (+ daftar_foto.csv)
+   commons_8_folder/F1-F8 35 foto Wikimedia Commons (awalnya 160, 20 per folder; sisanya dikeluarkan karena tidak
+                          sampai level varietas, lihat PEMBERSIHAN LEVEL VARIETAS) (+ ATRIBUSI_LISENSI.csv,
+                          pembagian_8_folder.csv)
+   foto_indonesia_drive1/ 6 foto cabai Indonesia koleksi peneliti, Katokkon dan Kopay (awalnya 12) (+ daftar_foto.csv)
    pvt_kementan_34_varietas/ 317 foto cabai Indonesia berlabel resmi dari Berita Resmi PVT Kementan, 34 varietas
                           (+ daftar_foto.csv, daftar_berita_resmi_cabai.tsv, sumber_pdf/ 34 PDF)
    pvt_uji_40/            40 foto uji (dari pvt_kementan_34_varietas) dalam dua kondisi: kartu nama terlihat dan
@@ -308,6 +310,17 @@ Skrip: data_evaluasi/skrip/keluarkan_non_varietas.py. Backup: backup_sebelum_hap
 Checksum arsip ada di _dikeluarkan_bukan_varietas/SHA256SUMS.txt (arsip hanya disimpan lokal, tidak di GitHub).
 Tahap 3 (5 Nov 2026): baris foto yang dikeluarkan juga dibuang dari ATRIBUSI_LISENSI.csv,
 pembagian_8_folder.csv (commons_8_folder) dan daftar_foto.csv (foto_indonesia_drive1). Hasil di 4_hasil_sistem/ tetap.
+Tahap 4 (5 Nov 2026): nama tanpa bukti pendaftaran/kultivar ikut dikeluarkan (skrip --tahap4):
+ - Gendot: kolom D01, 2 baris D02, 1 baris D04, 2 foto Indonesia (daun cabai gendot, p9vb80t0ldt5cms.webp).
+ - Domba: 1 baris D03, 2 foto Indonesia (cabai domba.jpg, daun cabai domba.webp).
+ - Bhut Jolokia: 5 baris E08 (kedua berkas), 6 foto Commons.
+ - G02: baris Poblano (GRIN PI 268105 "Tipo Poblano", tanpa nama kultivar).
+ - 2 foto Commons UNCERTAIN yang terlewat di tahap 1 (habanero_buah_021.jpg, hungarian-wax_buah_034.jpg).
+ Sisa: commons_8_folder 35 foto, foto_indonesia_drive1 6 foto; D01/D02 Kopay dan Katokkon, D03 Katokkon,
+ D04 Kopay + 1 baris tanpa varietas, E08 Tabasco/Etna ornamental/Piramide ornamental, G01 dan G02 Hungarian Wax.
+ Nama berkas G01_grin_8_... dan G02_grin_11_... dipertahankan (dirujuk skrip dan hasil run lama), walau isinya
+ tinggal 1 varietas. pembagian_8_folder.csv label_kind disamakan dengan gold final.
+ Entri per workbook di bagian 1 dan 2 di atas menjelaskan isi ASLI saat eksperimen dijalankan.
 
 
 =====================================================================

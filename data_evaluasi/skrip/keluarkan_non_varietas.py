@@ -8,6 +8,8 @@ Gold dan manifest tidak diubah. Rincian: data_evaluasi/KLASIFIKASI_LEVEL_VARIETA
 Jalankan dari akar repo:
   python data_evaluasi/skrip/keluarkan_non_varietas.py --tahap1 [--jalankan]   # spesies / jenis umum / tanpa varietas (4 Nov)
   python data_evaluasi/skrip/keluarkan_non_varietas.py --tahap2 [--jalankan]   # nama tipe buah / cultivar group (5 Nov)
+  python data_evaluasi/skrip/keluarkan_non_varietas.py --tahap3 [--jalankan]   # jejak di gold dan berkas daftar (5 Nov)
+  python data_evaluasi/skrip/keluarkan_non_varietas.py --tahap4 [--jalankan]   # Gendot, Domba, Bhut Jolokia, Poblano GRIN (5 Nov)
 Tanpa --jalankan hanya menampilkan rencana (dry run).
 """
 import csv, os, shutil, sys
@@ -223,8 +225,91 @@ if TAHAP3:
                lambda r: r["dataset"] == "R01" or (r["dataset"], r["varietas"]) in var_keluar,
                "[tahap 3] kunci sel R01 dan varietas yang dikeluarkan")
 
-if not (TAHAP1 or TAHAP2 or TAHAP3):
-    sys.exit("Pilih --tahap1, --tahap2, atau --tahap3")
+TAHAP4 = "--tahap4" in sys.argv
+
+if TAHAP4:
+    # Keputusan peneliti 5 Nov 2026: nama tanpa bukti pendaftaran/kultivar ikut dikeluarkan.
+    # Gendot dan Domba = sebutan lokal untuk tipe; Bhut Jolokia = landrace; GRIN Poblano = "Tipo Poblano" (local name).
+    # Foto Commons berlabel Poblano tetap (kultivar 'Mexican Ancho' syn. 'Poblano', lihat KLASIFIKASI_LEVEL_VARIETAS.md 2b).
+    A_GENDOT = "[tahap 4] 'Gendot' = sebutan lokal untuk tipe habanero; tidak ada bukti pendaftaran varietas"
+    A_DOMBA = "[tahap 4] 'Domba' = sebutan lokal untuk tipe rawit besar; tidak ada bukti pendaftaran varietas"
+    A_BHUT = "[tahap 4] 'Bhut Jolokia' = landrace tanpa pendaftaran formal"
+    A_POBLANO = "[tahap 4] GRIN PI 268105 'Tipo Poblano' = local name tanpa nama kultivar"
+    A_UNC = "[tahap 4] Commons UNCERTAIN yang terlewat di tahap 1 (tidak ada di gold final): varietas tidak dapat ditentukan"
+    foto4 = {"daun cabai gendot": A_GENDOT, "p9vb80t0ldt5cms.webp": A_GENDOT + " (label hanya tebakan AI)",
+             "cabai domba.jpg": A_DOMBA, "daun cabai domba.webp": A_DOMBA}
+    gfinal = "data_evaluasi/gambar/manifest/gold_gambar_manifest_final.csv"
+    for r in csv.DictReader(open(gfinal, encoding="utf-8-sig")):
+        if r["true_variety"] == "Bhut Jolokia":
+            foto4[r["filename"]] = A_BHUT
+    for r in csv.DictReader(open("data_evaluasi/gambar/manifest/gold_gambar_manifest.csv", encoding="utf-8-sig")):
+        if r["label_kind"] == "UNCERTAIN":
+            foto4[r["filename"]] = A_UNC
+    for nama, alasan in sorted(foto4.items()):
+        fs = semua_file(nama)
+        if not fs:
+            log.append(("TIDAK DITEMUKAN", nama, "", alasan))
+        for f in fs:
+            pindah(f, alasan)
+    hapus_kolom("D01_transposed_indonesia_mixed.xlsx", "Data_Transposed", 1, {"Gendot"}, A_GENDOT + " (S01)")
+    hapus_baris("D02_row_flat_english_semantic.xlsx", [("English_Flat_Data", "B")], {"Gendot"}, A_GENDOT + " (S02)")
+    hapus_baris("D04_varietas_kosong_invalid.xlsx", [("Data_Invalid", "B")], {"Gendot"}, A_GENDOT + " (S04)")
+    hapus_baris("D03_row_multilevel_indonesia.xlsx", [("Data_Bertingkat", "A")], {"Domba"}, A_DOMBA + " (S03)")
+    for nama in ["E08_zenodo_capsicum_en.xlsx", "E08_zenodo_capsicum_en_variety.xlsx"]:
+        hapus_baris(nama, [("Observed85_readable", "A")], {"Bhut Jolokia"}, A_BHUT + " (N08)")
+    hapus_baris("spreadsheet_varietas_terdaftar_17.xlsx", [("Data Varietas", "A")], {"Bhut Jolokia"}, A_BHUT)
+    hapus_baris("G02_grin_11_varietas.xlsx", [("GRIN Capsicum", "A"), ("sumber", "A")], {"Poblano"}, A_POBLANO)
+    # Jejak foto dan varietas di gold / berkas daftar
+    a = "[tahap 4] baris foto yang dikeluarkan"
+    for p in ["data_evaluasi/gambar/manifest/gold_gambar_manifest_final.csv",
+              "data_evaluasi/gambar/manifest/gold_gambar_manifest.csv",
+              "data_evaluasi/gambar/manifest/ATRIBUSI_LISENSI.csv",
+              "data_evaluasi/gambar/manifest/pembagian_8_folder.csv",
+              "dataset_eksperimen/2_input_foto/commons_8_folder/ATRIBUSI_LISENSI.csv",
+              "dataset_eksperimen/2_input_foto/commons_8_folder/pembagian_8_folder.csv",
+              "data_evaluasi/gold/bagian_foto_commons/gold_bagian_commons.csv",
+              "data_evaluasi/gold/bagian_foto_commons/kunci_nomor.csv",
+              "data_evaluasi/gambar_id/gold_kombinasi_drive1.csv",
+              "data_evaluasi/gambar_id/gold_peneliti/gold_kombinasi_peneliti.csv",
+              "data_evaluasi/gambar_id/foto_peneliti/foto_peneliti.csv",
+              "dataset_eksperimen/2_input_foto/foto_indonesia_drive1/daftar_foto.csv"]:
+        saring_csv(p, "filename", lambda r: r["filename"] in foto4, a)
+    saring_xlsx("data_evaluasi/gambar/manifest/gold_gambar_manifest.xlsx", "Manifest", "A", lambda v: v in foto4, a)
+    var4 = {("S01", "Gendot"), ("S02", "Gendot"), ("S03", "Domba"), ("N08", "Bhut Jolokia")}
+    saring_csv("data_evaluasi/gold/kunci_sel/kunci_sel_semua.csv", "dataset",
+               lambda r: (r["dataset"], r["varietas"]) in var4, "[tahap 4] kunci sel Gendot, Domba, Bhut Jolokia")
+    # pembagian_8_folder.csv masih memakai label_kind usulan AI; samakan dengan gold final (setelah ganti label 2d).
+    final = {r["filename"]: r["label_kind"] for r in csv.DictReader(open(gfinal, encoding="utf-8-sig"))
+             if r["filename"] not in foto4}
+    for p in ["data_evaluasi/gambar/manifest/pembagian_8_folder.csv",
+              "dataset_eksperimen/2_input_foto/commons_8_folder/pembagian_8_folder.csv"]:
+        if not os.path.exists(p):
+            continue
+        raw = open(p, "rb").read()
+        bom = raw.startswith(b"\xef\xbb\xbf")
+        eol = "\r\n" if b"\r\n" in raw else "\n"
+        rows = list(csv.DictReader(raw.decode("utf-8-sig").splitlines()))
+        ubah = [r["filename"] for r in rows
+                if r["filename"] in final and r["label_kind"] != final[r["filename"]] and r["filename"] not in foto4]
+        if not ubah:
+            continue
+        log.append(("label_kind", p, arsip_path(p), f"[tahap 4] label_kind disamakan dengan gold final: {ubah}"))
+        if JALANKAN:
+            dst = arsip_path(p)
+            if not os.path.exists(dst):
+                os.makedirs(os.path.dirname(dst), exist_ok=True)
+                shutil.copy2(p, dst)
+            for r in rows:
+                if r["filename"] in final:
+                    r["label_kind"] = final[r["filename"]]
+            sisa = [r for r in rows if r["filename"] not in foto4]
+            with open(p, "w", encoding="utf-8-sig" if bom else "utf-8", newline="") as fh:
+                w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()), lineterminator=eol)
+                w.writeheader()
+                w.writerows(sisa)
+
+if not (TAHAP1 or TAHAP2 or TAHAP3 or TAHAP4):
+    sys.exit("Pilih --tahap1, --tahap2, --tahap3, atau --tahap4")
 for a in log:
     print(" | ".join(a))
 print("total aksi:", len(log), "(DRY RUN)" if not JALANKAN else "(DIJALANKAN)")

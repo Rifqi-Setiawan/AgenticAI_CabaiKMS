@@ -136,6 +136,29 @@ Catatan: database varietas terdaftar PPVTPP dan SIMCABAI tidak dapat dicari dari
 berarti "tidak ditemukan bukti pendaftaran", bukan bukti bahwa keduanya pasti tidak terdaftar. Jawa Barat tercatat
 memiliki 204 varietas lokal terdaftar (Sinar Tani, 2025), tetapi daftar namanya tidak dipublikasikan.
 
+## 2f. Tahap 4 (5 November 2026): Gendot, Domba, Bhut Jolokia, dan GRIN Poblano dikeluarkan
+
+Keputusan peneliti setelah audit level varietas: nama tanpa bukti pendaftaran atau nama kultivar ikut dikeluarkan
+(`skrip/keluarkan_non_varietas.py --tahap4`). Arsip ada di `_dikeluarkan_bukan_varietas/` (lokal, tidak di GitHub).
+
+| Nama | Yang dikeluarkan | Sisa |
+|---|---|---|
+| Gendot | kolom S01 (D01), 2 baris S02 (D02), 1 baris S04 (D04), foto `daun cabai gendot` dan `p9vb80t0ldt5cms.webp` (label hanya tebakan AI) | S01/S02: Kopay, Katokkon. S04: Kopay + 1 baris tanpa varietas (uji penolakan tetap berlaku) |
+| Domba | 1 baris S03 (D03), foto `cabai domba.jpg` dan `daun cabai domba.webp` | S03: Katokkon |
+| Bhut Jolokia | 5 baris N08 (kedua berkas E08), 6 foto Commons (termasuk `paprika_buah_031.jpg`, nama file menyesatkan) | N08: Tabasco, Etna ornamental, Pirâmide ornamental (15 baris) |
+| GRIN Poblano (PI 268105) | baris G02 (sheet data dan sumber) | G02: Hungarian Wax |
+| Foto Commons UNCERTAIN yang terlewat | `habanero_buah_021.jpg`, `hungarian-wax_buah_034.jpg` (tidak pernah masuk gold final; tahap 1 hanya membaca gold final) | - |
+
+Foto Commons berlabel Poblano (2 foto) **tetap**, karena label foto mengacu ke kultivar 'Mexican Ancho' syn. 'Poblano'
+(bagian 2b), berbeda dengan aksesi GRIN yang hanya bernama tipe.
+
+Hasil: foto Commons tersisa **35** (7 KNOWN Hungarian Wax, 28 OTHER kultivar: Black Pearl, Trinidad Moruga Scorpion,
+Carolina Reaper, Cheongyang, Red Savina, Padron, Poblano, Shishito, De Cayenne); foto Indonesia tersisa **6** (Katokkon 4,
+Kopay 2). Baris foto dibuang dari gold foto, ATRIBUSI, pembagian, gold bagian, dan gold kombinasi foto Indonesia;
+kunci sel 409 menjadi 330 baris. `pembagian_8_folder.csv` juga disamakan label_kind-nya dengan gold final (5 foto ganti
+label di 2d). Gold atribut tidak berubah (butir per atribut), tetapi SHA-256 berkas S01-S04 dan N08 tidak lagi cocok dengan
+`source_file_sha256` di gold, sehingga ID butir untuk workbook ini perlu dibuat ulang sebelum dinilai.
+
 ## 3. Sumber
 - Multilingual Multiscript Plant Name Database, *Capsicum annuum*: https://plantnames.unimelb.edu.au/Sorting/Capsicum_annuum.html
 - Wikipedia, *Capsicum chinense* (Red Savina sebagai kultivar habanero): https://en.wikipedia.org/wiki/Capsicum_chinense

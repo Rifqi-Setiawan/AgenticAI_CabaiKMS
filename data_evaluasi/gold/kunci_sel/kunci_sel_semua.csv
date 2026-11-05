@@ -116,39 +116,30 @@ N07,lebar_daun,Arisa IPB,Lebar daun,2.23-3.70 cm
 N07,posisi_bunga,Arisa IPB,Posisi bunga,Pendant
 N07,warna_kepala_sari,Arisa IPB,Warna kotak sari,Putih (RHS N77C)
 N07,bentuk_ujung_buah,Arisa IPB,Ujung buah,Sangat lancip
-N08,bentuk_daun,Bhut Jolokia,Leaf shape,1
 N08,bentuk_daun,Tabasco,Leaf shape,2
 N08,bentuk_daun,Etna ornamental,Leaf shape,3
 N08,bentuk_daun,Pirâmide ornamental,Leaf shape,3
-N08,bentuk_buah,Bhut Jolokia,Fruit shape,3
 N08,bentuk_buah,Tabasco,Fruit shape,1
 N08,bentuk_buah,Etna ornamental,Fruit shape,3
 N08,bentuk_buah,Pirâmide ornamental,Fruit shape,3
-N08,warna_mahkota,Bhut Jolokia,Corolla colour,2
 N08,warna_mahkota,Tabasco,Corolla colour,4
 N08,warna_mahkota,Etna ornamental,Corolla colour,4
 N08,warna_mahkota,Pirâmide ornamental,Corolla colour,1
-N08,warna_buah_masak,Bhut Jolokia,Mature fruit colour,6
 N08,warna_buah_masak,Tabasco,Mature fruit colour,7
 N08,warna_buah_masak,Etna ornamental,Mature fruit colour,8
 N08,warna_buah_masak,Pirâmide ornamental,Mature fruit colour,8
-N08,tinggi_tanaman,Bhut Jolokia,Plant height,137; 126; 194; 153; 142
 N08,tinggi_tanaman,Tabasco,Plant height,150; 132; 120; 119; 130
 N08,tinggi_tanaman,Etna ornamental,Plant height,104; 108; 110; 90; 112
 N08,tinggi_tanaman,Pirâmide ornamental,Plant height,37; 34; 31; 32
-N08,warna_buah_muda,Bhut Jolokia,Immature fruit colour,2
 N08,warna_buah_muda,Tabasco,Immature fruit colour,2
 N08,warna_buah_muda,Etna ornamental,Immature fruit colour,3
 N08,warna_buah_muda,Pirâmide ornamental,Immature fruit colour,1
-N08,panjang_buah_masak,Bhut Jolokia,Mature fruit length,6.614; 5.351; 5.364; 5.661; 5.07
 N08,panjang_buah_masak,Tabasco,Mature fruit length,3.443; 2.729; 2.983; 2.771; 2.77
 N08,panjang_buah_masak,Etna ornamental,Mature fruit length,2.585; 3.401; 2.908; 2.809; 3.619
 N08,panjang_buah_masak,Pirâmide ornamental,Mature fruit length,1.802; 2.4170000000000003; 1.975; 2.19; 1.903
-N08,jumlah_biji_buah_masak,Bhut Jolokia,Seeds per fruit,13; 8; 12; 14
 N08,jumlah_biji_buah_masak,Tabasco,Seeds per fruit,27; 15; 20
 N08,jumlah_biji_buah_masak,Etna ornamental,Seeds per fruit,40; 39; 30; 23; 33
 N08,jumlah_biji_buah_masak,Pirâmide ornamental,Seeds per fruit,23; 32; 19; 16; 20
-N08,habitus,Bhut Jolokia,Plant growth habit,7
 N08,habitus,Tabasco,Plant growth habit,7
 N08,habitus,Etna ornamental,Plant growth habit,7
 N08,habitus,Pirâmide ornamental,Plant growth habit,5
@@ -226,185 +217,115 @@ N09,warna_mahkota,JS CK 01,Mahkota Bunga,Putih (RHS Green White Group 155 A)
 N09,warna_mahkota,CR P1,Mahkota Bunga,Putih kehijauan (Yellow Green Group RHS 145 D)
 N09,warna_kepala_sari,JS CK 01,Kotak Sari,Hijau kebiruan (RHS Blue Green Group 122 B)
 N09,warna_kepala_sari,CR P1,Kotak Sari,Hijau keabuan (Greyed Green Group RHS N189 B)
-S01,habitus,Gendot,Bentuk pertumbuhan tanaman,Perdu
 S01,habitus,Kopay,Bentuk pertumbuhan tanaman,Tegak kompak
 S01,habitus,Katokkon,Bentuk pertumbuhan tanaman,Semak rapat
-S01,tinggi_tanaman,Gendot,Tinggi keseluruhan tanaman,˃ 100 cm; 20 cm
 S01,tinggi_tanaman,Kopay,Tinggi keseluruhan tanaman,60 - 89 cm
 S01,tinggi_tanaman,Katokkon,Tinggi keseluruhan tanaman,90–120 cm
-S01,umur,Gendot,Siklus hidup tanaman,Tahunan
 S01,umur,Kopay,Siklus hidup tanaman,Semusim
 S01,umur,Katokkon,Siklus hidup tanaman,Tahunan
-S01,adaptasi_ekologi,Gendot,Kesesuaian lingkungan tumbuh,Dataran tinggi sejuk
 S01,adaptasi_ekologi,Kopay,Kesesuaian lingkungan tumbuh,Dataran rendah lembap
 S01,adaptasi_ekologi,Katokkon,Kesesuaian lingkungan tumbuh,Dataran tinggi
-S01,batang,Gendot,Permukaan batang,Berbulu lebat
 S01,batang,Kopay,Permukaan batang,Berbulu halus
 S01,batang,Katokkon,Permukaan batang,Berbulu sedang
-S01,tekstur_daun,Gendot,Tekstur permukaan daun,Agak kasar
 S01,tekstur_daun,Kopay,Tekstur permukaan daun,Halus
 S01,tekstur_daun,Katokkon,Tekstur permukaan daun,Kasar
-S01,warna_daun,Gendot,Warna dominan daun,Hijau tua
 S01,warna_daun,Kopay,Warna dominan daun,Hijau
 S01,warna_daun,Katokkon,Warna dominan daun,Hijau pekat
-S01,panjang_daun,Gendot,Ukuran panjang helai daun,"14,3–16,8 cm"
 S01,panjang_daun,Kopay,Ukuran panjang helai daun,"10,2–12,4 cm"
 S01,panjang_daun,Katokkon,Ukuran panjang helai daun,"12,2 cm"
-S01,lebar_daun,Gendot,Lebar helai daun,"6,4–7,1 cm"
 S01,lebar_daun,Kopay,Lebar helai daun,"4,0–5,1 cm"
 S01,lebar_daun,Katokkon,Lebar helai daun,"5,8 cm"
-S01,warna_mahkota,Gendot,Warna mahkota bunga,Ungu pucat
 S01,warna_mahkota,Kopay,Warna mahkota bunga,Putih
 S01,warna_mahkota,Katokkon,Warna mahkota bunga,Ungu
-S01,jumlah_mahkota_bunga,Gendot,Jumlah helai mahkota,5
 S01,jumlah_mahkota_bunga,Kopay,Jumlah helai mahkota,5
 S01,jumlah_mahkota_bunga,Katokkon,Jumlah helai mahkota,6
-S01,posisi_bunga,Gendot,Arah bunga pada tanaman,Menggantung
 S01,posisi_bunga,Kopay,Arah bunga pada tanaman,Tegak
 S01,posisi_bunga,Katokkon,Arah bunga pada tanaman,Menggantung
-S01,panjang_buah_muda,Gendot,Panjang buah belum masak,"5,8–7,2 cm"
 S01,panjang_buah_muda,Kopay,Panjang buah belum masak,"10,3–12,1 cm"
 S01,panjang_buah_muda,Katokkon,Panjang buah belum masak,"4,1 cm"
-S01,keliling_buah_muda,Gendot,Keliling buah belum masak,"5,1–6,0 cm"
 S01,keliling_buah_muda,Kopay,Keliling buah belum masak,"2,8–3,4 cm"
 S01,keliling_buah_muda,Katokkon,Keliling buah belum masak,"4,8 cm"
-S01,warna_buah_masak,Gendot,Warna buah ketika matang,Merah
 S01,warna_buah_masak,Kopay,Warna buah ketika matang,Merah cerah
 S01,warna_buah_masak,Katokkon,Warna buah ketika matang,Merah tua
-S01,posisi_buah_masak,Gendot,Posisi buah matang,Menggantung
 S01,posisi_buah_masak,Kopay,Posisi buah matang,Tegak
 S01,posisi_buah_masak,Katokkon,Posisi buah matang,Menggantung
-S01,bentuk_ujung_buah,Gendot,Bentuk ujung buah,Meruncing
 S01,bentuk_ujung_buah,Kopay,Bentuk ujung buah,Runcing
 S01,bentuk_ujung_buah,Katokkon,Bentuk ujung buah,Tumpul
-S01,warna_biji,Gendot,Warna kulit biji,Krem
 S01,warna_biji,Kopay,Warna kulit biji,Krem kekuningan
 S01,warna_biji,Katokkon,Warna kulit biji,Krem
-S01,jumlah_biji_buah_masak,Gendot,Jumlah biji pada buah matang,31
 S01,jumlah_biji_buah_masak,Kopay,Jumlah biji pada buah matang,46
 S01,jumlah_biji_buah_masak,Katokkon,Jumlah biji pada buah matang,26
-S01,lokasi,Gendot,Lokasi pengambilan sampel,"Cisarua, Bandung Barat"
 S01,lokasi,Kopay,Lokasi pengambilan sampel,"Agam, Sumatera Barat"
 S01,lokasi,Katokkon,Lokasi pengambilan sampel,"Toraja Utara, Sulawesi Selatan"
-S02,habitus,Gendot,Overall plant growth form,Shrub-like; Compact shrub
 S02,habitus,Kopay,Overall plant growth form,Herbaceous upright
 S02,habitus,Katokkon,Overall plant growth form,Dense bush
-S02,tinggi_tanaman,Gendot,Vertical size at maturity,> 100 cm; 20 cm; 98 cm
 S02,tinggi_tanaman,Kopay,Vertical size at maturity,60–89 cm
 S02,tinggi_tanaman,Katokkon,Vertical size at maturity,90–120 cm
-S02,umur,Gendot,Productive plant lifespan,Perennial
 S02,umur,Kopay,Productive plant lifespan,Annual
 S02,umur,Katokkon,Productive plant lifespan,Perennial
-S02,adaptasi_ekologi,Gendot,Suitable growing environment,Cool highland zone
 S02,adaptasi_ekologi,Kopay,Suitable growing environment,Humid lowland zone
 S02,adaptasi_ekologi,Katokkon,Suitable growing environment,Mountain growing zone
-S02,batang,Gendot,Hair coverage on the stem,Dense fine hairs; Dense hairs
 S02,batang,Kopay,Hair coverage on the stem,Sparse fine hairs
 S02,batang,Katokkon,Hair coverage on the stem,Moderate hairs
-S02,tekstur_daun,Gendot,Leaf surface feel,Slightly rough; Slightly coarse
 S02,tekstur_daun,Kopay,Leaf surface feel,Smooth
 S02,tekstur_daun,Katokkon,Leaf surface feel,Rough
-S02,warna_daun,Gendot,Dominant foliage shade,Dark green; Deep green
 S02,warna_daun,Kopay,Dominant foliage shade,Medium green
 S02,warna_daun,Katokkon,Dominant foliage shade,Deep green
-S02,panjang_daun,Gendot,Leaf blade longitudinal size,14.3–16.8 cm; 14.9 cm
 S02,panjang_daun,Kopay,Leaf blade longitudinal size,10.2–12.4 cm
 S02,panjang_daun,Katokkon,Leaf blade longitudinal size,12.2 cm
-S02,lebar_daun,Gendot,Leaf blade crosswise span,6.4–7.1 cm; 6.8 cm
 S02,lebar_daun,Kopay,Leaf blade crosswise span,4.0–5.1 cm
 S02,lebar_daun,Katokkon,Leaf blade crosswise span,5.8 cm
-S02,bentuk_ujung_daun,Gendot,Leaf-tip profile,Tapered
 S02,bentuk_ujung_daun,Kopay,Leaf-tip profile,Pointed
 S02,bentuk_ujung_daun,Katokkon,Leaf-tip profile,Long-tapered
-S02,kedudukan_daun,Gendot,Leaf arrangement along the stem,Alternating
 S02,kedudukan_daun,Kopay,Leaf arrangement along the stem,Alternate
 S02,kedudukan_daun,Katokkon,Leaf arrangement along the stem,Alternating
-S02,warna_mahkota,Gendot,Petal pigmentation,Pale purple; Light violet
 S02,warna_mahkota,Kopay,Petal pigmentation,White
 S02,warna_mahkota,Katokkon,Petal pigmentation,Purple
-S02,jumlah_mahkota_bunga,Gendot,Petals found on each bloom,5
 S02,jumlah_mahkota_bunga,Kopay,Petals found on each bloom,5
 S02,jumlah_mahkota_bunga,Katokkon,Petals found on each bloom,6
-S02,posisi_bunga,Gendot,Flower orientation on the plant,Pendant
 S02,posisi_bunga,Kopay,Flower orientation on the plant,Upright
 S02,posisi_bunga,Katokkon,Flower orientation on the plant,Pendant
-S02,panjang_buah_muda,Gendot,Longitudinal size of the unripe pod,5.8–7.2 cm; 6.4 cm
 S02,panjang_buah_muda,Kopay,Longitudinal size of the unripe pod,10.3–12.1 cm
 S02,panjang_buah_muda,Katokkon,Longitudinal size of the unripe pod,4.1 cm
-S02,keliling_buah_muda,Gendot,Girth of the unripe pod,5.1–6.0 cm; 5.5 cm
 S02,keliling_buah_muda,Kopay,Girth of the unripe pod,2.8–3.4 cm
 S02,keliling_buah_muda,Katokkon,Girth of the unripe pod,4.8 cm
-S02,warna_buah_masak,Gendot,Pigmentation of ripe pods,Red; Dark red
 S02,warna_buah_masak,Kopay,Pigmentation of ripe pods,Bright red
 S02,warna_buah_masak,Katokkon,Pigmentation of ripe pods,Deep red
-S02,posisi_buah_masak,Gendot,Orientation of ripe pods,Pendant
 S02,posisi_buah_masak,Kopay,Orientation of ripe pods,Upright
 S02,posisi_buah_masak,Katokkon,Orientation of ripe pods,Pendant
-S02,bentuk_ujung_buah,Gendot,Fruit-tip profile,Pointed
 S02,bentuk_ujung_buah,Kopay,Fruit-tip profile,Pointed
 S02,bentuk_ujung_buah,Katokkon,Fruit-tip profile,Blunt
-S02,warna_biji,Gendot,Seed coat shade,Cream
 S02,warna_biji,Kopay,Seed coat shade,Yellowish cream
 S02,warna_biji,Katokkon,Seed coat shade,Cream
-S02,jumlah_biji_buah_masak,Gendot,Seed load in each ripe pod,31; 29
 S02,jumlah_biji_buah_masak,Kopay,Seed load in each ripe pod,46
 S02,jumlah_biji_buah_masak,Katokkon,Seed load in each ripe pod,26
-S02,lokasi,Gendot,Specimen collection site,"Cisarua, West Bandung; Lembang, West Bandung"
 S02,lokasi,Kopay,Specimen collection site,"Agam, West Sumatra"
 S02,lokasi,Katokkon,Specimen collection site,"North Toraja, South Sulawesi"
 S03,habitus,Katokkon,Vegetatif / Bentuk tumbuh,Semak rapat
-S03,habitus,Domba,Vegetatif / Bentuk tumbuh,Perdu
 S03,tinggi_tanaman,Katokkon,Vegetatif / Ukuran tinggi,90–120 cm
-S03,tinggi_tanaman,Domba,Vegetatif / Ukuran tinggi,105 cm
 S03,umur,Katokkon,Vegetatif / Lama hidup,Tahunan
-S03,umur,Domba,Vegetatif / Lama hidup,Tahunan
 S03,batang,Katokkon,Vegetatif / Permukaan batang,Berbulu sedang
-S03,batang,Domba,Vegetatif / Permukaan batang,Berbulu lebat
 S03,tekstur_daun,Katokkon,Daun / Tekstur,Kasar
-S03,tekstur_daun,Domba,Daun / Tekstur,Agak kasar
 S03,warna_daun,Katokkon,Daun / Warna,Hijau pekat
-S03,warna_daun,Domba,Daun / Warna,Hijau tua
 S03,panjang_daun,Katokkon,Daun / Panjang,"12,2 cm"
-S03,panjang_daun,Domba,Daun / Panjang,"15,1 cm"
 S03,lebar_daun,Katokkon,Daun / Lebar,"5,8 cm"
-S03,lebar_daun,Domba,Daun / Lebar,"7,0 cm"
 S03,warna_mahkota,Katokkon,Bunga / Warna mahkota,Ungu
-S03,warna_mahkota,Domba,Bunga / Warna mahkota,Ungu pucat
 S03,jumlah_mahkota_bunga,Katokkon,Bunga / Jumlah mahkota,6
-S03,jumlah_mahkota_bunga,Domba,Bunga / Jumlah mahkota,5
 S03,posisi_bunga,Katokkon,Bunga / Posisi,Menggantung
-S03,posisi_bunga,Domba,Bunga / Posisi,Menggantung
 S03,panjang_buah_muda,Katokkon,Buah Muda / Panjang,"4,1 cm"
-S03,panjang_buah_muda,Domba,Buah Muda / Panjang,"6,9 cm"
 S03,keliling_buah_muda,Katokkon,Buah Muda / Keliling,"4,8 cm"
-S03,keliling_buah_muda,Domba,Buah Muda / Keliling,"5,7 cm"
 S03,panjang_tangkai_buah_muda,Katokkon,Buah Muda / Panjang tangkai,"2,3 cm"
-S03,panjang_tangkai_buah_muda,Domba,Buah Muda / Panjang tangkai,"2,7 cm"
 S03,panjang_kelopak_buah_muda,Katokkon,Buah Muda / Panjang kelopak,"1,1 cm"
-S03,panjang_kelopak_buah_muda,Domba,Buah Muda / Panjang kelopak,"1,3 cm"
 S03,keliling_kelopak_buah_muda,Katokkon,Buah Muda / Keliling kelopak,"3,2 cm"
-S03,keliling_kelopak_buah_muda,Domba,Buah Muda / Keliling kelopak,"3,6 cm"
 S03,bentuk_kelopak_buah_muda,Katokkon,Buah Muda / Bentuk kelopak,Mangkuk
-S03,bentuk_kelopak_buah_muda,Domba,Buah Muda / Bentuk kelopak,Mangkuk
 S03,posisi_buah_muda,Katokkon,Buah Muda / Posisi,Menggantung
-S03,posisi_buah_muda,Domba,Buah Muda / Posisi,Menggantung
 S03,panjang_buah_masak,Katokkon,Buah Masak / Panjang,"4,6 cm"
-S03,panjang_buah_masak,Domba,Buah Masak / Panjang,"7,4 cm"
 S03,keliling_buah_masak,Katokkon,Buah Masak / Keliling,"5,2 cm"
-S03,keliling_buah_masak,Domba,Buah Masak / Keliling,"6,2 cm"
 S03,panjang_tangkai_buah_masak,Katokkon,Buah Masak / Panjang tangkai,"2,5 cm"
-S03,panjang_tangkai_buah_masak,Domba,Buah Masak / Panjang tangkai,"2,9 cm"
 S03,panjang_kelopak_buah_masak,Katokkon,Buah Masak / Panjang kelopak,"1,2 cm"
-S03,panjang_kelopak_buah_masak,Domba,Buah Masak / Panjang kelopak,"1,4 cm"
 S03,keliling_kelopak_buah_masak,Katokkon,Buah Masak / Keliling kelopak,"3,4 cm"
-S03,keliling_kelopak_buah_masak,Domba,Buah Masak / Keliling kelopak,"3,8 cm"
 S03,warna_buah_masak,Katokkon,Buah Masak / Warna,Merah tua
-S03,warna_buah_masak,Domba,Buah Masak / Warna,Merah
 S03,posisi_buah_masak,Katokkon,Buah Masak / Posisi,Menggantung
-S03,posisi_buah_masak,Domba,Buah Masak / Posisi,Menggantung
 S03,warna_biji,Katokkon,Biji / Warna,Krem
-S03,warna_biji,Domba,Biji / Warna,Krem
 S03,jumlah_biji_buah_masak,Katokkon,Biji / Jumlah,26
-S03,jumlah_biji_buah_masak,Domba,Biji / Jumlah,33
 S03,lokasi,Katokkon,Lokasi,"Toraja Utara, Sulawesi Selatan"
-S03,lokasi,Domba,Lokasi,"Bandung Barat, Jawa Barat"

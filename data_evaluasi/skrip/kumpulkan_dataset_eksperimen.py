@@ -154,7 +154,10 @@ def salin_koreksi_mock():
 def tulis_checksum():
     lines = []
     for f in sorted(OUT.rglob("*")):
-        # ~$*.xlsx = berkas kunci Excel saat workbook sedang dibuka; bukan data
+        # ~$*.xlsx = berkas kunci Excel saat workbook sedang dibuka; bukan data.
+        # _dikeluarkan_bukan_varietas/ = arsip lokal data yang dikeluarkan (D19), punya checksum sendiri.
+        if "_dikeluarkan_bukan_varietas" in f.relative_to(OUT).parts:
+            continue
         if f.is_file() and f.name != "SHA256SUMS.txt" and not f.name.startswith("~$"):
             lines.append(hashlib.sha256(f.read_bytes()).hexdigest() + "  " + f.relative_to(OUT).as_posix())
     # LF eksplisit agar `sha256sum -c SHA256SUMS.txt` langsung jalan (write_text di Windows menulis CRLF)
