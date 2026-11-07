@@ -1,0 +1,111 @@
+{
+  "run": "S01",
+  "kind": "kombinasi",
+  "rep": 1,
+  "file": "D01_transposed_indonesia_mixed.xlsx",
+  "sheet": "Data_Transposed",
+  "format": "transposed",
+  "header_rows": null,
+  "drive": null,
+  "max_images": 12,
+  "k": 8,
+  "commit": "39f4213",
+  "sha256_berkas": "94b0e1ba65692efa9a25d93e1d85d6eee31836453a5cdc3dca6bfca5241bf7e6",
+  "start": "2026-11-07 17:32:54",
+  "s2_keys": [
+    [
+      "Tinggi keseluruhan tanaman",
+      "",
+      "r_2"
+    ],
+    [
+      "Siklus hidup tanaman",
+      "",
+      "r_3"
+    ],
+    [
+      "Kesesuaian lingkungan tumbuh",
+      "",
+      "r_4"
+    ],
+    [
+      "Permukaan batang",
+      "",
+      "r_5"
+    ],
+    [
+      "Tekstur permukaan daun",
+      "",
+      "r_6"
+    ],
+    [
+      "Ukuran panjang helai daun",
+      "",
+      "r_8"
+    ],
+    [
+      "Lebar helai daun",
+      "",
+      "r_9"
+    ],
+    [
+      "Warna mahkota bunga",
+      "",
+      "r_19"
+    ],
+    [
+      "Jumlah helai mahkota",
+      "",
+      "r_22"
+    ],
+    [
+      "Panjang buah belum masak",
+      "",
+      "r_49"
+    ],
+    [
+      "Keliling buah belum masak",
+      "",
+      "r_52"
+    ],
+    [
+      "Warna buah ketika matang",
+      "",
+      "r_45"
+    ],
+    [
+      "Posisi buah matang",
+      "",
+      "r_47"
+    ],
+    [
+      "Warna kulit biji",
+      "",
+      "r_54"
+    ],
+    [
+      "Jumlah biji pada buah matang",
+      "",
+      "r_55"
+    ],
+    [
+      "Lokasi pengambilan sampel",
+      "",
+      "r_56"
+    ],
+    [
+      "Kandungan klorofil (SPAD)",
+      "",
+      "r_55"
+    ]
+  ],
+  "images_discovered": 0,
+  "n_mapping": 21,
+  "n_vision": 0,
+  "fingerprint": "26246f04b77a99d6ad163fffe6dae2eef439a5c47aa09a5dbc1283389e50b5cf",
+  "errors": [
+    "atribut \"Kandungan klorofil (SPAD)\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut sumber merujuk pada pengukuran fisiologis kandungan klorofil (SPAD), sedangkan seluruh kandidat kanonik yang tersedia mencakup karakter morfologis organ tanaman atau lokasi. Tidak ada baris kanonik yang cocok."
+  ],
+  "status": "ok",
+  "detik": 130.2
+}

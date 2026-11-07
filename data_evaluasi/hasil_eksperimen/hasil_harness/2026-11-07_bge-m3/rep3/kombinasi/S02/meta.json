@@ -1,0 +1,153 @@
+{
+  "run": "S02",
+  "kind": "kombinasi",
+  "rep": 3,
+  "file": "D02_row_flat_english_semantic.xlsx",
+  "sheet": "English_Flat_Data",
+  "format": "row-oriented",
+  "header_rows": 1,
+  "drive": null,
+  "max_images": 12,
+  "k": 8,
+  "commit": "39f4213",
+  "sha256_berkas": "686d504596dd2ac118f8f33e6145ad166a42a30598d09d530607544353171583",
+  "start": "2026-11-07 18:37:07",
+  "s2_keys": [
+    [
+      "Sample code",
+      "",
+      "r_56"
+    ],
+    [
+      "Overall plant growth form",
+      "",
+      "r_1"
+    ],
+    [
+      "Vertical size at maturity",
+      "",
+      "r_2"
+    ],
+    [
+      "Productive plant lifespan",
+      "",
+      "r_3"
+    ],
+    [
+      "Suitable growing environment",
+      "",
+      "r_1"
+    ],
+    [
+      "Hair coverage on the stem",
+      "",
+      "r_5"
+    ],
+    [
+      "Leaf surface feel",
+      "",
+      "r_6"
+    ],
+    [
+      "Dominant foliage shade",
+      "",
+      "r_7"
+    ],
+    [
+      "Leaf blade longitudinal size",
+      "",
+      "r_8"
+    ],
+    [
+      "Leaf blade crosswise span",
+      "",
+      "r_9"
+    ],
+    [
+      "Leaf-tip profile",
+      "",
+      "r_14"
+    ],
+    [
+      "Leaf arrangement along the stem",
+      "",
+      "r_5"
+    ],
+    [
+      "Petal pigmentation",
+      "",
+      "r_24"
+    ],
+    [
+      "Petals found on each bloom",
+      "",
+      "r_22"
+    ],
+    [
+      "Flower orientation on the plant",
+      "",
+      "r_32"
+    ],
+    [
+      "Longitudinal size of the unripe pod",
+      "",
+      "r_37"
+    ],
+    [
+      "Girth of the unripe pod",
+      "",
+      "r_38"
+    ],
+    [
+      "Pigmentation of ripe pods",
+      "",
+      "r_5"
+    ],
+    [
+      "Orientation of ripe pods",
+      "",
+      "r_46"
+    ],
+    [
+      "Fruit-tip profile",
+      "",
+      "r_14"
+    ],
+    [
+      "Seed coat shade",
+      "",
+      "r_54"
+    ],
+    [
+      "Seed load in each ripe pod",
+      "",
+      "r_55"
+    ],
+    [
+      "Specimen collection site",
+      "",
+      "r_56"
+    ],
+    [
+      "Chlorophyll reading (SPAD)",
+      "",
+      "r_41"
+    ],
+    [
+      "Soil acidity reading",
+      "",
+      "r_1"
+    ]
+  ],
+  "images_discovered": 0,
+  "n_mapping": 25,
+  "n_vision": 0,
+  "fingerprint": "26246f04b77a99d6ad163fffe6dae2eef439a5c47aa09a5dbc1283389e50b5cf",
+  "errors": [
+    "atribut \"Sample code\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Sample code' merupakan kode identifikasi/aksesi sampel (misal ENG-002), dan tidak ada kandidat baris kanonik yang mewakili kode sampel atau aksesi.",
+    "atribut \"Chlorophyll reading (SPAD)\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut mengukur pembacaan klorofil daun menggunakan indeks SPAD, tetapi tidak ada kandidat baris kanonik yang mewakili klorofil atau pengukuran fisiologis serupa pada daftar yang tersedia.",
+    "atribut \"Soil acidity reading\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut mengukur keasaman tanah (pH) dengan nilai numerik, sedangkan kandidat kanonik yang tersedia tidak mencakup parameter edafik atau pH tanah."
+  ],
+  "status": "ok",
+  "detik": 168.9
+}

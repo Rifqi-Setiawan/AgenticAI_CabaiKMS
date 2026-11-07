@@ -31,6 +31,7 @@ STRUKTUR FOLDER
    E_foto_pvt_uji40/              uji 40 foto PVT x 2 kondisi kartu (klasifikasi foto saja, tanpa spreadsheet kanonik)
    F_rerun_kolom_varietas_ac4f2e4/ rerun N07 dan R02 setelah perbaikan deteksi kolom varietas (untuk akurasi sel)
    H_koreksi_foto_commons_D18/    klasifikasi foto Commons terkoreksi: 19 foto yang dijawab mock dijalankan ulang
+   I_atribut_bge-m3_39f4213/      run atribut end-to-end setelah embedding diganti ke bge-m3 (D22), data bersih D19
 KETERANGAN_DATA.txt       berkas ini
 DESKRIPSI_PEMBUATAN_DAN_TUJUAN_DATA.txt  cara pembuatan, tujuan uji, dan output yang diharapkan per input
 SHA256SUMS.txt            checksum semua berkas
@@ -264,6 +265,19 @@ H_koreksi_foto_commons_D18/ (4 Nov 2026, commit ac4f2e4 + perbaikan D18, skrip V
   Dampak (label sumber, 160 foto): macro-F1 0,692 -> 0,640; Top-1 KNOWN 0,758 -> 0,727; presisi AUTO_LINK
   0,713 -> 0,736 (64/87); nama file netral 0,659 -> 0,644 (29/45); menyesatkan 0/11 -> 0/6.
   Foto Indonesia (B_) dan pemetaan atribut tidak terdampak (tidak ada baris mock).
+I_atribut_bge-m3_39f4213/ (7 Nov 2026, commit 39f4213, harness VPS harness_vps.py --reps 3 --tanpa-foto)
+  Model embedding BAAI/bge-m3 (D22; run A_/B_ memakai paraphrase-multilingual-MiniLM-L12-v2). Input = berkas
+  data_evaluasi/inputs setelah pembersihan level varietas D19 (R02, N07, N09 identik dengan run A_; N08 dan
+  S01-S03 berkurang barisnya, nama atribut sama). KMS_DYNAMIC_SCHEMA=0 (sebanding dengan A_/B_). S01-S03
+  dijalankan tanpa folder Drive (pemetaan atribut saja, tanpa klasifikasi foto). Tidak ada Commit ke KMS;
+  jumlah baris semua tabel kms.* sama sebelum dan sesudah run (kms_sebelum.json, kms_sesudah.json di
+  data_evaluasi/hasil_eksperimen/hasil_harness/2026-11-07_bge-m3/).
+  Isi per folder (rep1): hasil_kanonik.xlsx, pemetaan_atribut.csv, meta_run.json. Rep2 dan rep3 hanya di
+  data_evaluasi/hasil_eksperimen/hasil_harness/2026-11-07_bge-m3/. N08 berkas asli dan S04 ditolak sistem
+  (uji penolakan, sama seperti run lama), tidak ada keluaran.
+  Ringkas (gold di data_evaluasi, skor skor_atribut_e2e.md di folder ini): F1 S4 held-out 1,000 (MiniLM
+  0,978); dev S01-S03 1,000 (MiniLM 0,915); precision dan recall NULL 1,000. 14 butir berubah dari NULL ke
+  benar, 0 memburuk. Keputusan sama di tiga pengulangan.
 
 Yang masuk ke basis data KMS (PostgreSQL): penulisan dokumen pengetahuan saat ini hanya untuk tata letak
 "Resume Data" (R01). Workbook lain berhenti di spreadsheet kanonik (hasil_kanonik.xlsx).

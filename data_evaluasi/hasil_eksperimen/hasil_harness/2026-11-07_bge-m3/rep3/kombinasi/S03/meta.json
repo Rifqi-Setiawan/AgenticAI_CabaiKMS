@@ -1,0 +1,161 @@
+{
+  "run": "S03",
+  "kind": "kombinasi",
+  "rep": 3,
+  "file": "D03_row_multilevel_indonesia.xlsx",
+  "sheet": "Data_Bertingkat",
+  "format": "row-oriented",
+  "header_rows": null,
+  "drive": null,
+  "max_images": 12,
+  "k": 8,
+  "commit": "39f4213",
+  "sha256_berkas": "abb9272de7daae6912ec24399ef73dcbb7e5c0b9042e8ae2d2094556a53fabac",
+  "start": "2026-11-07 18:54:09",
+  "s2_keys": [
+    [
+      "Kode Sampel",
+      "",
+      "r_56"
+    ],
+    [
+      "Bentuk tumbuh",
+      "Vegetatif",
+      "r_1"
+    ],
+    [
+      "Ukuran tinggi",
+      "Vegetatif",
+      "r_2"
+    ],
+    [
+      "Lama hidup",
+      "Vegetatif",
+      "r_3"
+    ],
+    [
+      "Permukaan batang",
+      "Vegetatif",
+      "r_5"
+    ],
+    [
+      "Tekstur",
+      "Daun",
+      "r_6"
+    ],
+    [
+      "Warna",
+      "Daun",
+      "r_57"
+    ],
+    [
+      "Panjang",
+      "Daun",
+      "r_8"
+    ],
+    [
+      "Lebar",
+      "Daun",
+      "r_9"
+    ],
+    [
+      "Jumlah mahkota",
+      "Bunga",
+      "r_22"
+    ],
+    [
+      "Posisi",
+      "Bunga",
+      "r_32"
+    ],
+    [
+      "Panjang",
+      "Buah Muda",
+      "r_39"
+    ],
+    [
+      "Keliling",
+      "Buah Muda",
+      "r_38"
+    ],
+    [
+      "Panjang tangkai",
+      "Buah Muda",
+      "r_39"
+    ],
+    [
+      "Panjang kelopak",
+      "Buah Muda",
+      "r_40"
+    ],
+    [
+      "Keliling kelopak",
+      "Buah Muda",
+      "r_41"
+    ],
+    [
+      "Bentuk kelopak",
+      "Buah Muda",
+      "r_42"
+    ],
+    [
+      "Posisi",
+      "Buah Muda",
+      "r_46"
+    ],
+    [
+      "Panjang",
+      "Buah Masak",
+      "r_49"
+    ],
+    [
+      "Keliling",
+      "Buah Masak",
+      "r_50"
+    ],
+    [
+      "Panjang tangkai",
+      "Buah Masak",
+      "r_48"
+    ],
+    [
+      "Panjang kelopak",
+      "Buah Masak",
+      "r_51"
+    ],
+    [
+      "Keliling kelopak",
+      "Buah Masak",
+      "r_52"
+    ],
+    [
+      "Warna",
+      "Buah Masak",
+      "r_45"
+    ],
+    [
+      "Posisi",
+      "Buah Masak",
+      "r_47"
+    ],
+    [
+      "Warna",
+      "Biji",
+      "r_54"
+    ],
+    [
+      "Jumlah",
+      "Biji",
+      "r_55"
+    ]
+  ],
+  "images_discovered": 0,
+  "n_mapping": 29,
+  "n_vision": 0,
+  "fingerprint": "26246f04b77a99d6ad163fffe6dae2eef439a5c47aa09a5dbc1283389e50b5cf",
+  "errors": [
+    "atribut \"Kode Sampel\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Kode Sampel' merupakan pengidentifikasi/kode spesimen (contoh: ML-001) dan tidak cocok dengan kandidat baris kanonik yang tersedia (morfologi, gambar, atau lokasi)."
+  ],
+  "status": "ok",
+  "detik": 182.5
+}

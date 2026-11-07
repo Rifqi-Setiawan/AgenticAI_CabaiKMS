@@ -150,6 +150,8 @@ def main():
     ap.add_argument("-k", type=int, default=8)
     ap.add_argument("--seed", type=int, default=20261031)
     ap.add_argument("--s3", action="store_true", help="baseline S3: seluruh baris kanonik diberikan ke penilai tanpa retrieval")
+    ap.add_argument("--tanpa-foto", action="store_true",
+                    help="run kombinasi tanpa folder Drive (pemetaan atribut saja; tidak ada panggilan visi atau kandidat foto ke KMS)")
     a = ap.parse_args()
     global S3
     S3 = a.s3
@@ -164,6 +166,8 @@ def main():
             runs.append(("gambar", fid, "spreadsheet_varietas_terdaftar.xlsx", "Data Varietas", "row-oriented", None, gid, 20))
     if a.ids:
         runs = [r for r in runs if r[1] in a.ids.split(",")]
+    if a.tanpa_foto:
+        runs = [(*r[:6], None, r[7]) if r[0] == "kombinasi" else r for r in runs]
     for rep in range(1, a.reps + 1):
         order = list(runs)
         if a.ordered and a.ids:

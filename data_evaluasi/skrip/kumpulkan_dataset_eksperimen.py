@@ -92,6 +92,20 @@ def salin_pvt():
     copy(uji / "run.log", h / "log_run.txt")
 
 
+def salin_bge_m3():
+    """Run atribut end-to-end setelah embedding diganti ke bge-m3 (D22), rep1, data bersih D19."""
+    src = EV / "hasil_eksperimen" / "hasil_harness" / "2026-11-07_bge-m3" / "rep1"
+    dst = OUT / "4_hasil_sistem" / "I_atribut_bge-m3_39f4213"
+    for jenis, ds, nama in (("atribut", "R02", "R02_input_cabai_kms"), ("atribut", "N07", "N07_kementan"),
+                            ("atribut_n08var", "N08", "N08_zenodo_variety"), ("atribut", "N09", "N09_deskripsi_varietas"),
+                            ("kombinasi", "S01", "S01_D01_transposed"), ("kombinasi", "S02", "S02_D02_english"),
+                            ("kombinasi", "S03", "S03_D03_bertingkat")):
+        for f in ("hasil_asli.xlsx", "mapping.csv"):
+            copy(src / jenis / ds / f, dst / nama / RENAME[f])
+        copy(src / jenis / ds / "meta.json", dst / nama / "meta_run.json")
+    copy(EV / "hasil_eksperimen" / "skor_atribut_e2e_bge-m3" / "skor_atribut_e2e.md", dst / "skor_atribut_e2e.md")
+
+
 def salin_rerun_sel():
     """Rerun N07 dan R02 pada commit ac4f2e4 (perbaikan deteksi kolom varietas) untuk metrik akurasi sel (poin 3)."""
     src = EV / "hasil_eksperimen" / "hasil_harness" / "2026-11-04_sel_ac4f2e4" / "rep1" / "atribut"
@@ -178,6 +192,10 @@ def main():
         if (OUT / "4_hasil_sistem" / "F_rerun_kolom_varietas_ac4f2e4").exists():
             raise SystemExit("Rerun kolom varietas sudah ada di dataset_eksperimen.")
         salin_rerun_sel()
+        tulis_checksum()
+        return
+    if "--tambah-bge-m3" in sys.argv:
+        salin_bge_m3()
         tulis_checksum()
         return
     if "--tambah-pvt" in sys.argv:
