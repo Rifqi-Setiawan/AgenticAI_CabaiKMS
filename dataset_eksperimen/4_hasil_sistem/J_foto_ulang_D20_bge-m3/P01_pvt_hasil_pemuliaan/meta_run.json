@@ -1,0 +1,1115 @@
+{
+  "run": "P01",
+  "kind": "atribut",
+  "rep": 1,
+  "file": "P01_pvt_hasil_pemuliaan_24.xlsx",
+  "sheet": "Deskripsi Varietas",
+  "format": "row-oriented",
+  "header_rows": 1,
+  "drive": null,
+  "max_images": 5,
+  "k": 8,
+  "commit": "71f4339",
+  "sha256_berkas": "ecb1168bbaab7959a0abf290743fc7b4fb51a120f0796d9a146f44f8719d1cce",
+  "start": "2026-11-07 19:31:00",
+  "s2_keys": [
+    [
+      "Nama Umum",
+      "",
+      "r_45"
+    ],
+    [
+      "Spesies",
+      "",
+      "r_14"
+    ],
+    [
+      "Golongan Varietas",
+      "",
+      "r_44"
+    ],
+    [
+      "Pewarnaan antosianin pada hipokotil",
+      "",
+      "r_24"
+    ],
+    [
+      "Orientasi tanaman",
+      "",
+      "r_32"
+    ],
+    [
+      "Panjang batang (cm)",
+      "",
+      "r_11"
+    ],
+    [
+      "Diameter batang (cm)",
+      "",
+      "r_11"
+    ],
+    [
+      "Pemendekan ruas",
+      "",
+      "r_15"
+    ],
+    [
+      "Jumlah ruas antara bunga pertama dan ruas yang memendek",
+      "",
+      "r_31"
+    ],
+    [
+      "Panjang ruas (cm)",
+      "",
+      "r_8"
+    ],
+    [
+      "Pewarnaan antosianin pada buku",
+      "",
+      "r_29"
+    ],
+    [
+      "Intensitas pewarnaan antosianin pada buku",
+      "",
+      "r_5"
+    ],
+    [
+      "Bulu pada buku",
+      "",
+      "r_5"
+    ],
+    [
+      "Tinggi tanaman (cm)",
+      "",
+      "r_2"
+    ],
+    [
+      "Panjang daun (cm)",
+      "",
+      "r_8"
+    ],
+    [
+      "Lebar daun (cm)",
+      "",
+      "r_9"
+    ],
+    [
+      "Intensitas warna hijau daun",
+      "",
+      "r_7"
+    ],
+    [
+      "Pewarnaan antosianin pada daun",
+      "",
+      "r_7"
+    ],
+    [
+      "Undulasi tepi daun",
+      "",
+      "r_14"
+    ],
+    [
+      "Lepuhan daun",
+      "",
+      "r_6"
+    ],
+    [
+      "Profil potongan melintang daun",
+      "",
+      "r_14"
+    ],
+    [
+      "Kilapan daun",
+      "",
+      "r_16"
+    ],
+    [
+      "Orientasi pedunkel bunga",
+      "",
+      "r_32"
+    ],
+    [
+      "Pemunculan stigma bunga",
+      "",
+      "r_32"
+    ],
+    [
+      "Pewarnaan antosianin pada antera",
+      "",
+      "r_7"
+    ],
+    [
+      "Warna antera sebelum pecah",
+      "",
+      "r_44"
+    ],
+    [
+      "Warna antera setelah pecah",
+      "",
+      "r_44"
+    ],
+    [
+      "Pewarnaan antosianin pada filamen",
+      "",
+      "r_7"
+    ],
+    [
+      "Warna sekunder pada mahkota",
+      "",
+      "r_19"
+    ],
+    [
+      "Pewarnaan antosianin pada buah",
+      "",
+      "r_44"
+    ],
+    [
+      "Posisi buah matang",
+      "",
+      "r_47"
+    ],
+    [
+      "Panjang buah (cm)",
+      "",
+      "r_49"
+    ],
+    [
+      "Lebar buah (cm)",
+      "",
+      "r_49"
+    ],
+    [
+      "Rasio panjang/diameter",
+      "",
+      "r_9"
+    ],
+    [
+      "Bentuk potongan membujur",
+      "",
+      "r_14"
+    ],
+    [
+      "Puntiran",
+      "",
+      "r_56"
+    ],
+    [
+      "Bentuk potongan melintang",
+      "",
+      "r_16"
+    ],
+    [
+      "Sinuasi pada pericarp bagian basal",
+      "",
+      "r_5"
+    ],
+    [
+      "Sinuasi pada pericarp selain bagian basal",
+      "",
+      "r_5"
+    ],
+    [
+      "Tekstur permukaan",
+      "",
+      "r_6"
+    ],
+    [
+      "Warna buah intermediate",
+      "",
+      "r_45"
+    ],
+    [
+      "Warna buah matang",
+      "",
+      "r_45"
+    ],
+    [
+      "Kilapan buah",
+      "",
+      "r_47"
+    ],
+    [
+      "Rongga tangkai buah",
+      "",
+      "r_5"
+    ],
+    [
+      "Kedalaman rongga tangkai buah",
+      "",
+      "r_43"
+    ],
+    [
+      "Kedalaman alur dalam lokul",
+      "",
+      "r_5"
+    ],
+    [
+      "Jumlah lokul",
+      "",
+      "r_31"
+    ],
+    [
+      "Ketebalan daging buah",
+      "",
+      "r_52"
+    ],
+    [
+      "Panjang tangkai buah",
+      "",
+      "r_48"
+    ],
+    [
+      "Ketebalan tangkai",
+      "",
+      "r_11"
+    ],
+    [
+      "Kelopak",
+      "",
+      "r_33"
+    ],
+    [
+      "Capsaisin dalam plasenta",
+      "",
+      "r_14"
+    ],
+    [
+      "Intensitas capsaisin pada plasenta",
+      "",
+      "r_56"
+    ],
+    [
+      "Keunggulan",
+      "",
+      "r_43"
+    ],
+    [
+      "Habitus tanaman",
+      "",
+      "r_1"
+    ],
+    [
+      "Tinggi dikotomus (cm)",
+      "",
+      "r_2"
+    ],
+    [
+      "Diameter batang (mm)",
+      "",
+      "r_9"
+    ],
+    [
+      "Warna batang",
+      "",
+      "r_44"
+    ],
+    [
+      "Bentuk penampang batang",
+      "",
+      "r_16"
+    ],
+    [
+      "Gelombang tepi daun",
+      "",
+      "r_14"
+    ],
+    [
+      "Warna mahkota bunga",
+      "",
+      "r_19"
+    ],
+    [
+      "Warna kepala putik",
+      "",
+      "r_24"
+    ],
+    [
+      "Warna kotak sari",
+      "",
+      "r_26"
+    ],
+    [
+      "Warna tangkai sari (2)",
+      "",
+      "r_27"
+    ],
+    [
+      "Umur berbunga (HST)",
+      "",
+      "r_55"
+    ],
+    [
+      "Umur panen (HST)",
+      "",
+      "r_55"
+    ],
+    [
+      "Bentuk pangkal buah",
+      "",
+      "r_43"
+    ],
+    [
+      "Penampang melintang buah",
+      "",
+      "r_43"
+    ],
+    [
+      "Warna buah intermediet",
+      "",
+      "r_44"
+    ],
+    [
+      "Warna buah tua",
+      "",
+      "r_45"
+    ],
+    [
+      "Diameter buah (cm)",
+      "",
+      "r_38"
+    ],
+    [
+      "Tebal daging buah (mm)",
+      "",
+      "r_39"
+    ],
+    [
+      "Jumlah buah per tanaman (buah)",
+      "",
+      "r_55"
+    ],
+    [
+      "Bobot per buah (g)",
+      "",
+      "r_37"
+    ],
+    [
+      "Bobot buah per tanaman (g)",
+      "",
+      "r_10"
+    ],
+    [
+      "Potensi hasil (ton/ha)",
+      "",
+      "r_11"
+    ],
+    [
+      "Rasa buah",
+      "",
+      "r_43"
+    ],
+    [
+      "Bentuk biji",
+      "",
+      "r_43"
+    ],
+    [
+      "Bobot biji 1000 butir (g)",
+      "",
+      "r_25"
+    ],
+    [
+      "Daya simpan buah pada suhu ruang (HSP)",
+      "",
+      "r_49"
+    ],
+    [
+      "Populasi tanaman per hektar",
+      "",
+      "r_55"
+    ],
+    [
+      "Bobot per buah besar",
+      "",
+      "r_55"
+    ],
+    [
+      "Daging buah tebal",
+      "",
+      "r_50"
+    ],
+    [
+      "Diameter buah lebar",
+      "",
+      "r_9"
+    ],
+    [
+      "Warna tangkai bunga",
+      "",
+      "r_24"
+    ],
+    [
+      "Potensi hasil (Ton Ha-1)",
+      "",
+      "r_11"
+    ],
+    [
+      "Kadar kepedasan (SHU)",
+      "",
+      "r_2"
+    ],
+    [
+      "Wilayah adaptasi",
+      "",
+      "r_4"
+    ],
+    [
+      "Penciri utama",
+      "",
+      "r_45"
+    ],
+    [
+      "Keunggulan varietas",
+      "",
+      "r_37"
+    ],
+    [
+      "Jumlah buah per tanaman(buah)",
+      "",
+      "r_55"
+    ],
+    [
+      "Bentuk buah (2)",
+      "",
+      "r_43"
+    ],
+    [
+      "Tebal daging buah (cm)",
+      "",
+      "r_38"
+    ],
+    [
+      "Asal",
+      "",
+      "r_56"
+    ],
+    [
+      "Silsilah",
+      "",
+      "r_35"
+    ],
+    [
+      "Ukuran daun (cm)",
+      "",
+      "r_9"
+    ],
+    [
+      "Bunga: Pewarnaan antosianin pada Filamen",
+      "",
+      "r_32"
+    ],
+    [
+      "Warna benang sari",
+      "",
+      "r_26"
+    ],
+    [
+      "Umur mulai berbunga (hst)",
+      "",
+      "r_55"
+    ],
+    [
+      "Umur mulai panen (hst)",
+      "",
+      "r_55"
+    ],
+    [
+      "Ukuran buah (cm)",
+      "",
+      "r_49"
+    ],
+    [
+      "Berat 1000 biji (g)",
+      "",
+      "r_55"
+    ],
+    [
+      "Berat per buah (g)",
+      "",
+      "r_37"
+    ],
+    [
+      "Berat buah per tanaman (kg)",
+      "",
+      "r_55"
+    ],
+    [
+      "Ketahanan terhadap penyakit",
+      "",
+      "r_5"
+    ],
+    [
+      "Daya simpan buah pada suhu 27-30 oC (hsp)",
+      "",
+      "r_55"
+    ],
+    [
+      "Hasil buah per petak (kg)",
+      "",
+      "r_55"
+    ],
+    [
+      "Hasil buah per hektar (ton/ha)",
+      "",
+      "r_55"
+    ],
+    [
+      "Populasi per hektar (tanaman)",
+      "",
+      "r_10"
+    ],
+    [
+      "Kebutuhan benih per hektar (g)",
+      "",
+      "r_55"
+    ],
+    [
+      "Diameter batang",
+      "",
+      "r_9"
+    ],
+    [
+      "Ukuran daun",
+      "",
+      "r_8"
+    ],
+    [
+      "Warna benangsari",
+      "",
+      "r_26"
+    ],
+    [
+      "Umur mulai berbunga",
+      "",
+      "r_30"
+    ],
+    [
+      "Umur mulai panen",
+      "",
+      "r_3"
+    ],
+    [
+      "Ukuran buah",
+      "",
+      "r_49"
+    ],
+    [
+      "Tebal kulit buah",
+      "",
+      "r_39"
+    ],
+    [
+      "Berat 1.000 biji",
+      "",
+      "r_55"
+    ],
+    [
+      "Berat per buah",
+      "",
+      "r_49"
+    ],
+    [
+      "Jumlah buah per tanaman",
+      "",
+      "r_55"
+    ],
+    [
+      "Berat buah per tanaman",
+      "",
+      "r_37"
+    ],
+    [
+      "Daya simpan buah pada suhu 25-31°C",
+      "",
+      "r_49"
+    ],
+    [
+      "Hasil buah per hektar",
+      "",
+      "r_49"
+    ],
+    [
+      "Populasi per hektar",
+      "",
+      "r_10"
+    ],
+    [
+      "Kebutuhan benih per hektar",
+      "",
+      "r_2"
+    ],
+    [
+      "Warna kelopak",
+      "",
+      "r_35"
+    ],
+    [
+      "Warna serbuk Sari",
+      "",
+      "r_27"
+    ],
+    [
+      "Sinuasi perikarp pada bagian basal",
+      "",
+      "r_5"
+    ],
+    [
+      "Tebal kulit buah (cm)",
+      "",
+      "r_38"
+    ],
+    [
+      "Berat 1.000 biji (gr)",
+      "",
+      "r_55"
+    ],
+    [
+      "Berat per buah (gr)",
+      "",
+      "r_55"
+    ],
+    [
+      "Ketahanan terhadap hama",
+      "",
+      "r_58"
+    ],
+    [
+      "Daya simpan buah 25 - 27°C (HSP)",
+      "",
+      "r_55"
+    ],
+    [
+      "Hasil buah per hektar (ton)",
+      "",
+      "r_55"
+    ],
+    [
+      "Kebutuhan benih per hektar (gr)",
+      "",
+      "r_55"
+    ],
+    [
+      "Keunggulan varietas (ton/ ha)",
+      "",
+      "r_2"
+    ],
+    [
+      "Bentuk ujung helaian mahkota bunga",
+      "",
+      "r_14"
+    ],
+    [
+      "Tebal kulit buah (mm)",
+      "",
+      "r_40"
+    ],
+    [
+      "Berat 1.000 biji (g)",
+      "",
+      "r_55"
+    ],
+    [
+      "Berat buah per tanaman (g)",
+      "",
+      "r_55"
+    ],
+    [
+      "Hasil buah per hektar (Ton Ha-1)",
+      "",
+      "r_55"
+    ],
+    [
+      "Warna anther",
+      "",
+      "r_44"
+    ],
+    [
+      "Umur panen",
+      "",
+      "r_3"
+    ],
+    [
+      "Tekstur permukaan buah",
+      "",
+      "r_43"
+    ],
+    [
+      "Bentuk potongan buah membujur",
+      "",
+      "r_43"
+    ],
+    [
+      "Berat buah pertanaman",
+      "",
+      "r_39"
+    ],
+    [
+      "Daya simpan buah pada suhu (25 – 30 °C)",
+      "",
+      "r_49"
+    ],
+    [
+      "Lebar tajuk (cm)",
+      "",
+      "r_10"
+    ],
+    [
+      "Tipe tumbuh tanaman",
+      "",
+      "r_1"
+    ],
+    [
+      "Antosianin pada buku",
+      "",
+      "r_14"
+    ],
+    [
+      "Intensitas antosianin buku",
+      "",
+      "r_15"
+    ],
+    [
+      "Bentuk batang",
+      "",
+      "r_5"
+    ],
+    [
+      "Pemendekan ruas-internode",
+      "",
+      "r_5"
+    ],
+    [
+      "Posisi tangkai bunga",
+      "",
+      "r_32"
+    ],
+    [
+      "Bentuk mahkota bunga",
+      "",
+      "r_23"
+    ],
+    [
+      "Warna filamen",
+      "",
+      "r_24"
+    ],
+    [
+      "Posisi stigma terhadap anther",
+      "",
+      "r_32"
+    ],
+    [
+      "Panjang tangkai buah (cm)",
+      "",
+      "r_39"
+    ],
+    [
+      "Tebal buah (cm)",
+      "",
+      "r_39"
+    ],
+    [
+      "Pangkal buah",
+      "",
+      "r_14"
+    ],
+    [
+      "Ujung buah",
+      "",
+      "r_53"
+    ],
+    [
+      "Lekuk keriting buah",
+      "",
+      "r_59"
+    ],
+    [
+      "Produktivitas (Ton/Ha)",
+      "",
+      "r_5"
+    ],
+    [
+      "Antosian pada percabangan/buku",
+      "",
+      "r_14"
+    ],
+    [
+      "Undulasi (gelombang) tepi daun",
+      "",
+      "r_16"
+    ],
+    [
+      "Orientasi bunga",
+      "",
+      "r_32"
+    ],
+    [
+      "Warna bunga: Kelopak Bunga",
+      "",
+      "r_35"
+    ],
+    [
+      "Warna bunga: Mahkota Bunga",
+      "",
+      "r_19"
+    ],
+    [
+      "Warna bunga: Kepala Putik",
+      "",
+      "r_24"
+    ],
+    [
+      "Warna bunga: Benang Sari",
+      "",
+      "r_26"
+    ],
+    [
+      "Posisi putik",
+      "",
+      "r_32"
+    ],
+    [
+      "Bentuk potongan membujur buah",
+      "",
+      "r_43"
+    ],
+    [
+      "Bentuk potongan melintang buah",
+      "",
+      "r_43"
+    ],
+    [
+      "Posisi buah",
+      "",
+      "r_47"
+    ],
+    [
+      "Kelopak buah (calyx)",
+      "",
+      "r_43"
+    ],
+    [
+      "Berat 1,000 biji (gram)",
+      "",
+      "r_55"
+    ],
+    [
+      "Berat per buah (gram)",
+      "",
+      "r_55"
+    ],
+    [
+      "Berat buah per tanaman (gram)",
+      "",
+      "r_55"
+    ],
+    [
+      "Daya simpan buah pada suhu 25 - 27°C (HSP)",
+      "",
+      "r_55"
+    ],
+    [
+      "Populasi per hektar (tanaman/Ha)",
+      "",
+      "r_10"
+    ],
+    [
+      "Kebutuhan benih per hektar (gram/Ha)",
+      "",
+      "r_55"
+    ],
+    [
+      "Orientasi",
+      "",
+      "r_32"
+    ],
+    [
+      "Lebar kanopi (cm)",
+      "",
+      "r_9"
+    ],
+    [
+      "Panjang helai daun (cm)",
+      "",
+      "r_8"
+    ],
+    [
+      "Lebar helai daun (cm)",
+      "",
+      "r_9"
+    ],
+    [
+      "Panjang tangkai daun (cm)",
+      "",
+      "r_11"
+    ],
+    [
+      "Intensitas warna hijau",
+      "",
+      "r_44"
+    ],
+    [
+      "Pewarnaan antosianin daun",
+      "",
+      "r_7"
+    ],
+    [
+      "Undulasi pada tepi daun",
+      "",
+      "r_14"
+    ],
+    [
+      "Warna daun atas",
+      "",
+      "r_12"
+    ],
+    [
+      "Warna daun bawah",
+      "",
+      "r_13"
+    ],
+    [
+      "Warna tangkai daun",
+      "",
+      "r_12"
+    ],
+    [
+      "Orientasi pedunkel",
+      "",
+      "r_32"
+    ],
+    [
+      "Pemunculan stigma",
+      "",
+      "r_5"
+    ],
+    [
+      "Warna buah antara",
+      "",
+      "r_44"
+    ],
+    [
+      "Pewarnaan antosianin",
+      "",
+      "r_24"
+    ],
+    [
+      "Sinuasi pada perikap bagian basal",
+      "",
+      "r_5"
+    ],
+    [
+      "Intensitas warna buah matang",
+      "",
+      "r_47"
+    ],
+    [
+      "Ketebalan daging (mm)",
+      "",
+      "r_51"
+    ],
+    [
+      "Ketebalan tangkai buah (cm)",
+      "",
+      "r_39"
+    ],
+    [
+      "Kelopak buah",
+      "",
+      "r_42"
+    ],
+    [
+      "Jumlah buah/tanaman",
+      "",
+      "r_55"
+    ],
+    [
+      "Berat buah / tanaman (kg)",
+      "",
+      "r_55"
+    ],
+    [
+      "Hasil buah/ha (ton)",
+      "",
+      "r_48"
+    ],
+    [
+      "Daya simpan buah pada suhu 27-30°C (hari)",
+      "",
+      "r_48"
+    ],
+    [
+      "Populasi tanaman/Ha",
+      "",
+      "r_1"
+    ],
+    [
+      "Antosian pada percabangan/buku 1",
+      "",
+      "r_14"
+    ],
+    [
+      "Antosianin tangkai bunga",
+      "",
+      "r_24"
+    ],
+    [
+      "Garis melintang pada buah muda",
+      "",
+      "r_46"
+    ],
+    [
+      "Sinuasi (kerutan) pangkal buah",
+      "",
+      "r_15"
+    ],
+    [
+      "Jumlah lokul/rongga buah",
+      "",
+      "r_31"
+    ],
+    [
+      "Daya simpan buah (suhu 25 - 27°C)",
+      "",
+      "r_48"
+    ],
+    [
+      "Berat buah per tanaman (gr)",
+      "",
+      "r_55"
+    ],
+    [
+      "Ketebalan tangkai buah (mm)",
+      "",
+      "r_39"
+    ],
+    [
+      "Populasi/Ha",
+      "",
+      "r_5"
+    ],
+    [
+      "Warna bunga: Tangkai sari",
+      "",
+      "r_27"
+    ],
+    [
+      "Daya simpan buah pada suhu 25 - 27°C",
+      "",
+      "r_48"
+    ]
+  ],
+  "images_discovered": 0,
+  "n_mapping": 233,
+  "n_vision": 0,
+  "fingerprint": "26246f04b77a99d6ad163fffe6dae2eef439a5c47aa09a5dbc1283389e50b5cf",
+  "errors": [
+    "atribut \"Daya simpan buah (suhu 25 - 27°C)\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut sumber merujuk pada daya simpan (shelf life) buah pascapanen, namun tidak ada kandidat kanonik yang mewakili karakteristik daya simpan buah.",
+    "atribut \"Berat buah per tanaman (gr)\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut sumber mengukur bobot atau berat buah per tanaman, sedangkan daftar kandidat yang tersedia hanya mencakup dimensi morfologi daun, buah muda, batang, habitus, atau jumlah biji, tanpa kandidat yang merepresentasikan hasil/bobot buah per tanaman.",
+    "atribut \"Ketebalan tangkai buah (mm)\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut sumber mengukur ketebalan (diameter) tangkai buah, sedangkan kandidat yang tersedia untuk tangkai buah hanya mengukur panjang (panjang tangkai buah muda/masak). Tidak ada kandidat kanonik yang cocok.",
+    "atribut \"Populasi/Ha\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut 'Populasi/Ha' mengacu pada populasi atau kerapatan tanaman per hektar, dan tidak ada kandidat baris kanonik yang merepresentasikan atribut budidaya/agronomi ini.",
+    "atribut \"Daya simpan buah pada suhu 25 - 27°C\" tidak punya padanan baris kanonik yang meyakinkan (target=NULL); reasoning LLM: Atribut sumber mengacu pada daya simpan (shelf life) buah cabai setelah panen, namun tidak ada kandidat baris kanonik yang berkaitan dengan daya simpan pada daftar yang tersedia."
+  ],
+  "status": "ok",
+  "detik": 1698.9
+}

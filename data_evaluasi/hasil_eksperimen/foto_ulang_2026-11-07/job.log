@@ -1,0 +1,142 @@
+== P01 Sat Nov  7 19:30:58 WIB 2026
+P01 rep 1 ok 1698.9 s
+== commons Sat Nov  7 19:59:20 WIB 2026
+commons35 1 IMG_0022.jpg OTHER None CANDIDATE 12.9
+commons35 2 IMG_0049.jpg OTHER None CANDIDATE 16.2
+commons35 3 IMG_0065.jpg OTHER None CANDIDATE 11.4
+commons35 4 IMG_0097.jpg OTHER None CANDIDATE 10.3
+commons35 5 IMG_0033.jpg OTHER None CANDIDATE 10.8
+commons35 6 IMG_0142.jpg OTHER None CANDIDATE 10.4
+commons35 7 hungarian-wax_buah_011.jpg KNOWN Hungarian Wax AUTO_LINK 29.5
+commons35 8 hungarian-wax_buah_081.jpg KNOWN Hungarian Wax AUTO_LINK 14.9
+commons35 9 serrano_buah_029.jpg OTHER None CANDIDATE 14.1
+commons35 10 shishito_buah_006.jpg OTHER None CANDIDATE 13.3
+commons35 11 IMG_0016.jpg OTHER None CANDIDATE 11.6
+commons35 12 IMG_0067.jpg OTHER None CANDIDATE 10.4
+commons35 13 black-pearl_buah_153.jpg OTHER None CANDIDATE 13.7
+commons35 14 padron_buah_070.jpg OTHER None CANDIDATE 15.9
+commons35 15 trinidad-moruga-scorpion_buah_073.jpg OTHER None CANDIDATE 11.5
+commons35 16 IMG_0085.jpg OTHER None CANDIDATE 13.3
+commons35 17 IMG_0157.jpg OTHER None CANDIDATE 9.8
+commons35 18 padron_buah_040.jpg OTHER None CANDIDATE 15.2
+commons35 19 black-pearl_buah_132.jpg OTHER None CANDIDATE 15.6
+commons35 20 carolina-reaper_buah_112.jpg OTHER None CANDIDATE 11.9
+commons35 21 hungarian-wax_buah_004.jpg OTHER None REVIEW_MISMATCH 16.3
+commons35 22 hungarian-wax_buah_032.jpg KNOWN Hungarian Wax AUTO_LINK 10.5
+commons35 23 black-pearl_buah_160.jpg OTHER None CANDIDATE 11.1
+commons35 24 carolina-reaper_buah_113.jpg OTHER None CANDIDATE 11.7
+commons35 25 habanero_buah_110.jpg OTHER None CANDIDATE 13.9
+commons35 26 IMG_0077.jpg OTHER None CANDIDATE 12.4
+commons35 27 IMG_0087.jpg KNOWN Hungarian Wax AUTO_LINK 61.9
+commons35 28 cabai-rawit_buah_120.jpg OTHER None CANDIDATE 14.8
+commons35 29 cayenne_buah_080.jpg OTHER None CANDIDATE 16.0
+commons35 30 trinidad-moruga-scorpion_buah_018.jpg OTHER None CANDIDATE 14.2
+commons35 31 IMG_0054.jpg OTHER None CANDIDATE 12.7
+commons35 32 IMG_0084.jpg KNOWN Hungarian Wax AUTO_LINK 12.0
+commons35 33 IMG_0091.jpg KNOWN Hungarian Wax AUTO_LINK 13.4
+commons35 34 IMG_0145.jpg KNOWN Hungarian Wax AUTO_LINK 12.2
+commons35 35 carolina-reaper_buah_075.jpg OTHER None CANDIDATE 14.2
+== indonesia S01_D01_transposed Sat Nov  7 20:08:01 WIB 2026
+S01 1 cabai katokon - bentuk daun.jpg KNOWN Katokkon AUTO_LINK 16.5
+S01 2 cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg OTHER None CANDIDATE 93.8
+S01 3 cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg KNOWN Katokkon AUTO_LINK 49.9
+S01 4 cabai katokon - warna tangkai daun.jpg KNOWN Katokkon AUTO_LINK 17.0
+S01 5 cabai kopay.webp KNOWN Kopay AUTO_LINK 15.0
+S01 6 daun cabai kopay.jpg KNOWN Kopay REVIEW_UNCERTAIN 28.5
+== indonesia S02_D02_english Sat Nov  7 20:11:44 WIB 2026
+S02 1 cabai katokon - bentuk daun.jpg KNOWN Katokkon AUTO_LINK 13.9
+S02 2 cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg FAILED None None 256.0
+S02 3 cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg KNOWN Katokkon AUTO_LINK 32.1
+S02 4 cabai katokon - warna tangkai daun.jpg KNOWN Katokkon AUTO_LINK 14.7
+S02 5 cabai kopay.webp KNOWN Kopay AUTO_LINK 15.0
+S02 6 daun cabai kopay.jpg KNOWN Kopay AUTO_LINK 22.9
+== indonesia S03_D03_bertingkat Sat Nov  7 20:17:41 WIB 2026
+S03 1 cabai katokon - bentuk daun.jpg KNOWN Katokkon AUTO_LINK 15.5
+S03 2 cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg OTHER None CANDIDATE 24.6
+S03 3 cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg KNOWN Katokkon AUTO_LINK 120.3
+S03 4 cabai katokon - warna tangkai daun.jpg KNOWN Katokkon AUTO_LINK 16.9
+S03 5 cabai kopay.webp OTHER None CANDIDATE 11.0
+S03 6 daun cabai kopay.jpg OTHER None CANDIDATE 12.1
+== pvt terlihat Sat Nov  7 20:21:04 WIB 2026
+pvt40_terlihat 1 IMG_4101.webp OTHER None CANDIDATE 24.6
+pvt40_terlihat 2 IMG_4102.webp OTHER None CANDIDATE 15.6
+pvt40_terlihat 3 IMG_4103.webp KNOWN Indina AUTO_LINK 12.1
+pvt40_terlihat 4 IMG_4104.webp KNOWN IPBrin KR 03 AUTO_LINK 23.4
+pvt40_terlihat 5 IMG_4105.webp KNOWN Tabia Sala 2 IPB AUTO_LINK 11.3
+pvt40_terlihat 6 IMG_4106.webp KNOWN Gemoy IPB AUTO_LINK 29.2
+pvt40_terlihat 7 IMG_4107.webp UNCERTAIN None REVIEW_UNCERTAIN 85.7
+pvt40_terlihat 8 IMG_4108.webp OTHER None CANDIDATE 10.5
+pvt40_terlihat 9 IMG_4109.webp OTHER None CANDIDATE 13.4
+pvt40_terlihat 10 IMG_4110.webp KNOWN IPBrin KR 03 AUTO_LINK 47.0
+pvt40_terlihat 11 IMG_4111.webp KNOWN Carabrina 01 AUTO_LINK 73.7
+pvt40_terlihat 12 IMG_4112.webp KNOWN Carabrina 01 AUTO_LINK 17.1
+pvt40_terlihat 13 IMG_4113.webp KNOWN Magda IPB AUTO_LINK 16.6
+pvt40_terlihat 14 IMG_4114.webp KNOWN Carabrina 01 AUTO_LINK 34.6
+pvt40_terlihat 15 IMG_4115.webp KNOWN Indina AUTO_LINK 15.4
+pvt40_terlihat 16 IMG_4116.webp UNCERTAIN None REVIEW_UNCERTAIN 23.2
+pvt40_terlihat 17 IMG_4117.webp OTHER None CANDIDATE 17.6
+pvt40_terlihat 18 IMG_4118.webp OTHER None CANDIDATE 28.7
+pvt40_terlihat 19 IMG_4119.webp OTHER None CANDIDATE 14.6
+pvt40_terlihat 20 IMG_4120.webp OTHER None CANDIDATE 17.8
+pvt40_terlihat 21 IMG_4121.webp OTHER None CANDIDATE 15.1
+pvt40_terlihat 22 IMG_4122.webp KNOWN Tabia Sala 2 IPB AUTO_LINK 11.3
+pvt40_terlihat 23 IMG_4123.webp OTHER None CANDIDATE 45.5
+pvt40_terlihat 24 IMG_4124.webp UNCERTAIN None REVIEW_UNCERTAIN 15.8
+pvt40_terlihat 25 IMG_4125.webp OTHER None CANDIDATE 16.0
+pvt40_terlihat 26 IMG_4126.webp KNOWN Carabrina 01 AUTO_LINK 12.8
+pvt40_terlihat 27 IMG_4127.webp KNOWN Gemoy IPB AUTO_LINK 21.1
+pvt40_terlihat 28 IMG_4128.webp OTHER None CANDIDATE 10.9
+pvt40_terlihat 29 IMG_4129.webp KNOWN IPBrin KR 01 AUTO_LINK 38.7
+pvt40_terlihat 30 IMG_4130.webp KNOWN Tabia Sala 2 IPB AUTO_LINK 14.2
+pvt40_terlihat 31 IMG_4131.webp UNCERTAIN None REVIEW_UNCERTAIN 16.1
+pvt40_terlihat 32 IMG_4132.webp UNCERTAIN None REVIEW_UNCERTAIN 14.5
+pvt40_terlihat 33 IMG_4133.webp KNOWN IPBrin KR 03 AUTO_LINK 12.6
+pvt40_terlihat 34 IMG_4134.webp OTHER None CANDIDATE 18.7
+pvt40_terlihat 35 IMG_4135.webp OTHER None CANDIDATE 16.9
+pvt40_terlihat 36 IMG_4136.webp KNOWN CK 52358 AUTO_LINK 13.1
+pvt40_terlihat 37 IMG_4137.webp KNOWN Indina AUTO_LINK 11.9
+pvt40_terlihat 38 IMG_4138.webp KNOWN Carabrina 01 AUTO_LINK 31.9
+pvt40_terlihat 39 IMG_4139.webp UNCERTAIN None REVIEW_UNCERTAIN 28.7
+pvt40_terlihat 40 IMG_4140.webp OTHER None CANDIDATE 15.4
+== pvt tertutup Sat Nov  7 20:36:20 WIB 2026
+pvt40_tertutup 1 IMG_4101.webp UNCERTAIN None REVIEW_UNCERTAIN 19.4
+pvt40_tertutup 2 IMG_4102.webp UNCERTAIN None REVIEW_UNCERTAIN 27.5
+pvt40_tertutup 3 IMG_4103.webp KNOWN Indina AUTO_LINK 46.8
+pvt40_tertutup 4 IMG_4104.webp UNCERTAIN None REVIEW_UNCERTAIN 32.5
+pvt40_tertutup 5 IMG_4105.webp KNOWN Tabia Sala 1 IPB AUTO_LINK 52.2
+pvt40_tertutup 6 IMG_4106.webp KNOWN Gemoy IPB AUTO_LINK 46.5
+pvt40_tertutup 7 IMG_4107.webp UNCERTAIN None REVIEW_UNCERTAIN 41.7
+pvt40_tertutup 8 IMG_4108.webp KNOWN Guritno IPB REVIEW_UNCERTAIN 52.2
+pvt40_tertutup 9 IMG_4109.webp UNCERTAIN None REVIEW_UNCERTAIN 17.5
+pvt40_tertutup 10 IMG_4110.webp UNCERTAIN None REVIEW_UNCERTAIN 37.0
+pvt40_tertutup 11 IMG_4111.webp UNCERTAIN None REVIEW_UNCERTAIN 18.3
+pvt40_tertutup 12 IMG_4112.webp KNOWN Carabrina 01 REVIEW_UNCERTAIN 56.3
+pvt40_tertutup 13 IMG_4113.webp KNOWN Magda IPB AUTO_LINK 24.8
+pvt40_tertutup 14 IMG_4114.webp UNCERTAIN None REVIEW_UNCERTAIN 16.3
+pvt40_tertutup 15 IMG_4115.webp UNCERTAIN None REVIEW_UNCERTAIN 58.7
+pvt40_tertutup 16 IMG_4116.webp UNCERTAIN None REVIEW_UNCERTAIN 22.2
+pvt40_tertutup 17 IMG_4117.webp UNCERTAIN None REVIEW_UNCERTAIN 23.9
+pvt40_tertutup 18 IMG_4118.webp UNCERTAIN None REVIEW_UNCERTAIN 16.8
+pvt40_tertutup 19 IMG_4119.webp UNCERTAIN None REVIEW_UNCERTAIN 17.3
+pvt40_tertutup 20 IMG_4120.webp UNCERTAIN None REVIEW_UNCERTAIN 32.3
+pvt40_tertutup 21 IMG_4121.webp UNCERTAIN None REVIEW_UNCERTAIN 19.3
+pvt40_tertutup 22 IMG_4122.webp KNOWN Tabia Sala 2 IPB AUTO_LINK 32.8
+pvt40_tertutup 23 IMG_4123.webp KNOWN IPBrin KR 01 AUTO_LINK 44.7
+pvt40_tertutup 24 IMG_4124.webp UNCERTAIN None REVIEW_UNCERTAIN 15.3
+pvt40_tertutup 25 IMG_4125.webp UNCERTAIN None REVIEW_UNCERTAIN 15.0
+pvt40_tertutup 26 IMG_4126.webp UNCERTAIN None REVIEW_UNCERTAIN 18.0
+pvt40_tertutup 27 IMG_4127.webp KNOWN Gemoy IPB AUTO_LINK 22.7
+pvt40_tertutup 28 IMG_4128.webp UNCERTAIN None REVIEW_UNCERTAIN 20.2
+pvt40_tertutup 29 IMG_4129.webp UNCERTAIN None REVIEW_UNCERTAIN 22.0
+pvt40_tertutup 30 IMG_4130.webp UNCERTAIN None REVIEW_UNCERTAIN 22.9
+pvt40_tertutup 31 IMG_4131.webp UNCERTAIN None REVIEW_UNCERTAIN 13.3
+pvt40_tertutup 32 IMG_4132.webp UNCERTAIN None REVIEW_UNCERTAIN 15.6
+pvt40_tertutup 33 IMG_4133.webp UNCERTAIN None REVIEW_UNCERTAIN 40.8
+pvt40_tertutup 34 IMG_4134.webp UNCERTAIN None REVIEW_UNCERTAIN 15.3
+pvt40_tertutup 35 IMG_4135.webp UNCERTAIN None REVIEW_UNCERTAIN 15.7
+pvt40_tertutup 36 IMG_4136.webp UNCERTAIN None REVIEW_UNCERTAIN 22.2
+pvt40_tertutup 37 IMG_4137.webp KNOWN Indina AUTO_LINK 26.4
+pvt40_tertutup 38 IMG_4138.webp UNCERTAIN None REVIEW_UNCERTAIN 24.9
+pvt40_tertutup 39 IMG_4139.webp UNCERTAIN None REVIEW_UNCERTAIN 23.8
+pvt40_tertutup 40 IMG_4140.webp UNCERTAIN None REVIEW_UNCERTAIN 17.6
+== SELESAI Sat Nov  7 20:54:51 WIB 2026

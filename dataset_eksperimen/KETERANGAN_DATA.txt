@@ -22,6 +22,8 @@ STRUKTUR FOLDER
                           (+ daftar_foto.csv, daftar_berita_resmi_cabai.tsv, sumber_pdf/ 34 PDF)
    pvt_uji_40/            40 foto uji (dari pvt_kementan_34_varietas) dalam dua kondisi: kartu nama terlihat dan
                           kartu nama tertutup (+ pembagian_uji_40.csv, varietas_terdaftar.txt, kotak_penutup_kartu.json)
+   nama_file_berpasangan/ foto yang sama dengan nama berkas berbeda (D23): 40 foto PVT kartu tertutup x 3 varian
+                          (netral / benar / salah_terdaftar) + 6 foto Indonesia bernama netral (+ daftar_foto.csv)
 3_template_kanonik/       template_kanonik.xlsx (skema target 60 baris)
 4_hasil_sistem/           spreadsheet hasil olahan sistem per run
    A_atribut/                     5 run spreadsheet saja
@@ -32,6 +34,8 @@ STRUKTUR FOLDER
    F_rerun_kolom_varietas_ac4f2e4/ rerun N07 dan R02 setelah perbaikan deteksi kolom varietas (untuk akurasi sel)
    H_koreksi_foto_commons_D18/    klasifikasi foto Commons terkoreksi: 19 foto yang dijawab mock dijalankan ulang
    I_atribut_bge-m3_39f4213/      run atribut end-to-end setelah embedding diganti ke bge-m3 (D22), data bersih D19
+   J_foto_ulang_D20_bge-m3/       run ulang foto (Commons 35, Indonesia 6 x S01-S03, PVT 40 x 2 kondisi) + P01 + gabungan
+   K_nama_file_berpasangan/       foto sama dengan nama berkas netral / benar / salah_terdaftar (D23)
 KETERANGAN_DATA.txt       berkas ini
 DESKRIPSI_PEMBUATAN_DAN_TUJUAN_DATA.txt  cara pembuatan, tujuan uji, dan output yang diharapkan per input
 SHA256SUMS.txt            checksum semua berkas
@@ -118,6 +122,13 @@ Jumlah atribut = jumlah atribut sumber hasil parser sistem. Split: dev = dipakai
   160 foto Commons (menggantikan daftar nama sintetis pada run lanjutan); belum dinilai untuk pemetaan atribut.
   Rincian: DESKRIPSI_PEMBUATAN_DAN_TUJUAN_DATA.txt entri G01/G02.
 
+[P01] P01_pvt_hasil_pemuliaan_24.xlsx  (ditambahkan 7 Nov 2026)
+  Sheet "Deskripsi Varietas", row-oriented, header 1 baris, 234 atribut; sheet "sumber" per varietas.
+  Sumber: tabel deskripsi 24 varietas hasil pemuliaan dari Berita Resmi PVT (sama dengan foto pvt_kementan_34_varietas),
+  dibuat data_evaluasi/skrip/buat_dataset_pvt.py. Dipakai sebagai spreadsheet pendamping foto PVT (registri 24 varietas
+  dan deskripsi morfologi untuk model visi, D20). Gold atribut dan kunci sel P01 masih USULAN AI (gold_P01_P02_pvt.csv,
+  144 butir P01+P02 perlu adjudikasi), jadi skor P01 belum untuk klaim.
+
 Ringkas: 326 atribut total (R01 14, R02 54, N07 70, N08 23, N09 80, S01 21, S02 26, S03 30, S04 8).
 Dinilai 299 atribut (142 punya target, 157 tanpa padanan); S04 dan 19 atribut AMBIGUOUS/COMPOSITE tidak dinilai.
 
@@ -176,6 +187,17 @@ Dinilai 299 atribut (142 punya target, 157 tanpa padanan); S04 dan 19 atribut AM
                    (kotak per foto: kotak_penutup_kartu.json, koordinat piksel asli; ditentukan manual karena
                    OCR tesseract tidak andal pada 125 px). Foto IMG_4106 dan IMG_4131 tidak punya kartu.
   pembagian_uji_40.csv: filename, label_kind (KNOWN/OTHER), berkas sumber, SHA-256 sumber.
+
+[nama_file_berpasangan] (7 Nov 2026, D23, data_evaluasi/skrip/buat_nama_file_berpasangan.py, seed 20261107)
+  Foto yang SAMA diuji dengan nama berkas berbeda, sehingga efek nama file terpisah dari sulit-mudahnya foto.
+  pvt40_netral/           40 foto pvt_uji_40/kartu_tertutup, nama IMG_41xx (sama dengan uji 40 foto).
+  pvt40_benar/            foto yang sama, nama = varietas yang benar + nomor acak (mis. turima_2_37.webp).
+  pvt40_salah_terdaftar/  foto yang sama, nama = varietas P01 (terdaftar) LAIN yang paling mirip (keluarga nama sama
+                          7, jenis cabai dan spesies sama 28, spesies sama 5).
+  ind6_netral/            6 foto foto_indonesia_drive1 dengan nama IMG_5101..5106 (varian benar = nama asli).
+  Registri: PVT = 24 varietas P01 (19 foto KNOWN, 21 OTHER); Indonesia = varietas spreadsheet S01/S02/S03.
+  Gold: data_evaluasi/gold/nama_file_berpasangan/gold_nama_file_berpasangan.csv. Semua 138 nama dicek dengan
+  extract_photo_context_signal produksi: petunjuk varietas terbaca persis sesuai rancangan.
 
 
 =====================================================================
@@ -278,6 +300,29 @@ I_atribut_bge-m3_39f4213/ (7 Nov 2026, commit 39f4213, harness VPS harness_vps.p
   Ringkas (gold di data_evaluasi, skor skor_atribut_e2e.md di folder ini): F1 S4 held-out 1,000 (MiniLM
   0,978); dev S01-S03 1,000 (MiniLM 0,915); precision dan recall NULL 1,000. 14 butir berubah dari NULL ke
   benar, 0 memburuk. Keputusan sama di tiga pengulangan.
+J_foto_ulang_D20_bge-m3/ (7 Nov 2026, commit 71f4339 + uji_visi_commons_vps.py dengan deskripsi D20)
+  Run ulang foto setelah D19 (data bersih), D20 (deskripsi varietas run dikirim ke model) dan D22. Lewat skrip VPS
+  uji_visi_commons_vps.py (registri, VisionSession, sinyal nama file, fusi = modul produksi vision_hook; tanpa Drive,
+  tanpa tulis KMS, kegagalan dicatat FAILED). Model visi ag/gemini-3.8-flash-high (9Router).
+  commons35/            35 foto Commons, registri Hungarian Wax (nama saja).
+  indonesia_S01..S03/   6 foto Indonesia, registri + deskripsi dari sheet kanonik run I_ (S01/S02 Kopay+Katokkon, S03
+                        Katokkon). S02: 1 foto gagal provider (InstructorRetryException) dijalankan ulang (percobaan 2);
+                        klasifikasi_foto.csv = gabungan, percobaan1/percobaan2 disimpan.
+  pvt40_kartu_terlihat/ dan pvt40_kartu_tertutup/  uji 40 foto, registri + deskripsi 24 varietas P01.
+  P01_pvt_hasil_pemuliaan/  run atribut P01 (harness, bge-m3, 1 rep) yang menjadi sheet kanonik pendamping foto PVT.
+  Isi: klasifikasi_foto.csv + meta_run.json per set; hasil_skor.md dan rincian_foto.csv (skrip skor_foto_ulang.py).
+  Ringkas: Commons status benar 35/35, AUTO_LINK benar 7/7 (hanya 7 foto KNOWN). Indonesia 18 keputusan: Top-1 0,812,
+  AUTO_LINK benar 12/12, bagian benar 15/18. PVT kartu terlihat: Top-1 0,632, AUTO_LINK benar 12/19; kartu tertutup:
+  Top-1 0,211, AUTO_LINK benar 3/8. Workbook gabungan Indonesia S01-S03 F1 0,960 (sel 1,000; tautan foto 9 benar,
+  3 salah, 7 terlewat). Gold bagian PVT dan gold P01 masih usulan AI.
+K_nama_file_berpasangan/ (7 Nov 2026, D23, skrip sama dengan J_)
+  Foto yang sama dengan nama berkas netral / benar / salah_terdaftar (2_input_foto/nama_file_berpasangan).
+  Isi: klasifikasi_foto.csv + meta_run.json per varian; hasil_skor.md dan rincian.csv (skor_nama_file_berpasangan.py).
+  Ringkas PVT (120 keputusan): nama SALAH_TERDAFTAR tidak pernah menghasilkan REVIEW_MISMATCH (0/40); model mengikuti
+  varietas di nama berkas pada 30/40 foto dan 12 tautan otomatis salah. Nama BENAR menaikkan status benar KNOWN dari 4/19
+  (netral) ke 16/19 dan OTHER dari 0/21 ke 19/21. Kesimpulan: pada foto PVT kartu tertutup, keputusan varietas berasal dari
+  nama berkas, bukan dari tampilan tanaman, dan pemeriksaan silang nama file vs visual belum berfungsi. Indonesia: netral
+  vs benar hampir sama (11/16 vs 12/16 tindakan benar foto KNOWN), tetapi nama netral memunculkan 2 tautan salah.
 
 Yang masuk ke basis data KMS (PostgreSQL): penulisan dokumen pengetahuan saat ini hanya untuk tata letak
 "Resume Data" (R01). Workbook lain berhenti di spreadsheet kanonik (hasil_kanonik.xlsx).

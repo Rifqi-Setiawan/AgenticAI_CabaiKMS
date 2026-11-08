@@ -106,6 +106,38 @@ def salin_bge_m3():
     copy(EV / "hasil_eksperimen" / "skor_atribut_e2e_bge-m3" / "skor_atribut_e2e.md", dst / "skor_atribut_e2e.md")
 
 
+def salin_foto_ulang():
+    """Run ulang foto (J_) dan desain nama file berpasangan (K_), 7 Nov 2026; input P01 ikut disalin."""
+    copy(EV / "inputs" / "P01_pvt_hasil_pemuliaan_24.xlsx", OUT / "1_input_spreadsheet" / "P01_pvt_hasil_pemuliaan_24.xlsx")
+    u = EV / "hasil_eksperimen" / "foto_ulang_2026-11-07"
+    j = OUT / "4_hasil_sistem" / "J_foto_ulang_D20_bge-m3"
+    sets = [("commons", "commons35", "commons35"), ("pvt_terlihat", "pvt40_terlihat", "pvt40_kartu_terlihat"),
+            ("pvt_tertutup", "pvt40_tertutup", "pvt40_kartu_tertutup")]
+    sets += [("indonesia", s, f"indonesia_{s}") for s in ("S01", "S02", "S03")]
+    for d, lab, nama in sets:
+        copy(u / d / f"hasil_{lab}.csv", j / nama / "klasifikasi_foto.csv")
+        copy(u / d / f"meta_{lab}.json", j / nama / "meta_run.json")
+    copy(u / "indonesia" / "hasil_S02_percobaan1.csv", j / "indonesia_S02" / "klasifikasi_percobaan1.csv")
+    copy(u / "indonesia_percobaan2" / "hasil_S02.csv", j / "indonesia_S02" / "klasifikasi_percobaan2_foto_gagal.csv")
+    copy(u / "indonesia_percobaan2" / "meta_S02.json", j / "indonesia_S02" / "meta_run_percobaan2.json")
+    p01 = EV / "hasil_eksperimen" / "hasil_harness" / "2026-11-07_P01" / "rep1" / "atribut" / "P01"
+    for f in ("hasil_asli.xlsx", "mapping.csv"):
+        copy(p01 / f, j / "P01_pvt_hasil_pemuliaan" / RENAME[f])
+    copy(p01 / "meta.json", j / "P01_pvt_hasil_pemuliaan" / "meta_run.json")
+    for f in ("hasil_skor.md", "rincian_foto.csv"):
+        copy(u / "skor" / f, j / f)
+    b = EV / "hasil_eksperimen" / "foto_nama_berpasangan_2026-11-07"
+    k = OUT / "4_hasil_sistem" / "K_nama_file_berpasangan"
+    for v in ("netral", "benar", "salah_terdaftar"):
+        copy(b / f"pvt40_{v}" / f"hasil_pvt40_{v}.csv", k / f"pvt40_{v}" / "klasifikasi_foto.csv")
+        copy(b / f"pvt40_{v}" / f"meta_pvt40_{v}.json", k / f"pvt40_{v}" / "meta_run.json")
+    for s in ("S01", "S02", "S03"):
+        copy(b / "ind6_netral" / f"hasil_{s}.csv", k / f"ind6_netral_{s}" / "klasifikasi_foto.csv")
+        copy(b / "ind6_netral" / f"meta_{s}.json", k / f"ind6_netral_{s}" / "meta_run.json")
+    for f in ("hasil_skor.md", "rincian.csv"):
+        copy(b / "skor" / f, k / f)
+
+
 def salin_rerun_sel():
     """Rerun N07 dan R02 pada commit ac4f2e4 (perbaikan deteksi kolom varietas) untuk metrik akurasi sel (poin 3)."""
     src = EV / "hasil_eksperimen" / "hasil_harness" / "2026-11-04_sel_ac4f2e4" / "rep1" / "atribut"
@@ -192,6 +224,10 @@ def main():
         if (OUT / "4_hasil_sistem" / "F_rerun_kolom_varietas_ac4f2e4").exists():
             raise SystemExit("Rerun kolom varietas sudah ada di dataset_eksperimen.")
         salin_rerun_sel()
+        tulis_checksum()
+        return
+    if "--tambah-foto-ulang" in sys.argv:
+        salin_foto_ulang()
         tulis_checksum()
         return
     if "--tambah-bge-m3" in sys.argv:

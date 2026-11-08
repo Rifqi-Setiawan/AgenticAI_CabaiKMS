@@ -1,0 +1,16 @@
+{
+  "label": "S03",
+  "kanonik": "/srv/hermes-control/services/agentic-ai-cabai-kms/dataset_eksperimen/4_hasil_sistem/I_atribut_bge-m3_39f4213/S03_D03_bertingkat/hasil_kanonik.xlsx",
+  "run_scope": [
+    "Katokkon"
+  ],
+  "db_varieties": [],
+  "options": [
+    "Katokkon"
+  ],
+  "deskripsi_run_jumlah_karakter": {
+    "Katokkon": 28
+  },
+  "mulai": "2026-11-07T22:28:32.813389",
+  "selesai": "2026-11-07T22:31:58.110789"
+}

@@ -1,0 +1,19 @@
+{
+  "label": "S02",
+  "kanonik": "/srv/hermes-control/services/agentic-ai-cabai-kms/dataset_eksperimen/4_hasil_sistem/I_atribut_bge-m3_39f4213/S02_D02_english/hasil_kanonik.xlsx",
+  "run_scope": [
+    "Kopay",
+    "Katokkon"
+  ],
+  "db_varieties": [],
+  "options": [
+    "Katokkon",
+    "Kopay"
+  ],
+  "deskripsi_run_jumlah_karakter": {
+    "Kopay": 22,
+    "Katokkon": 22
+  },
+  "mulai": "2026-11-07T20:11:46.695263",
+  "selesai": "2026-11-07T20:17:41.251764"
+}

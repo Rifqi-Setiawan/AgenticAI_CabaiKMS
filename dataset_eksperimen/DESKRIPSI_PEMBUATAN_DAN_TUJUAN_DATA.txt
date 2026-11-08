@@ -327,6 +327,24 @@ Hasil aktual  Kartu terlihat: Top-1 varietas 20/30, recall OTHER 7/10 (2 OTHER d
               kartu, bukan dari tanaman; sistem cenderung menahan keputusan, tetapi ambang 0,85 masih meloloskan
               tautan salah. Prediksi bagian tanaman praktis sama pada kedua kondisi (gold bagian belum diisi).
 
+---------------------------------------------------------------------
+C5  Nama file berpasangan (2_input_foto/nama_file_berpasangan), D23
+---------------------------------------------------------------------
+Sumber        40 foto C4 versi kartu tertutup dan 6 foto C2; tidak ada foto baru.
+Cara dibuat   buat_nama_file_berpasangan.py (seed 20261107). Foto disalin dengan nama berkas baru: NETRAL
+              (IMG_xxxx), BENAR (nama varietas foto + nomor acak), SALAH_TERDAFTAR (nama varietas P01 lain yang
+              paling mirip). Registri PVT = 24 varietas P01; foto Indonesia hanya varian NETRAL (nama asli = BENAR).
+Isi           120 berkas PVT (40 x 3) + 6 berkas Indonesia; daftar_foto.csv per folder memetakan nama baru ke foto asal.
+Yang diuji    - Kasus 1: foto OTHER + nama netral -> OTHER dari foto dan daftar varietas saja.
+              - Kasus 2: foto OTHER + nama varietas benar yang tidak terdaftar -> OTHER (CANDIDATE).
+              - Foto KNOWN + nama netral: apakah varietas dikenali dari foto.
+              - Nama berkas yang menyebut varietas terdaftar lain: apakah sistem menangkap konflik (REVIEW_MISMATCH).
+Output harapan  KNOWN: NETRAL -> AUTO_LINK (varietas benar) atau REVIEW_*; BENAR -> AUTO_LINK; SALAH -> REVIEW_MISMATCH.
+              OTHER: NETRAL -> CANDIDATE; BENAR -> CANDIDATE; SALAH -> REVIEW_MISMATCH. Bagian tanpa baris Gambar (D21)
+              -> REVIEW_*.
+Hasil aktual  Lihat KETERANGAN_DATA.txt bagian 4 (K_nama_file_berpasangan). Ringkas: konflik nama tidak pernah
+              tertangkap (0/40 REVIEW_MISMATCH); model mengikuti nama berkas pada 30/40 foto.
+
 
 #####################################################################
 D. TEMPLATE KANONIK

@@ -7,6 +7,8 @@ Sama dengan node vision (src/integrations/vision_hook.py): registry = varietas s
 VisionSession(run_scope_varieties=registry), extract_photo_context_signal dari NAMA FILE ASLI (kondisi informatif/netral/
 menyesatkan dipertahankan), lalu fuse_photo_signals. Gambar diubah ke turunan WebP persis seperti ImageStorage CAS
 (exif_transpose, RGB/RGBA, info dihapus, maks 2560 px, WEBP q80 method 6).
+Sejak 7 Nov 2026 (D20): dengan --kanonik, deskripsi morfologi varietas run juga dibaca dari sheet kanonik run
+(variety_descriptions_from_worksheet), persis seperti vision_hook. Skrip ini dipakai untuk semua set foto (folder bebas).
 Beda: tidak menulis ke KMS (tanpa /assets, /candidates), tidak lewat Google Drive, dan kegagalan provider dicatat FAILED
 (tidak diganti mock).
 
@@ -59,10 +61,16 @@ def main():
     ap.add_argument("--label", required=True)
     a = ap.parse_args()
     base = Path(a.dasar)
+    run_descriptions = None
     if a.kanonik:
         import openpyxl
         from src.integrations.vision_hook import extract_run_scope_varieties
-        reg = list(extract_run_scope_varieties(openpyxl.load_workbook(a.kanonik)))
+        from src.ui.pipeline_runner import SHEET_NAME
+        wb = openpyxl.load_workbook(a.kanonik)
+        reg = list(extract_run_scope_varieties(wb))
+        # D20, sama dengan vision_hook: deskripsi varietas run dibaca dari sheet kanonik run.
+        if SHEET_NAME in wb.sheetnames:
+            run_descriptions = vc.variety_descriptions_from_worksheet(wb[SHEET_NAME])
     else:
         reg = [l.strip() for l in (base / a.varietas).read_text(encoding="utf-8").splitlines() if l.strip()]
     rows = list(csv.DictReader(open(base / "daftar_foto.csv", encoding="utf-8")))
@@ -72,8 +80,10 @@ def main():
     db = [x for x in ((res.get("items", res) if isinstance(res, dict) else res) or []) if x]
     registry = VarietyRegistry.build(spreadsheet_varieties=reg, db_varieties=db)
     options = registry.get_canonical_names()
-    session = vc.VisionSession(run_scope_varieties=options, lvm_call=strict_call)
+    session = vc.VisionSession(run_scope_varieties=options, run_descriptions=run_descriptions, lvm_call=strict_call)
+    deskripsi = {d.name: sum(1 for v in d.characteristics.values() if v) for d in (run_descriptions or [])}
     meta = {"label": a.label, "kanonik": a.kanonik, "run_scope": reg, "db_varieties": db, "options": options,
+            "deskripsi_run_jumlah_karakter": deskripsi,
             "mulai": datetime.datetime.now().isoformat()}
 
     cols = ["filename", "folder", "status", "matched_variety", "identified_part", "confidence", "visual_confidence",
