@@ -1,22 +1,44 @@
 # Panduan Lengkap Eksperimen CABAI-KMS
 
-Kondisi per **4 November 2026**. Dokumen ini hanya memuat data dan hasil **terbaru** (yang dipakai di paper draf v11 dan
-pekerjaan revisi setelahnya). Semua angka foto Commons sudah memakai hasil terkoreksi D18 (19 foto mock dijalankan ulang). Dokumen ini menggantikan `docs/HASIL_SEMENTARA_EKSPERIMEN.md` dan `data_evaluasi/STATUS_PROGRES.md`
-(keduanya versi 1 November dan sudah usang).
+Diperbarui **8 November 2026** (commit `06c0b76`). Hasil terbaru (data level varietas D19, embedding bge-m3 D22, deskripsi
+varietas untuk model visi D20, nama file berpasangan D23) ada di **Bagian 1** dan **Bagian 6A**. Bagian 3-6 lainnya masih
+menjelaskan data dan hasil **paper draf v11 (4 November 2026)**, sebelum pembersihan level varietas; definisi metrik di
+Bagian 5 tetap berlaku. Ringkasan yang mudah dibaca: `docs/SKOR METRIKS EVALUASI.md`.
+Dokumen ini menggantikan `docs/HASIL_SEMENTARA_EKSPERIMEN.md` dan `data_evaluasi/STATUS_PROGRES.md` (versi 1 November, usang).
 
 Daftar isi:
-1. Ringkasan satu halaman
+1. Ringkasan satu halaman (hasil terbaru)
 2. Apa yang diuji
-3. Data yang dipakai
+3. Data yang dipakai (paper v11)
 4. Kunci jawaban (gold)
 5. Metrik dan cara menghitungnya
-6. Hasil eksperimen terbaru
+6A. Hasil terbaru (7-8 November 2026)
+6. Hasil paper v11 (4 November 2026)
 7. Status pekerjaan
 8. Peta berkas
 
 ---
 
 ## 1. Ringkasan satu halaman
+
+### Hasil terbaru (7-8 November 2026)
+
+| Bagian | Data | Hasil utama |
+|---|---|---|
+| Retrieval (tanpa LLM) | 109 butir semantik gold terverifikasi | bge-m3 Hit@1 0,826, Hit@8 **1,000**, **MRR 0,883** (MiniLM 0,376 / 0,789 / 0,517) |
+| Pemetaan atribut | R02, N07, N08, N09 held-out (71 / 137); S01-S03 dev (70 / 7); 3 rep | F1 S4 held-out **1,000** (MiniLM 0,978), dev **1,000** (MiniLM 0,915); S1 0,621, S2 0,420 |
+| Tulis otomatis | 285 butir | 141 ditulis otomatis, **0 salah**; 139 (49%) ke review, semuanya usulan NULL |
+| Isi spreadsheet per sel (ketat) | 328 sel kunci | held-out 216/216, dev 112/112 = **1,000** |
+| Foto Commons | 35 foto, registri Hungarian Wax | 35/35 status benar, AUTO_LINK 7/7 (hanya 7 KNOWN) |
+| Foto Indonesia | 6 foto x S01-S03 | Top-1 0,812, AUTO_LINK **12/12**, bagian 15/18 |
+| Foto PVT | 40 foto, registri + deskripsi 24 varietas P01 | Top-1 kartu terlihat 0,632, kartu tertutup **0,211**; AUTO_LINK 12/19 dan **3/8** |
+| Nama file berpasangan | 40 PVT kartu tertutup x 3 nama | nama salah terdaftar: REVIEW_MISMATCH **0/40**, model ikut nama berkas 30/40, 12 tautan salah |
+| Workbook gabungan | Indonesia S01-S03 | F1 **0,960** (sel 1,000; link foto 9 benar / 3 salah / 7 terlewat) |
+
+Kesimpulan singkat: pemetaan atribut sempurna pada data level varietas dan tidak pernah menulis salah. Klasifikasi varietas
+dari foto masih bergantung pada nama berkas (D23) dan belum mampu membedakan varietas Indonesia yang mirip.
+
+### Hasil paper v11 (4 November 2026, data dan sistem lama)
 
 | Bagian | Data | Hasil utama (sistem penuh S4 / V3) |
 |---|---|---|
@@ -179,7 +201,86 @@ Contoh presisi AUTO_LINK nama netral: dari 64 foto bernama `IMG_xxxx`, 45 ditaut
 
 ---
 
-## 6. Hasil eksperimen terbaru
+## 6A. Hasil terbaru (7-8 November 2026)
+
+Semua run: data level varietas (D19), bge-m3 (D22), `KMS_DYNAMIC_SCHEMA=0`, tanpa Commit ke KMS (jumlah baris tabel kms.*
+sama sebelum dan sesudah run atribut). Atribut lewat harness `harness_vps.py` yang memanggil `run_pipeline_ui()`; foto lewat
+`uji_visi_commons_vps.py` (langkah `vision_hook` dengan modul produksi, deskripsi varietas D20, tanpa Drive dan tanpa tulis
+KMS). Model teks `ag/gemini-3.8-flash-medium`, visi `ag/gemini-3.8-flash-high`. Uji paritas jalur produksi penuh belum
+dijalankan.
+
+### 6A.1 Retrieval (`banding_embedding.py`, tanpa LLM)
+Butir semantik ONE_TO_ONE (tidak selesai lewat exact-name). Gold terverifikasi n = 109; gold PVT usulan AI n = 96.
+
+| Model | Hit@1 | Hit@3 | Hit@5 | Hit@8 | MRR | PVT Hit@1 / Hit@8 / MRR |
+|---|---|---|---|---|---|---|
+| paraphrase-multilingual-MiniLM-L12-v2 | 0,376 | 0,578 | 0,670 | 0,789 | 0,517 | 0,344 / 0,771 / 0,486 |
+| paraphrase-multilingual-mpnet-base-v2 | 0,468 | 0,716 | 0,853 | 0,908 | 0,622 | 0,427 / 0,750 / 0,540 |
+| BM25 | 0,578 | 0,752 | 0,807 | 0,872 | 0,682 | 0,635 / 0,927 / 0,733 |
+| harrier-oss-v1-270m | 0,642 | 0,826 | 0,844 | 0,908 | 0,742 | 0,604 / 0,823 / 0,680 |
+| multilingual-e5-base | 0,743 | 0,872 | 0,917 | 0,945 | 0,816 | 0,698 / 0,875 / 0,752 |
+| Qwen3-Embedding-0.6B | 0,752 | 0,872 | 0,917 | 0,963 | 0,825 | 0,677 / 0,833 / 0,730 |
+| harrier-oss-v1-0.6b | 0,752 | 0,881 | 0,927 | 0,945 | 0,826 | 0,594 / 0,823 / 0,681 |
+| **BAAI/bge-m3** | **0,826** | **0,927** | **0,972** | **1,000** | **0,883** | 0,688 / 0,927 / 0,771 |
+| bge-m3 + BM25 (RRF) | 0,697 | 0,844 | 0,881 | 0,917 | 0,782 | 0,646 / 0,969 / 0,755 |
+
+Selisih Hit@1 bge-m3 - MiniLM +0,450 (CI 95% +0,358 sampai +0,541). Varian instruksi Qwen3 dan RRF lain di `ringkasan.csv`.
+Hasil: `hasil_eksperimen/hasil_retrieval/banding_embedding/` dan `banding_embedding_putaran1/`.
+
+### 6A.2 Pemetaan atribut end-to-end (`skor_atribut_e2e.py`, 3 pengulangan)
+
+| Himpunan | Varian | n target / NULL | Precision | Recall | F1 (CI 95%) | Recall NULL |
+|---|---|---|---|---|---|---|
+| held-out | S1 | 71 / 137 | 1,000 | 0,451 | 0,621 (0,484-0,720) | 1,000 |
+| held-out | S2 | 71 / 137 | 0,283 | 0,817 | 0,420 (0,345-0,495) | 0,022 |
+| held-out | **S4** | 71 / 137 | **1,000** | **1,000** | **1,000** (1,000-1,000) | **1,000** |
+| dev S01-S03 | S1 | 70 / 7 | 1,000 | 0,086 | 0,158 | 1,000 |
+| dev S01-S03 | S2 | 70 / 7 | 0,800 | 0,857 | 0,828 | 0,286 |
+| dev S01-S03 | **S4** | 70 / 7 | **1,000** | **1,000** | **1,000** | **1,000** |
+
+Per workbook F1 S4 (bge-m3 / MiniLM): R02 1,000 / 1,000; N07 1,000 / 0,974; N08 1,000 / 0,875; N09 1,000 / 1,000;
+S01 1,000 / 0,974; S02 1,000 / 1,000; S03 1,000 / 0,783. Uji berpasangan S4 (rep1): held-out +0,022 (CI +0,000 sampai
++0,050, p 0,095); input identik R02/N07/N09 +0,008 (+0,000 sampai +0,027, p 0,735); dev +0,085 (+0,038 sampai +0,140,
+p < 0,001). 14 butir berubah dari NULL ke benar, 0 memburuk. AUTO_ACCEPT benar held-out 71 (MiniLM 68), dev 70 (59); salah 0.
+Keputusan identik di tiga pengulangan. Latensi praktis sama (R02 330 s, N07 418 s, N09 534 s).
+Hasil: `hasil_eksperimen/skor_atribut_e2e_bge-m3/`, run `hasil_harness/2026-11-07_bge-m3/`.
+
+### 6A.3 Isi spreadsheet per sel (mode ketat, `akurasi_sel.py`)
+Kolom varietas benar di semua workbook. Sel benar / harapan: R02 79/79, N07 37/37, N08 27/27, N09 73/73, S01 40/40,
+S02 44/44, S03 28/28 (salah tulis 0, terlewat 0). Normalisasi: 83 dari 328 sel berubah tetapi setara, 0 berbeda makna.
+
+### 6A.4 Foto (`skor_foto_ulang.py`)
+
+| Set | Foto | Status benar | Macro-F1 kelas gold | Top-1 KNOWN | Recall OTHER | AUTO_LINK benar | Bagian benar |
+|---|---|---|---|---|---|---|---|
+| Commons, registri Hungarian Wax | 35 | 35/35 | 1,000 | 7/7 | 28/28 | 7/7 | 31/32 |
+| Indonesia S01-S03 | 18 | 15/18 | 0,734 | 13/16 | 2/2 | 12/12 | 15/18 |
+| PVT kartu terlihat, registri P01 | 40 | 27/40 | 0,864 | 12/19 | 15/21 | 12/19 | 36/36* |
+| PVT kartu tertutup, registri P01 | 40 | 4/40 | 0,276 | 4/19 | 0/21 | 3/8 | 35/36* |
+
+\*Gold bagian PVT usulan AI. Satu foto S02 gagal provider (InstructorRetryException) dan dijalankan ulang (percobaan 2).
+Hasil: `hasil_eksperimen/foto_ulang_2026-11-07/`.
+
+### 6A.5 Nama file berpasangan (D23, `skor_nama_file_berpasangan.py`)
+40 foto PVT kartu tertutup, registri 24 varietas P01; tindakan sesuai gold / status benar / AUTO_LINK salah / ikut nama berkas:
+
+| Foto | Nama netral | Nama benar | Nama salah terdaftar |
+|---|---|---|---|
+| KNOWN (19) | 16/19, 4/19, 3, - | 12/19, 16/19, 0, - | **0/19**, 1/19, **7**, 16/19 |
+| OTHER (21) | 3/21, 0/21, 2, - | 17/21, 19/21, 0, - | **0/21**, 0/21, **5**, 14/21 |
+
+Uji berpasangan (proporsi tindakan sesuai gold): KNOWN salah vs netral -0,842 (CI -1,000 sampai -0,684); OTHER benar vs
+netral +0,667 (+0,381 sampai +0,905). Indonesia nama netral vs asli: KNOWN 11/16 vs 12/16. Nama berkas masuk ke prompt
+model visi, sehingga pemeriksaan silang nama vs visual tidak independen (keputusan perbaikan belum diambil, D23).
+Hasil: `hasil_eksperimen/foto_nama_berpasangan_2026-11-07/`.
+
+### 6A.6 Workbook gabungan
+Indonesia S01-S03: sel 112/112 benar; link foto 9 benar, 3 salah, 7 terlewat; gabungan P 0,976, R 0,945, **F1 0,960**.
+P01 + PVT (gold usulan AI): kartu terlihat F1 0,950, kartu tertutup 0,940.
+
+---
+
+## 6. Hasil paper v11 (4 November 2026)
 
 ### 6.1 Pemetaan atribut per varian
 | Varian | Held-out P | R | F1 [CI per workbook] | Recall NULL | Semantik held-out F1 | Dev F1 |
@@ -356,17 +457,19 @@ bukan metode tervalidasi.
 | 9 Butir ambigu | **selesai** |
 | 10 Beban review | **selesai** |
 
-Sedang berjalan: pasangan spreadsheet data asli untuk 160 foto.
-- Workbook G01 (8 varietas terdaftar) dan G02 (11 varietas) dari USDA GRIN sudah dibuat dan diproses pipeline (kolom varietas
-  G01 benar). Klasifikasi foto akan dijalankan peneliti lewat UI: G01 + folder Drive F1 s.d. F8, batas foto 20 per run
-  (skema dinamis tetap aktif). Run skrip VPS sebelumnya dihentikan (28/160) dan tidak dipakai.
-- Hasil yang diharapkan: pasangan spreadsheet-foto kini data asli; akurasi foto kemungkinan mirip run lama karena model visi
-  hanya menerima nama varietas.
+Selesai 4-8 Nov:
+- Koreksi mock D18 (19 foto dijalankan ulang; paper v10/v11).
+- Pembersihan data ke level varietas D19 (4 tahap; terakhir Gendot, Domba, Bhut Jolokia, GRIN Poblano).
+- Gold kanonik 317 foto PVT D21 (bagian tanaman menunggu verifikasi peneliti di `lembar_gold_kanonik_foto_pvt.xlsx`).
+- Embedding diganti ke bge-m3 D22, run atribut end-to-end 3 pengulangan (6A.2).
+- Run ulang foto dengan deskripsi varietas D20 dan desain nama file berpasangan D23 (6A.4-6A.6).
+- Rencana run GRIN dihentikan: GRIN tinggal Hungarian Wax setelah D19.
 
-Selesai 4 Nov: koreksi mock D18. Ke-19 foto dijalankan ulang, angka foto paper diperbarui di draf v10 (tetap 7 halaman; v11 menambah gold foto Indonesia dan gold bagian dari peneliti), dan
-skor workbook gabungan dihitung ulang (6.8). Perubahan kode di VPS (D18, tes, `DESIGN_DECISIONS.md`) belum di-commit.
-
-Hal terbuka lain:
+Hal terbuka:
+- Angka di draf paper masih versi v11 (data dan sistem lama).
+- Klasifikasi visual buta nama berkas (D23) belum diputuskan.
+- Uji paritas lewat jalur produksi penuh (Drive + `vision_hook` + KMS) belum dijalankan.
+- Gold atribut P01/P02 (144 butir perlu adjudikasi) dan gold bagian foto PVT masih usulan AI.
 - Diagram alur (Fig. 1): tambahkan panah registry/nama file ke model visi, lalu ganti label "curator-approved" (baris baru
   langsung ditulis sebagai provisional).
 - Paper masih menyajikan foto Indonesia terpisah dari foto Commons; belum diputuskan apakah tabelnya digabung.
@@ -409,4 +512,11 @@ Hal terbuka lain:
 | `skor_foto_grin.py` | skor run GRIN (setelah run selesai) |
 | `koreksi_foto_mock.py` | mengganti 19 baris mock dengan hasil rerun -> `hasil_ui/2026-11-04_koreksi_mock/` |
 | `skor_workbook_gabungan.py` | `workbook_gabungan/` |
-| `kumpulkan_dataset_eksperimen.py` | menyalin input/hasil ke `dataset_eksperimen/` |
+| `kumpulkan_dataset_eksperimen.py` | menyalin input/hasil ke `dataset_eksperimen/` (`--tambah-bge-m3`, `--tambah-foto-ulang`) |
+| `banding_embedding.py` | `hasil_retrieval/banding_embedding/` (Hit@k, MRR per model) |
+| `harness_vps.py` | run pipeline produksi tanpa UI (`--tanpa-foto` untuk run atribut saja) |
+| `skor_atribut_e2e.py` | `skor_atribut_e2e_bge-m3/` (run baru vs run pembanding) |
+| `uji_visi_commons_vps.py` | klasifikasi foto lewat langkah `vision_hook` tanpa tulis KMS (`--kanonik` = registri + deskripsi D20) |
+| `skor_foto_ulang.py` | `foto_ulang_2026-11-07/skor/` (foto + workbook gabungan) |
+| `buat_nama_file_berpasangan.py`, `skor_nama_file_berpasangan.py` | data, gold, dan skor desain nama file berpasangan (D23) |
+| `gold_kanonik_foto_pvt.py` | lembar verifikasi dan gold kanonik foto PVT (D21) |

@@ -1,5 +1,8 @@
 # Hasil sementara eksperimen CABAI-KMS (1 November 2026)
 
+> **USANG.** Angka terbaru (8 Nov 2026; data level varietas, bge-m3, deskripsi varietas untuk model visi) ada di
+> `docs/SKOR METRIKS EVALUASI.md` dan `docs/PANDUAN_EKSPERIMEN_LENGKAP.md` Bagian 6A.
+>
 > **USANG (4 Nov 2026).** Dokumen ini arsip. Angka foto Commons di bawah masih memuat 19 jawaban mock (macro-F1 0,692, AUTO_LINK 67/94). Angka terbaru dan terkoreksi ada di `docs/PANDUAN_EKSPERIMEN_LENGKAP.md` (macro-F1 0,640, Top-1 0,727, AUTO_LINK 64/87 = 0,736).
 
 **Status: sementara.** Semua skor dihitung terhadap **gold pra-anotasi AI**, belum gold manusia (dua anotator buta + adjudikasi). Jangan dikutip sebagai hasil akhir.
