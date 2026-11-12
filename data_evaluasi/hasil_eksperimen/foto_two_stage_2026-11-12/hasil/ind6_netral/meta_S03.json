@@ -1,0 +1,18 @@
+{
+  "label": "S03",
+  "vision_mode": "two_stage",
+  "kanonik": "/srv/hermes-control/services/agentic-ai-cabai-kms/dataset_eksperimen/4_hasil_sistem/I_atribut_bge-m3_39f4213/S03_D03_bertingkat/hasil_kanonik.xlsx",
+  "run_scope": [
+    "Katokkon"
+  ],
+  "db_varieties": [],
+  "db_dari_meta": "/srv/hermes-control/services/agentic-ai-cabai-kms/data_evaluasi/hasil_eksperimen/foto_nama_berpasangan_2026-11-07/ind6_netral/meta_S03.json",
+  "options": [
+    "Katokkon"
+  ],
+  "deskripsi_run_jumlah_karakter": {
+    "Katokkon": 28
+  },
+  "mulai": "2026-11-12T12:29:45.170826",
+  "selesai": "2026-11-12T12:36:12.365799"
+}

@@ -1,0 +1,80 @@
+== kelompok A mode two_stage 0ba9cbf Thu Nov 12 11:46:15 WIB 2026
+== commons Thu Nov 12 11:46:15 WIB 2026
+commons35 1 IMG_0022.jpg OTHER None CANDIDATE 15.6
+commons35 2 IMG_0049.jpg OTHER None CANDIDATE 20.6
+commons35 3 IMG_0065.jpg OTHER None CANDIDATE 36.5
+commons35 4 IMG_0097.jpg OTHER None CANDIDATE 24.7
+commons35 5 IMG_0033.jpg OTHER None CANDIDATE 25.2
+commons35 6 IMG_0142.jpg OTHER None CANDIDATE 22.0
+commons35 7 hungarian-wax_buah_011.jpg KNOWN Hungarian Wax AUTO_LINK 60.1
+commons35 8 hungarian-wax_buah_081.jpg OTHER None REVIEW_MISMATCH 43.1
+commons35 9 serrano_buah_029.jpg OTHER None CANDIDATE 26.0
+commons35 10 shishito_buah_006.jpg OTHER None CANDIDATE 13.2
+commons35 11 IMG_0016.jpg OTHER None CANDIDATE 14.9
+commons35 12 IMG_0067.jpg OTHER None CANDIDATE 19.4
+commons35 13 black-pearl_buah_153.jpg OTHER None CANDIDATE 41.2
+commons35 14 padron_buah_070.jpg OTHER None CANDIDATE 30.0
+commons35 15 trinidad-moruga-scorpion_buah_073.jpg OTHER None CANDIDATE 25.0
+commons35 16 IMG_0085.jpg OTHER None CANDIDATE 22.9
+commons35 17 IMG_0157.jpg OTHER None CANDIDATE 30.0
+commons35 18 padron_buah_040.jpg OTHER None CANDIDATE 18.0
+commons35 19 black-pearl_buah_132.jpg OTHER None CANDIDATE 16.0
+commons35 20 carolina-reaper_buah_112.jpg OTHER None CANDIDATE 13.0
+commons35 21 hungarian-wax_buah_004.jpg OTHER None REVIEW_MISMATCH 12.9
+commons35 22 hungarian-wax_buah_032.jpg KNOWN Hungarian Wax AUTO_LINK 25.6
+commons35 23 black-pearl_buah_160.jpg OTHER None CANDIDATE 40.3
+commons35 24 carolina-reaper_buah_113.jpg OTHER None CANDIDATE 32.8
+commons35 25 habanero_buah_110.jpg OTHER None CANDIDATE 22.9
+commons35 26 IMG_0077.jpg OTHER None CANDIDATE 16.0
+commons35 27 IMG_0087.jpg UNCERTAIN None REVIEW_UNCERTAIN 241.7
+commons35 28 cabai-rawit_buah_120.jpg OTHER None CANDIDATE 30.9
+commons35 29 cayenne_buah_080.jpg KNOWN Hungarian Wax AUTO_LINK 69.5
+commons35 30 trinidad-moruga-scorpion_buah_018.jpg OTHER None CANDIDATE 17.1
+commons35 31 IMG_0054.jpg OTHER None CANDIDATE 11.3
+commons35 32 IMG_0084.jpg KNOWN Hungarian Wax AUTO_LINK 24.5
+commons35 33 IMG_0091.jpg KNOWN Hungarian Wax AUTO_LINK 22.1
+commons35 34 IMG_0145.jpg KNOWN Hungarian Wax AUTO_LINK 32.5
+commons35 35 carolina-reaper_buah_075.jpg OTHER None CANDIDATE 17.7
+== indonesia S01 Thu Nov 12 12:05:11 WIB 2026
+S01 1 cabai katokon - bentuk daun.jpg KNOWN Katokkon AUTO_LINK 35.8
+S01 2 cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg KNOWN Katokkon AUTO_LINK 57.6
+S01 3 cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg KNOWN Katokkon AUTO_LINK 42.3
+S01 4 cabai katokon - warna tangkai daun.jpg KNOWN Katokkon AUTO_LINK 176.9
+S01 5 cabai kopay.webp OTHER None REVIEW_MISMATCH 52.4
+S01 6 daun cabai kopay.jpg UNCERTAIN None REVIEW_UNCERTAIN 20.8
+== ind6_netral S01 Thu Nov 12 12:11:39 WIB 2026
+S01 1 IMG_5101.jpg KNOWN Katokkon AUTO_LINK 18.6
+S01 2 IMG_5102.jpg KNOWN Katokkon AUTO_LINK 49.9
+S01 3 IMG_5103.jpg KNOWN Katokkon AUTO_LINK 41.2
+S01 4 IMG_5104.jpg KNOWN Katokkon AUTO_LINK 35.0
+S01 5 IMG_5105.webp OTHER None CANDIDATE 83.5
+S01 6 IMG_5106.jpg UNCERTAIN None REVIEW_UNCERTAIN 35.0
+== indonesia S02 Thu Nov 12 12:16:05 WIB 2026
+S02 1 cabai katokon - bentuk daun.jpg KNOWN Katokkon AUTO_LINK 17.6
+S02 2 cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg KNOWN Katokkon AUTO_LINK 67.9
+S02 3 cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg KNOWN Katokkon AUTO_LINK 49.6
+S02 4 cabai katokon - warna tangkai daun.jpg KNOWN Katokkon AUTO_LINK 68.8
+S02 5 cabai kopay.webp OTHER None REVIEW_MISMATCH 35.9
+S02 6 daun cabai kopay.jpg KNOWN Katokkon REVIEW_MISMATCH 27.0
+== ind6_netral S02 Thu Nov 12 12:20:34 WIB 2026
+S02 1 IMG_5101.jpg KNOWN Katokkon AUTO_LINK 15.3
+S02 2 IMG_5102.jpg KNOWN Katokkon AUTO_LINK 55.6
+S02 3 IMG_5103.jpg KNOWN Katokkon AUTO_LINK 39.6
+S02 4 IMG_5104.jpg KNOWN Katokkon AUTO_LINK 42.0
+S02 5 IMG_5105.webp OTHER None CANDIDATE 46.5
+S02 6 IMG_5106.jpg KNOWN Katokkon AUTO_LINK 53.4
+== indonesia S03 Thu Nov 12 12:24:49 WIB 2026
+S03 1 cabai katokon - bentuk daun.jpg KNOWN Katokkon AUTO_LINK 41.5
+S03 2 cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg KNOWN Katokkon AUTO_LINK 120.1
+S03 3 cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg KNOWN Katokkon AUTO_LINK 46.3
+S03 4 cabai katokon - warna tangkai daun.jpg KNOWN Katokkon AUTO_LINK 26.6
+S03 5 cabai kopay.webp OTHER None CANDIDATE 19.7
+S03 6 daun cabai kopay.jpg KNOWN Katokkon AUTO_LINK 36.6
+== ind6_netral S03 Thu Nov 12 12:29:43 WIB 2026
+S03 1 IMG_5101.jpg KNOWN Katokkon AUTO_LINK 34.9
+S03 2 IMG_5102.jpg KNOWN Katokkon AUTO_LINK 230.0
+S03 3 IMG_5103.jpg KNOWN Katokkon AUTO_LINK 57.9
+S03 4 IMG_5104.jpg KNOWN Katokkon AUTO_LINK 26.5
+S03 5 IMG_5105.webp OTHER None CANDIDATE 21.2
+S03 6 IMG_5106.jpg KNOWN Katokkon AUTO_LINK 16.7
+== SELESAI kelompok A Thu Nov 12 12:36:13 WIB 2026
