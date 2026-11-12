@@ -64,7 +64,7 @@ Proposal (Bab 3, bagian Metodologi dan Metrik Evaluasi) menjanjikan metrik yang 
 
 ## 5. Bahasa klaim (agar tidak berlebihan)
 
-- Tulis "terhadap gold berbantuan AI yang disetujui satu peneliti", bukan "terhadap kebenaran dasar".
+- Tulis "terhadap gold yang diverifikasi penulis", bukan "terhadap kebenaran dasar".
 - S4 lebih baik dari S1 dan S2: boleh diklaim, bertumpu pada stratum semantik (butir yang bisa diselesaikan lookup tidak membedakan varian).
 - Fusi foto (H3) dan recall OTHER (H4): tulis apa adanya sebagai tidak didukung; manfaat fusi dibaca sebagai pencegahan tautan otomatis yang salah (eksploratori: pada nama file menyesatkan, 11 tautan otomatis dengan 0 benar, 21 dialihkan ke review dengan 12 benar).
 - Skema dinamis: klaim hanya pada satu urutan dataset, penilai model, baris dikurasi satu peneliti. Hanya versi 3 pembawa klaim; v1 dan v2 dilaporkan sebagai iterasi.
@@ -72,7 +72,7 @@ Proposal (Bab 3, bagian Metodologi dan Metrik Evaluasi) menjanjikan metrik yang 
 
 ## 6. Keterbatasan yang wajib ada
 
-Gold berbantuan AI tanpa kappa; foto proksi luar negeri; S3 aproksimasi dan hanya dataset atribut; F2 satu urutan; penilai akuisisi berbasis model dan nondeterministik pada tingkat butir; penulisan dokumen KMS hanya tata letak Resume Data; tiga putaran perbaikan setelah melihat hasil (D9d, D9e, D10); batasan satu sheet dan satu lokasi dari proposal.
+Gold satu verifikator tanpa kappa antar-anotator; foto proksi luar negeri; S3 aproksimasi dan hanya dataset atribut; F2 satu urutan; penilai akuisisi berbasis model dan nondeterministik pada tingkat butir; penulisan dokumen KMS hanya tata letak Resume Data; tiga putaran perbaikan setelah melihat hasil (D9d, D9e, D10); batasan satu sheet dan satu lokasi dari proposal.
 
 ## 7. Urutan kerja yang disarankan
 

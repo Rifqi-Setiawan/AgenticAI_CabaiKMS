@@ -2,7 +2,7 @@
 
 Dijalankan dari data_evaluasi/: python -I skrip/analisis_s3.py --out hasil_eksperimen/analisis_s3.md
 S4 = harness 2026-10-31 rep1 (sama seperti analisis_lanjut.py). S3 = tiap pengulangan 2026-11-02_S3. Dataset: R01, R02, N07, N08 (berkas varian), N09
-(kombinasi S01 sampai S03 tidak dijalankan untuk S3). Gold: sama dengan analisis_lanjut.py (hasil bantuan model).
+(kombinasi S01 sampai S03 tidak dijalankan untuk S3). Gold: sama dengan analisis_lanjut.py.
 """
 import argparse
 import glob

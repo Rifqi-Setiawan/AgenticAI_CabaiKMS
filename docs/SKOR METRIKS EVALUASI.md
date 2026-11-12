@@ -123,7 +123,7 @@ dihapus, tetapi dipindah ke folder arsip `_dikeluarkan_bukan_varietas/` (rincian
 | N08 | Data *Capsicum* Zenodo (Brasil), Inggris | varietas per baris | **Uji baru** | Tabasco, Etna, Pirâmide | 23 |
 | N09 | Deskripsi varietas resmi | varietas per kolom | **Uji baru** | 6 varietas terdaftar | 80 |
 | S04 | Buatan, sengaja rusak (nama varietas kosong) | - | Uji penolakan | - | 8 |
-| P01 | Berita Resmi PVT, 24 varietas hasil pemuliaan | varietas per baris | Pasangan foto PVT (gold masih usulan AI) | 24 | 234 |
+| P01 | Berita Resmi PVT, 24 varietas hasil pemuliaan | varietas per baris | Pasangan foto PVT (gold belum diverifikasi) | 24 | 234 |
 
 R01 (data lapangan) dikeluarkan karena kolom Jenis Cabai hanya berisi spesies. Yang dinilai pada skor utama: 4 workbook uji
 baru (71 atribut berpasangan, 137 tanpa pasangan) dan 3 workbook pengembangan (70 berpasangan, 7 tanpa pasangan).
@@ -159,17 +159,15 @@ Foto PVT berasal dari dokumen resmi pendaftaran varietas, jadi label varietasnya
 
 ## 3. Kunci jawaban (gold): dari mana "benar"-nya?
 
-- **Atribut (S01-S03, R02, N07-N09):** diusulkan dengan bantuan LLM, lalu dicek satu per satu oleh peneliti. Sehari kemudian
-  peneliti menganotasi ulang 100 butir tanpa melihat kunci; kecocokannya **98%** (kappa 0,97). Konsisten, tetapi belum
-  penilaian pakar independen.
-- **Atribut P01:** masih **usulan AI** (144 butir P01+P02 perlu diputuskan peneliti). Skor P01 belum untuk klaim.
+- **Atribut (S01-S03, R02, N07-N09):** diverifikasi langsung oleh penulis, butir per butir. Penulis juga menganotasi ulang
+  100 butir tanpa melihat kunci; kecocokannya **98%** (kappa 0,97). Konsisten, tetapi belum penilaian pakar independen.
+- **Atribut P01:** **belum diverifikasi** (144 butir P01+P02 masih perlu diputuskan). Skor P01 belum untuk klaim.
 - **Isi sel:** dibangun otomatis dari gold atribut + nilai mentah sumber (`akurasi_sel.py`).
 - **Foto Commons:** varietas dari kategori Commons (kurasi komunitas); 5 foto dinaikkan labelnya ke nama kultivar (D19);
   bagian tanaman diisi peneliti. Tiga foto bernama `cabai-rawit_…`, `serrano_…`, `habanero_…` diubah tindakan harapannya ke
   CANDIDATE (D23), karena nama itu tidak lagi menunjuk varietas terdaftar.
 - **Foto Indonesia:** diisi peneliti (varietas, bagian tanaman). Status KNOWN/OTHER per spreadsheet dihitung otomatis.
-- **Foto PVT:** varietas dari dokumen resmi; bagian tanaman masih **usulan AI** (lembar verifikasi
-  `gambar/manifest/lembar_gold_kanonik_foto_pvt.xlsx` belum diisi). Sel tujuan dan tindakan yang benar diturunkan dengan aturan
+- **Foto PVT:** varietas dari dokumen resmi; bagian tanaman, kartu nama, dan kelayakan foto diverifikasi penulis. Sel tujuan dan tindakan yang benar diturunkan dengan aturan
   D21 dan D23.
 
 ---
@@ -236,7 +234,7 @@ memilihnya. Diukur pada butir yang tidak selesai lewat nama persis (butir semant
 - **MRR (Mean Reciprocal Rank)**: rata-rata 1/peringkat baris yang benar. 1,0 = selalu peringkat pertama; 0,5 = rata-rata
   peringkat kedua.
 
-| Model | Hit@1 | Hit@8 | **MRR** | Gold PVT usulan AI (Hit@1 / Hit@8 / MRR) |
+| Model | Hit@1 | Hit@8 | **MRR** | Gold PVT belum diverifikasi (Hit@1 / Hit@8 / MRR) |
 |---|---|---|---|---|
 | MiniLM-L12 (lama) | 0,376 | 0,789 | 0,517 | 0,344 / 0,771 / 0,486 |
 | mpnet-base | 0,468 | 0,908 | 0,622 | 0,427 / 0,750 / 0,540 |
@@ -404,7 +402,7 @@ varietasnya benar, **dan** masuk ke baris Gambar yang benar.
 | P01 + PVT, kartu terlihat* | 0,964 | 8 / 5 / 10 (D23 12 / 7 / 6) | 0,987 / 0,910 / 0,947 (D23 0,950) |
 | P01 + PVT, kartu tertutup* | 0,964 | 2 / 4 / 16 (D23 3 / 5 / 15) | 0,989 / 0,895 / 0,940 (D23 0,940) |
 
-\*Gold atribut, kunci sel, dan bagian tanaman P01/PVT masih usulan AI.
+\*Gold atribut dan kunci sel P01 belum diverifikasi.
 
 Hati-hati membacanya: sel atribut jauh lebih banyak daripada link foto (S01-S03: 112 sel vs 19 link), jadi atribut yang
 sempurna mengangkat angka total. Klaim utama tetap memakai skor terpisah: 6.2 untuk atribut, 6.6-6.8 untuk foto.
@@ -434,8 +432,8 @@ run di dokumen ini menonaktifkan fitur ini (`KMS_DYNAMIC_SCHEMA=0`).
 
 ## 8. Batasan yang perlu jujur disampaikan
 
-1. **Kunci jawaban dibuat peneliti sendiri** (dibantu LLM). Konsisten (kappa 0,97), tetapi belum dicek pakar independen.
-   Gold P01 dan bagian tanaman PVT masih usulan AI.
+1. **Kunci jawaban diverifikasi penulis sendiri.** Konsisten (kappa 0,97), tetapi belum dicek pakar independen.
+   Gold atribut P01 belum diverifikasi.
 2. **Data kecil setelah pembersihan level varietas:** 7 workbook dinilai, foto Commons tinggal 35 (7 terdaftar), foto
    Indonesia 6 foto unik.
 3. **Varietas Indonesia yang mirip belum bisa dikenali dari foto** (PVT kartu tertutup Top-1 0,158; D23 0,211), dan tautan

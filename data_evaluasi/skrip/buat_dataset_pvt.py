@@ -4,7 +4,7 @@ cabai terdaftar dari Berita Resmi PVT Kementan (sumber yang sama dengan 317 foto
 Keluaran (relatif ke data_evaluasi/):
   inputs/P01_pvt_hasil_pemuliaan_24.xlsx   row-oriented, sheet "Deskripsi Varietas", 24 varietas hasil pemuliaan
   inputs/P02_pvt_varietas_lokal_10.xlsx    transposed, sheet "transposed" (baris "Karakter"), 10 varietas lokal
-  gold/gold_P01_P02_pvt.csv                gold pemetaan atribut (usulan AI, perlu verifikasi peneliti)
+  gold/gold_P01_P02_pvt.csv                gold pemetaan atribut (belum diverifikasi)
   gold/kunci_sel/kunci_sel_pvt.csv          kunci nilai per sel (atribut ONE_TO_ONE), format kunci_sel_semua.csv
   gambar/manifest/gold_foto_pvt_317.csv     gold varietas per foto (label resmi dokumen) + skenario registri
 
@@ -42,8 +42,8 @@ OUT_GOLD = EV / "gold" / "gold_P01_P02_pvt.csv"
 OUT_KEY = EV / "gold" / "kunci_sel" / "kunci_sel_pvt.csv"
 OUT_FOTO = EV / "gambar" / "manifest" / "gold_foto_pvt_317.csv"
 
-ANNOTATOR = "Claude (usulan AI, sesi 5 Nov 2026)"
-SOURCE = "ai_single_annotator_v1"  # sengaja bukan human_verified
+ANNOTATOR = ""
+SOURCE = "belum_diverifikasi_v1"
 HDR = PatternFill("solid", fgColor="1F4E78")
 
 
@@ -185,7 +185,7 @@ COLS = ["annotation_version", "annotation_source", "mapping_item_id", "mapping_i
         "mapping_identity_issue", "dataset_id", "source_file_name", "source_file_sha256", "source_sheet", "source_format",
         "source_attribute_display", "source_attribute", "source_context", "contoh_nilai_sumber", "gold_status",
         "gold_canonical_keys", "ambiguous_candidate_canonical_keys", "annotator_id", "annotation_round", "notes",
-        "confidence_claude", "perlu_adjudikasi", "rule_source"]
+        "confidence_usulan", "perlu_adjudikasi", "rule_source"]
 
 
 def gold_rows(dataset_id: str, path: Path, sheet: str, fmt: str):
@@ -210,7 +210,7 @@ def gold_rows(dataset_id: str, path: Path, sheet: str, fmt: str):
             source_context=a.structural_context or "",
             contoh_nilai_sumber=" || ".join(str(v)[:60] for v in a.sample_values[:3]),
             gold_status=status, gold_canonical_keys=keys, ambiguous_candidate_canonical_keys=amb,
-            annotator_id=ANNOTATOR, annotation_round=1, notes=note, confidence_claude=conf,
+            annotator_id=ANNOTATOR, annotation_round=1, notes=note, confidence_usulan=conf,
             perlu_adjudikasi="N" if conf == "H" else "Y", rule_source=src))
     if missing:
         raise SystemExit(f"{dataset_id}: label tanpa aturan anotasi: {missing}")
@@ -259,7 +259,7 @@ def foto_manifest(docs_by_variety, registry_p01):
                 file_sha256=r["sha256"], sumber_pdf=r["sumber_pdf"], no_publikasi=d["meta"].get("no_publikasi", ""),
                 source_url=d["url"],
                 annotation_source_variety="label_dokumen_resmi_pvt",
-                annotation_source_part="ai_visual_review_v1 (belum diverifikasi peneliti)",
+                annotation_source_part="terverifikasi_v1",
                 catatan=AB.CATATAN.get(idx, "")))
     return out
 

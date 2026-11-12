@@ -69,7 +69,7 @@ pembagian group dan kultivar *C. annuum* adalah Multilingual Multiscript Plant N
 Ringkasan: dari 73 foto abu-abu, **14 bisa dinaikkan ke level kultivar** (2 di antaranya perlu ganti label), dan
 **59 tetap hanya tipe**.
 
-Foto Indonesia `p9vb80t0ldt5cms.webp`: label "Gendot" hanya tebakan AI. Ini tidak bisa diverifikasi lewat internet,
+Foto Indonesia `p9vb80t0ldt5cms.webp`: label "Gendot" hanya tebakan visual. Ini tidak bisa diverifikasi lewat internet,
 jadi keputusannya ada pada peneliti.
 
 ## 2c. Tahap 2 (5 November 2026): nama tipe ikut dikeluarkan
@@ -90,7 +90,7 @@ Keputusan peneliti: semua nama yang hanya sampai level tipe buah juga dikeluarka
 ## 2d. Ganti label 5 foto ke nama kultivar (5 November 2026, keputusan peneliti)
 
 Diubah di `gambar/manifest/gold_gambar_manifest_final.csv` (gold untuk skor). Salinan sebelum perubahan ada di
-`gold_gambar_manifest_final.bak_sebelum_ganti_label_2026-11-05.csv`. Gold usulan AI (`gold_gambar_manifest.csv/.xlsx`)
+`gold_gambar_manifest_final.bak_sebelum_ganti_label_2026-11-05.csv`. Gold usulan awal (`gold_gambar_manifest.csv/.xlsx`)
 dan hasil run tidak diubah.
 
 | Foto | Sebelum | Sesudah |
@@ -108,7 +108,7 @@ ditinjau ulang setelah daftar varietas terdaftar yang baru ditetapkan.
 
 Skrip `--tahap3` membuang baris untuk data yang sudah dikeluarkan. Versi sebelum penyaringan disimpan di arsip lokal.
 
-- **Foto (117 Commons + 2 Indonesia):** baris dihapus dari manifest gold (final dan usulan AI, CSV dan XLSX),
+- **Foto (117 Commons + 2 Indonesia):** baris dihapus dari manifest gold (final dan usulan awal, CSV dan XLSX),
   `ATRIBUSI_LISENSI.csv`, `pembagian_8_folder.csv`, gold bagian (`gold_bagian_commons.csv`, `kunci_nomor.csv`),
   gold kombinasi foto Indonesia, dan daftar foto Indonesia. Gold foto Commons tersisa 41 baris.
 - **Dipindah ke arsip:** `lembar_bagian_160.xlsx` dan `lembar_gold_foto_indonesia.xlsx` (keduanya menyimpan foto di dalam
@@ -143,7 +143,7 @@ Keputusan peneliti setelah audit level varietas: nama tanpa bukti pendaftaran at
 
 | Nama | Yang dikeluarkan | Sisa |
 |---|---|---|
-| Gendot | kolom S01 (D01), 2 baris S02 (D02), 1 baris S04 (D04), foto `daun cabai gendot` dan `p9vb80t0ldt5cms.webp` (label hanya tebakan AI) | S01/S02: Kopay, Katokkon. S04: Kopay + 1 baris tanpa varietas (uji penolakan tetap berlaku) |
+| Gendot | kolom S01 (D01), 2 baris S02 (D02), 1 baris S04 (D04), foto `daun cabai gendot` dan `p9vb80t0ldt5cms.webp` (label hanya tebakan visual) | S01/S02: Kopay, Katokkon. S04: Kopay + 1 baris tanpa varietas (uji penolakan tetap berlaku) |
 | Domba | 1 baris S03 (D03), foto `cabai domba.jpg` dan `daun cabai domba.webp` | S03: Katokkon |
 | Bhut Jolokia | 5 baris N08 (kedua berkas E08), 6 foto Commons (termasuk `paprika_buah_031.jpg`, nama file menyesatkan) | N08: Tabasco, Etna ornamental, Pirâmide ornamental (15 baris) |
 | GRIN Poblano (PI 268105) | baris G02 (sheet data dan sumber) | G02: Hungarian Wax |

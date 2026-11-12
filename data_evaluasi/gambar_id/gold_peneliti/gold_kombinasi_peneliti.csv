@@ -1,19 +1,19 @@
 spreadsheet,filename,varietas_atau_jenis,sumber_varietas,bagian,bagian_lain,bagian_boleh,expected_status,expected_variety,dinilai,dapat_dibedakan_dari_gambar,yakin_varietas,catatan,anotator,tanggal
-S01,cabai katokon - bentuk daun.jpg,Katokkon,peneliti,DAUN,,DAUN,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S01,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,Katokkon,peneliti,BUNGA,BATANG,BATANG|BUNGA,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S01,cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,Katokkon,peneliti,BUNGA,BATANG,BATANG|BUNGA,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S01,cabai katokon - warna tangkai daun.jpg,Katokkon,peneliti,BATANG,BUAH,BATANG|BUAH,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S01,cabai kopay.webp,Kopay,peneliti,BUAH,,BUAH,KNOWN,Kopay,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S01,daun cabai kopay.jpg,Kopay,peneliti,DAUN,,DAUN,KNOWN,Kopay,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S02,cabai katokon - bentuk daun.jpg,Katokkon,peneliti,DAUN,,DAUN,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S02,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,Katokkon,peneliti,BUNGA,BATANG,BATANG|BUNGA,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S02,cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,Katokkon,peneliti,BUNGA,BATANG,BATANG|BUNGA,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S02,cabai katokon - warna tangkai daun.jpg,Katokkon,peneliti,BATANG,BUAH,BATANG|BUAH,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S02,cabai kopay.webp,Kopay,peneliti,BUAH,,BUAH,KNOWN,Kopay,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S02,daun cabai kopay.jpg,Kopay,peneliti,DAUN,,DAUN,KNOWN,Kopay,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S03,cabai katokon - bentuk daun.jpg,Katokkon,peneliti,DAUN,,DAUN,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S03,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,Katokkon,peneliti,BUNGA,BATANG,BATANG|BUNGA,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S03,cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,Katokkon,peneliti,BUNGA,BATANG,BATANG|BUNGA,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S03,cabai katokon - warna tangkai daun.jpg,Katokkon,peneliti,BATANG,BUAH,BATANG|BUAH,KNOWN,Katokkon,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S03,cabai kopay.webp,Kopay,peneliti,BUAH,,BUAH,OTHER,,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
-S03,daun cabai kopay.jpg,Kopay,peneliti,DAUN,,DAUN,OTHER,,Y,Y,Ya,,peneliti (Rifqi),2026-11-04
+S01,cabai katokon - bentuk daun.jpg,Katokkon,peneliti,DAUN,,DAUN,KNOWN,Katokkon,Y,Y,Ya,,,2026-11-04
+S01,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,Katokkon,peneliti,BUNGA,BATANG,BATANG|BUNGA,KNOWN,Katokkon,Y,Y,Ya,,,2026-11-04
+S01,cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,Katokkon,peneliti,BUNGA,BATANG,BATANG|BUNGA,KNOWN,Katokkon,Y,Y,Ya,,,2026-11-04
+S01,cabai katokon - warna tangkai daun.jpg,Katokkon,peneliti,BATANG,BUAH,BATANG|BUAH,KNOWN,Katokkon,Y,Y,Ya,,,2026-11-04
+S01,cabai kopay.webp,Kopay,peneliti,BUAH,,BUAH,KNOWN,Kopay,Y,Y,Ya,,,2026-11-04
+S01,daun cabai kopay.jpg,Kopay,peneliti,DAUN,,DAUN,KNOWN,Kopay,Y,Y,Ya,,,2026-11-04
+S02,cabai katokon - bentuk daun.jpg,Katokkon,peneliti,DAUN,,DAUN,KNOWN,Katokkon,Y,Y,Ya,,,2026-11-04
+S02,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,Katokkon,peneliti,BUNGA,BATANG,BATANG|BUNGA,KNOWN,Katokkon,Y,Y,Ya,,,2026-11-04
+S02,cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,Katokkon,peneliti,BUNGA,BATANG,BATANG|BUNGA,KNOWN,Katokkon,Y,Y,Ya,,,2026-11-04
+S02,cabai katokon - warna tangkai daun.jpg,Katokkon,peneliti,BATANG,BUAH,BATANG|BUAH,KNOWN,Katokkon,Y,Y,Ya,,,2026-11-04
+S02,cabai kopay.webp,Kopay,peneliti,BUAH,,BUAH,KNOWN,Kopay,Y,Y,Ya,,,2026-11-04
+S02,daun cabai kopay.jpg,Kopay,peneliti,DAUN,,DAUN,KNOWN,Kopay,Y,Y,Ya,,,2026-11-04
+S03,cabai katokon - bentuk daun.jpg,Katokkon,peneliti,DAUN,,DAUN,KNOWN,Katokkon,Y,Y,Ya,,,2026-11-04
+S03,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,Katokkon,peneliti,BUNGA,BATANG,BATANG|BUNGA,KNOWN,Katokkon,Y,Y,Ya,,,2026-11-04
+S03,cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,Katokkon,peneliti,BUNGA,BATANG,BATANG|BUNGA,KNOWN,Katokkon,Y,Y,Ya,,,2026-11-04
+S03,cabai katokon - warna tangkai daun.jpg,Katokkon,peneliti,BATANG,BUAH,BATANG|BUAH,KNOWN,Katokkon,Y,Y,Ya,,,2026-11-04
+S03,cabai kopay.webp,Kopay,peneliti,BUAH,,BUAH,OTHER,,Y,Y,Ya,,,2026-11-04
+S03,daun cabai kopay.jpg,Kopay,peneliti,DAUN,,DAUN,OTHER,,Y,Y,Ya,,,2026-11-04

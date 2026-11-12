@@ -46,7 +46,7 @@ def gold_bagian():
         k = kunci[int(no)]
         out.append({"filename": k["filename"], "folder": k["folder"], "no_lembar": no, "bagian_utama": utama,
                     "bagian_lain": lain, "bagian_boleh": "|".join(boleh), "yakin": yakin or "", "catatan": catatan or "",
-                    "anotator": "peneliti (Rifqi)", "tanggal": "2026-11-04"})
+                    "anotator": "", "tanggal": "2026-11-04"})
     assert len(out) == 160, len(out)
     return sorted(out, key=lambda x: (x["folder"], x["filename"]))
 

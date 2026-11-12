@@ -3,8 +3,8 @@
 Disusun 31 Oktober 2026, diperbarui 1 November 2026. Dokumen ini adalah **protokol yang dibekukan sebelum eksperimen dijalankan** (pre-specified). Semua perubahan setelah pembekuan dicatat
 sebagai deviasi pada bagian 12 (D1 sampai D9c). Metrik inti, ukuran F2, dan dua mode evaluasi: `docs/RENCANA_EVALUASI.md`. Data dan gold: `data_evaluasi/`. Hasil sementara: `docs/HASIL_SEMENTARA_EKSPERIMEN.md`.
 
-**Status (1 November 2026):** eksperimen inti (atribut harness 3 pengulangan, atribut UI, foto kombinasi, foto Commons 160) **sudah dijalankan**; skor masih terhadap gold hasil bantuan model
-(atribut: usulan awal model yang disetujui peneliti tanpa perubahan; foto: tinjauan visual model), belum gold dua anotator manusia. Eksperimen F2 (skema kanonik dinamis, bagian 14) sedang dijalankan.
+**Status (1 November 2026):** eksperimen inti (atribut harness 3 pengulangan, atribut UI, foto kombinasi, foto Commons 160) **sudah dijalankan**; skor dihitung terhadap gold
+yang diverifikasi penulis, belum gold dua anotator independen. Eksperimen F2 (skema kanonik dinamis, bagian 14) sedang dijalankan.
 
 ### Commit acuan per eksperimen
 
@@ -21,7 +21,7 @@ sebagai deviasi pada bagian 12 (D1 sampai D9c). Metrik inti, ukuran F2, dan dua 
 
 | Standar paper | Kondisi versi 3 | Perubahan di versi 4 |
 |---|---|---|
-| Gold andal dengan kesepakatan antar-anotator | Gold dari satu anotator AI | Dua anotator manusia buta + adjudikasi + Cohen's kappa (bagian 4); template buta sudah disiapkan |
+| Gold andal dengan kesepakatan antar-anotator | Gold dari satu anotator | Dua anotator manusia buta + adjudikasi + Cohen's kappa (bagian 4); template buta sudah disiapkan |
 | Pemisahan data pengembangan dan data uji | Tidak ada | Partisi dev vs held-out dengan bukti kebocoran (bagian 3) |
 | Baseline dan ablasi yang kuat | Hanya S1 (UI tidak punya mode lain) | Lapis harness terkontrol menghasilkan S1, S2, S4 dari satu run; S3 dan ablasi sebagai tambahan (bagian 2) |
 | Variasi model diukur | Satu run per konfigurasi | Pengulangan 3 kali pada harness (bagian 5) |
@@ -119,15 +119,14 @@ dan pada S02 ("vertical height at maturity" sebagai varian dari "Vertical size a
 
 | Aspek | Standar | Kondisi dan tindakan |
 |---|---|---|
-| Jumlah anotator | Minimal dua, independen, buta | **Belum tercapai.** Yang dilakukan (1 November 2026): usulan awal gold atribut disusun dengan bantuan model, lalu **disetujui seluruhnya oleh peneliti tanpa perubahan** (`verifikasi_gold/verifikasi_atribut.xlsx`, hasil `gold/final/gold_semua_dataset_final.csv`, sumber `ai_assisted_human_verified_v1`). Template buta dua anotator tetap tersedia di `data_evaluasi/anotasi_buta/` bila anotator tambahan ada |
+| Jumlah anotator | Minimal dua, independen, buta | **Belum tercapai.** Yang dilakukan: gold atribut **diverifikasi butir per butir oleh penulis** (`gold/final/gold_semua_dataset_final.csv`, sumber `terverifikasi_v1`). Template buta dua anotator tetap tersedia di `data_evaluasi/anotasi_buta/` bila anotator tambahan ada |
 | Kesepakatan | Cohen's kappa (status) dan persentase kunci sama | Dihitung setelah A dan B selesai; dilaporkan |
 | Adjudikasi | Perselisihan diselesaikan pihak ketiga (pembimbing) atau konsensus tercatat | Gold final = hasil adjudikasi |
-| Pra-anotasi AI | Hanya draf | `gold_semua_dataset.csv` (AI) dipertahankan sebagai pembanding dan dilaporkan kesepakatannya dengan gold final |
-| Foto | Label diverifikasi dua penilai buta | **Belum.** Gold foto ditinjau satu per satu secara visual oleh model (`gambar/manifest/gold_gambar_manifest_final.csv`, sumber `ai_visual_review_v1`; 158 foto, 23 label diubah, 2 dikeluarkan); bukan verifikasi ahli. Template buta tetap tersedia |
+| Usulan awal | Hanya draf | `gold_semua_dataset.csv` dipertahankan sebagai pembanding |
+| Foto | Label diverifikasi dua penilai buta | **Belum.** Gold foto diverifikasi satu per satu oleh penulis (`gambar/manifest/gold_gambar_manifest_final.csv`, `gold_foto_pvt_317.csv`, sumber `terverifikasi_v1`); bukan verifikasi ahli. Template buta tetap tersedia |
 | Pedoman | Tertulis dan dibekukan | `docs/annotation_guidelines_v1.md` dan `docs/HUMAN_ANNOTATION_GUIDE.md` |
 
-Perkiraan beban: sekitar 1 sampai 2 jam per anotator untuk 326 butir; sekitar 30 menit untuk 160 foto. **Sampai gold dua anotator manusia selesai, semua skor dilabeli "terhadap gold hasil bantuan model"
-dan penggunaannya sebagai hasil akhir harus disertai pernyataan metodologi (usulan model, disetujui peneliti, 0% perubahan; tinjauan visual model untuk foto).**
+Perkiraan beban: sekitar 1 sampai 2 jam per anotator untuk 326 butir; sekitar 30 menit untuk 160 foto. **Sampai gold dua anotator selesai, semua skor dilabeli "terhadap gold yang diverifikasi penulis".**
 
 ---
 
@@ -246,8 +245,8 @@ Struktur: `hasil_ui/<tanggal>/{atribut/<ID>,kombinasi/<ID>,gambar/F<n>}/`.
 | Internal | Kebocoran alias dari data dev ke uji | Partisi dev vs held-out; alias dibekukan; stratum lookup vs semantik |
 | Internal | Nondeterminisme model dan layanan | Konfigurasi beku; 3 pengulangan; urutan acak; sebut simpangan baku |
 | Internal | Pelaksana mempengaruhi hasil | Pelaksana buta terhadap gold; protokol tertulis; deviasi dicatat |
-| Konstruk | Gold atribut hasil bantuan model, disetujui peneliti 0% perubahan | Dinyatakan di metodologi; periksa butir prioritas sebelum sidang; dua anotator bila tersedia |
-| Konstruk | Gold foto hasil tinjauan visual model dan label komunitas Commons | Dinyatakan; banyak keputusan bertumpu pada label sumber; kelas kecil tidak dilaporkan per kelas |
+| Konstruk | Gold atribut diverifikasi satu penulis | Dinyatakan di metodologi; periksa butir prioritas sebelum sidang; dua anotator bila tersedia |
+| Konstruk | Gold foto dari label komunitas Commons, diverifikasi penulis | Dinyatakan; banyak keputusan bertumpu pada label sumber; kelas kecil tidak dilaporkan per kelas |
 | Internal | Mode adaptif memengaruhi pemetaan template | Saklar mati bawaan; regresi identik; F2-4 mengukur selisih F1 template |
 | Internal | Hasil mode adaptif bergantung pada urutan run | Urutan dicatat; tiga pengulangan dari database kosong (F2-5) |
 | Konstruk | Foto proksi luar negeri | Dinyatakan; L3 menyajikan foto Indonesia secara kualitatif |
@@ -275,7 +274,7 @@ Struktur: `hasil_ui/<tanggal>/{atribut/<ID>,kombinasi/<ID>,gambar/F<n>}/`.
 | Tahap | Kegiatan | Penanggung jawab | Status |
 |---|---|---|---|
 | T0 | Bekukan protokol ini (hash); tentukan dua anotator manusia | Rifqi | protokol tidak di-hash formal; deviasi D1 sampai D9c tercatat; anotator manusia belum |
-| T1 | Anotasi gold atribut dan foto | Rifqi + model | selesai dalam bentuk bantuan model (bagian 4); dua anotator manusia belum |
+| T1 | Anotasi gold atribut dan foto | Penulis | selesai, diverifikasi penulis (bagian 4); dua anotator independen belum |
 | T2 | Pilot: run 6 (D01 + Drive 1); konfirmasi unduhan CSV dan waktu | Jarvis/Rifqi | selesai (setelah D5) |
 | T3 | L1 harness: atribut x3, foto kombinasi x4 | Claude/VPS | selesai; foto Commons hanya lewat UI |
 | T4 | L2 UI: 17 run | Jarvis | selesai (S04 dan N08 asli ditolak sistem) |
@@ -284,7 +283,7 @@ Struktur: `hasil_ui/<tanggal>/{atribut/<ID>,kombinasi/<ID>,gambar/F<n>}/`.
 | T6 | Pembersihan DB (kandidat uji), arsip hasil, datasheet, paket rilis | Rifqi | arsip hasil lokal ada di `data_evaluasi/hasil_eksperimen/`; pembersihan antrean kandidat (36) belum; commit sudah di-push |
 
 Daftar periksa (status 1 November 2026): [ ] protokol di-hash; [ ] dua anotator manusia; [x] backup DB (sebelum migrasi 0006 dan 0007); [x] 8 folder Drive dibuat dan diuji 20 foto per folder;
-[x] alias dibekukan; [x] gold final dengan label asal (bantuan model); [x] Jarvis mengendalikan browser lewat CDP; [ ] antrean kandidat foto dikosongkan; [x] commit di-push ke GitHub (`01e2d08`).
+[x] alias dibekukan; [x] gold final terverifikasi; [x] Jarvis mengendalikan browser lewat CDP; [ ] antrean kandidat foto dikosongkan; [x] commit di-push ke GitHub (`01e2d08`).
 
 ---
 

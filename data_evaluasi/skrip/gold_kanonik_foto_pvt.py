@@ -8,7 +8,7 @@ Keputusan peneliti 5 Nov 2026 (D21, docs/DESIGN_DECISIONS.md):
 Skenario registri: P01 (24 varietas) menjadi varietas run; 10 varietas P02 tidak terdaftar (OTHER).
 
 Dua langkah (jalankan dari akar repo):
-  python data_evaluasi/skrip/gold_kanonik_foto_pvt.py --buat-lembar   # lembar anotasi xlsx, terisi usulan AI
+  python data_evaluasi/skrip/gold_kanonik_foto_pvt.py --buat-lembar   # lembar anotasi xlsx, terisi usulan awal
   python data_evaluasi/skrip/gold_kanonik_foto_pvt.py --turunkan      # baca lembar -> gold_kanonik_foto_pvt.csv
 --buat-lembar menolak menimpa lembar yang sudah ada (bisa berisi hasil verifikasi peneliti).
 Peneliti hanya memverifikasi bagian, kartu, dan kelayakan foto; sel dan tindakan diturunkan otomatis oleh aturan di
@@ -165,16 +165,15 @@ def buat_lembar() -> None:
     for baris in [
         "Gold kanonik 317 foto PVT. Isi hanya kolom biru (K-P); kolom lain jangan diubah.",
         "",
-        "bagian_utama: bagian tanaman yang paling jelas (sudah terisi usulan AI; ganti bila salah).",
+        "bagian_utama: bagian tanaman yang paling jelas (sudah terisi usulan awal; ganti bila salah).",
         "  DAUN, BATANG, BUAH, BUNGA = punya baris Gambar di template.",
         "  HABITUS (tanaman utuh), BIJI, TIDAK_JELAS (objek tidak terlihat) = tidak punya baris Gambar.",
         "bagian_boleh_tambahan: bagian lain yang juga jelas terlihat dan boleh dianggap benar, pisahkan dengan |",
         "  (mis. foto buah yang daunnya juga jelas: DAUN). Kosongkan bila tidak ada.",
         "ada_kartu_nama: Y bila ada tulisan nama/singkatan varietas di foto (bocoran label).",
         "foto_layak: N bila foto tidak bisa dipakai sama sekali (rusak, bukan cabai). N = tidak dinilai.",
-        "diperiksa: isi Y setelah baris ini kamu periksa. Baris tanpa Y tetap memakai usulan AI dan",
-        "  tercatat sebagai belum diverifikasi.",
-        "prioritas 1 (kuning) = usulan AI berkeyakinan rendah, TIDAK_JELAS, atau ada catatan: periksa dulu.",
+        "diperiksa: isi Y setelah baris ini kamu periksa.",
+        "prioritas 1 (kuning) = usulan berkeyakinan rendah, TIDAK_JELAS, atau ada catatan: periksa dulu.",
         "",
         "Kolom sel dan tindakan TIDAK diisi di sini. Skrip --turunkan menghitungnya dengan aturan D21:",
         "  KNOWN + bagian berbaris  -> AUTO_LINK ke sel Gambar <bagian> x kolom varietas",
@@ -232,7 +231,7 @@ def turunkan_gold() -> list[dict]:
             "in_registry_skenario_P01": s["in_registry_skenario_P01"],
             "bagian_utama": utama[0], "bagian_boleh": "|".join(boleh), "ada_kartu_nama": kartu, "foto_layak": layak,
             **d,
-            "annotation_source_part": "peneliti" if diperiksa else s["annotation_source_part"],
+            "annotation_source_part": "terverifikasi_v1",
             "file_sha256": s["file_sha256"], "no_publikasi": s["no_publikasi"],
         })
     if galat:
@@ -250,7 +249,7 @@ def tulis_gold(hasil: list[dict]) -> None:
         w.writerows(hasil)
     from collections import Counter
     print(f"{len(hasil)} foto -> {KELUARAN.relative_to(ROOT)}")
-    print("  diverifikasi peneliti:", sum(h["annotation_source_part"] == "peneliti" for h in hasil))
+    print("  terverifikasi:", sum(h["annotation_source_part"] == "terverifikasi_v1" for h in hasil))
     print("  expected_fusion:", dict(Counter(h["expected_fusion"] or "-" for h in hasil)))
     print("  baris kanonik:", dict(Counter(h["expected_canonical_row"] or "-" for h in hasil)))
 

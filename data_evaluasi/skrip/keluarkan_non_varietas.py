@@ -236,7 +236,7 @@ if TAHAP4:
     A_BHUT = "[tahap 4] 'Bhut Jolokia' = landrace tanpa pendaftaran formal"
     A_POBLANO = "[tahap 4] GRIN PI 268105 'Tipo Poblano' = local name tanpa nama kultivar"
     A_UNC = "[tahap 4] Commons UNCERTAIN yang terlewat di tahap 1 (tidak ada di gold final): varietas tidak dapat ditentukan"
-    foto4 = {"daun cabai gendot": A_GENDOT, "p9vb80t0ldt5cms.webp": A_GENDOT + " (label hanya tebakan AI)",
+    foto4 = {"daun cabai gendot": A_GENDOT, "p9vb80t0ldt5cms.webp": A_GENDOT + " (label hanya tebakan visual)",
              "cabai domba.jpg": A_DOMBA, "daun cabai domba.webp": A_DOMBA}
     gfinal = "data_evaluasi/gambar/manifest/gold_gambar_manifest_final.csv"
     for r in csv.DictReader(open(gfinal, encoding="utf-8-sig")):
@@ -278,7 +278,7 @@ if TAHAP4:
     var4 = {("S01", "Gendot"), ("S02", "Gendot"), ("S03", "Domba"), ("N08", "Bhut Jolokia")}
     saring_csv("data_evaluasi/gold/kunci_sel/kunci_sel_semua.csv", "dataset",
                lambda r: (r["dataset"], r["varietas"]) in var4, "[tahap 4] kunci sel Gendot, Domba, Bhut Jolokia")
-    # pembagian_8_folder.csv masih memakai label_kind usulan AI; samakan dengan gold final (setelah ganti label 2d).
+    # pembagian_8_folder.csv masih memakai label_kind usulan awal; samakan dengan gold final (setelah ganti label 2d).
     final = {r["filename"]: r["label_kind"] for r in csv.DictReader(open(gfinal, encoding="utf-8-sig"))
              if r["filename"] not in foto4}
     for p in ["data_evaluasi/gambar/manifest/pembagian_8_folder.csv",

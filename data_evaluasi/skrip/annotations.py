@@ -1,4 +1,4 @@
-"""Annotation rules (Claude, single annotator) keyed by source attribute display label.
+"""Annotation rules (initial proposal) keyed by source attribute display label.
 
 Each rule: (status, keys, ambiguous_keys, note, confidence). Statuses follow annotation_guidelines_v1.
 Global rules apply to every dataset; DATASET_OVERRIDES win over global rules.

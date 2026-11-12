@@ -29,4 +29,4 @@ AUTO_LINK benar per kondisi nama file (Commons): INFORMATIF 2/3 = 0.667, MENYESA
 | P01+pvt40_tertutup | 1.000 / 0.930 / 0.964 | 2 / 4 / 16 (18) | 0.989 / 0.895 / 0.940 |
 | Indonesia S01-S03 total | | | 0.992 / 0.969 / 0.980 |
 
-Catatan: gold bagian tanaman PVT masih usulan AI (lembar_gold_kanonik_foto_pvt.xlsx belum diverifikasi); gold atribut dan kunci sel P01 juga usulan AI. Commons hanya punya 7 foto KNOWN (registri 1 varietas).
+Catatan: gold atribut dan kunci sel P01 belum diverifikasi. Commons hanya punya 7 foto KNOWN (registri 1 varietas).

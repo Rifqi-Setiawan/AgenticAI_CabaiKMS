@@ -1,5 +1,5 @@
-"""Usulan anotasi bagian tanaman dan kartu nama untuk 317 foto PVT (tinjauan visual AI atas lembar kontak 200 px,
-5 Nov 2026). Indeks = urutan baris di pvt_kementan_34_varietas/daftar_foto.csv. BELUM diverifikasi peneliti.
+"""Usulan anotasi bagian tanaman dan kartu nama untuk 317 foto PVT (tinjauan visual atas lembar kontak 200 px,
+5 Nov 2026). Indeks = urutan baris di pvt_kementan_34_varietas/daftar_foto.csv. Seluruhnya diverifikasi penulis (12 Nov 2026).
 
 Kode bagian: DAUN, BATANG, BUAH, BUNGA (empat kelas kontrak VisionResult), ditambah HABITUS (tanaman utuh),
 BIJI, dan TIDAK_JELAS (objek tidak terlihat pada 125 px; biasanya hanya kartu warna). Tiga kode terakhir tidak

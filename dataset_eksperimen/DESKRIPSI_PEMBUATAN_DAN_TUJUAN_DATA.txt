@@ -299,7 +299,7 @@ Isi           317 foto, 34 varietas (cabai merah 13, rawit 10, habanero 6, besar
               masak, biji) dengan bagan warna RHS dan penggaris; sebagian kecil tanaman utuh atau lahan.
               Resolusi asli 125-164 px. Ada pasangan varietas yang sangat mirip (Turima 1/2, Rabon
               Bojonegoro 1/2, keluarga Tabia Sala, IPBrin KR 01/03).
-Yang diuji    - Label varietas resmi (bukan label peneliti/AI) untuk varietas Indonesia.
+Yang diuji    - Label varietas resmi (bukan label peneliti) untuk varietas Indonesia.
               - Klasifikasi bagian tanaman pada foto karakterisasi.
               - Bocoran label: kartu nama varietas yang ikut terfoto.
 Output harapan  Belum dipakai penuh; lihat C4 untuk uji kelayakan 40 foto.

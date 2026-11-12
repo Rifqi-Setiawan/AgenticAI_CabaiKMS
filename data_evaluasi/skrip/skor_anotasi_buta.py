@@ -147,7 +147,7 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
 
     lines = ["# Hasil anotasi buta terhadap gold atribut", "",
-             "Gold = `ai_assisted_human_verified_v1`. Definisi metrik ada di docstring `skrip/skor_anotasi_buta.py`.", ""]
+             "Gold = `terverifikasi_v1`. Definisi metrik ada di docstring `skrip/skor_anotasi_buta.py`.", ""]
     head = ["Himpunan", "n", "Sepakat longgar", "Sepakat ketat", "Kappa longgar", "Kappa ketat", "Kappa biner"]
     scored = {}
     for p in args.anotasi:

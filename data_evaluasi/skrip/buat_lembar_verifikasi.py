@@ -4,7 +4,7 @@ Keluaran ke verifikasi_gold/ :
   verifikasi_atribut.xlsx   (326 butir; sheet Petunjuk, Verifikasi, Canonical Reference)
   verifikasi_foto.xlsx      (160 foto; sheet Petunjuk, Verifikasi)
 
-Kolom keputusan dibiarkan kosong. Usulan awal disusun dengan bantuan model bahasa dan dicatat apa adanya pada kolom asal usulan.
+Kolom keputusan dibiarkan kosong.
 """
 import csv
 from pathlib import Path
@@ -60,14 +60,13 @@ def atribut():
     p.title = "Petunjuk"
     petunjuk(p, [
         "LEMBAR VERIFIKASI GOLD PEMETAAN ATRIBUT",
-        "Usulan awal (kolom abu-abu) disusun dengan bantuan model bahasa. Tugas reviewer: memeriksa tiap butir terhadap Canonical Reference dan contoh nilai sumber, lalu mengisi kolom biru.",
+        "Tugas verifikator: memeriksa tiap butir terhadap Canonical Reference dan contoh nilai sumber, lalu mengisi kolom biru.",
         "1. Kolom 'keputusan': SETUJU (usulan benar), UBAH (isi kolom final), atau RAGU (butir sulit; akan dibahas dengan pembimbing).",
         "2. Bila UBAH: isi 'gold_status_final' (ONE_TO_ONE, NO_MATCH, AMBIGUOUS, COMPOSITE, EXCLUDE) dan 'gold_canonical_keys_final' (kunci dari sheet Canonical Reference, dipisah ' | ' bila lebih dari satu). Bila SETUJU, kolom final boleh dikosongkan.",
         "3. ONE_TO_ONE = tepat satu baris kanonik. NO_MATCH = tidak ada padanan di 59 baris kanonik. AMBIGUOUS = dua atau lebih kandidat sama masuk akal (isi kandidatnya). COMPOSITE = satu kolom sumber memuat lebih dari satu karakter kanonik. EXCLUDE = bukan atribut (mis. kolom identitas varietas).",
         "4. Prioritas: urutkan/filter kolom 'prioritas_periksa' = Y lebih dulu (57 butir yang ditandai ragu pada usulan).",
         "5. Isi 'reviewer_id' (nama atau inisial) dan 'tanggal' pada setiap butir yang diperiksa. Jangan mengisi atas nama orang lain.",
         "6. Setelah selesai, jalankan skrip terapkan_verifikasi.py. Skrip menolak butir tanpa keputusan dan melaporkan persentase butir yang diubah.",
-        "Catatan metodologi: usulan awal dibuat dengan model bahasa, gold final adalah hasil verifikasi manusia. Persentase perubahan dilaporkan pada skripsi.",
     ])
     ws = wb.create_sheet("Verifikasi")
     cols_u = ["mapping_item_id", "dataset_id", "source_attribute_display", "source_context", "contoh_nilai_sumber",
@@ -78,7 +77,7 @@ def atribut():
     for g in sorted(gold, key=lambda r: (order.get(r["dataset_id"], 99), 0)):
         ws.append([g["mapping_item_id"], g["dataset_id"], g["source_attribute_display"], g["source_context"], g["contoh_nilai_sumber"],
                    g["gold_status"], g["gold_canonical_keys"], g["ambiguous_candidate_canonical_keys"], g["notes"],
-                   g["confidence_claude"], g["perlu_adjudikasi"]] + [""] * len(cols_r))
+                   g["confidence_usulan"], g["perlu_adjudikasi"]] + [""] * len(cols_r))
     style_header(ws, [HEAD_USUL] * len(cols_u) + [HEAD_REV] * len(cols_r))
     widths(ws, [14, 9, 36, 28, 40, 14, 28, 24, 40, 10, 10, 12, 16, 28, 24, 40, 14, 12])
     n = ws.max_row

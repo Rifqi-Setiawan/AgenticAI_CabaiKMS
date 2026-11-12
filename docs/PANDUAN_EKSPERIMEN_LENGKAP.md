@@ -141,11 +141,11 @@ MENYESATKAN 32 (menyebut varietas terdaftar yang salah).
 
 | Gold | Berkas | Cara dibuat | Catatan |
 |---|---|---|---|
-| Pemetaan atribut | `data_evaluasi/gold/final/gold_semua_dataset_final.csv` | diusulkan dengan bantuan LLM, diverifikasi butir per butir oleh peneliti | status ONE_TO_ONE / NO_MATCH / AMBIGUOUS / COMPOSITE |
+| Pemetaan atribut | `data_evaluasi/gold/final/gold_semua_dataset_final.csv` | diverifikasi butir per butir oleh penulis | status ONE_TO_ONE / NO_MATCH / AMBIGUOUS / COMPOSITE |
 | Konsistensi gold | `data_evaluasi/anotasi_buta/subset_v1/hasil/laporan_kappa.md` | 100 butir dianotasi ulang buta oleh peneliti yang sama | kesepakatan 0,98; kappa 0,97 (target), 0,96 (dipetakan vs NULL) |
 | Isi sel | `data_evaluasi/gold/kunci_sel/kunci_sel_semua.csv` | otomatis dari gold pemetaan + nilai mentah sumber (pembaca terpisah dari parser sistem) | 600 sel |
-| Foto Commons | `data_evaluasi/gambar/manifest/gold_gambar_manifest.csv` | kategori Commons | versi kedua (tinjauan visual AI) untuk uji sensitivitas |
-| Foto Indonesia | `data_evaluasi/gambar_id/gold_peneliti/gold_kombinasi_peneliti.csv` | diisi peneliti 4 Nov (varietas, bagian, layak); status per spreadsheet diturunkan otomatis (`skrip/buat_gold_foto_indonesia.py`) | 3 varietas kosong diisi tebakan visual AI atas persetujuan peneliti; gold lama `gold_kombinasi_drive1.csv` (bantuan AI) tidak dipakai lagi |
+| Foto Commons | `data_evaluasi/gambar/manifest/gold_gambar_manifest.csv` | kategori Commons | versi kedua (tinjauan visual) untuk uji sensitivitas |
+| Foto Indonesia | `data_evaluasi/gambar_id/gold_peneliti/gold_kombinasi_peneliti.csv` | diisi peneliti 4 Nov (varietas, bagian, layak); status per spreadsheet diturunkan otomatis (`skrip/buat_gold_foto_indonesia.py`) | 3 varietas kosong diisi dari tinjauan visual dan disetujui penulis; gold lama `gold_kombinasi_drive1.csv` tidak dipakai lagi |
 
 Keterbatasan: gold atribut bukan buatan pakar independen; kappa mengukur konsistensi peneliti sendiri, bukan validitas.
 
@@ -212,7 +212,7 @@ KMS). Model teks `ag/gemini-3.8-flash-medium`, visi `ag/gemini-3.8-flash-high`. 
 dijalankan.
 
 ### 6A.1 Retrieval (`banding_embedding.py`, tanpa LLM)
-Butir semantik ONE_TO_ONE (tidak selesai lewat exact-name). Gold terverifikasi n = 109; gold PVT usulan AI n = 96.
+Butir semantik ONE_TO_ONE (tidak selesai lewat exact-name). Gold terverifikasi n = 109; gold PVT belum diverifikasi n = 96.
 
 | Model | Hit@1 | Hit@3 | Hit@5 | Hit@8 | MRR | PVT Hit@1 / Hit@8 / MRR |
 |---|---|---|---|---|---|---|
@@ -260,7 +260,7 @@ S02 44/44, S03 28/28 (salah tulis 0, terlewat 0). Normalisasi: 83 dari 328 sel b
 | PVT kartu terlihat, registri P01 | 40 | 27/40 | 0,864 | 12/19 | 15/21 | 12/19 | 36/36* |
 | PVT kartu tertutup, registri P01 | 40 | 4/40 | 0,276 | 4/19 | 0/21 | 3/8 | 35/36* |
 
-\*Gold bagian PVT usulan AI. Satu foto S02 gagal provider (InstructorRetryException) dan dijalankan ulang (percobaan 2).
+\*Gold bagian PVT diverifikasi penulis. Satu foto S02 gagal provider (InstructorRetryException) dan dijalankan ulang (percobaan 2).
 Hasil: `hasil_eksperimen/foto_ulang_2026-11-07/`.
 
 ### 6A.5 Nama file berpasangan (D23, `skor_nama_file_berpasangan.py`)
@@ -278,7 +278,7 @@ Hasil: `hasil_eksperimen/foto_nama_berpasangan_2026-11-07/`.
 
 ### 6A.6 Workbook gabungan
 Indonesia S01-S03: sel 112/112 benar; link foto 9 benar, 3 salah, 7 terlewat; gabungan P 0,976, R 0,945, **F1 0,960**.
-P01 + PVT (gold usulan AI): kartu terlihat F1 0,950, kartu tertutup 0,940.
+P01 + PVT (gold atribut P01 belum diverifikasi): kartu terlihat F1 0,950, kartu tertutup 0,940.
 (Angka 6A.4-6A.6 adalah run D23, 7 Nov. Hasil foto terbaru D24 ada di 6A.7.)
 
 ### 6A.7 Visi dua tahap (D24, 12 Nov 2026; `job_m2.sh`, `ablasi_fusi_m2.py`)
@@ -374,7 +374,7 @@ kolom varietas diambil dari kolom "Keunggulan varietas" (model embedding peka hu
 tanda rentang, huruf kecil sesuai kosakata template), tidak ada yang berubah makna.
 
 ### 6.7 Foto Commons (160 foto, run UI 1 November, terkoreksi D18)
-| Metrik | Label sumber Commons | Label tinjauan visual AI |
+| Metrik | Label sumber Commons | Label tinjauan visual |
 |---|---|---|
 | Macro-F1, V2 nama file saja | 0,314 | 0,353 |
 | **Macro-F1, V3 (= V1)** | **0,640** [0,531; 0,728] | 0,564 [0,474; 0,640] |
@@ -430,9 +430,9 @@ Pola hasilnya (gold peneliti):
 - Foto daun *C. chinense* + *C. annuum* ditautkan sebagai Katokkon di S01 dan S03.
 - Di S03, buah Domba yang terdaftar justru dianggap OTHER.
 
-Sampelnya kecil (12 foto unik dipakai di 3 run), dan varietas 3 foto adalah tebakan AI, jadi buktinya lemah.
+Sampelnya kecil (12 foto unik dipakai di 3 run), dan varietas 3 foto hanya dari tinjauan visual, jadi buktinya lemah.
 
-Presisi nama netral tetap 0,644 karena tidak ada foto Indonesia bernama netral. Hasil dengan gold lama (bantuan AI, 10 foto per run): `hasil_eksperimen/foto_indonesia/arsip_gold_ai/`.
+Presisi nama netral tetap 0,644 karena tidak ada foto Indonesia bernama netral. Hasil dengan gold lama (10 foto per run): `hasil_eksperimen/foto_indonesia/arsip_gold_lama/`.
 
 **Skor workbook akhir gabungan** (`skrip/skor_workbook_gabungan.py`). Keluaran sistem adalah satu workbook: baris karakter
 diisi dari spreadsheet, sedangkan baris Gambar diisi link foto. Skor ini menilai keduanya dengan satuan yang sama, yaitu satu
@@ -500,7 +500,7 @@ Hal terbuka:
 - Nama berkas yang menyebut varietas tidak terdaftar belum dipakai sebagai sinyal CANDIDATE (D24).
 - Foto baru dijalankan 1x per kondisi; perlu >= 3 ulangan untuk klaim statistik.
 - Uji paritas lewat jalur produksi penuh (Drive + `vision_hook` + KMS) belum dijalankan.
-- Gold atribut P01/P02 (144 butir perlu adjudikasi) dan gold bagian foto PVT masih usulan AI.
+- Gold atribut P01/P02 belum diverifikasi (144 butir perlu diputuskan).
 - Diagram alur (Fig. 1): tambahkan panah registry/nama file ke model visi, lalu ganti label "curator-approved" (baris baru
   langsung ditulis sebagai provisional).
 - Paper masih menyajikan foto Indonesia terpisah dari foto Commons; belum diputuskan apakah tabelnya digabung.

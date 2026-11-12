@@ -124,7 +124,7 @@ Pada set ini aturan fusi lama dan baru memberi hasil yang identik, jadi semua pe
 ## Batasan
 
 - **Satu ulangan per set, dan model tidak deterministik.** Selisih kecil seperti commons 35 → 32, PVT terlihat 27 → 25, dan tertutup 4 → 3 berada di dalam CI 95%. Di set PVT foto ulang, yang nama berkasnya tidak relevan, 10 dan 4 jawaban tetap berubah antar-run. Untuk klaim statistik, jalankan ≥3 ulangan.
-- **Gold bagian tanaman PVT, gold atribut, dan kunci sel P01 masih usulan AI** (lihat lembar anotator M3).
+- **Gold atribut dan kunci sel P01 belum diverifikasi.**
 - **Latensi provider (25-90 detik per foto) berbeda dari 7 Nov,** sehingga run dibagi menjadi 3 job paralel. Urutan foto tidak memengaruhi hasil.
 - **Varietas di registri hanya dicocokkan oleh kode dari nama berkas.** Nama berkas yang menyebut varietas *tidak terdaftar* (kasus OTHER BENAR) belum dipakai sebagai sinyal CANDIDATE, sehingga sel itu turun dari 17/21 ke 3/21. Ini kandidat perbaikan berikutnya.
 

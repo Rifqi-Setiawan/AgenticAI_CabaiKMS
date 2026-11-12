@@ -75,7 +75,7 @@ def main():
     out = ["# Foto Indonesia (S01-S03) dan gabungan dengan 160 foto Commons", "",
            "Metrik sama dengan foto Commons (hitung_metrik.img_metrics): status KNOWN/OTHER/UNCERTAIN, Top-1 pada foto KNOWN, "
            "presisi AUTO_LINK. Foto Indonesia: 12 foto unik yang sama di tiga run (spreadsheet berbeda), jadi 36 keputusan tidak "
-           "independen. Gold Indonesia = isian peneliti 4 Nov 2026 (3 varietas tebakan AI atas persetujuan peneliti) dan tidak memuat "
+           "independen. Gold Indonesia = isian peneliti 4 Nov 2026 (3 varietas dari tinjauan visual, disetujui penulis) dan tidak memuat "
            "UNCERTAIN, sehingga untuk foto Indonesia yang adil adalah macro-F1 atas kelas yang ada di gold (KNOWN, OTHER).", "",
            "| Himpunan | Keputusan | Status benar | Macro-F1 3 kelas | Macro-F1 kelas di gold | Top-1 KNOWN | AUTO_LINK benar |",
            "|---|---|---|---|---|---|---|"]

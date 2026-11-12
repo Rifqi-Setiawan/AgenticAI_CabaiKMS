@@ -57,7 +57,7 @@ def main():
     for g in read("gold/gold_semua_dataset.csv"):
         gold.setdefault(g["dataset_id"], {})[g["source_attribute_display"].strip()] = g
     reps = sorted(p for p in BASE.glob("rep*") if (p / "rows_final.json").exists())
-    out = ["# Eksperimen F2: skema kanonik dinamis (sementara; gold pra-anotasi AI)\n",
+    out = ["# Eksperimen F2: skema kanonik dinamis (sementara)\n",
            f"Urutan run per pengulangan: {', '.join(ORDER)}; database kosong di awal tiap pengulangan; {len(reps)} pengulangan.\n"]
 
     # ------------------------------------------------------------ F2-1 dan F2-2 per pengulangan

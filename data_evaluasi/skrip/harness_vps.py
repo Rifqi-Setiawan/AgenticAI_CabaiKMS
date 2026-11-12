@@ -27,7 +27,7 @@ RUNS = [
     ("atribut", "N07", "E07_kementan_deskripsi_ext.xlsx", "Deskripsi Varietas", "row-oriented", 1, None, 5),
     ("atribut", "N08", "E08_zenodo_capsicum_en.xlsx", "Observed85_readable", "row-oriented", 1, None, 5),
     ("atribut", "N09", "dataset_cabai_deskripsi_varietas.xlsx", "transposed", "transposed", None, None, 5),
-    ("atribut", "P01", "P01_pvt_hasil_pemuliaan_24.xlsx", "Deskripsi Varietas", "row-oriented", 1, None, 5),  # pasangan foto PVT (gold usulan AI)
+    ("atribut", "P01", "P01_pvt_hasil_pemuliaan_24.xlsx", "Deskripsi Varietas", "row-oriented", 1, None, 5),  # pasangan foto PVT (gold belum diverifikasi)
     ("atribut_n08var", "N08", "E08_zenodo_capsicum_en_variety.xlsx", "Observed85_readable", "row-oriented", 1, None, 5),  # deviasi D4: hanya kolom A1 diganti "Variety"
     ("kombinasi", "S01", "D01_transposed_indonesia_mixed.xlsx", "Data_Transposed", "transposed", None, DRIVE1, 12),
     ("kombinasi", "S02", "D02_row_flat_english_semantic.xlsx", "English_Flat_Data", "row-oriented", 1, DRIVE1, 12),

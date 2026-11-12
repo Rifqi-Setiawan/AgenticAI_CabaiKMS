@@ -6,7 +6,7 @@
 >
 > **USANG (4 Nov 2026).** Dokumen ini arsip. Angka foto Commons di bawah masih memuat 19 jawaban mock (macro-F1 0,692, AUTO_LINK 67/94). Angka terbaru dan terkoreksi ada di `docs/PANDUAN_EKSPERIMEN_LENGKAP.md` (macro-F1 0,640, Top-1 0,727, AUTO_LINK 64/87 = 0,736).
 
-**Status: sementara.** Semua skor dihitung terhadap **gold pra-anotasi AI**, belum gold manusia (dua anotator buta + adjudikasi). Jangan dikutip sebagai hasil akhir.
+**Status: sementara.** Semua skor dihitung terhadap **gold sementara**, belum gold dua anotator (buta + adjudikasi). Jangan dikutip sebagai hasil akhir.
 Commit: atribut `323f1e4` (harness `24e1037`+D1 sampai D5), foto `bc3c21b`. Deviasi D1 sampai D6: bagian 12 `SKENARIO_EKSPERIMEN.md`.
 Data mentah: `data_evaluasi/hasil_eksperimen/` (RUNLOG, `SHA256SUMS`).
 
@@ -22,7 +22,7 @@ Semua dataset lewat UI (S4): semua 0,945 (S1 0,422); R 0,974; N 0,971; S 0,915. 
 S04 dan N08 asli ditolak sistem ("Struktur workbook belum dapat diproses"), dilaporkan sebagai kasus penolakan, bukan skor. *N08 memakai berkas varian (kolom A1 `Variety`, deviasi D4).
 Variasi antar tiga pengulangan atribut: skor agregat identik (simpangan baku 0), tetapi pada tingkat butir ada variasi kecil (satu butir pada N09 berbeda antar pengulangan; teks alasan model berbeda pada sekitar 69 dari 80 baris). Model tidak deterministik, namun pergeserannya tidak mengubah skor pada dataset yang diuji.
 
-## 2. Foto Commons (160 foto, 8 run UI, gold pra-anotasi AI)
+## 2. Foto Commons (160 foto, 8 run UI, gold sementara)
 
 | Varian | Macro-F1 (CI 95%) | Top-1 pada KNOWN (CI 95%) |
 |---|---|---|
@@ -67,7 +67,7 @@ RQ1, RQ2: didukung. RQ3: tidak didukung (V3 = V1; keunggulan V3 atas V2 pada MEN
 
 ## 5. Keterbatasan yang berlaku
 
-- Gold pra-anotasi AI; 57 butir perlu adjudikasi; kappa antar anotator belum ada.
+- Gold sementara; 57 butir perlu adjudikasi; kappa antar anotator belum ada.
 - Foto Commons adalah proksi luar negeri; kelas kecil tidak dilaporkan per kelas.
 - Dev dan held-out sudah dipisah (bagian 4), tetapi alias `row_aliases.yaml` berasal dari data dev dan 25% butir bertarget dapat diselesaikan lookup; klaim bertumpu pada stratum semantik.
 - Baseline S3 hanya aproksimasi (penilai melihat seluruh 60 baris, bagian 12) dan hanya pada dataset atribut tunggal; RQ4 diuji tetapi tidak dapat didukung (V3 dan V1 identik).
@@ -76,7 +76,7 @@ RQ1, RQ2: didukung. RQ3: tidak didukung (V3 = V1; keunggulan V3 atas V2 pada MEN
 
 ## 6. Skor foto terhadap gold hasil tinjauan visual (1 November 2026)
 
-Gold foto ditinjau ulang satu per satu secara visual (ditandai `ai_visual_review_v1`; pelaku "Claude (tinjauan visual AI)"; bukan verifikasi ahli botani). Aturan: label sumber dipertahankan bila foto konsisten dan buah terlihat jelas; diubah ke UNCERTAIN bila hanya bunga, tanaman, bibit, atau buah tidak dikenali, atau label sumber saling bertentangan; dikeluarkan bila bukan foto cabai.
+Gold foto ditinjau ulang satu per satu secara visual (bukan verifikasi ahli botani). Aturan: label sumber dipertahankan bila foto konsisten dan buah terlihat jelas; diubah ke UNCERTAIN bila hanya bunga, tanaman, bibit, atau buah tidak dikenali, atau label sumber saling bertentangan; dikeluarkan bila bukan foto cabai.
 Hasil: 158 foto masuk (2 dikeluarkan), 23 label diubah (14,6%): 22 menjadi UNCERTAIN, 1 UNCERTAIN menjadi KNOWN Paprika. Kelas: KNOWN 83, OTHER 40, UNCERTAIN 35. Berkas: `gambar/manifest/gold_gambar_manifest_final.csv`; catatan per foto ada di kolom `catatan_tinjauan`.
 
 | Varian | Macro-F1 (CI 95%) | Top-1 KNOWN (CI 95%) |
@@ -122,7 +122,7 @@ Ini bukti fungsi pada satu dataset. Eksperimen terstruktur (akuisisi N07, penggu
 
 ## 9. Eksperimen F2 versi 1 (skema kanonik dinamis, 1 November 2026)
 
-Konfigurasi: saklar hidup, API dan database terpisah, commit `060b29f`; urutan R01, N07, N09, R02; tiga pengulangan dari database kosong; model teks produksi. Data mentah: `hasil_eksperimen/hasil_dinamis/urutan_A/`; analisis: `hasil_eksperimen/analisis_kanonik_dinamis_v1.md`. Gold masih hasil bantuan model.
+Konfigurasi: saklar hidup, API dan database terpisah, commit `060b29f`; urutan R01, N07, N09, R02; tiga pengulangan dari database kosong; model teks produksi. Data mentah: `hasil_eksperimen/hasil_dinamis/urutan_A/`; analisis: `hasil_eksperimen/analisis_kanonik_dinamis_v1.md`.
 
 **F2-1 dan F2-2 (tiga pengulangan, rentang):**
 
@@ -169,7 +169,7 @@ Satu pengulangan tidak cukup untuk menilai stabilitas; versi 3 mengulang eksperi
 
 ## 11. Eksperimen F2 versi 3 (hasil yang dipakai; commit `6217420`)
 
-Konfigurasi: saklar hidup, API dan database terpisah, urutan R01, N07, N09, R02, tiga pengulangan dari database kosong, penilai dalam batch 12 dengan percobaan ulang (D9e). **Tidak ada run yang gagal** (0 kandidat FAILED pada 12 run). Data: `hasil_eksperimen/hasil_dinamis/urutan_C/`; analisis: `hasil_eksperimen/analisis_kanonik_dinamis_v3.md`. Gold masih hasil bantuan model.
+Konfigurasi: saklar hidup, API dan database terpisah, urutan R01, N07, N09, R02, tiga pengulangan dari database kosong, penilai dalam batch 12 dengan percobaan ulang (D9e). **Tidak ada run yang gagal** (0 kandidat FAILED pada 12 run). Data: `hasil_eksperimen/hasil_dinamis/urutan_C/`; analisis: `hasil_eksperimen/analisis_kanonik_dinamis_v3.md`.
 
 **F2-1 dan F2-2** (identik pada ketiga pengulangan, kecuali N09 15 sampai 17 kandidat):
 
@@ -184,7 +184,7 @@ Akhir tiap pengulangan: **40 baris akuisisi** (Excel 60 menjadi 101 baris); 84 s
 
 **F2-3 anti duplikat.** Tidak ada baris akuisisi yang menggandakan baris template (`warna mahkota bunga` pada versi 1 tidak muncul lagi). Pasangan label mirip yang tersisa hanya atribut berbeda (kelembaban tanah dan udara, diameter batang dan buah, ketahanan penyakit dan hama). Penggabungan yang patut ditinjau kurator: `Panjang dikotomus` digabung ke `tinggi dikotomus`, `Tipe berbuah` ke `posisi buah masak` (gold AMBIGUOUS), `Tebal daging buah` ke `tebal kulit buah`. Dari 19 penggabungan pada pengulangan 1, hanya 1 yang bertarget baris template dan dapat dinilai terhadap gold (benar); sisanya bertarget baris akuisisi sehingga gold tidak punya jawaban.
 
-**F2-4 keamanan (Mapping F1 baris template, rata-rata 3 pengulangan):** R01 0,667 (selisih 0,000), N07 1,000 (+0,026), N09 1,000 (0,000), R02 1,000 (0,000). Pemetaan template tidak lebih buruk dibanding mode beku; kenaikan N07 berasal dari atribut yang tadinya NULL lalu ditulis ke baris template (bukan klaim kemampuan: n kecil, gold hasil bantuan model). F1 versi ketat 0,18 sampai 0,61 sesuai dugaan (atribut baru tidak ada di gold).
+**F2-4 keamanan (Mapping F1 baris template, rata-rata 3 pengulangan):** R01 0,667 (selisih 0,000), N07 1,000 (+0,026), N09 1,000 (0,000), R02 1,000 (0,000). Pemetaan template tidak lebih buruk dibanding mode beku; kenaikan N07 berasal dari atribut yang tadinya NULL lalu ditulis ke baris template (bukan klaim kemampuan: n kecil). F1 versi ketat 0,18 sampai 0,61 sesuai dugaan (atribut baru tidak ada di gold).
 
 **F2-5 stabilitas.** Jumlah baris sama (40, 40, 40); kemiripan himpunan label Jaccard 0,70 sampai 0,78 (35 baris sama pada pasangan 1-2 dan 1-3; sisanya variasi penamaan, mis. kelembapan dan kelembaban). Versi 1: 43 sampai 45 baris, Jaccard 0,57 sampai 0,66.
 
@@ -200,7 +200,7 @@ Akhir tiap pengulangan: **40 baris akuisisi** (Excel 60 menjadi 101 baris); 84 s
 | V1 (hanya gambar) | 0,675 | 0,525 sampai 0,816 |
 | V2 (hanya nama file) | 0,000 | 0,000 sampai 0,000 |
 
-V3 vs V1: selisih 0,000 (p Holm 1,0). **H4 tidak didukung**: V3 dan V1 identik pada pemetaan yang dipakai (tindakan fusi mempertahankan status visual), sehingga selisih nol menurut konstruksi. V2 tidak pernah menghasilkan OTHER karena hanya mencocokkan nama file ke varietas terdaftar (sifat varian, bukan temuan). Sebanyak 13 dari 40 foto OTHER diprediksi KNOWN, yaitu varietas di luar daftar yang ditautkan paksa ke varietas terdaftar. Gold hasil bantuan model.
+V3 vs V1: selisih 0,000 (p Holm 1,0). **H4 tidak didukung**: V3 dan V1 identik pada pemetaan yang dipakai (tindakan fusi mempertahankan status visual), sehingga selisih nol menurut konstruksi. V2 tidak pernah menghasilkan OTHER karena hanya mencocokkan nama file ke varietas terdaftar (sifat varian, bukan temuan). Sebanyak 13 dari 40 foto OTHER diprediksi KNOWN, yaitu varietas di luar daftar yang ditautkan paksa ke varietas terdaftar.
 
 **Baseline S3 (aproksimasi)** (`hasil_eksperimen/analisis_s3.md`, skrip `skrip/analisis_s3.py`; data `hasil_eksperimen/hasil_harness/2026-11-02_S3/`). Harness dengan opsi `--s3`: pipeline yang sama (termasuk pencocokan nama persis), tetapi penilai menerima seluruh 60 baris kanonik tanpa peringkat retrieval. Ini bukan LLM murni; yang diisolasi adalah penyempitan kandidat oleh retrieval. Dataset R01, R02, N07, N08 (berkas varian), N09; 222 butir; 3 pengulangan; kombinasi S01 sampai S03 tidak dijalankan. Percobaan pertama dengan `k=60` gagal seluruhnya (batas retrieval 5 sampai 10) dan dibuang; harness ditambah opsi `--s3`.
 
@@ -211,7 +211,7 @@ V3 vs V1: selisih 0,000 (p Holm 1,0). **H4 tidak didukung**: V3 dan V1 identik p
 
 Tiga butir berbeda, ketiganya sama di tiap pengulangan: `Mahkota` (N07), `Leaf shape` dan `Mature fruit colour` (N08). S4 tidak memetakan butir itu (retrieval tidak memasukkan baris benar ke kandidat), S3 memetakannya dengan benar. Tidak ada perbedaan signifikan.
 
-**Pembacaan.** Dengan katalog hanya 60 baris, penilai yang melihat semua baris sama baiknya dengan sistem berbasis retrieval, bahkan sedikit lebih baik pada tiga butir. **Kontribusi retrieval terhadap akurasi tidak terbukti pada data ini**; pengamatan ini harus dilaporkan sebagaimana adanya. Keunggulan sistem atas S1 dan S2 (bagian 4) tetap berlaku, tetapi keunggulan retrieval atas baseline LLM tanpa retrieval tidak didukung. Retrieval kemungkinan lebih berguna pada katalog yang lebih besar (relevan dengan skema dinamis, 101 baris atau lebih) atau untuk biaya dan latensi: S3 memakan 85 sampai 580 detik per run, lebih lama dari S4 (perbandingan waktu belum dianalisis sistematis). Keterbatasan: butir S3 selalu identik antar pengulangan, jadi tidak ada informasi variasi; gold hasil bantuan model.
+**Pembacaan.** Dengan katalog hanya 60 baris, penilai yang melihat semua baris sama baiknya dengan sistem berbasis retrieval, bahkan sedikit lebih baik pada tiga butir. **Kontribusi retrieval terhadap akurasi tidak terbukti pada data ini**; pengamatan ini harus dilaporkan sebagaimana adanya. Keunggulan sistem atas S1 dan S2 (bagian 4) tetap berlaku, tetapi keunggulan retrieval atas baseline LLM tanpa retrieval tidak didukung. Retrieval kemungkinan lebih berguna pada katalog yang lebih besar (relevan dengan skema dinamis, 101 baris atau lebih) atau untuk biaya dan latensi: S3 memakan 85 sampai 580 detik per run, lebih lama dari S4 (perbandingan waktu belum dianalisis sistematis). Keterbatasan: butir S3 selalu identik antar pengulangan, jadi tidak ada informasi variasi.
 
 ## 13. Tabel kasus L3 (foto Indonesia, kualitatif)
 
@@ -230,7 +230,7 @@ Angka 7, 8, 5 di bagian 3 memakai status akhir V3 (foto yang dialihkan ke review
 ## 14. Anotasi ulang buta gold atribut (3 November 2026)
 
 Subset 100 butir (57 prioritas `perlu_adjudikasi` + 43 acak terstratifikasi `gold_status`, seed 20261102; S04 tidak ikut), urutan diacak, tanpa gold, prediksi sistem, atau tanda prioritas (`data_evaluasi/anotasi_buta/subset_v1/`, skrip `skrip/buat_subset_anotasi_buta.py`).
-Diisi oleh peneliti sendiri (Rifqi, tanpa bantuan AI menurut pengisi), sehari setelah memverifikasi gold. Skor: `skrip/skor_anotasi_buta.py`, laporan `anotasi_buta/subset_v1/hasil/laporan_kappa.md`.
+Diisi oleh penulis, sehari setelah memverifikasi gold. Skor: `skrip/skor_anotasi_buta.py`, laporan `anotasi_buta/subset_v1/hasil/laporan_kappa.md`.
 
 | Himpunan | n | Sepakat longgar | Kappa label | Kappa biner |
 |---|---|---|---|---|

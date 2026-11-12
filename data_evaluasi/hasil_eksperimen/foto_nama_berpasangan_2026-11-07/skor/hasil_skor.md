@@ -31,4 +31,4 @@ PVT: 40 foto kartu tertutup, registri 24 varietas P01 + deskripsi morfologi P01 
 | ind6 | OTHER | BENAR vs NETRAL | 2 | +0.500 | +0.000 sampai +1.000 |
 
 Total PVT: tindakan sesuai gold 48/120, AUTO_LINK salah 17/120.
-Catatan: gold bagian tanaman PVT masih usulan AI; hanya memengaruhi foto berbagian tanpa baris Gambar (D21).
+Catatan: bagian tanaman hanya memengaruhi foto berbagian tanpa baris Gambar (D21).

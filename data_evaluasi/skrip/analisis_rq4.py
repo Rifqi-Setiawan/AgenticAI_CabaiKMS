@@ -1,7 +1,7 @@
 """RQ4: recall kelas OTHER (varietas di luar daftar terdaftar) untuk V3, V1, V2 pada foto Commons.
 
 Dijalankan dari data_evaluasi/: python -I skrip/analisis_rq4.py --out hasil_eksperimen/analisis_rq4.md
-Memakai hasil UI yang sudah diarsipkan dan gold final (hasil bantuan model, lihat README_DATA_EVALUASI.md).
+Memakai hasil UI yang sudah diarsipkan dan gold final (terverifikasi, lihat README_DATA_EVALUASI.md).
 """
 import argparse
 import glob
@@ -38,7 +38,7 @@ def main():
     ph = al.photo_items(ui_dir, a.gold)
     n_other = sum(p["gold"] == "OTHER" for p in ph)
     out = ["# RQ4: recall kelas OTHER (foto Commons, hasil UI)\n",
-           f"Foto dinilai: {len(ph)}; gold OTHER: {n_other}. Gold: `{a.gold}` (hasil bantuan model).\n",
+           f"Foto dinilai: {len(ph)}; gold OTHER: {n_other}. Gold: `{a.gold}`.\n",
            "| Varian | Recall OTHER | CI 95% (bootstrap) |", "|---|---|---|"]
     for v in ("V3", "V1", "V2"):
         r = recall_other(v)(ph)

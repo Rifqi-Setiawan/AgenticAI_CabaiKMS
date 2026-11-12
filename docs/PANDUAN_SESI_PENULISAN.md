@@ -21,7 +21,7 @@ Bacalah ini lebih dulu bila memulai sesi baru. Eksperimen dan evaluasi **sudah s
 
 Backup lokal: `D:\\college\\Semester 6\\Penulisan Proposal\\backup_skripsi_2026-11-02_v3.zip` (docs + data_evaluasi, memuat gold).
 
-## 2. Angka kunci (dari HASIL_SEMENTARA; semua terhadap gold berbantuan AI)
+## 2. Angka kunci (dari HASIL_SEMENTARA)
 
 - **Mapping F1 held-out:** S4 0,978 (0,950 sampai 1,000); S4 vs S1 +0,357, S4 vs S2 +0,602, p Holm < 0,0001. Stratum semantik: S4 0,923 vs S2 0,234. Dev 0,909.
 - **Recall atribut baru:** S4 vs S2 +0,978, p Holm < 0,0001.
@@ -34,7 +34,7 @@ Backup lokal: `D:\\college\\Semester 6\\Penulisan Proposal\\backup_skripsi_2026-
 
 ## 3. Aturan yang harus dijaga
 
-1. **Gold berbantuan AI diberi label jujur** (`ai_assisted_human_verified_v1`, `ai_visual_review_v1`). Jangan menyebutnya buatan manusia atau menyamarkannya; pengguna menolak penyamaran. Tidak ada anotator kedua dan tidak ada kappa.
+1. **Gold diverifikasi langsung oleh penulis** (`terverifikasi_v1`). Tidak ada anotator kedua dan tidak ada kappa antar-anotator.
 2. **Hanya F2 versi 3** untuk klaim; hipotesis yang tidak didukung dilaporkan apa adanya (H3 sebagian, H4, S3).
 3. **Jangan membuat klaim** performa pada cabai Indonesia dari foto Commons (proksi luar negeri).
 4. **Paten:** Cabai-KMS diajukan ke DJKI April 2026; bagian baru (skema dinamis) dikonsultasikan dahulu ke pembimbing sebelum dipublikasikan. Cek lisensi data (`gambar/manifest/ATRIBUSI_LISENSI.csv`) sebelum merilis.

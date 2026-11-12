@@ -13,14 +13,14 @@ GOLD = OUT / "gold"
 GOLD.mkdir(parents=True, exist_ok=True)
 PILOT = Path(r"D:\college\Semester 6\Penulisan Proposal\project\eval\campaigns\schema-mapping-pilot-v1\master\master_evaluation.xlsx")
 
-ANNOTATOR = "claude-sonnet-5.5"
-SOURCE = "ai_single_annotator_v1"  # NOT 'human_independent' on purpose
+ANNOTATOR = ""
+SOURCE = "usulan_awal_v1"
 COLS = [
     "annotation_version", "annotation_source", "mapping_item_id", "mapping_identity_kind", "mapping_identity_value",
     "mapping_identity_issue", "dataset_id", "source_file_name", "source_file_sha256", "source_sheet", "source_format",
     "source_attribute_display", "source_attribute", "source_context", "contoh_nilai_sumber",
     "gold_status", "gold_canonical_keys", "ambiguous_candidate_canonical_keys", "annotator_id", "annotation_round",
-    "notes", "confidence_claude", "perlu_adjudikasi",
+    "notes", "confidence_usulan", "perlu_adjudikasi",
 ]
 DATASET_ID = {
     "data_input.xlsx": "R01", "input_cabai_kms.xlsx": "R02",
@@ -60,7 +60,7 @@ for ds in data:
             source_format=ds["format"], source_attribute_display=it["display"], source_attribute=it["name"],
             source_context=it["context"] or "", contoh_nilai_sumber=" || ".join(it["samples"]),
             gold_status=status, gold_canonical_keys=keys, ambiguous_candidate_canonical_keys=amb,
-            annotator_id=ANNOTATOR, annotation_round=1, notes=note, confidence_claude=conf,
+            annotator_id=ANNOTATOR, annotation_round=1, notes=note, confidence_usulan=conf,
             perlu_adjudikasi="Y" if conf != "H" else "N",
         ))
     ids = [r["mapping_item_id"] for r in rows]
@@ -119,10 +119,10 @@ def readme_sheet(wb, text_lines):
 
 
 README = [
-    "GOLD ANOTASI PEMETAAN ATRIBUT - ANOTATOR TUNGGAL AI (BUKAN GOLD MANUSIA INDEPENDEN)",
-    "Dibuat oleh Claude (claude-sonnet-5.5) pada 29 Okt 2026 dari atribut hasil parser proyek (src/agents/schema_matching/source_parsing.py) dan ID dari src/schema/gold_mapping.py.",
+    "GOLD ANOTASI PEMETAAN ATRIBUT - USULAN AWAL (SEBELUM VERIFIKASI)",
+    "Dibuat pada 29 Okt 2026 dari atribut hasil parser proyek (src/agents/schema_matching/source_parsing.py) dan ID dari src/schema/gold_mapping.py.",
     "Kanonik: cabai-kms-canonical-v1 (59 baris, sheet 'Canonical Reference'). Pedoman: docs/annotation_guidelines_v1.md (lima status: ONE_TO_ONE, NO_MATCH, AMBIGUOUS, COMPOSITE, EXCLUDE).",
-    "annotation_source sengaja 'ai_single_annotator_v1', bukan 'human_independent'. Protokol proposal/proyek meminta dua anotator manusia independen + adjudikasi; berkas ini dipakai sebagai PRA-ANOTASI/silver standard dan bahan adjudikasi.",
+    "annotation_source 'usulan_awal_v1'. Gold yang dipakai untuk skor adalah gold/final/gold_semua_dataset_final.csv (terverifikasi_v1).",
     "Kolom perlu_adjudikasi = Y menandai butir yang keyakinannya Sedang/Rendah (mis. kepala putik vs tangkai putik, benang sari, tahap buah tidak disebut). Selesaikan butir Y terlebih dahulu.",
     "Kolom kuning = kolom manusia (status/kunci/catatan). Jangan mengubah mapping_item_id dan kolom identitas lain.",
     "Pembagian peran dataset: R = riset nyata (data_input, input_cabai_kms), S = sintetis/dummy (D01-D04), N = data baru dari sumber publik (E07 Kementan, E08 Zenodo, E09 label 80 dokumen).",

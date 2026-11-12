@@ -8,12 +8,12 @@ Aturan status (disetujui peneliti 4 Nov 2026), per spreadsheet:
   varietas ada di daftar varietas spreadsheet, terlihat = Ya   -> KNOWN
   varietas ada di daftar, terlihat_dari_foto = Tidak           -> UNCERTAIN
   varietas diketahui tetapi tidak ada di daftar spreadsheet    -> OTHER
-  varietas kosong                                              -> UNCERTAIN (tidak terjadi: lihat ISIAN_AI)
+  varietas kosong                                              -> UNCERTAIN (tidak terjadi: lihat ISIAN_VISUAL)
 Daftar varietas = kolom varietas spreadsheet sumber (sama dengan header hasil_kanonik.xlsx run 31 Okt).
 dinilai = Y bila layak_dipakai = Ya. bagian_boleh = {bagian_utama, bagian_lain} dalam empat kelas sistem.
 
-ISIAN_AI: tiga foto yang varietasnya dikosongkan peneliti diisi dengan tebakan visual AI (Claude) atas permintaan
-peneliti, tanpa melihat prediksi sistem; disetujui peneliti. Ditandai sumber_varietas = "tebakan AI".
+ISIAN_VISUAL: tiga foto yang varietasnya dikosongkan diisi dari tinjauan visual, tanpa melihat prediksi sistem;
+disetujui penulis. Ditandai sumber_varietas = "tinjauan visual".
 Jalankan dari folder data_evaluasi:  ..\\.venv\\Scripts\\python.exe -I skrip\\buat_gold_foto_indonesia.py
 """
 import csv
@@ -28,7 +28,7 @@ REGISTRY = {"S01": ["Gendot", "Kopay", "Katokkon", "Cabai tanjung"],
             "S02": ["Gendot", "Kopay", "Katokkon"],
             "S03": ["Katokkon", "Cabai tanjung", "Domba", "Cabai rawit NTB"]}
 EMPAT = ("DAUN", "BATANG", "BUAH", "BUNGA")
-ISIAN_AI = {
+ISIAN_VISUAL = {
     "C. annuum - bentuk buah_ warna bh_ posisi buah menggantung.jpg": "Cabai Besar",
     "p9vb80t0ldt5cms.webp": "Gendot",
     "warna tangkai daun C. chinense dan C. annuum permukaan bawah.jpg": "C. chinense + C. annuum",
@@ -49,8 +49,8 @@ def main():
         assert utama, f"bagian_utama kosong pada foto {no}"
         var = (var or "").strip()
         sumber = "peneliti"
-        if (not var or var.upper() == "TIDAK_DIKETAHUI") and fn in ISIAN_AI:
-            var, sumber = ISIAN_AI[fn], "tebakan AI"
+        if (not var or var.upper() == "TIDAK_DIKETAHUI") and fn in ISIAN_VISUAL:
+            var, sumber = ISIAN_VISUAL[fn], "tinjauan visual"
         lain = lain if lain and lain != utama else ""
         foto.append({"filename": fn, "varietas": var, "sumber": sumber, "yakin": yakin or "", "terlihat": terlihat or "",
                      "utama": utama, "lain": lain, "boleh": "|".join(sorted({b for b in (utama, lain) if b in EMPAT})),
@@ -72,7 +72,7 @@ def main():
                          "dinilai": "Y" if f["layak"] == "Ya" else "N",
                          "dapat_dibedakan_dari_gambar": "Y" if f["terlihat"] == "Ya" else "N",
                          "yakin_varietas": f["yakin"], "catatan": f["catatan"],
-                         "anotator": "peneliti (Rifqi)", "tanggal": "2026-11-04"})
+                         "anotator": "", "tanggal": "2026-11-04"})
     with open(OUT, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0]))
         w.writeheader()

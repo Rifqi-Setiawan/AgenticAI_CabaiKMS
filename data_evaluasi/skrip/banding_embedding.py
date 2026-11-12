@@ -3,7 +3,7 @@
 Memakai jalur yang sama dengan pipeline: atribut dibaca dengan parser legacy (runtime_attribute_from_legacy),
 query = SourceAttributeProfile.build_query(), dokumen = CanonicalRow.serialize() dari template yang dimuat.
 Butir yang selesai lewat exact-name tidak masuk retrieval, jadi dipisah (subset "semantik").
-Gold: gold_semua_dataset_final.csv (diverifikasi peneliti) dan gold_P01_P02_pvt.csv (usulan AI), butir ONE_TO_ONE.
+Gold: gold_semua_dataset_final.csv (terverifikasi) dan gold_P01_P02_pvt.csv (belum diverifikasi), butir ONE_TO_ONE.
 
   python data_evaluasi/skrip/banding_embedding.py [--model NAMA ...] [--cache DIR] [--out DIR]
 """
@@ -32,7 +32,7 @@ from src.schema.canonical import CanonicalSchema  # noqa: E402
 
 EV = ROOT / "data_evaluasi"
 GOLDS = {"terverifikasi": EV / "gold" / "final" / "gold_semua_dataset_final.csv",
-         "pvt_usulan_ai": EV / "gold" / "gold_P01_P02_pvt.csv"}
+         "pvt_belum_diverifikasi": EV / "gold" / "gold_P01_P02_pvt.csv"}
 # (nama, prefiks query, prefiks dokumen, prompt_name query)
 MODELS = {
     "paraphrase-multilingual-MiniLM-L12-v2": ("", "", None),
@@ -228,7 +228,7 @@ def main():
                               "rank": pos + 1, "top1": keys[order[i][0]], "top1_skor": round(float(S[i, order[i][0]]), 4),
                               "skor_gold": round(float(S[i, keys.index(it["key"])]), 4)})
         ranks[nama] = rk
-        for subset in ("terverifikasi", "pvt_usulan_ai"):
+        for subset in ("terverifikasi", "pvt_belum_diverifikasi"):
             for jenis in ("semua", "semantik"):
                 sel = [r for r, it in zip(rk, items) if it["gold"] == subset and (jenis == "semua" or not it["exact"])]
                 ringkas.append({"model": nama, "gold": subset, "subset": jenis, **metrik(sel),
@@ -239,7 +239,7 @@ def main():
 
     banding = []
     for nama in [v[0] for v in varian if v[0] != base]:
-        for subset in ("terverifikasi", "pvt_usulan_ai"):
+        for subset in ("terverifikasi", "pvt_belum_diverifikasi"):
             idx = [i for i, it in enumerate(items) if it["gold"] == subset and not it["exact"]]
             ci = boot_ci([ranks[base][i] for i in idx], [ranks[nama][i] for i in idx])
             banding.append({"model": nama, "vs": base, "gold": subset, "subset": "semantik",

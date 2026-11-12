@@ -3,7 +3,7 @@
 Peneliti mengisi per foto: varietas sebenarnya, apakah varietas itu bisa dikenali dari foto saja, bagian tanaman, dan
 kelayakan foto. Status KNOWN/OTHER/UNCERTAIN per spreadsheet (S01-S03) TIDAK diisi peneliti: status itu diturunkan
 otomatis dari varietas isian + daftar varietas tiap spreadsheet, supaya aturannya sama untuk semua foto.
-Label lama (gold_kombinasi_drive1.csv, disusun dengan bantuan AI) dan prediksi sistem tidak ditampilkan.
+Label lama (gold_kombinasi_drive1.csv) dan prediksi sistem tidak ditampilkan.
 Nama file ditampilkan karena berasal dari peneliti sendiri.
 Jalankan dari folder data_evaluasi:  ..\\.venv\\Scripts\\python.exe -I skrip\\buat_lembar_gold_foto_indonesia.py
 Keluaran: gambar_id/gold_peneliti/lembar_gold_foto_indonesia.xlsx
@@ -28,8 +28,8 @@ PX = 300
 PETUNJUK = [
     "PETUNJUK GOLD FOTO CABAI INDONESIA (12 FOTO KOLEKSI PENELITI) - CABAI-KMS",
     "",
-    "Tujuan: membuat kunci jawaban foto dari pengetahuan peneliti sendiri, menggantikan label lama yang disusun dengan",
-    "bantuan AI dari nama berkas. Isi hanya kolom berwarna kuning di sheet 'Gold'.",
+    "Tujuan: membuat kunci jawaban foto dari pengetahuan peneliti sendiri, menggantikan label lama dari nama berkas.",
+    "Isi hanya kolom berwarna kuning di sheet 'Gold'.",
     "",
     "Kolom:",
     "  varietas            Varietas sebenarnya dari foto ini (yang Anda ketahui dari sumber/koleksi, bukan tebakan dari",

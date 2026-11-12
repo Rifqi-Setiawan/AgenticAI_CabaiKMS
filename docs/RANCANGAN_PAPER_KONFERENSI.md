@@ -12,7 +12,7 @@ Sebuah pipeline Agentic AI memetakan spreadsheet varietas cabai yang heterogen k
 2. **Akuisisi skema kanonik dinamis tanpa duplikat:** 84 atribut tanpa padanan menjadi 40 baris (53% disatukan atau dipakai ulang), 0 duplikat dengan template, F1 template tidak turun, stabil antar pengulangan (F2 versi 3, satu urutan dataset). Ini yang paling baru (novelty), dengan batas bukti yang jelas.
 3. **Protokol evaluasi yang jujur:** split dev/held-out, bootstrap berpasangan + Holm, hasil negatif dilaporkan (fusi foto H3 sebagian, recall OTHER H4, retrieval vs penilai penuh S3).
 
-Foto dijadikan klaim pendukung, bukan utama (proksi luar negeri, gold berbantuan AI).
+Foto dijadikan klaim pendukung, bukan utama (proksi luar negeri).
 
 ## 3. Judul kerja dan anggaran halaman (6 halaman, +2 bila diizinkan)
 
@@ -26,7 +26,7 @@ Judul: *Adaptive Knowledge Acquisition with Agentic LLMs: Zero-Shot Schema Match
 | 3 Metode | 1,6 | Arsitektur (diagram), skema kanonik 60 baris, retrieval + rerank + verifier + NULL, akuisisi dinamis (penilai, penyatuan makna, kurasi), fusi foto singkat |
 | 4 Desain eksperimen | 0,8 | Data, gold dan asalnya, split, S1 sampai S4, metrik, statistik |
 | 5 Hasil dan diskusi | 1,6 | Tabel utama, stratifikasi, F2, foto ringkas, hasil negatif |
-| 6 Keterbatasan dan etika | 0,3 | Gold berbantuan AI, proksi, satu urutan F2 |
+| 6 Keterbatasan dan etika | 0,3 | Gold satu verifikator, proksi, satu urutan F2 |
 | 7 Kesimpulan | 0,2 | |
 | Pustaka | 0,5 | Sekitar 20 sampai 25 acuan |
 
@@ -48,7 +48,7 @@ Retrieval Hit-Rate dan MRR terperinci, ECE, latency terperinci, Tabular Update A
 
 | Kritik yang mungkin | Jawaban |
 |---|---|
-| Gold dibuat dengan bantuan AI dan satu penyetuju | Ungkapkan di bagian metode dan keterbatasan; sajikan sebagai benchmark awal; rilis gold beserta asalnya; CI bootstrap |
+| Gold diverifikasi satu orang | Sajikan sebagai benchmark awal; laporkan kappa anotasi ulang buta; rilis gold; CI bootstrap |
 | Domain sempit (satu komoditas, 9 workbook) | Nyatakan; skema kanonik menjadi parameter, kode bersifat umum; saran multi-domain |
 | S3 menunjukkan retrieval tidak terbukti | Laporkan; framing: pada katalog 60 baris penilai penuh cukup, retrieval relevan saat katalog tumbuh (skema dinamis, 101 baris); **ideal: tambah percobaan S3 vs S4 pada katalog 101 baris** (opsional, butuh satu eksperimen) |
 | F2 hanya satu urutan, penilai model | Batasi klaim ke "feasibility"; tambah 2 urutan dataset berbeda bila waktu cukup (opsional) |

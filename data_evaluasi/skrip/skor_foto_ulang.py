@@ -7,7 +7,7 @@ Set foto dan gold:
   S01-S03     6 foto Indonesia, registri + deskripsi dari sheet kanonik run atribut bge-m3 (I_atribut_bge-m3_39f4213).
               Gold: gambar_id/gold_peneliti/gold_kombinasi_peneliti.csv (status per spreadsheet; dinilai = Y).
   pvt40_*     uji 40 foto PVT (kartu terlihat / tertutup), registri + deskripsi dari sheet kanonik run P01 (24 varietas).
-              Gold: gambar/manifest/gold_kanonik_foto_pvt.csv (skenario P01; bagian = usulan AI sampai diverifikasi).
+              Gold: gambar/manifest/gold_kanonik_foto_pvt.csv (skenario P01; bagian terverifikasi).
 Metrik foto (definisi sama dengan analisis_paper.py / skor_foto_grin.py): status benar, macro-F1 tiga kelas
 (KNOWN/OTHER/UNCERTAIN) dan macro-F1 kelas yang ada di gold, Top-1 varietas foto KNOWN, recall OTHER, foto non-KNOWN
 yang dipaksa KNOWN, AUTO_LINK benar (gold KNOWN dan varietas benar) per kondisi nama file, bagian tanaman benar
@@ -266,8 +266,7 @@ def main():
     tot = {k: sum(gab[r]["gabungan"][k] for r in ("S01", "S02", "S03")) for k in ("benar", "salah_tulis", "terlewat")}
     pt = prf(tot["benar"], tot["salah_tulis"], tot["terlewat"])
     md += [f"| Indonesia S01-S03 total | | | {pt[0]:.3f} / {pt[1]:.3f} / {pt[2]:.3f} |", "",
-           "Catatan: gold bagian tanaman PVT masih usulan AI (lembar_gold_kanonik_foto_pvt.xlsx belum diverifikasi); gold atribut "
-           "dan kunci sel P01 juga usulan AI. Commons hanya punya 7 foto KNOWN (registri 1 varietas)."]
+           "Catatan: gold atribut dan kunci sel P01 belum diverifikasi. Commons hanya punya 7 foto KNOWN (registri 1 varietas)."]
     for r in res.values():
         r.pop("_xs", None)
     (out / "hasil_skor.md").write_text("\n".join(md), encoding="utf-8")

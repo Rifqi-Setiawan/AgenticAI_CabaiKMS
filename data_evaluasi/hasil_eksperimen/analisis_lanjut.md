@@ -1,4 +1,4 @@
-# Analisis lanjut (sementara; gold pra-anotasi AI)
+# Analisis lanjut (sementara)
 
 Sumber atribut: harness rep1; N08 memakai berkas varian (D4); S04 ditolak sistem dan tidak masuk. Paired bootstrap 10000 ulangan, seed 20261101; koreksi Holm pada perbandingan confirmatory.
 

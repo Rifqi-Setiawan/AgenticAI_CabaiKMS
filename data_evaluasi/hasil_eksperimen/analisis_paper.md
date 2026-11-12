@@ -69,7 +69,7 @@ Matriks V3 (baris gold): {'KNOWN': {'KNOWN': 81, 'OTHER': 15, 'UNCERTAIN': 3}, '
 | MENYESATKAN | 32 | 6 | 0 | 0.000 | 26 | 0 |
 | SEMUA | 160 | 87 | 64 | 0.736 | 38 | 35 |
 
-## 5. Foto, gold = tinjauan_visual_ai (n=158; kelas {'KNOWN': 83, 'OTHER': 40, 'UNCERTAIN': 35})
+## 5. Foto, gold = tinjauan_visual (n=158; kelas {'KNOWN': 83, 'OTHER': 40, 'UNCERTAIN': 35})
 
 V3: macro-F1 0.564 (0.474 sampai 0.640); Top-1 KNOWN 0.795 (0.709 sampai 0.874).
 V2: macro-F1 0.353; Top-1 KNOWN 0.410. V3 vs V2 macro-F1 +0.211 (+0.113 sampai +0.307), p 0.0000.

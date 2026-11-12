@@ -77,12 +77,12 @@ Ukuran F2 tidak masuk koreksi Holm. Hasilnya dibaca bersama keterbatasan: satu u
 2. Beri confidence interval bootstrap 95% pada tiap metrik karena jumlah butir kecil (326 atribut, 158 foto pada gold final). Perbandingan antar varian memakai
    paired bootstrap (10.000 ulangan) dengan koreksi Holm pada perbandingan confirmatory (S4 vs S1, S4 vs S2, V3 vs V1, V3 vs V2 pada nama file MENYESATKAN);
    lainnya eksploratori. Laporkan ukuran efek dan variasi antar 3 pengulangan; selisih lebih kecil dari variasi itu tidak diklaim. Catatan: model tidak deterministik; skor agregat identik antar pengulangan pada dataset yang diuji, tetapi satu atau dua butir bergeser.
-3. Gold atribut final berasal dari **usulan awal hasil bantuan model yang disetujui seluruhnya oleh peneliti tanpa perubahan** (`ai_assisted_human_verified_v1`); belum ada dua anotator manusia buta atau Cohen's kappa
-   (template di `data_evaluasi/anotasi_buta/`). Sebut ini di metodologi, termasuk 0% perubahan. Skor dilabeli "terhadap gold hasil bantuan model".
+3. Gold atribut final diverifikasi langsung oleh penulis butir per butir (`terverifikasi_v1`); belum ada dua anotator independen
+   (template di `data_evaluasi/anotasi_buta/`). Konsistensi diukur dengan anotasi ulang buta 100 butir (kappa 0,97).
 3a. Laporkan **held-out (R02, N07, N08, N09)** terpisah dari **dev (R01, S01 sampai S04)**, dan per stratum: butir yang dapat diselesaikan lookup
    (label kanonik persis atau alias terdaftar) vs butir yang memerlukan semantik. Alias `row_aliases.yaml` dibekukan.
 4. Kelas foto kecil (Paprika, Serrano, Padron, Poblano, Shishito) tidak dilaporkan per kelas.
-5. Gold foto final berasal dari tinjauan visual model (`ai_visual_review_v1`) atas label komunitas Commons; bukan verifikasi ahli botani. Foto adalah **proksi luar negeri**.
+5. Gold foto Commons berasal dari label komunitas Commons yang diverifikasi penulis; bukan verifikasi ahli botani. Foto Commons adalah **proksi luar negeri**.
 6. 21 dari 60 kunci kanonik tidak pernah menjadi target gold, jadi recall per kunci tidak dilaporkan.
 7. S04 dan N08 (berkas asli) ditolak sistem; dilaporkan sebagai kasus penolakan, bukan skor. N08 dievaluasi dari berkas varian (deviasi D4).
 

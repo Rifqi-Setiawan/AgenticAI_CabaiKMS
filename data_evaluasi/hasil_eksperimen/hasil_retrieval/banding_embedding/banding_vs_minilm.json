@@ -18,7 +18,7 @@
  {
   "model": "paraphrase-multilingual-MiniLM-L12-v2 + BM25 (RRF)",
   "vs": "paraphrase-multilingual-MiniLM-L12-v2",
-  "gold": "pvt_usulan_ai",
+  "gold": "pvt_belum_diverifikasi",
   "subset": "semantik",
   "delta_hit1": [
    0.14583333333333334,
@@ -50,7 +50,7 @@
  {
   "model": "BM25",
   "vs": "paraphrase-multilingual-MiniLM-L12-v2",
-  "gold": "pvt_usulan_ai",
+  "gold": "pvt_belum_diverifikasi",
   "subset": "semantik",
   "delta_hit1": [
    0.2916666666666667,
@@ -82,7 +82,7 @@
  {
   "model": "BAAI/bge-m3",
   "vs": "paraphrase-multilingual-MiniLM-L12-v2",
-  "gold": "pvt_usulan_ai",
+  "gold": "pvt_belum_diverifikasi",
   "subset": "semantik",
   "delta_hit1": [
    0.34375,
@@ -114,7 +114,7 @@
  {
   "model": "BAAI/bge-m3 + BM25 (RRF)",
   "vs": "paraphrase-multilingual-MiniLM-L12-v2",
-  "gold": "pvt_usulan_ai",
+  "gold": "pvt_belum_diverifikasi",
   "subset": "semantik",
   "delta_hit1": [
    0.3020833333333333,
@@ -146,7 +146,7 @@
  {
   "model": "Qwen/Qwen3-Embedding-0.6B",
   "vs": "paraphrase-multilingual-MiniLM-L12-v2",
-  "gold": "pvt_usulan_ai",
+  "gold": "pvt_belum_diverifikasi",
   "subset": "semantik",
   "delta_hit1": [
    0.3333333333333333,
@@ -178,7 +178,7 @@
  {
   "model": "Qwen/Qwen3-Embedding-0.6B + BM25 (RRF)",
   "vs": "paraphrase-multilingual-MiniLM-L12-v2",
-  "gold": "pvt_usulan_ai",
+  "gold": "pvt_belum_diverifikasi",
   "subset": "semantik",
   "delta_hit1": [
    0.2916666666666667,
@@ -210,7 +210,7 @@
  {
   "model": "Qwen/Qwen3-Embedding-0.6B+instr",
   "vs": "paraphrase-multilingual-MiniLM-L12-v2",
-  "gold": "pvt_usulan_ai",
+  "gold": "pvt_belum_diverifikasi",
   "subset": "semantik",
   "delta_hit1": [
    0.3125,
@@ -242,7 +242,7 @@
  {
   "model": "Qwen/Qwen3-Embedding-0.6B+instr + BM25 (RRF)",
   "vs": "paraphrase-multilingual-MiniLM-L12-v2",
-  "gold": "pvt_usulan_ai",
+  "gold": "pvt_belum_diverifikasi",
   "subset": "semantik",
   "delta_hit1": [
    0.3020833333333333,
@@ -274,7 +274,7 @@
  {
   "model": "microsoft/harrier-oss-v1-270m",
   "vs": "paraphrase-multilingual-MiniLM-L12-v2",
-  "gold": "pvt_usulan_ai",
+  "gold": "pvt_belum_diverifikasi",
   "subset": "semantik",
   "delta_hit1": [
    0.2604166666666667,
@@ -306,7 +306,7 @@
  {
   "model": "microsoft/harrier-oss-v1-270m + BM25 (RRF)",
   "vs": "paraphrase-multilingual-MiniLM-L12-v2",
-  "gold": "pvt_usulan_ai",
+  "gold": "pvt_belum_diverifikasi",
   "subset": "semantik",
   "delta_hit1": [
    0.3020833333333333,
@@ -338,7 +338,7 @@
  {
   "model": "microsoft/harrier-oss-v1-0.6b",
   "vs": "paraphrase-multilingual-MiniLM-L12-v2",
-  "gold": "pvt_usulan_ai",
+  "gold": "pvt_belum_diverifikasi",
   "subset": "semantik",
   "delta_hit1": [
    0.25,
@@ -370,7 +370,7 @@
  {
   "model": "microsoft/harrier-oss-v1-0.6b + BM25 (RRF)",
   "vs": "paraphrase-multilingual-MiniLM-L12-v2",
-  "gold": "pvt_usulan_ai",
+  "gold": "pvt_belum_diverifikasi",
   "subset": "semantik",
   "delta_hit1": [
    0.28125,

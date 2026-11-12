@@ -1,6 +1,6 @@
 # RQ4: recall kelas OTHER (foto Commons, hasil UI)
 
-Foto dinilai: 158; gold OTHER: 40. Gold: `gambar/manifest/gold_gambar_manifest_final.csv` (hasil bantuan model).
+Foto dinilai: 158; gold OTHER: 40. Gold: `gambar/manifest/gold_gambar_manifest_final.csv`.
 
 | Varian | Recall OTHER | CI 95% (bootstrap) |
 |---|---|---|

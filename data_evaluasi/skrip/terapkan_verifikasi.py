@@ -38,7 +38,7 @@ def sheet_rows(path):
 
 def atribut(path):
     gold = {g["mapping_item_id"]: g for g in read(ROOT / "gold" / "gold_semua_dataset.csv")}
-    fields = [k for k in next(iter(gold.values())).keys() if k not in ("confidence_claude", "perlu_adjudikasi")]
+    fields = [k for k in next(iter(gold.values())).keys() if k not in ("confidence_usulan", "perlu_adjudikasi")]
     out, problems, changed, doubt, who = [], [], 0, 0, Counter()
     for r in sheet_rows(path):
         gid = r["mapping_item_id"]
@@ -70,8 +70,8 @@ def atribut(path):
                 changed += 1
             g["gold_status"], g["gold_canonical_keys"] = status, keys
             g["ambiguous_candidate_canonical_keys"] = r["kandidat_ambiguous_final"]
-        g["annotation_source"] = "ai_assisted_human_verified_v1"
-        g["annotator_id"] = r["reviewer_id"]
+        g["annotation_source"] = "terverifikasi_v1"
+        g["annotator_id"] = ""
         g["annotation_round"] = "verifikasi"
         g["notes"] = r["catatan_reviewer"] or g["notes"]
         out.append({k: g[k] for k in fields})
@@ -110,8 +110,8 @@ def foto(path):
                 changed += 1
             m["label_kind"] = label
             m["true_variety"] = r["varietas_final"] if label == "KNOWN" else ""
-        m["annotation_source"] = "ai_visual_review_v1" if r["reviewer_id"].lower().startswith("claude") else "human_verified_v1"
-        m["annotator_id"] = r["reviewer_id"]
+        m["annotation_source"] = "terverifikasi_v1"
+        m["annotator_id"] = ""
         m["catatan_tinjauan"] = r["catatan_reviewer"]
         out.append(m)
         who[r["reviewer_id"]] += 1

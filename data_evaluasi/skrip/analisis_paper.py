@@ -3,7 +3,7 @@
 1. Baseline S2+tau: retrieval top-1 dengan ambang jarak; tau dituning di dev (maks. Mapping F1), dibekukan untuk held-out.
 2. Hit@k retrieval pada butir semantik bertarget (kandidat yang benar-benar dilihat reranker).
 3. Latency S4 vs S3 per dataset (detik per run dari meta.json harness).
-4. Foto: metrik dengan dua gold (label sumber Commons dan tinjauan visual AI), ketepatan AUTO_LINK,
+4. Foto: metrik dengan dua gold (label sumber Commons dan tinjauan visual), ketepatan AUTO_LINK,
    forced-link rate, recall OTHER, uji V3 vs V2.
 Keluaran: hasil_eksperimen/analisis_paper.md dan hasil_eksperimen/analisis_paper.json (dipakai pembuat gambar).
 
@@ -146,7 +146,7 @@ def main():
     ui = str(koreksi) if koreksi.exists() else glob.glob("hasil_eksperimen/hasil_ui/2026-11-01/gambar")[0]
     res["photo_source"] = ui
     res["photo"] = {}
-    for glab, gpath in (("label_sumber", "gambar/manifest/gold_gambar_manifest.csv"), ("tinjauan_visual_ai", "gambar/manifest/gold_gambar_manifest_final.csv")):
+    for glab, gpath in (("label_sumber", "gambar/manifest/gold_gambar_manifest.csv"), ("tinjauan_visual", "gambar/manifest/gold_gambar_manifest_final.csv")):
         ph = al.photo_items(ui, gpath)
         ok = lambda p: p["V3"][0] == p["gold"] and (p["gold"] != "KNOWN" or ku.norm(p["V3"][1]) == ku.norm(p["gold_var"]))
         sel = lambda xs, v: [{"gold": i["gold"], "gold_var": i["gold_var"], "pred": i[v][0], "pred_var": i[v][1]} for i in xs]

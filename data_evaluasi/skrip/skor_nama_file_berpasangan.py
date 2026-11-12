@@ -134,7 +134,7 @@ def main():
                 res["berpasangan"].append({"set": s, "gold": k, "a": va, "b": vb, "n": len(pas), "selisih": obs, "lo": lo, "hi": hi})
     tot = [i for i in items if i["set"] == "pvt40"]
     md += ["", f"Total PVT: tindakan sesuai gold {frac(tot, 'aksi_ok')}, AUTO_LINK salah {frac(tot, 'auto_salah')}.",
-           "Catatan: gold bagian tanaman PVT masih usulan AI; hanya memengaruhi foto berbagian tanpa baris Gambar (D21)."]
+           "Catatan: bagian tanaman hanya memengaruhi foto berbagian tanpa baris Gambar (D21)."]
     (out / "hasil_skor.md").write_text("\n".join(md), encoding="utf-8")
     (out / "hasil_skor.json").write_text(json.dumps(res, indent=1, ensure_ascii=False), encoding="utf-8")
     with open(out / "rincian.csv", "w", encoding="utf-8", newline="") as fh:

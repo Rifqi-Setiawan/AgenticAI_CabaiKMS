@@ -127,8 +127,8 @@ Jumlah atribut = jumlah atribut sumber hasil parser sistem. Split: dev = dipakai
   Sheet "Deskripsi Varietas", row-oriented, header 1 baris, 234 atribut; sheet "sumber" per varietas.
   Sumber: tabel deskripsi 24 varietas hasil pemuliaan dari Berita Resmi PVT (sama dengan foto pvt_kementan_34_varietas),
   dibuat data_evaluasi/skrip/buat_dataset_pvt.py. Dipakai sebagai spreadsheet pendamping foto PVT (registri 24 varietas
-  dan deskripsi morfologi untuk model visi, D20). Gold atribut dan kunci sel P01 masih USULAN AI (gold_P01_P02_pvt.csv,
-  144 butir P01+P02 perlu adjudikasi), jadi skor P01 belum untuk klaim.
+  dan deskripsi morfologi untuk model visi, D20). Gold atribut dan kunci sel P01 BELUM DIVERIFIKASI (gold_P01_P02_pvt.csv,
+  144 butir P01+P02 perlu diputuskan), jadi skor P01 belum untuk klaim.
 
 Ringkas: 326 atribut total (R01 14, R02 54, N07 70, N08 23, N09 80, S01 21, S02 26, S03 30, S04 8).
 Dinilai 299 atribut (142 punya target, 157 tanpa padanan); S04 dan 19 atribut AMBIGUOUS/COMPOSITE tidak dinilai.
@@ -315,7 +315,7 @@ J_foto_ulang_D20_bge-m3/ (7 Nov 2026, commit 71f4339 + uji_visi_commons_vps.py d
   Ringkas: Commons status benar 35/35, AUTO_LINK benar 7/7 (hanya 7 foto KNOWN). Indonesia 18 keputusan: Top-1 0,812,
   AUTO_LINK benar 12/12, bagian benar 15/18. PVT kartu terlihat: Top-1 0,632, AUTO_LINK benar 12/19; kartu tertutup:
   Top-1 0,211, AUTO_LINK benar 3/8. Workbook gabungan Indonesia S01-S03 F1 0,960 (sel 1,000; tautan foto 9 benar,
-  3 salah, 7 terlewat). Gold bagian PVT dan gold P01 masih usulan AI.
+  3 salah, 7 terlewat). Gold atribut P01 belum diverifikasi.
 K_nama_file_berpasangan/ (7 Nov 2026, D23, skrip sama dengan J_)
   Foto yang sama dengan nama berkas netral / benar / salah_terdaftar (2_input_foto/nama_file_berpasangan).
   Isi: klasifikasi_foto.csv + meta_run.json per varian; hasil_skor.md dan rincian.csv (skor_nama_file_berpasangan.py).

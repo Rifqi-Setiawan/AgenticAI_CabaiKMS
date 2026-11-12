@@ -1,11 +1,11 @@
 0729d7d337828557f97a1c9b7be56575e7a2ef70712dbd471174ba1e497c37f0 *./README.md
-0fc64b1132cbd2bd447478d1c93c8643f18096062313fac320a3e7db5fc47530 *./analisis_kanonik_dinamis.md
-0fc64b1132cbd2bd447478d1c93c8643f18096062313fac320a3e7db5fc47530 *./analisis_kanonik_dinamis_v1.md
-74dc8ff24d53dff0b970630f192a9191c08d62057ab70f6c635a5ae148267084 *./analisis_kanonik_dinamis_v2.md
-5ef285bf788bbd0925978e2676d9289bc1d42f7b0e30c5ecc94acdd25330ba3f *./analisis_kanonik_dinamis_v3.md
-4f125d94bf520f4b7fa60b5ae488d7470343369cae0eb8be437056219a6220df *./analisis_lanjut.md
-bb1393d1c0cda8e12dc933c6eedc12e93d2cd65e58010de8c6a319793aec5885 *./analisis_rq4.md
-c66633d6de983ae75e79b13e739fffb153c12fa1c6b913d5c06f9c4697912786 *./analisis_s3.md
+d421ff889cbeb2d42d54b12447389daf3a0da38bb318428d21a7a217f1c3a2a4 *./analisis_kanonik_dinamis.md
+d421ff889cbeb2d42d54b12447389daf3a0da38bb318428d21a7a217f1c3a2a4 *./analisis_kanonik_dinamis_v1.md
+84c05777b557ef265b9719dd641fd6396885fcf7130d7c6505cd7ffc42c97dbb *./analisis_kanonik_dinamis_v2.md
+6827f3b08dc3c75a2d58b6c08bfd1d56bed16fcd1ce54636faed9d535323daa1 *./analisis_kanonik_dinamis_v3.md
+4346ca047f58ca1cf653d92db0057102bf190e7f7792d1596ee3a171247b1f26 *./analisis_lanjut.md
+f7ed2dd472de95a9d5c0faad62f4e18317960f02bdd3aac7566c4ec833105294 *./analisis_rq4.md
+6e9438870d0ccf10ff733784e4f1846dadf247fd6b45e2f0bfb2e01509421b0a *./analisis_s3.md
 525c8f2e6cdc6341cf62605f913f623fdc0b2c283e5558c4f3fd0a67306fd12b *./hasil_atribut_baru/2026-11-01/hasil_atribut_baru.json
 4d48238ff4a25cbe7c9c930dc94bd688a9191e9dad85d560ce0d57c760695183 *./hasil_atribut_baru/2026-11-01/run0_baseline.xlsx
 3c617b7ca56b9d4e4b3face49bba874ff401937b0b4658d0362325f5da5086e5 *./hasil_atribut_baru/2026-11-01/run1_atribut_baru.xlsx
@@ -13,7 +13,7 @@ fa915ec48b3da84753cc2b50081eda0e57eea891063780f3287dff55af6e1962 *./hasil_atribu
 c0f2b046daa710d38bc03f896114fa7b6103f94c9024fe249e22c27c6fd456e9 *./hasil_dinamis/run_f2.log
 575e4503d4eec9c5c9be2154981609f7a0d2aa8b48eb6a7117a21f45cedc7a7d *./hasil_dinamis/run_f2b.log
 e16c15f7fae152a0695549da712bf731932b51b21dd7be74f6ba56a90b98f14f *./hasil_dinamis/run_f2c.log
-31d7eb8d3cfd9c75e97c00b0ae0a1320858fdc63d7d6b44eadfc0c3bf51aa436 *./hasil_dinamis/smoke_R01/RUNLOG_harness.csv
+accca6532562e78000184c11ae9058c82841a8da27ea3907af000de180562bf4 *./hasil_dinamis/smoke_R01/RUNLOG_harness.csv
 49624e240729fa8dca72585d1967da1966bba728223709b122d3b22ff84b6630 *./hasil_dinamis/smoke_R01/SHA256SUMS.txt
 fa05407b272c138ca6d9d468d5f648bcb4203bab5776c6661f83340096c78504 *./hasil_dinamis/smoke_R01/rep1/atribut/R01/canonical.csv
 df8162ee2bba56ec6b06108bc18a3dea7e59a4627096285c6b9950aba8d71767 *./hasil_dinamis/smoke_R01/rep1/atribut/R01/hasil_asli.xlsx
@@ -21,7 +21,7 @@ b9e536c45ce4607667551eb17653cb8779f4c8c585a6a4c4a6276fc44ddab1c9 *./hasil_dinami
 285a2d84ac4fadd095612eb0b4ae0ce6bfea6cd6f9942974ff63fbcf8042be3d *./hasil_dinamis/smoke_R01/rep1/atribut/R01/meta.json
 70d1f403f3a49966e6f163c2c56c8a726b17a9964007c5cb6f5529806fa04ce4 *./hasil_dinamis/smoke_R01/rep1/atribut/R01/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_dinamis/smoke_R01/rep1/atribut/R01/vision.csv
-e990a5c9b14f9b50ce3c7d716f408b47f67ff23b8cb7c5f9169fb6ca51ed1c30 *./hasil_dinamis/smoke_R01_ulang/RUNLOG_harness.csv
+e745a04f85bc698aa701095fcbdfc2089fa2d4745763c7ef870ee49c9448b6e8 *./hasil_dinamis/smoke_R01_ulang/RUNLOG_harness.csv
 07819ae644c26d858cf94531c7c2f682845aa4f4d89f7baabb864fb04c99efb1 *./hasil_dinamis/smoke_R01_ulang/SHA256SUMS.txt
 fa05407b272c138ca6d9d468d5f648bcb4203bab5776c6661f83340096c78504 *./hasil_dinamis/smoke_R01_ulang/rep1/atribut/R01/canonical.csv
 df8162ee2bba56ec6b06108bc18a3dea7e59a4627096285c6b9950aba8d71767 *./hasil_dinamis/smoke_R01_ulang/rep1/atribut/R01/hasil_asli.xlsx
@@ -29,7 +29,7 @@ df8162ee2bba56ec6b06108bc18a3dea7e59a4627096285c6b9950aba8d71767 *./hasil_dinami
 1c7d1fa37944c75ff01e4bc87c19697c1c26b8bfadbed4505714549ef1647575 *./hasil_dinamis/smoke_R01_ulang/rep1/atribut/R01/meta.json
 e37ef198e857f1780a7315d80b62806d8f4c7894d598be468dc7f037c6888854 *./hasil_dinamis/smoke_R01_ulang/rep1/atribut/R01/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_dinamis/smoke_R01_ulang/rep1/atribut/R01/vision.csv
-b1b438f1bc46f862ac48f4a49e15cae979c5d2e2f961541e8cbb1dd13152a553 *./hasil_dinamis/urutan_A/rep1/RUNLOG_harness.csv
+c361a9c3f839a9f0b05aa2614250abbb896f21cea24aca3a71dd53d6acbab463 *./hasil_dinamis/urutan_A/rep1/RUNLOG_harness.csv
 2474d6b2956cac6ebbe95b21e0b5e2875687c3d310e6c9d1f34eb7abe318afde *./hasil_dinamis/urutan_A/rep1/SHA256SUMS.txt
 07b91cecbcfbe4430154a17e73774e9f2844d223fad0ed5f8d51e874c5b9887c *./hasil_dinamis/urutan_A/rep1/rep1/atribut/N07/canonical.csv
 56f140bade52687e9ee97dcefc47a42c3bb3380cdcd99728c9827a5085509729 *./hasil_dinamis/urutan_A/rep1/rep1/atribut/N07/hasil_asli.xlsx
@@ -56,7 +56,7 @@ ef392b2cfcebee757791e76bf98f706084a6bb576cf38758247bfba3524912a6 *./hasil_dinami
 7bea0b81c9fd4f54db05d28e94119fd2eff4080392d831e96533d4ce401ed5a1 *./hasil_dinamis/urutan_A/rep1/rep1/atribut/R02/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_dinamis/urutan_A/rep1/rep1/atribut/R02/vision.csv
 261bfa196c213c69102665d65da3b4acaf5cda02594f4a69c5d1c65cc51f23dc *./hasil_dinamis/urutan_A/rep1/rows_final.json
-6f857881410369939ebd85c93c13100056d4391d27e1dcebae0fcf02a407c48a *./hasil_dinamis/urutan_A/rep2/RUNLOG_harness.csv
+c0cf29e47e9289e209869f66e0e68f3e0f40abaa07b3e1256a94906fab8dc77e *./hasil_dinamis/urutan_A/rep2/RUNLOG_harness.csv
 c69568c47af1658d493c6fca8bdd0e1ac5baffee6369bbf6ce958e6a1284c282 *./hasil_dinamis/urutan_A/rep2/SHA256SUMS.txt
 61f196e5489319c9f1d14b5645a50340924c7fc31f9e0918cc44532cf62be40c *./hasil_dinamis/urutan_A/rep2/rep1/atribut/N07/canonical.csv
 67368a5e1d4c9f8742d98b6eebe25b04591941768a89246cf5b3bf5e3e8a2fbf *./hasil_dinamis/urutan_A/rep2/rep1/atribut/N07/hasil_asli.xlsx
@@ -83,7 +83,7 @@ fd9092efaa409441d1fb386e172809a5d25828f5bb645a28b44c62c9bf236b72 *./hasil_dinami
 92b4229fdc25a2b65f71f311e5c0a52c3fbbc14b368a7097d4a26facbcf3da9f *./hasil_dinamis/urutan_A/rep2/rep1/atribut/R02/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_dinamis/urutan_A/rep2/rep1/atribut/R02/vision.csv
 54457e719c9c298e7a437414dfe4e5d5a7af153fc8a2ef0c75e5987aaa29e178 *./hasil_dinamis/urutan_A/rep2/rows_final.json
-5cc061be7f45deed028e171c24978b00208c0c121c800715f91dce7f6a1e2dc3 *./hasil_dinamis/urutan_A/rep3/RUNLOG_harness.csv
+f82e7c9c987ae8491992b1ae4f5a57478bba7c1eed51ce5e4f49316b00961a4f *./hasil_dinamis/urutan_A/rep3/RUNLOG_harness.csv
 771c8112edc9c6cc302042126fe7026c9e1bd4ccd5375ab2d5a6a90f15f6c919 *./hasil_dinamis/urutan_A/rep3/SHA256SUMS.txt
 7fb531c30d3d1b498913c2653e2d3ccfe8d492f47b66b77c9a8d4267cd2465fe *./hasil_dinamis/urutan_A/rep3/rep1/atribut/N07/canonical.csv
 26a4f1b1631e34fa256abe1e634607b26d77b3b1132a490e4b2bea93909a515e *./hasil_dinamis/urutan_A/rep3/rep1/atribut/N07/hasil_asli.xlsx
@@ -110,7 +110,7 @@ b4c11fd0726d947ad57b79085da790f86454f62bcb5a4e2f4d5950aeffca23d8 *./hasil_dinami
 fd49b356463814dd8fbbcd8a63779b2a301b2dfea82fb64913c060cd8f1a4605 *./hasil_dinamis/urutan_A/rep3/rep1/atribut/R02/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_dinamis/urutan_A/rep3/rep1/atribut/R02/vision.csv
 74d251bcbf7ec9d97b7fc832ea7edb96cd301005c431582b429e4e8217656de1 *./hasil_dinamis/urutan_A/rep3/rows_final.json
-9d3e5b2953d62fae009ad8b695101134bd8b8f9613aa1e6b5c5999488905f95d *./hasil_dinamis/urutan_B/rep1/RUNLOG_harness.csv
+fb566db5a21cb948a9c45744b9edb8e552fe4e66b08cd3e0589194f9cd813653 *./hasil_dinamis/urutan_B/rep1/RUNLOG_harness.csv
 3b5cd517b514bfa7e2eb82e2de1246993ee5fced6511032f9f796141970d8767 *./hasil_dinamis/urutan_B/rep1/SHA256SUMS.txt
 dd623257883774dd6f6b28b01374281db9200a0cc29b596413b725f080feee5b *./hasil_dinamis/urutan_B/rep1/rep1/atribut/N07/canonical.csv
 16de84e0fdf0e9742adfede11f1ee39ae4172e5af106b71244282dbef05e48f4 *./hasil_dinamis/urutan_B/rep1/rep1/atribut/N07/hasil_asli.xlsx
@@ -137,7 +137,7 @@ ff4efea7ddde1f30dfca4da175dd7bb70d29b3ea6b09d7b89a11a2c633b9d03f *./hasil_dinami
 c884444dd26035e71250faf073503e1bb3dd28e19c65dfa5d063794c9ee9f9d1 *./hasil_dinamis/urutan_B/rep1/rep1/atribut/R02/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_dinamis/urutan_B/rep1/rep1/atribut/R02/vision.csv
 494426e4fdce7af5fbc6c7007a9a0934ca5abad55a3075ecb42a910a715e31e9 *./hasil_dinamis/urutan_B/rep1/rows_final.json
-b97f457c02b8d015e54c13354393d373a4b98553d6e4606a069301f5153415d0 *./hasil_dinamis/urutan_B/rep2/RUNLOG_harness.csv
+b553fffebef9311e03bd2cb0eaf2c9e3ac951816f5b4aae70e431b1e00da8989 *./hasil_dinamis/urutan_B/rep2/RUNLOG_harness.csv
 936a9619b29fd0d7973eaf12714569e88d8d8c31b604f764a6331908192a1a6a *./hasil_dinamis/urutan_B/rep2/SHA256SUMS.txt
 22898ba965e746bc0be7e904b2698d96e79adedf7f11a0271f5c2b629df6eb87 *./hasil_dinamis/urutan_B/rep2/rep1/atribut/N07/canonical.csv
 b85f76726994260b84de333535548810e385b51f25b2eee337e73c63bba14519 *./hasil_dinamis/urutan_B/rep2/rep1/atribut/N07/hasil_asli.xlsx
@@ -164,7 +164,7 @@ c373a503d0a310eab0abb273d4e79eb67345f8a61c0eba8c1a485a1900f4fbdd *./hasil_dinami
 c8042a5e4bd479f24f78e1074eb5b515fc1ad2769389e9c974ef2d8fda78eac2 *./hasil_dinamis/urutan_B/rep2/rep1/atribut/R02/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_dinamis/urutan_B/rep2/rep1/atribut/R02/vision.csv
 23aa6c867dbea4dd28c526516730c25194a6feea4cd0995b07cb7a5a8c6834e6 *./hasil_dinamis/urutan_B/rep2/rows_final.json
-34e39aad8832ff04aaa8296f223e35293378608370a8efff7794f8132cb73d01 *./hasil_dinamis/urutan_B/rep3/RUNLOG_harness.csv
+5e25037cb2c0ad2c24f260ac7fe459f5849412f3b85cc8bf49bdf8dd409d3437 *./hasil_dinamis/urutan_B/rep3/RUNLOG_harness.csv
 7efbad55afa126d6a785a51e86d037328e320c46309911dacb659d51a39dae51 *./hasil_dinamis/urutan_B/rep3/SHA256SUMS.txt
 dd623257883774dd6f6b28b01374281db9200a0cc29b596413b725f080feee5b *./hasil_dinamis/urutan_B/rep3/rep1/atribut/N07/canonical.csv
 16de84e0fdf0e9742adfede11f1ee39ae4172e5af106b71244282dbef05e48f4 *./hasil_dinamis/urutan_B/rep3/rep1/atribut/N07/hasil_asli.xlsx
@@ -191,7 +191,7 @@ f57165ccaf42fb165ee65056622b524819c0e35fac13e9cea553b3626fe0e33e *./hasil_dinami
 b35fee459922c05f4d3c6c603ff149bae61ebed26a6b9fc3ffc88a7aac050945 *./hasil_dinamis/urutan_B/rep3/rep1/atribut/R02/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_dinamis/urutan_B/rep3/rep1/atribut/R02/vision.csv
 72c78ddeb0d54c9244a6db3ad62e73478e4c8b9f8e553a5e53c49b3e4802fbb6 *./hasil_dinamis/urutan_B/rep3/rows_final.json
-3f53783fe1f4b0d5bbd1431b0bd20f65891185d278fa85340d94d7f69e772ee9 *./hasil_dinamis/urutan_C/rep1/RUNLOG_harness.csv
+ca322e65e90b8d4c6fd45183eb295eff964056d5b8c5f57234514e6e9a04db3d *./hasil_dinamis/urutan_C/rep1/RUNLOG_harness.csv
 d513851aa781b61c3c3b318117259f4d49353e71ab457aa7bd5d768839088a96 *./hasil_dinamis/urutan_C/rep1/SHA256SUMS.txt
 5583ee3aec02b5e547695123e47562955e3eabcabb611fc59340118013ea2341 *./hasil_dinamis/urutan_C/rep1/rep1/atribut/N07/canonical.csv
 315c51bdef267b388a14070426479906284e5969597a76080cc9c38327550ec2 *./hasil_dinamis/urutan_C/rep1/rep1/atribut/N07/hasil_asli.xlsx
@@ -218,7 +218,7 @@ a4f257110f956556b78bab6cd30db552d4210f5aff49e495aace15443cf13b68 *./hasil_dinami
 32413f7b94c733c5fde9e561368313f105463daf3e88e157eea3652d89e4e325 *./hasil_dinamis/urutan_C/rep1/rep1/atribut/R02/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_dinamis/urutan_C/rep1/rep1/atribut/R02/vision.csv
 5387117da00b9000282ce0e901dbb51c493715eaea51aed68cf77f0941030f86 *./hasil_dinamis/urutan_C/rep1/rows_final.json
-5a774411f633fc04cac728ea56237ec69ba1b1c660c7ad6b8f4a6d2e059e2932 *./hasil_dinamis/urutan_C/rep2/RUNLOG_harness.csv
+5f50b332f83470b63e8f087bf43e257105d52cc9f82578c229ab94d7bb6d4c23 *./hasil_dinamis/urutan_C/rep2/RUNLOG_harness.csv
 2a0de79c18101b3aaf18358af10397d21db207e541ce565724a0e077a6f37e3a *./hasil_dinamis/urutan_C/rep2/SHA256SUMS.txt
 7ff1ab88273cc75412701c49b7d7c39dca3c72ed7745ebad7c6324e1a0e00cb4 *./hasil_dinamis/urutan_C/rep2/rep1/atribut/N07/canonical.csv
 53c0180355c1988a1f0c80acfc8ffa58e2674c0a39e6da7fb4c70b43da9b47d7 *./hasil_dinamis/urutan_C/rep2/rep1/atribut/N07/hasil_asli.xlsx
@@ -245,7 +245,7 @@ b31a079c7df34dc2b35e22dad3359adc3d4ea4f774b3835b875feb7bfdfad305 *./hasil_dinami
 9785115a34df5a4c75de7f208d2c02787804be6feb20b40da8486978a219bdfe *./hasil_dinamis/urutan_C/rep2/rep1/atribut/R02/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_dinamis/urutan_C/rep2/rep1/atribut/R02/vision.csv
 bbf6069fb5383e8dd8913c7db2868e1afc649724e199fa71b6ec9c08f8a3a7e1 *./hasil_dinamis/urutan_C/rep2/rows_final.json
-d89518f87aacf556cb1df3f39227e5f718c50c9d5d12a5250310375bf1d94ee0 *./hasil_dinamis/urutan_C/rep3/RUNLOG_harness.csv
+4d019ffc0e0fc0573828f4b319f5f986ccf7e629f16a41e7944092a1e7afe062 *./hasil_dinamis/urutan_C/rep3/RUNLOG_harness.csv
 556b10201cdf7da8674b5fb23a495e0bdbdfa6edee2e985ce925784d06a66ee8 *./hasil_dinamis/urutan_C/rep3/SHA256SUMS.txt
 a7af78639007c8e23c403b0ae2af2dd34a2d38d0e5df37540c6e205d053011d4 *./hasil_dinamis/urutan_C/rep3/rep1/atribut/N07/canonical.csv
 cbfe491699aa5734d09d1ab8bb2eea2d7339eea159a8825c750ae1791f9c158c *./hasil_dinamis/urutan_C/rep3/rep1/atribut/N07/hasil_asli.xlsx
@@ -322,7 +322,7 @@ b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_harnes
 697c1910905c092119f6377e5e93b2600abe2162659f0f1804d3e3c123999baf *./hasil_harness/2026-10-31/rep3/atribut_n08var/N08/mapping.csv
 0cdc8fdd41e41a69035531054a370e86a49645bbf69731f3b236a951fc993b57 *./hasil_harness/2026-10-31/rep3/atribut_n08var/N08/meta.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_harness/2026-10-31/rep3/atribut_n08var/N08/vision.csv
-e8557bf6c94218f62f999d0c9b2979f34dd52c8e967ff2a14d54044c24015b31 *./hasil_harness/2026-11-01_bc3c21b/RUNLOG_harness.csv
+3e8a03a9a2e6f59e969fd8acf57ac9416864c428870e688c8ee0b3bfd28058ad *./hasil_harness/2026-11-01_bc3c21b/RUNLOG_harness.csv
 00ab677b846ce2fa7302af10e9298fb84424f04b2852706a740753428aea9b7b *./hasil_harness/2026-11-01_bc3c21b/SHA256SUMS.txt
 cf26d56c5aa2b1415598bce3dc85f57d89712765624b68a76221630a24700bd0 *./hasil_harness/2026-11-01_bc3c21b/harness_B.log
 5679a8c1101e547f0a6640554f947acffd04f5da1308b3889fa34f0531929ad3 *./hasil_harness/2026-11-01_bc3c21b/rep0_format_lama/kombinasi/S01/mapping.csv
@@ -388,7 +388,7 @@ a4324b5dad9ad3d5df0ddd22754051b28184fe291832d4c484818c9035dec219 *./hasil_harnes
 9e7d027304bcc79022d023f5356b1d5e4aadbe08a62c844e00a9ac33eb22481b *./hasil_harness/2026-11-01_bc3c21b/rep3/kombinasi/S03/meta.json
 4a9ef11aa9ad1c1a139f5a51d600ed13a0aafc5b91e4d8272e51f6b20384d57a *./hasil_harness/2026-11-01_bc3c21b/rep3/kombinasi/S03/trace.json
 4cb0c01b71ed13d252782b6a0e0828cff068ec40fb133006d877f758cffd52e9 *./hasil_harness/2026-11-01_bc3c21b/rep3/kombinasi/S03/vision.csv
-6847fb41d8c0d6538733d26629d30522111952ead8ab278541c73a5688566fbe *./hasil_harness/2026-11-01_regresi_D7/RUNLOG_harness.csv
+ee67530e0208a157c4fb7ba91d4cd956d5312179e31ff66a3caaafd2e9e902e4 *./hasil_harness/2026-11-01_regresi_D7/RUNLOG_harness.csv
 fb082fb0097b9d29925f05132dee14f5cc504c6aa38fc66081e6d86dc8f3e90a *./hasil_harness/2026-11-01_regresi_D7/SHA256SUMS.txt
 033a42e57c822465c902f5d63733cfc9974b19a9fea76c81d435f59f61298f4f *./hasil_harness/2026-11-01_regresi_D7/harness.log
 0a7d0e27ff1c5f400e0448e7c7fccb2dbf55fd9d487ce189e0c7082ce5213419 *./hasil_harness/2026-11-01_regresi_D7/rep1/atribut/N09/canonical.csv
@@ -403,7 +403,7 @@ dcd53df0c8fbf92b816de2c63b3aca67e66435b28495d9653763ccef6dcbff2d *./hasil_harnes
 830266d65d0efa42f3612756e2bb466640a80388455d68f5238b885244a77026 *./hasil_harness/2026-11-01_regresi_D7/rep1/atribut/R01/meta.json
 978531f858fa82045cfa5d3a261e931885e0b295a735f7df8abcccd4a565ebf1 *./hasil_harness/2026-11-01_regresi_D7/rep1/atribut/R01/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_harness/2026-11-01_regresi_D7/rep1/atribut/R01/vision.csv
-a7ec9983c78032cb180402ba0ba1e0c9616261154105f40a805a42467a593262 *./hasil_harness/2026-11-01_regresi_D9a/RUNLOG_harness.csv
+2836069b4271ce0462c6fd1c60374b565e4cce8209740529815229526ef43d8e *./hasil_harness/2026-11-01_regresi_D9a/RUNLOG_harness.csv
 4a8b6f8ddfe6ce970c95dee341135b3fa29f254853ad714ecfec20d2cf940a94 *./hasil_harness/2026-11-01_regresi_D9a/SHA256SUMS.txt
 fdb2f00f258af68cfd26d1b9ddf3f12d1f39995af46f3871be87bc93375eebb3 *./hasil_harness/2026-11-01_regresi_D9a/rep1/atribut/R01/canonical.csv
 9b1b858a7df2f0080a4cc2a34ec2c1e3ba8850eca988c719ade233595d422fc6 *./hasil_harness/2026-11-01_regresi_D9a/rep1/atribut/R01/hasil_asli.xlsx
@@ -411,7 +411,7 @@ fdb2f00f258af68cfd26d1b9ddf3f12d1f39995af46f3871be87bc93375eebb3 *./hasil_harnes
 38109713ef9c77b79dec70afc48cc71f893f33260bb2eb942803148ac201775e *./hasil_harness/2026-11-01_regresi_D9a/rep1/atribut/R01/meta.json
 8ccc2497cb129c62f7befe04f693318ddb9754c9305c8d830b13ef98a771a86a *./hasil_harness/2026-11-01_regresi_D9a/rep1/atribut/R01/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_harness/2026-11-01_regresi_D9a/rep1/atribut/R01/vision.csv
-943aa8e042071b65a3462d67075b1690c943f9aa05986ff5b54e024c54da1dba *./hasil_harness/2026-11-01_regresi_D9b/RUNLOG_harness.csv
+5844f58115eb74e6efe72db1328be129297e70dfc1da6cdeaa120e7e6b97d86a *./hasil_harness/2026-11-01_regresi_D9b/RUNLOG_harness.csv
 164f920372d59d8c2789fbba7a8f164484d4bd9171f699614778c8fa5d561d57 *./hasil_harness/2026-11-01_regresi_D9b/SHA256SUMS.txt
 fdb2f00f258af68cfd26d1b9ddf3f12d1f39995af46f3871be87bc93375eebb3 *./hasil_harness/2026-11-01_regresi_D9b/rep1/atribut/R01/canonical.csv
 9b1b858a7df2f0080a4cc2a34ec2c1e3ba8850eca988c719ade233595d422fc6 *./hasil_harness/2026-11-01_regresi_D9b/rep1/atribut/R01/hasil_asli.xlsx
@@ -419,7 +419,7 @@ fdb2f00f258af68cfd26d1b9ddf3f12d1f39995af46f3871be87bc93375eebb3 *./hasil_harnes
 bb3d3a2c773595f5f9ad17ca077322db6a79e3f8681fdb516a2ca1fb5985c12a *./hasil_harness/2026-11-01_regresi_D9b/rep1/atribut/R01/meta.json
 9db63e1e1601af3958fcd0ace2c40708b20ec64eda8d0c31ea03c56bb94193a7 *./hasil_harness/2026-11-01_regresi_D9b/rep1/atribut/R01/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_harness/2026-11-01_regresi_D9b/rep1/atribut/R01/vision.csv
-bfe28823b35a761a0ee2574c41f5f4146c8071d3387050b0147c8904593ed715 *./hasil_harness/2026-11-01_regresi_D9c/RUNLOG_harness.csv
+c20694c26e9d589eddab85f7de8cef27005d2c60a4f4eb3d79c57a76a02b9708 *./hasil_harness/2026-11-01_regresi_D9c/RUNLOG_harness.csv
 6de4fff9bc7efe6e4985fe4635a62fffe227bc07e365665c5b5d5f1122a89f19 *./hasil_harness/2026-11-01_regresi_D9c/SHA256SUMS.txt
 fdb2f00f258af68cfd26d1b9ddf3f12d1f39995af46f3871be87bc93375eebb3 *./hasil_harness/2026-11-01_regresi_D9c/rep1/atribut/R01/canonical.csv
 9b1b858a7df2f0080a4cc2a34ec2c1e3ba8850eca988c719ade233595d422fc6 *./hasil_harness/2026-11-01_regresi_D9c/rep1/atribut/R01/hasil_asli.xlsx
@@ -427,7 +427,7 @@ fdb2f00f258af68cfd26d1b9ddf3f12d1f39995af46f3871be87bc93375eebb3 *./hasil_harnes
 bb2ff2b3a096f5b75ae9818f3c0303aa958ec49f79b87b86446d975ae32164cd *./hasil_harness/2026-11-01_regresi_D9c/rep1/atribut/R01/meta.json
 33aa6a8f0a9885973401f94ab739d2cf0323e13c6a60103dbcea8a70c804b904 *./hasil_harness/2026-11-01_regresi_D9c/rep1/atribut/R01/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_harness/2026-11-01_regresi_D9c/rep1/atribut/R01/vision.csv
-39d862b715cc3cbe394031ec029a206426b539982f06e0aba77ea30ac114f25c *./hasil_harness/2026-11-01_regresi_D9d/RUNLOG_harness.csv
+c107344c79267b3d1dafdc8596a9018d2af4c4295a28e56004f3ff823df2cdfd *./hasil_harness/2026-11-01_regresi_D9d/RUNLOG_harness.csv
 0d3e5776e168bdffc12d3932b6a9b7f29a0cce2be0fe6adf98444d8469762ece *./hasil_harness/2026-11-01_regresi_D9d/SHA256SUMS.txt
 fdb2f00f258af68cfd26d1b9ddf3f12d1f39995af46f3871be87bc93375eebb3 *./hasil_harness/2026-11-01_regresi_D9d/rep1/atribut/R01/canonical.csv
 9b1b858a7df2f0080a4cc2a34ec2c1e3ba8850eca988c719ade233595d422fc6 *./hasil_harness/2026-11-01_regresi_D9d/rep1/atribut/R01/hasil_asli.xlsx
@@ -435,7 +435,7 @@ fdb2f00f258af68cfd26d1b9ddf3f12d1f39995af46f3871be87bc93375eebb3 *./hasil_harnes
 17f8116636ff1641615226f9b2faf4f0f89eb4de5fea1346699af17cf17fee3e *./hasil_harness/2026-11-01_regresi_D9d/rep1/atribut/R01/meta.json
 59c002d948c03789f58976afed7aeaac4a0ba5a808578fa3aaef304021ab9868 *./hasil_harness/2026-11-01_regresi_D9d/rep1/atribut/R01/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_harness/2026-11-01_regresi_D9d/rep1/atribut/R01/vision.csv
-30eed1a7f3b90154257d36daf7f9663195334ff66839c3a02392f673d368c338 *./hasil_harness/2026-11-01_regresi_D9e/RUNLOG_harness.csv
+e6c545243921504e4e8724a82ea36a62fe23e88bab5ed9830c5b98f23972e52b *./hasil_harness/2026-11-01_regresi_D9e/RUNLOG_harness.csv
 1e449c48a00891404aa7a6b4d971ca10484ffdeda386088d5da0b9cb9a2914dd *./hasil_harness/2026-11-01_regresi_D9e/SHA256SUMS.txt
 fdb2f00f258af68cfd26d1b9ddf3f12d1f39995af46f3871be87bc93375eebb3 *./hasil_harness/2026-11-01_regresi_D9e/rep1/atribut/R01/canonical.csv
 9b1b858a7df2f0080a4cc2a34ec2c1e3ba8850eca988c719ade233595d422fc6 *./hasil_harness/2026-11-01_regresi_D9e/rep1/atribut/R01/hasil_asli.xlsx
@@ -443,7 +443,7 @@ ed5b9d33a4f14ae9e03bb726428359e937a3cee984fae11575c1acb69d0ca5a0 *./hasil_harnes
 26a2188cf4a9ecea3512e4a6c9e75d9448d6ef10b9b10dee8383daf533573828 *./hasil_harness/2026-11-01_regresi_D9e/rep1/atribut/R01/meta.json
 5eac43f32f259650b173c26166fb2553f94f12520f8c2975511e5c9464c8ccd4 *./hasil_harness/2026-11-01_regresi_D9e/rep1/atribut/R01/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_harness/2026-11-01_regresi_D9e/rep1/atribut/R01/vision.csv
-7066cc1f1d3d29f2b5546355b002b84da01db6cb45c1acc7af44fd750e18abf8 *./hasil_harness/2026-11-02_S3/RUNLOG_harness.csv
+7e5222f81d61072ee2a9da6aacf634b98e364b234918ffdc6f8acb2dd3e1dae2 *./hasil_harness/2026-11-02_S3/RUNLOG_harness.csv
 36b1c0381009edcc5d3c2c466a9328e28f25b16f86852cd5c3f60ff5a353e5be *./hasil_harness/2026-11-02_S3/SHA256SUMS.txt
 5e16813d1b432878cca7b0c973b6576d5d10097a16408321efe299386548056f *./hasil_harness/2026-11-02_S3/rep1/atribut/N07/canonical.csv
 af06dc685e7b1dadd981ce41edbb8d4087f0050d07a7b0bc5388d5093a8560c0 *./hasil_harness/2026-11-02_S3/rep1/atribut/N07/hasil_asli.xlsx
@@ -539,7 +539,7 @@ e8ac38490a5e29dc138b0b2fcfcdab0d3c0e7f909f6acef45055902680fb0eae *./hasil_harnes
 e6c560960e4a2231ec8b52d12a1100784f264afb9fec5e0148df286d7e142312 *./hasil_harness/2026-11-02_S3/rep3/atribut_n08var/N08/trace.json
 b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_harness/2026-11-02_S3/rep3/atribut_n08var/N08/vision.csv
 6c1158d7cb2f91deb4bd20b66fd67a35bc9b83dfbb7c1310bb45d8e006374ba3 *./hasil_harness/2026-11-02_S3/run.log
-83cec1c87551615ab4e30713ea67e464d103780b294443915c3d72677f1ebe24 *./hasil_harness/2026-11-02_regresi_D10/RUNLOG_harness.csv
+4d6fe281b012d9975992c3abe7b874a989b573a818e38d6c99a881c9c292c88f *./hasil_harness/2026-11-02_regresi_D10/RUNLOG_harness.csv
 0dd82abc01bac7816004731537ff70f08fa68b1ed7294c20016ec1f28b654970 *./hasil_harness/2026-11-02_regresi_D10/SHA256SUMS.txt
 fdb2f00f258af68cfd26d1b9ddf3f12d1f39995af46f3871be87bc93375eebb3 *./hasil_harness/2026-11-02_regresi_D10/rep1/atribut/R01/canonical.csv
 9b1b858a7df2f0080a4cc2a34ec2c1e3ba8850eca988c719ade233595d422fc6 *./hasil_harness/2026-11-02_regresi_D10/rep1/atribut/R01/hasil_asli.xlsx
@@ -550,7 +550,7 @@ b42f2099187886def637d6aa840022266e05cb6c987a9394e708e23cd505eb46 *./hasil_harnes
 d69bbc5291bd048cdbb40a677b2cc52bd66434148e4c0ac09e9bb348c20a9749 *./hasil_ui/2026-10-31/HANDOFF_CLAUDE.md
 f8ad812b201e453df413bd88daef87053c22c48fa3e341a8b6c9c57873c62035 *./hasil_ui/2026-10-31/LAPORAN_323f1e4.md
 6209999f02f583eb0951381279e0357ca6030a1214948876f04934b9d2773491 *./hasil_ui/2026-10-31/LAPORAN_TAHAP2_bc3c21b.md
-a129312a9da36117c1041001e7d52cd2caa7819ee201d74700083ccd871457d3 *./hasil_ui/2026-10-31/RUNLOG.csv
+eb966a109a85f01b9fe2867762553c38d3fb26d73e441c2ec56e98236ccb065f *./hasil_ui/2026-10-31/RUNLOG.csv
 96fae078806190ed69e0007af750275f690cb23b6cf96a87321204a73a369f6a *./hasil_ui/2026-10-31/atribut/N07/download_events.txt
 5f1f7e22719d703398827eb87d7964590b6cd99417ebd73520000ee3f75fc5a7 *./hasil_ui/2026-10-31/atribut/N07/hasil_asli.xlsx
 2fd3a8740a10f1a19462b9fcef752d8dd72ffb3dadbe70d7d5d5b22d3938105a *./hasil_ui/2026-10-31/atribut/N07/mapping.csv
@@ -611,7 +611,7 @@ dd4b7716b95fd08b2d93702a13035a0a23e53dc9a7e4139564f7781e0961950f *./hasil_ui/202
 f1f40d32a1169f12a3a12d05a110f348cfcc1af26179b451b7181d67aefb332e *./hasil_ui/2026-10-31/kombinasi_323f1e4_pra_D6/S03/vision.csv
 8127da7fa81029f4faa935e36821daea35a620673c7d781a9e485d16e474800d *./hasil_ui/2026-10-31/kombinasi_323f1e4_pra_D6/S04/galat_input.png
 96577b1078ca05fd2efff36e2a00f1b703d18d5cb133277a58cbe1d0a73db0f5 *./hasil_ui/2026-11-01/LAPORAN_BAGIAN_C.md
-368bd83b5785488f733c2439d575939dd5b26f5fa46391f366e4d97bbfeb75cb *./hasil_ui/2026-11-01/RUNLOG.csv
+e8e0e40d6b9d88725dedbc922084b38d7b913b36b6440e594a01ce5e8ee25b39 *./hasil_ui/2026-11-01/RUNLOG.csv
 d87f3053e56a5638f197e71c043f4e246875e882d8f36e166844671cf076f741 *./hasil_ui/2026-11-01/catatan_kandidat.txt
 0a7a91c676a69e2674f1420363ebbba360b4022a163163d8d6c13277dfdd4d48 *./hasil_ui/2026-11-01/gambar/F1/download_events.txt
 ae9fef9ff8faa62b02bf30fd2eae5893e963f194b9a4055657f5b8dc9d71d17f *./hasil_ui/2026-11-01/gambar/F1/hasil_asli.xlsx
@@ -662,4 +662,4 @@ c3ee407c3e38d5947b9105796908a7d819bd0a66f1ceabe155b81233ba69a290 *./hasil_ui/202
 7b1040819a9cd1530b216c6ad8c68c3ba4cc9e6c79d9516f95e9c09657d981d1 *./hasil_ui/2026-11-02/run3/data_input_cabai_kms.xlsx
 3ce30ac0362bcee62b108ac5971e9be1b0b13d457d1f3070a9c1fc822f05e7bd *./hasil_ui/2026-11-02/run3/halaman_hasil.png
 c3ee407c3e38d5947b9105796908a7d819bd0a66f1ceabe155b81233ba69a290 *./hasil_ui/2026-11-02/run3/panel_kms.png
-81f1cead9b2a82d270fe522faa6a7ef1e428d1b69048f8f140b497516c69219f *./tabel_kasus_l3.md
+d6d69730c25fca62131b52703b233c0f23cdf742bbb0f1cff879f94104f531b8 *./tabel_kasus_l3.md

@@ -160,7 +160,7 @@ def main():
     gold = read("gold/gold_semua_dataset.csv")
     items = load_attr(root_a, root_b, root_n08, gold)
     out = []
-    out.append("# Analisis lanjut (sementara; gold pra-anotasi AI)\n")
+    out.append("# Analisis lanjut (sementara)\n")
     out.append("Sumber atribut: harness rep1; N08 memakai berkas varian (D4); S04 ditolak sistem dan tidak masuk. "
                f"Paired bootstrap {N_PAIRED} ulangan, seed {SEED}; koreksi Holm pada perbandingan confirmatory.\n")
 

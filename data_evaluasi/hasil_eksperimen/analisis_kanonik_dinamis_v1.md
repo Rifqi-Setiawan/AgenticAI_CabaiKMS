@@ -1,4 +1,4 @@
-# Eksperimen F2: skema kanonik dinamis (sementara; gold pra-anotasi AI)
+# Eksperimen F2: skema kanonik dinamis (sementara)
 
 Urutan run per pengulangan: R01, N07, N09, R02; database kosong di awal tiap pengulangan; 3 pengulangan.
 

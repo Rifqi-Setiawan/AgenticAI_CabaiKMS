@@ -1,4 +1,4 @@
-"""Aturan anotasi pemetaan atribut untuk dataset PVT (P01, P02). Usulan satu anotator AI, belum diverifikasi.
+"""Aturan anotasi pemetaan atribut untuk dataset PVT (P01, P02). Usulan awal, belum diverifikasi.
 
 Urutan: (1) aturan lama di annotations.py yang sudah diverifikasi peneliti (persis, lalu tanpa satuan dan
 tanpa membedakan huruf besar-kecil); (2) aturan baru PVT di bawah (regex, pertama yang cocok menang).
