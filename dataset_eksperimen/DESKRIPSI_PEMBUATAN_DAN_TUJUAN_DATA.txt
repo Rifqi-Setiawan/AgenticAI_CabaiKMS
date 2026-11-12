@@ -344,6 +344,8 @@ Output harapan  KNOWN: NETRAL -> AUTO_LINK (varietas benar) atau REVIEW_*; BENAR
               -> REVIEW_*.
 Hasil aktual  Lihat KETERANGAN_DATA.txt bagian 4 (K_nama_file_berpasangan). Ringkas: konflik nama tidak pernah
               tertangkap (0/40 REVIEW_MISMATCH); model mengikuti nama berkas pada 30/40 foto.
+              Setelah D24 (model visi buta nama berkas, L_visi_dua_tahap_D24): ikut nama berkas 2/40,
+              REVIEW_MISMATCH 7/40, tautan salah 17/120 -> 8/120. Data input C5 tidak berubah.
 
 
 #####################################################################

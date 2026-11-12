@@ -1,7 +1,8 @@
 # Panduan Lengkap Eksperimen CABAI-KMS
 
-Diperbarui **8 November 2026** (commit `06c0b76`). Hasil terbaru (data level varietas D19, embedding bge-m3 D22, deskripsi
-varietas untuk model visi D20, nama file berpasangan D23) ada di **Bagian 1** dan **Bagian 6A**. Bagian 3-6 lainnya masih
+Diperbarui **12 November 2026** (visi dua tahap D24). Hasil terbaru (data level varietas D19, embedding bge-m3 D22, deskripsi
+varietas untuk model visi D20, nama file berpasangan D23, model visi buta nama berkas D24) ada di **Bagian 1** dan
+**Bagian 6A**. Bagian 3-6 lainnya masih
 menjelaskan data dan hasil **paper draf v11 (4 November 2026)**, sebelum pembersihan level varietas; definisi metrik di
 Bagian 5 tetap berlaku. Ringkasan yang mudah dibaca: `docs/SKOR METRIKS EVALUASI.md`.
 Dokumen ini menggantikan `docs/HASIL_SEMENTARA_EKSPERIMEN.md` dan `data_evaluasi/STATUS_PROGRES.md` (versi 1 November, usang).
@@ -12,7 +13,7 @@ Daftar isi:
 3. Data yang dipakai (paper v11)
 4. Kunci jawaban (gold)
 5. Metrik dan cara menghitungnya
-6A. Hasil terbaru (7-8 November 2026)
+6A. Hasil terbaru (atribut 7-8 Nov, foto 12 Nov 2026)
 6. Hasil paper v11 (4 November 2026)
 7. Status pekerjaan
 8. Peta berkas
@@ -21,7 +22,7 @@ Daftar isi:
 
 ## 1. Ringkasan satu halaman
 
-### Hasil terbaru (7-8 November 2026)
+### Hasil terbaru (atribut 7-8 November, foto 12 November 2026)
 
 | Bagian | Data | Hasil utama |
 |---|---|---|
@@ -29,14 +30,15 @@ Daftar isi:
 | Pemetaan atribut | R02, N07, N08, N09 held-out (71 / 137); S01-S03 dev (70 / 7); 3 rep | F1 S4 held-out **1,000** (MiniLM 0,978), dev **1,000** (MiniLM 0,915); S1 0,621, S2 0,420 |
 | Tulis otomatis | 285 butir | 141 ditulis otomatis, **0 salah**; 139 (49%) ke review, semuanya usulan NULL |
 | Isi spreadsheet per sel (ketat) | 328 sel kunci | held-out 216/216, dev 112/112 = **1,000** |
-| Foto Commons | 35 foto, registri Hungarian Wax | 35/35 status benar, AUTO_LINK 7/7 (hanya 7 KNOWN) |
-| Foto Indonesia | 6 foto x S01-S03 | Top-1 0,812, AUTO_LINK **12/12**, bagian 15/18 |
-| Foto PVT | 40 foto, registri + deskripsi 24 varietas P01 | Top-1 kartu terlihat 0,632, kartu tertutup **0,211**; AUTO_LINK 12/19 dan **3/8** |
-| Nama file berpasangan | 40 PVT kartu tertutup x 3 nama | nama salah terdaftar: REVIEW_MISMATCH **0/40**, model ikut nama berkas 30/40, 12 tautan salah |
-| Workbook gabungan | Indonesia S01-S03 | F1 **0,960** (sel 1,000; link foto 9 benar / 3 salah / 7 terlewat) |
+| Foto Commons (D24) | 35 foto, registri Hungarian Wax | 32/35 status benar, AUTO_LINK 5/6 (D23: 35/35, 7/7) |
+| Foto Indonesia (D24) | 6 foto x S01-S03 | Top-1 0,750, AUTO_LINK **12/13**, bagian **18/18** (D23: 0,812, 12/12, 15/18) |
+| Foto PVT (D24) | 40 foto, registri + deskripsi 24 varietas P01 | Top-1 kartu terlihat 0,579, kartu tertutup **0,158**; AUTO_LINK 8/13 dan **2/6** (D23: 0,632 / 0,211; 12/19 / 3/8) |
+| Nama file berpasangan (D24) | 40 PVT kartu tertutup x 3 nama | nama salah terdaftar: REVIEW_MISMATCH **7/40** (D23 0/40), ikut nama berkas **2/40** (D23 30/40); tautan salah semua kondisi **8/120** (D23 17/120) |
+| Workbook gabungan (D24) | Indonesia S01-S03 | F1 **0,980** (sel 1,000; link foto 12 benar / 1 salah / 4 terlewat; D23 0,960) |
 
-Kesimpulan singkat: pemetaan atribut sempurna pada data level varietas dan tidak pernah menulis salah. Klasifikasi varietas
-dari foto masih bergantung pada nama berkas (D23) dan belum mampu membedakan varietas Indonesia yang mirip.
+Kesimpulan singkat: pemetaan atribut sempurna pada data level varietas dan tidak pernah menulis salah. Sejak D24 model visi
+tidak lagi bisa disetir nama berkas, dan tautan foto yang salah berkurang separuh. Kemampuan mengenali varietas Indonesia
+yang mirip dari tampilan saja tetap rendah (PVT kartu tertutup 4/19 foto KNOWN dengan nama netral, sama di D23 dan D24).
 
 ### Hasil paper v11 (4 November 2026, data dan sistem lama)
 
@@ -201,7 +203,7 @@ Contoh presisi AUTO_LINK nama netral: dari 64 foto bernama `IMG_xxxx`, 45 ditaut
 
 ---
 
-## 6A. Hasil terbaru (7-8 November 2026)
+## 6A. Hasil terbaru (atribut 7-8 Nov, foto 12 Nov 2026)
 
 Semua run: data level varietas (D19), bge-m3 (D22), `KMS_DYNAMIC_SCHEMA=0`, tanpa Commit ke KMS (jumlah baris tabel kms.*
 sama sebelum dan sesudah run atribut). Atribut lewat harness `harness_vps.py` yang memanggil `run_pipeline_ui()`; foto lewat
@@ -277,6 +279,31 @@ Hasil: `hasil_eksperimen/foto_nama_berpasangan_2026-11-07/`.
 ### 6A.6 Workbook gabungan
 Indonesia S01-S03: sel 112/112 benar; link foto 9 benar, 3 salah, 7 terlewat; gabungan P 0,976, R 0,945, **F1 0,960**.
 P01 + PVT (gold usulan AI): kartu terlihat F1 0,950, kartu tertutup 0,940.
+(Angka 6A.4-6A.6 adalah run D23, 7 Nov. Hasil foto terbaru D24 ada di 6A.7.)
+
+### 6A.7 Visi dua tahap (D24, 12 Nov 2026; `job_m2.sh`, `ablasi_fusi_m2.py`)
+Model visi tidak menerima nama berkas/caption; nama berkas dicocokkan deterministik ke registri, lalu digabung di
+`fuse_photo_signals(independent_signals=True)`. Semua 271 panggilan visi D23 diulang dengan input, registri, deskripsi,
+kanonik P01/S01-S03, dan varietas DB yang sama (`--db-dari-meta`); 0 gagal. Skrip skor sama (direproduksi byte-identik pada
+data 7 Nov). Ablasi: jawaban visual D24 digabung ulang dengan aturan fusi lama, tanpa memanggil model.
+
+| Metrik | D23 | D24, fusi lama (ablasi) | **D24** |
+|---|---|---|---|
+| PVT nama salah terdaftar: ikut nama berkas | 30/40 | 2/40 | **2/40** |
+| PVT nama salah terdaftar: REVIEW_MISMATCH | 0/40 | 3/40 | **7/40** |
+| PVT berpasangan: tindakan sesuai gold | 48/120 | 29/120 | **33/120** |
+| PVT berpasangan: AUTO_LINK salah | 17/120 | 12/120 | **8/120** |
+| PVT KNOWN nama netral: status benar / tindakan benar | 4/19, 16/19 | 4/19, 16/19 | **4/19, 16/19** |
+| PVT KNOWN nama benar: status benar / tindakan benar | 16/19, 12/19 | 3/19, 4/19 | **3/19, 4/19** |
+| PVT OTHER nama benar (tidak terdaftar): tindakan benar | 17/21 | 3/21 | **3/21** |
+| Commons: status benar / AUTO_LINK benar | 35/35, 7/7 | sama dengan D24 | **32/35, 5/6** |
+| Indonesia S01-S03: Top-1 / AUTO_LINK benar / bagian | 0,812, 12/12, 15/18 | sama dengan D24 | **0,750, 12/13, 18/18** |
+| PVT kartu terlihat / tertutup: Top-1 | 0,632 / 0,211 | sama dengan D24 | **0,579 / 0,158** |
+| Workbook gabungan Indonesia F1 | 0,960 | sama dengan D24 | **0,980** |
+
+Kebocoran nama berkas hilang; kondisi netral identik, jadi turunnya total tindakan benar berasal dari skor D23 kondisi "nama
+benar" yang terlalu tinggi. Aturan fusi baru hanya mengubah 8 dari 271 tindakan (semua di set PVT berpasangan). Satu ulangan;
+selisih kecil di set foto ulang ada di dalam CI. Hasil: `hasil_eksperimen/foto_two_stage_2026-11-12/` (`LAPORAN_M2.md`).
 
 ---
 
@@ -465,9 +492,13 @@ Selesai 4-8 Nov:
 - Run ulang foto dengan deskripsi varietas D20 dan desain nama file berpasangan D23 (6A.4-6A.6).
 - Rencana run GRIN dihentikan: GRIN tinggal Hungarian Wax setelah D19.
 
+Selesai 12 Nov:
+- Visi dua tahap D24 (model buta nama berkas) dan run ulang semua 271 foto D23 + ablasi fusi (6A.7).
+
 Hal terbuka:
 - Angka di draf paper masih versi v11 (data dan sistem lama).
-- Klasifikasi visual buta nama berkas (D23) belum diputuskan.
+- Nama berkas yang menyebut varietas tidak terdaftar belum dipakai sebagai sinyal CANDIDATE (D24).
+- Foto baru dijalankan 1x per kondisi; perlu >= 3 ulangan untuk klaim statistik.
 - Uji paritas lewat jalur produksi penuh (Drive + `vision_hook` + KMS) belum dijalankan.
 - Gold atribut P01/P02 (144 butir perlu adjudikasi) dan gold bagian foto PVT masih usulan AI.
 - Diagram alur (Fig. 1): tambahkan panah registry/nama file ke model visi, lalu ganti label "curator-approved" (baris baru
@@ -516,7 +547,9 @@ Hal terbuka:
 | `banding_embedding.py` | `hasil_retrieval/banding_embedding/` (Hit@k, MRR per model) |
 | `harness_vps.py` | run pipeline produksi tanpa UI (`--tanpa-foto` untuk run atribut saja) |
 | `skor_atribut_e2e.py` | `skor_atribut_e2e_bge-m3/` (run baru vs run pembanding) |
-| `uji_visi_commons_vps.py` | klasifikasi foto lewat langkah `vision_hook` tanpa tulis KMS (`--kanonik` = registri + deskripsi D20) |
+| `uji_visi_commons_vps.py` | klasifikasi foto lewat langkah `vision_hook` tanpa tulis KMS (`--kanonik` = registri + deskripsi D20; `--mode two_stage/single_call` D24; `--db-dari-meta` mengunci varietas DB ke run lama) |
+| `ablasi_fusi_m2.py` | hitung ulang tindakan fusi dari jawaban visual tercatat dengan aturan lama/baru (ablasi D24) |
+| `hasil_eksperimen/foto_two_stage_2026-11-12/job_m2.sh` | run ulang semua set foto D23 dengan visi dua tahap (kelompok A/B/C paralel) |
 | `skor_foto_ulang.py` | `foto_ulang_2026-11-07/skor/` (foto + workbook gabungan) |
 | `buat_nama_file_berpasangan.py`, `skor_nama_file_berpasangan.py` | data, gold, dan skor desain nama file berpasangan (D23) |
 | `gold_kanonik_foto_pvt.py` | lembar verifikasi dan gold kanonik foto PVT (D21) |

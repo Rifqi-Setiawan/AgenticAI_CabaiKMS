@@ -36,6 +36,7 @@ STRUKTUR FOLDER
    I_atribut_bge-m3_39f4213/      run atribut end-to-end setelah embedding diganti ke bge-m3 (D22), data bersih D19
    J_foto_ulang_D20_bge-m3/       run ulang foto (Commons 35, Indonesia 6 x S01-S03, PVT 40 x 2 kondisi) + P01 + gabungan
    K_nama_file_berpasangan/       foto sama dengan nama berkas netral / benar / salah_terdaftar (D23)
+   L_visi_dua_tahap_D24/          semua set foto J_ dan K_ diulang dengan model visi buta nama berkas (D24) + ablasi fusi
 KETERANGAN_DATA.txt       berkas ini
 DESKRIPSI_PEMBUATAN_DAN_TUJUAN_DATA.txt  cara pembuatan, tujuan uji, dan output yang diharapkan per input
 SHA256SUMS.txt            checksum semua berkas
@@ -323,6 +324,20 @@ K_nama_file_berpasangan/ (7 Nov 2026, D23, skrip sama dengan J_)
   (netral) ke 16/19 dan OTHER dari 0/21 ke 19/21. Kesimpulan: pada foto PVT kartu tertutup, keputusan varietas berasal dari
   nama berkas, bukan dari tampilan tanaman, dan pemeriksaan silang nama file vs visual belum berfungsi. Indonesia: netral
   vs benar hampir sama (11/16 vs 12/16 tindakan benar foto KNOWN), tetapi nama netral memunculkan 2 tautan salah.
+L_visi_dua_tahap_D24/ (12 Nov 2026, D24, branch feat/vision-two-stage; uji_visi_commons_vps.py --mode two_stage)
+  Input, registri, deskripsi varietas, kanonik P01/S01-S03 dan varietas DB (--db-dari-meta) SAMA dengan J_ dan K_; yang
+  berubah hanya kode visi: model visi tidak menerima nama berkas/caption, nama berkas dicocokkan deterministik ke registri,
+  konflik dicek di fusi (independent_signals). 271 panggilan visi, 0 gagal, 1 ulangan.
+  commons35/, indonesia_S01..S03/, pvt40_kartu_terlihat/, pvt40_kartu_tertutup/   padanan set J_.
+  ind6_netral_S01..S03/, pvt40_netral/, pvt40_benar/, pvt40_salah_terdaftar/      padanan set K_.
+  Isi: klasifikasi_foto.csv + meta_run.json per set (meta memuat vision_mode dan db_dari_meta).
+  skor_foto/ (skor_foto_ulang.py) dan skor_berpasangan/ (skor_nama_file_berpasangan.py): hasil_skor.md/.json + rincian.
+  skor_ablasi_fusi_lama/: jawaban visual yang sama digabung dengan aturan fusi lama (ablasi_fusi_m2.py --fusi lama).
+  Ringkas: PVT nama SALAH_TERDAFTAR, ikut nama berkas 30/40 -> 2/40, REVIEW_MISMATCH 0/40 -> 7/40; tautan otomatis salah
+  di 120 keputusan berpasangan 17 -> 8 (ablasi fusi lama: 12); tindakan sesuai gold 48 -> 33 karena kondisi nama BENAR tidak
+  lagi tertolong nama berkas (kondisi NETRAL identik: KNOWN 4/19 status benar). Commons 35/35 -> 32/35; Indonesia Top-1
+  0,812 -> 0,750, bagian 15/18 -> 18/18; PVT Top-1 kartu terlihat 0,632 -> 0,579, tertutup 0,211 -> 0,158; workbook
+  gabungan Indonesia F1 0,960 -> 0,980. Laporan: data_evaluasi/hasil_eksperimen/foto_two_stage_2026-11-12/LAPORAN_M2.md.
 
 Yang masuk ke basis data KMS (PostgreSQL): penulisan dokumen pengetahuan saat ini hanya untuk tata letak
 "Resume Data" (R01). Workbook lain berhenti di spreadsheet kanonik (hasil_kanonik.xlsx).

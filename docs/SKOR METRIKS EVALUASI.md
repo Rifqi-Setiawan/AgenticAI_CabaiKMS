@@ -1,11 +1,14 @@
 # Ringkasan Eksperimen CABAI-KMS (versi mudah dibaca)
 
-Kondisi per **8 November 2026** (commit `06c0b76`). Angka di sini memakai sistem dan data terbaru:
+Kondisi per **12 November 2026** (visi dua tahap D24). Angka di sini memakai sistem dan data terbaru:
 - data cabai sudah dibersihkan sampai **level varietas/kultivar** (D19): nama spesies, jenis umum, nama tipe, Gendot, Domba,
   Bhut Jolokia, dan GRIN Poblano dikeluarkan;
 - model embedding **BAAI/bge-m3** (D22), menggantikan MiniLM;
 - model visi menerima **deskripsi morfologi varietas** dari spreadsheet run, bukan hanya nama (D20);
-- uji **nama file berpasangan** (D23): foto yang sama diberi nama berkas berbeda.
+- uji **nama file berpasangan** (D23): foto yang sama diberi nama berkas berbeda;
+- **visi dua tahap** (D24): model visi **tidak lagi menerima nama berkas**; nama berkas dicocokkan oleh kode lalu dibandingkan
+  dengan jawaban visual di tahap fusi. Semua angka foto di bawah memakai sistem ini; angka D23 (7 Nov) ditulis sebagai
+  pembanding "lama".
 
 Angka di draf paper v11 (4 Nov) masih memakai data dan sistem lama; lihat **Bagian 11**.
 Kalau cuma punya waktu 1 menit, baca **Bagian 0**. Rincian teknis: `docs/PANDUAN_EKSPERIMEN_LENGKAP.md`.
@@ -19,14 +22,16 @@ Sistem ini punya **dua pekerjaan**, dan keduanya diuji terpisah:
 | Pekerjaan | Pertanyaan ujinya | Skor utama | Artinya |
 |---|---|---|---|
 | **A. Merapikan atribut spreadsheet** | Apakah atribut spreadsheet dipindahkan ke baris template yang benar? | **F1 = 1,000** (data uji baru) | Semua benar di semua workbook. Tidak ada satu pun yang ditulis salah. |
-| **B. Mengenali dan menautkan foto** | Apakah foto dikenali varietasnya, lalu ditautkan ke kolom varietas yang benar? | Lihat tabel di bawah | Bagus kalau nama berkas jujur atau varietasnya mudah dibedakan. Lemah untuk varietas Indonesia yang mirip. |
+| **B. Mengenali dan menautkan foto** | Apakah foto dikenali varietasnya, lalu ditautkan ke kolom varietas yang benar? | Lihat tabel di bawah | Bagus kalau varietasnya mudah dibedakan dari tampilan. Lemah untuk varietas Indonesia yang mirip; nama berkas tidak lagi bisa "menolong" atau "menyesatkan" model. |
 
 Kesimpulan paling jujur:
 - **Atribut:** setelah embedding diganti ke bge-m3, sistem penuh (S4) mendapat F1 1,000 di semua 7 workbook, dan isi sel
   di workbook akhir juga 1,000. Pembanding sederhana jauh di bawah (0,621 / 0,420).
-- **Foto:** pada foto PVT dengan kartu nama ditutup, **keputusan varietas datang dari nama berkas, bukan dari tampilan
-  tanaman**. Nama berkas yang menyebut varietas terdaftar yang salah tidak pernah tertangkap sebagai konflik (0 dari 40), dan
-  12 foto tertaut ke varietas yang salah. Ini batasan utama sistem sekarang.
+- **Foto:** sampai D23, keputusan varietas pada foto PVT kartu tertutup datang dari nama berkas (model ikut nama berkas
+  yang salah pada 30 dari 40 foto). Setelah D24 model tidak melihat nama berkas: ikut nama salah tinggal **2/40**, konflik
+  tertangkap **7/40** (dulu 0), dan tautan otomatis salah di set berpasangan turun **17 → 8 dari 120**. Harganya, angka
+  "benar" yang dulu tertolong nama berkas ikut hilang: kemampuan visual sebenarnya pada foto PVT kartu tertutup hanya
+  **4 dari 19** foto KNOWN. Ini batasan utama sistem sekarang.
 
 ### Papan skor terbaru (semua metrik)
 
@@ -40,13 +45,14 @@ Kesimpulan paling jujur:
 | | Ditulis otomatis benar / salah | 141 / 0 | 6.3 |
 | | Dikirim ke review | 139 dari 285 (49%), semuanya usulan NULL | 6.3 |
 | **Isi sel** (ketat) | Uji baru / pengembangan | 216/216 = **1,000** / 112/112 = **1,000** | 6.4 |
-| **Foto Commons** (35, registri 1 varietas) | Status benar / tautan otomatis benar | 35/35 / 7/7 | 6.5 |
-| **Foto Indonesia** (6 x 3 spreadsheet) | Top-1 / tautan otomatis benar / bagian benar | 0,812 / 12/12 / 15/18 | 6.6 |
-| **Foto PVT** (40, registri 24 varietas P01) | Top-1, kartu terlihat / tertutup | 0,632 / **0,211** | 6.7 |
-| | Tautan otomatis benar, kartu terlihat / tertutup | 12/19 / **3/8** | 6.7 |
-| **Nama file berpasangan** (PVT kartu tertutup) | Nama salah tertangkap sebagai konflik (REVIEW_MISMATCH) | **0/40** | 6.8 |
-| | Model ikut varietas di nama berkas / tautan salah | 30/40 / 12 | 6.8 |
-| **Workbook akhir** (atribut + foto) | F1 Indonesia S01-S03 | **0,960** | 6.9 |
+| **Foto Commons** (35, registri 1 varietas) | Status benar / tautan otomatis benar | 32/35 / 5/6 (D23: 35/35 / 7/7) | 6.5 |
+| **Foto Indonesia** (6 x 3 spreadsheet) | Top-1 / tautan otomatis benar / bagian benar | 0,750 / 12/13 / 18/18 (D23: 0,812 / 12/12 / 15/18) | 6.6 |
+| **Foto PVT** (40, registri 24 varietas P01) | Top-1, kartu terlihat / tertutup | 0,579 / **0,158** (D23: 0,632 / 0,211) | 6.7 |
+| | Tautan otomatis benar, kartu terlihat / tertutup | 8/13 / **2/6** (D23: 12/19 / 3/8) | 6.7 |
+| **Nama file berpasangan** (PVT kartu tertutup) | Nama salah tertangkap sebagai konflik (REVIEW_MISMATCH) | **7/40** (D23: 0/40) | 6.8 |
+| | Model ikut varietas di nama berkas / tautan salah (nama salah) | **2/40 / 2** (D23: 30/40 / 12) | 6.8 |
+| | Tautan otomatis salah, semua 120 keputusan | **8/120** (D23: 17/120) | 6.8 |
+| **Workbook akhir** (atribut + foto) | F1 Indonesia S01-S03 | **0,980** (D23: 0,960) | 6.9 |
 | **Skema dinamis** | Baris baru / duplikat template / kemiripan antarpengulangan | 40 / 0 / 70-78% (data lama) | 6.10 |
 
 ---
@@ -84,14 +90,17 @@ Spreadsheet sumber
 
 ```
 Foto dari Drive
-  -> model visi menerima: FOTO + NAMA FILE + DAFTAR VARIETAS + DESKRIPSI MORFOLOGI varietas dari spreadsheet run
+  -> tahap 1, model visi menerima: FOTO + DAFTAR VARIETAS + DESKRIPSI MORFOLOGI varietas dari spreadsheet run
+     (TANPA nama file dan caption, D24)
   -> model menjawab: KNOWN (varietas terdaftar, sebut yang mana) / OTHER (cabai lain, tidak terdaftar) / UNCERTAIN (tidak bisa ditentukan)
                      + bagian tanaman (daun/batang/buah/bunga) + tingkat yakin
+  -> tahap 2, kode (bukan AI) mencocokkan nama file ke daftar varietas
   -> aturan fusi memutuskan tindakan:
-       KNOWN, yakin >= 0,85, cocok dengan daftar & nama file   -> AUTO_LINK (link foto DITULIS ke workbook)
-       OTHER, yakin >= 0,80                                    -> CANDIDATE (antrean varietas baru, tidak ditulis)
-       nama file menyebut varietas terdaftar lain              -> REVIEW_MISMATCH (seharusnya; lihat 6.8)
-       selain itu (ragu / UNCERTAIN)                           -> REVIEW_UNCERTAIN (tidak ditulis)
+       nama file menyebut varietas terdaftar yang BERBEDA dari jawaban visual -> REVIEW_MISMATCH (tidak ditulis)
+       KNOWN, yakin >= 0,85 (atau >= 0,60 bila sama dengan nama file)         -> AUTO_LINK (link foto DITULIS ke workbook)
+       OTHER, yakin >= 0,80                                                  -> CANDIDATE (antrean varietas baru, tidak ditulis)
+       selain itu (ragu / UNCERTAIN)                                         -> REVIEW_UNCERTAIN (tidak ditulis)
+  ("Rikub 1" dan "Rikub 2" dihitung varietas berbeda. Mode lama single_call, nama file masuk prompt, tersimpan sebagai pembanding.)
 ```
 
 ---
@@ -171,7 +180,7 @@ Foto PVT berasal dari dokumen resmi pendaftaran varietas, jadi label varietasnya
 |---|---|---|
 | Retrieval | `banding_embedding.py`: parser dan query sama dengan pipeline, tanpa LLM | sekali (deterministik) |
 | Atribut | Harness VPS (`harness_vps.py`) yang memanggil `run_pipeline_ui()`, fungsi yang sama dengan tombol di website; skema dinamis mati; tanpa Commit ke KMS | **3x**; keputusan identik di ketiganya |
-| Foto | `uji_visi_commons_vps.py`: langkah node visi produksi (registri, deskripsi, sinyal nama file, fusi) dengan modul produksi; foto dibaca dari disk, tanpa tulis KMS | 1x; 1 foto gagal provider dijalankan ulang (percobaan 2) |
+| Foto | `uji_visi_commons_vps.py --mode two_stage`: langkah node visi produksi (registri, deskripsi, sinyal nama file, fusi) dengan modul produksi; foto dibaca dari disk, tanpa tulis KMS; input dan varietas DB dikunci sama dengan run 7 Nov | 1x (12 Nov, 271 foto, 0 gagal); pembanding D23 1x (7 Nov) |
 
 Model: teks `ag/gemini-3.8-flash-medium`, visi `ag/gemini-3.8-flash-high` (lewat gateway 9Router), embedding `BAAI/bge-m3`.
 Semua panggilan model sungguhan; kalau provider gagal, hasilnya tercatat FAILED, tidak diganti jawaban tiruan (D18).
@@ -205,7 +214,8 @@ Uji paritas lewat jalur produksi penuh belum dijalankan.
 | `klasifikasi_foto.csv` | Per foto: KNOWN/OTHER/UNCERTAIN, varietas, bagian tanaman, tingkat yakin, tindakan |
 
 Salinan semua input dan output ada di `dataset_eksperimen/` (baca `KETERANGAN_DATA.txt`). Run terbaru:
-`4_hasil_sistem/I_atribut_bge-m3_39f4213`, `J_foto_ulang_D20_bge-m3`, `K_nama_file_berpasangan`.
+`4_hasil_sistem/I_atribut_bge-m3_39f4213` (atribut) dan `L_visi_dua_tahap_D24` (foto). Run foto D23 sebagai pembanding:
+`J_foto_ulang_D20_bge-m3`, `K_nama_file_berpasangan`.
 
 ---
 
@@ -302,70 +312,81 @@ Perapian nilai mengubah 83 dari 328 sel (koma desimal, tanda rentang, huruf), da
 
 ### 6.5 Foto Commons (35 foto, registri Hungarian Wax)
 
-| Skor | Hasil |
-|---|---|
-| Status benar | 35/35 |
-| Top-1 varietas (7 foto KNOWN) | 7/7 |
-| Recall OTHER | 28/28 |
-| Tautan otomatis benar (informatif / netral) | 7/7 (3/3 / 4/4) |
-| Bagian tanaman benar | 31/32 |
-| Tindakan sesuai gold | 35/35 |
+| Skor | D24 (12 Nov) | D23 (7 Nov) |
+|---|---|---|
+| Status benar | 32/35 | 35/35 |
+| Top-1 varietas (7 foto KNOWN) | 5/7 | 7/7 |
+| Recall OTHER | 27/28 | 28/28 |
+| Tautan otomatis benar (informatif / netral) | 5/6 (2/3 / 3/3) | 7/7 (3/3 / 4/4) |
+| Bagian tanaman benar | 31/32 | 31/32 |
+| Tindakan sesuai gold | 32/35 | 35/35 |
 
-**Hati-hati:** setelah D19 hanya 7 foto yang terdaftar, semuanya Hungarian Wax. Angka sempurna ini mencerminkan uji yang
-mudah, bukan bukti kuat. Set ini dipakai sebagai data pendukung.
+Tiga foto berubah: `hungarian-wax_buah_081.jpg` dulu tertaut karena namanya, sekarang dijawab OTHER sehingga bertentangan
+dengan nama file (REVIEW_MISMATCH); `IMG_0087.jpg` menjadi UNCERTAIN; `cayenne_buah_080.jpg` salah tertaut ke Hungarian Wax
+(yakin 0,85, tepat di ambang). **Hati-hati:** setelah D19 hanya 7 foto yang terdaftar, semuanya Hungarian Wax. Set ini data
+pendukung, bukan bukti kuat.
 
 ### 6.6 Foto Indonesia (6 foto x spreadsheet S01, S02, S03)
 
 | Run | Status benar | Tautan otomatis benar | Bagian benar |
 |---|---|---|---|
-| S01 (Kopay, Katokkon) | 5/6 | 4/4 | 5/6 |
-| S02 (Kopay, Katokkon) | 5/6 | 5/5 | 5/6 |
-| S03 (Katokkon) | 5/6 | 3/3 | 5/6 |
-| **Total** | **15/18** | **12/12** | **15/18** |
+| S01 (Kopay, Katokkon) | 4/6 | 4/4 | 6/6 |
+| S02 (Kopay, Katokkon) | 4/6 | 4/4 | 6/6 |
+| S03 (Katokkon) | 5/6 | 4/5 | 6/6 |
+| **Total D24** | **13/18** | **12/13** | **18/18** |
+| Total D23 (pembanding) | 15/18 | 12/12 | 15/18 |
 
-Top-1 foto KNOWN 13/16 = 0,812; recall OTHER 2/2. Semua foto yang ditautkan otomatis varietasnya benar; kesalahannya adalah
-foto yang tidak ditautkan dan bagian tanaman. Sampelnya kecil (6 foto unik, 2 varietas yang bentuk buahnya sangat berbeda).
+Top-1 foto KNOWN 12/16 = 0,750 (D23 0,812); recall OTHER 1/2. Contoh perubahan: foto bernama salah eja
+`cabai katokon - ...` dulu dijawab OTHER karena namanya tidak cocok; sekarang dikenali Katokkon dari tampilan (AUTO_LINK
+benar). Foto `cabai kopay.webp` dulu tertaut karena namanya; sekarang model tidak yakin itu Kopay sehingga masuk
+REVIEW_MISMATCH (aman, tapi tidak tertaut). Sampel kecil (6 foto unik, 2 varietas yang bentuk buahnya sangat berbeda).
 
 ### 6.7 Foto PVT (40 foto, registri dan deskripsi 24 varietas P01)
 
 | Kondisi | Status benar | Top-1 KNOWN | Recall OTHER | Non-KNOWN dipaksa KNOWN | Tautan otomatis benar | Tindakan sesuai gold |
 |---|---|---|---|---|---|---|
-| Kartu nama terlihat | 27/40 | 12/19 = 0,632 | 15/21 | 2/21 | 12/19 | 30/40 |
-| **Kartu nama tertutup** | **4/40** | **4/19 = 0,211** | 0/21 | 2/21 | **3/8** | 11/40 |
+| Kartu nama terlihat, D24 | 25/40 | 11/19 = 0,579 | 14/21 | 2/21 | 8/13 | 25/40 |
+| Kartu nama terlihat, D23 | 27/40 | 12/19 = 0,632 | 15/21 | 2/21 | 12/19 | 30/40 |
+| **Kartu nama tertutup, D24** | **3/40** | **3/19 = 0,158** | 0/21 | 1/21 | **2/6** | 9/40 |
+| Kartu nama tertutup, D23 | 4/40 | 4/19 = 0,211 | 0/21 | 2/21 | 3/8 | 11/40 |
 
 Dengan kartu nama terlihat, model membaca tulisan di kartu. Dengan kartu tertutup, varietas hampir tidak dikenali dari foto
-125 px, walaupun deskripsi morfologi P01 sudah dikirim. Sistem biasanya menahan keputusan (32 dari 40 ke REVIEW_UNCERTAIN),
-tetapi **5 dari 8 tautan otomatis salah**. Ambang AUTO_LINK 0,85 masih meloloskan tautan yang salah.
+125 px, walaupun deskripsi morfologi P01 sudah dikirim. Sistem biasanya menahan keputusan (34 dari 40 ke REVIEW_UNCERTAIN),
+tetapi **4 dari 6 tautan otomatis salah**. Selisih D24 vs D23 di set ini ada di dalam CI 95% (nama berkas set ini netral,
+jadi perubahannya berasal dari variasi model antar-run).
 
-### 6.8 Nama file berpasangan (D23): foto sama, nama berkas berbeda
+### 6.8 Nama file berpasangan (D23 → D24): foto sama, nama berkas berbeda
 
 Foto yang **sama persis** diuji dengan tiga nama berkas, jadi perbedaan hasil hanya disebabkan nama berkas. Set utama: 40
-foto PVT kartu tertutup, registri 24 varietas P01.
+foto PVT kartu tertutup, registri 24 varietas P01. Format sel: **D24** (D23).
 
 | Foto | Nama berkas | Jawaban yang benar | Tindakan sesuai gold | Status/varietas benar | Tautan salah | Ikut nama berkas |
 |---|---|---|---|---|---|---|
-| KNOWN (19) | netral | AUTO_LINK benar atau REVIEW | 16/19 | 4/19 | 3 | - |
-| | benar | AUTO_LINK | 12/19 | 16/19 | 0 | - |
-| | salah terdaftar | REVIEW_MISMATCH | **0/19** | 1/19 | **7** | 16/19 |
-| OTHER (21) | netral (kasus 1) | CANDIDATE | 3/21 | 0/21 | 2 | - |
-| | benar tapi tidak terdaftar (kasus 2) | CANDIDATE | 17/21 | 19/21 | 0 | - |
-| | salah terdaftar | REVIEW_MISMATCH | **0/21** | 0/21 | **5** | 14/21 |
+| KNOWN (19) | netral | AUTO_LINK benar atau REVIEW | 16/19 (16/19) | 4/19 (4/19) | 3 (3) | - |
+| | benar | AUTO_LINK | 4/19 (12/19) | 3/19 (16/19) | 0 (0) | - |
+| | salah terdaftar | REVIEW_MISMATCH | **6/19** (0/19) | 3/19 (1/19) | **2** (7) | **2/19** (16/19) |
+| OTHER (21) | netral (kasus 1) | CANDIDATE | 3/21 (3/21) | 0/21 (0/21) | 1 (2) | - |
+| | benar tapi tidak terdaftar (kasus 2) | CANDIDATE | 3/21 (17/21) | 0/21 (19/21) | 2 (0) | - |
+| | salah terdaftar | REVIEW_MISMATCH | **1/21** (0/21) | 0/21 (0/21) | **0** (5) | **0/21** (14/21) |
+| **Total 120** | | | **33** (48) | | **8** (17) | |
+
+**Ablasi** (jawaban visual D24 yang sama, digabung dengan aturan fusi lama; `ablasi_fusi_m2.py`): tindakan sesuai gold
+29/120, tautan salah 12/120. Jadi dari 17 → 8 tautan salah, 5 hilang karena model buta nama berkas dan 4 karena aturan fusi
+baru (kontradiksi tertangkap walau yakin rendah; "Rikub 1" ≠ "Rikub 2").
 
 Cara membacanya:
-- **Nama berkas yang salah tidak pernah tertangkap sebagai konflik (0/40).** Model menyebut varietas dari nama berkas pada
-  30 dari 40 foto, sehingga sinyal visual dan nama file tampak "cocok", dan 12 foto tertaut ke varietas yang salah.
-- **Nama yang benar menaikkan jawaban benar drastis** (KNOWN 4/19 → 16/19; OTHER 0/21 → 19/21). Artinya keputusan varietas
-  datang dari nama berkas, bukan dari tampilan tanaman.
-- **Penyebabnya:** nama berkas ikut masuk ke prompt model visi, sehingga pemeriksaan silang nama file vs visual tidak
-  independen.
-- **Kasus 1 (OTHER + nama netral):** sistem jarang berani bilang OTHER; 19 dari 21 masuk REVIEW_UNCERTAIN. Aman, tapi bukan
-  CANDIDATE.
-- **Kasus 2 (OTHER + nama benar tapi tidak terdaftar):** berjalan baik, 17 dari 21.
-- **Foto Indonesia:** nama netral vs nama asli hampir sama (tindakan benar foto KNOWN 11/16 vs 12/16), karena Katokkon dan
-  Kopay mudah dibedakan dari bentuk buahnya. Tetapi dengan nama netral muncul 2 tautan salah.
+- **Kebocoran nama berkas hilang.** Model ikut nama salah 30/40 → 2/40; konflik tertangkap 0/40 → 7/40; tautan salah pada
+  nama salah 12 → 2.
+- **Kondisi netral identik** (KNOWN 16/19 tindakan benar, 4/19 status benar). Inilah kemampuan visual yang sebenarnya.
+- **Total tindakan benar turun (48 → 33) karena kondisi "nama benar" tidak lagi tertolong nama berkas.** Angka lama 16/19
+  dan 19/21 di kondisi itu adalah salinan nama berkas, bukan pengenalan visual. Uji berpasangan KNOWN salah vs benar sekarang
+  +0,105 (CI -0,105 sampai +0,316); D23 -0,632 (-0,842 sampai -0,421): nama berkas tidak lagi menentukan jawaban.
+- **Kasus 2 (OTHER + nama benar tapi tidak terdaftar) turun 17/21 → 3/21.** Kode tahap 2 hanya mencocokkan nama ke
+  varietas terdaftar; nama varietas tidak terdaftar belum dipakai sebagai sinyal CANDIDATE. Ini perbaikan berikutnya.
+- **Foto Indonesia (ind6):** KNOWN netral 13/16 tindakan benar (D23 11/16), tautan salah 1 (D23 2); KNOWN nama asli 12/16
+  (D23 12/16), dengan 3 foto yang bertentangan dengan nama berkas sekarang masuk REVIEW_MISMATCH.
 
-Perbaikan yang masuk akal: klasifikasi visual dibuat buta nama berkas, lalu nama file baru dipakai di tahap fusi untuk
-mendeteksi konflik. Ini dicatat sebagai keputusan yang belum diambil (D23). Berkas:
+Berkas: `hasil_eksperimen/foto_two_stage_2026-11-12/` (`LAPORAN_M2.md`, `skor/`, `skor_ablasi_fusi_lama/`); D23:
 `hasil_eksperimen/foto_nama_berpasangan_2026-11-07/skor/hasil_skor.md`.
 
 ### 6.9 Skor gabungan workbook akhir (atribut + foto sekaligus)
@@ -375,12 +396,13 @@ varietasnya benar, **dan** masuk ke baris Gambar yang benar.
 
 | Run | Sel atribut F1 | Link foto benar / salah / terlewat | **Gabungan P / R / F1** |
 |---|---|---|---|
-| S01 | 1,000 | 3 / 1 / 3 | 0,977 / 0,935 / 0,956 |
-| S02 | 1,000 | 4 / 1 / 2 | 0,980 / 0,960 / 0,970 |
-| S03 | 1,000 | 2 / 1 / 2 | 0,968 / 0,938 / 0,952 |
-| **Indonesia S01-S03** | **1,000** | **9 / 3 / 7** | **0,976 / 0,945 / 0,960** |
-| P01 + PVT, kartu terlihat* | 0,964 | 12 / 7 / 6 | 0,982 / 0,919 / 0,950 |
-| P01 + PVT, kartu tertutup* | 0,964 | 3 / 5 / 15 | 0,987 / 0,898 / 0,940 |
+| S01 | 1,000 | 4 / 0 / 2 | 1,000 / 0,957 / 0,978 |
+| S02 | 1,000 | 4 / 0 / 2 | 1,000 / 0,960 / 0,980 |
+| S03 | 1,000 | 4 / 1 / 0 | 0,970 / 1,000 / 0,985 |
+| **Indonesia S01-S03, D24** | **1,000** | **12 / 1 / 4** | **0,992 / 0,969 / 0,980** |
+| Indonesia S01-S03, D23 | 1,000 | 9 / 3 / 7 | 0,976 / 0,945 / 0,960 |
+| P01 + PVT, kartu terlihat* | 0,964 | 8 / 5 / 10 (D23 12 / 7 / 6) | 0,987 / 0,910 / 0,947 (D23 0,950) |
+| P01 + PVT, kartu tertutup* | 0,964 | 2 / 4 / 16 (D23 3 / 5 / 15) | 0,989 / 0,895 / 0,940 (D23 0,940) |
 
 \*Gold atribut, kunci sel, dan bagian tanaman P01/PVT masih usulan AI.
 
@@ -406,6 +428,7 @@ run di dokumen ini menonaktifkan fitur ini (`KMS_DYNAMIC_SCHEMA=0`).
 | **Embedding lemah** (D22) | 21% butir semantik tidak masuk kandidat reranker | Ganti ke bge-m3; Hit@8 0,789 → 1,000 |
 | **Skrip uji visi tertinggal dari produksi** | Setelah D20 skrip uji tidak mengirim deskripsi varietas ke model | Diperbaiki 7 Nov; semua run foto di dokumen ini memakai versi yang sudah diperbaiki |
 | **Gold Commons usang** (D23) | 3 foto masih bergold REVIEW_MISMATCH setelah registri berubah | Diubah ke CANDIDATE dengan catatan alasan |
+| **Nama berkas bocor ke model visi** (D24) | Model menyalin varietas dari nama berkas (30/40 nama salah diikuti); pemeriksaan silang tidak independen; skor "nama benar" terlalu tinggi | Visi dua tahap: model buta nama berkas, nama dicocokkan kode, konflik dicek di fusi; 271 foto dijalankan ulang 12 Nov |
 
 ---
 
@@ -415,12 +438,15 @@ run di dokumen ini menonaktifkan fitur ini (`KMS_DYNAMIC_SCHEMA=0`).
    Gold P01 dan bagian tanaman PVT masih usulan AI.
 2. **Data kecil setelah pembersihan level varietas:** 7 workbook dinilai, foto Commons tinggal 35 (7 terdaftar), foto
    Indonesia 6 foto unik.
-3. **Varietas Indonesia yang mirip belum bisa dikenali dari foto** (PVT kartu tertutup Top-1 0,211), dan tautan otomatis yang
-   salah masih lolos (5 dari 8).
-4. **Model visi mengikuti nama berkas** (D23): nama berkas yang salah tidak tertangkap sebagai konflik.
-5. **Tidak ada penolakan otomatis untuk foto yang bukan cabai.** Foto seperti itu masuk ke review.
-6. **Retrieval belum terbukti perlu** untuk template 60 baris (S3 tanpa retrieval sama baiknya di data lama).
-7. **Evaluasi lewat harness**, bukan jalur produksi penuh (Drive + KMS); uji paritas belum dijalankan.
+3. **Varietas Indonesia yang mirip belum bisa dikenali dari foto** (PVT kartu tertutup Top-1 0,158; D23 0,211), dan tautan
+   otomatis yang salah masih lolos (4 dari 6). Ambang AUTO_LINK 0,85 belum cukup aman pada foto ini.
+4. **Foto hanya dijalankan 1x per kondisi** dan model visi tidak deterministik: pada set yang nama berkasnya tidak relevan,
+   10 dari 40 jawaban (kartu terlihat) berubah antar-run. Selisih kecil antar-run tidak boleh diklaim.
+5. **Nama varietas tidak terdaftar di nama berkas belum dipakai** sebagai sinyal CANDIDATE (kasus 2 turun 17/21 → 3/21 setelah
+   D24). Konflik nama terdaftar yang salah baru tertangkap 7/40, karena sebagian besar foto PVT berakhir REVIEW_UNCERTAIN.
+6. **Tidak ada penolakan otomatis untuk foto yang bukan cabai.** Foto seperti itu masuk ke review.
+7. **Retrieval belum terbukti perlu** untuk template 60 baris (S3 tanpa retrieval sama baiknya di data lama).
+8. **Evaluasi lewat harness**, bukan jalur produksi penuh (Drive + KMS); uji paritas belum dijalankan.
 
 ---
 
@@ -457,13 +483,13 @@ run di dokumen ini menonaktifkan fitur ini (`KMS_DYNAMIC_SCHEMA=0`).
 |---|---|
 | Semua input dan output sistem | `dataset_eksperimen/` (baca `KETERANGAN_DATA.txt`) |
 | Hasil atribut bge-m3 | `dataset_eksperimen/4_hasil_sistem/I_atribut_bge-m3_39f4213/` |
-| Hasil foto terbaru | `dataset_eksperimen/4_hasil_sistem/J_foto_ulang_D20_bge-m3/` |
-| Hasil nama file berpasangan | `dataset_eksperimen/4_hasil_sistem/K_nama_file_berpasangan/` |
+| Hasil foto terbaru (D24, semua set) | `dataset_eksperimen/4_hasil_sistem/L_visi_dua_tahap_D24/` |
+| Hasil foto D23 (pembanding) | `dataset_eksperimen/4_hasil_sistem/J_foto_ulang_D20_bge-m3/`, `K_nama_file_berpasangan/` |
 | Skor retrieval (Hit@k, MRR) | `data_evaluasi/hasil_eksperimen/hasil_retrieval/banding_embedding/ringkasan.csv` |
 | Skor atribut end-to-end | `data_evaluasi/hasil_eksperimen/skor_atribut_e2e_bge-m3/skor_atribut_e2e.md` |
-| Skor foto dan workbook gabungan | `data_evaluasi/hasil_eksperimen/foto_ulang_2026-11-07/skor/hasil_skor.md` |
-| Skor nama file berpasangan | `data_evaluasi/hasil_eksperimen/foto_nama_berpasangan_2026-11-07/skor/hasil_skor.md` |
-| Keputusan desain (D19-D23) | `docs/DESIGN_DECISIONS.md` |
+| Skor foto D24 + ablasi + laporan perbandingan | `data_evaluasi/hasil_eksperimen/foto_two_stage_2026-11-12/` (`LAPORAN_M2.md`) |
+| Skor foto dan nama file berpasangan D23 | `data_evaluasi/hasil_eksperimen/foto_ulang_2026-11-07/skor/`, `foto_nama_berpasangan_2026-11-07/skor/` |
+| Keputusan desain (D19-D24) | `docs/DESIGN_DECISIONS.md` |
 | Klasifikasi level varietas | `data_evaluasi/KLASIFIKASI_LEVEL_VARIETAS.md` |
 | Lembar verifikasi bagian foto PVT | `data_evaluasi/gambar/manifest/lembar_gold_kanonik_foto_pvt.xlsx` |
 | Paper terbaru | `docs/paper/paper_ieee_draft_v11.pdf` (angka masih versi lama, lihat Bagian 11) |
