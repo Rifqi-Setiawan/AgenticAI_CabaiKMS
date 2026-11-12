@@ -7,6 +7,8 @@ Sama dengan node vision (src/integrations/vision_hook.py): registry = varietas s
 VisionSession(run_scope_varieties=registry), extract_photo_context_signal dari NAMA FILE ASLI (kondisi informatif/netral/
 menyesatkan dipertahankan), lalu fuse_photo_signals. Gambar diubah ke turunan WebP persis seperti ImageStorage CAS
 (exif_transpose, RGB/RGBA, info dihapus, maks 2560 px, WEBP q80 method 6).
+Sejak 12 Nov 2026 (D24): --mode two_stage (bawaan) = model tidak menerima nama berkas; nama berkas
+dicocokkan deterministik lalu digabung di fuse_photo_signals(independent_signals=True). --mode single_call = baseline D23.
 Sejak 7 Nov 2026 (D20): dengan --kanonik, deskripsi morfologi varietas run juga dibaca dari sheet kanonik run
 (variety_descriptions_from_worksheet), persis seperti vision_hook. Skrip ini dipakai untuk semua set foto (folder bebas).
 Beda: tidak menulis ke KMS (tanpa /assets, /candidates), tidak lewat Google Drive, dan kegagalan provider dicatat FAILED
@@ -59,6 +61,9 @@ def main():
     ap.add_argument("--varietas", help="berkas teks daftar varietas terdaftar (satu per baris)")
     ap.add_argument("--kanonik", help="workbook kanonik hasil pipeline spreadsheet; varietas run diambil persis seperti vision_hook")
     ap.add_argument("--label", required=True)
+    ap.add_argument("--db-dari-meta", help="meta_<label>.json run lama; db_varieties diambil dari sana, bukan GET /varieties")
+    ap.add_argument("--mode", choices=vc.VISION_MODES, default=None,
+                    help="two_stage (default D24, nama berkas tidak dikirim ke model) atau single_call (baseline <= D23)")
     a = ap.parse_args()
     base = Path(a.dasar)
     run_descriptions = None
@@ -75,14 +80,18 @@ def main():
         reg = [l.strip() for l in (base / a.varietas).read_text(encoding="utf-8").splitlines() if l.strip()]
     rows = list(csv.DictReader(open(base / "daftar_foto.csv", encoding="utf-8")))
 
-    client = KmsClient(get_settings())
-    res = client.request("GET", "/varieties")
-    db = [x for x in ((res.get("items", res) if isinstance(res, dict) else res) or []) if x]
+    if a.db_dari_meta:
+        # Pembanding yang adil: varietas DB dikunci ke daftar yang dipakai run lama (isi KMS bisa sudah berubah).
+        db = json.loads(Path(a.db_dari_meta).read_text(encoding="utf-8"))["db_varieties"]
+    else:
+        client = KmsClient(get_settings())
+        res = client.request("GET", "/varieties")
+        db = [x for x in ((res.get("items", res) if isinstance(res, dict) else res) or []) if x]
     registry = VarietyRegistry.build(spreadsheet_varieties=reg, db_varieties=db)
     options = registry.get_canonical_names()
-    session = vc.VisionSession(run_scope_varieties=options, run_descriptions=run_descriptions, lvm_call=strict_call)
+    session = vc.VisionSession(run_scope_varieties=options, run_descriptions=run_descriptions, lvm_call=strict_call, mode=a.mode)
     deskripsi = {d.name: sum(1 for v in d.characteristics.values() if v) for d in (run_descriptions or [])}
-    meta = {"label": a.label, "kanonik": a.kanonik, "run_scope": reg, "db_varieties": db, "options": options,
+    meta = {"label": a.label, "vision_mode": session.mode, "kanonik": a.kanonik, "run_scope": reg, "db_varieties": db, "db_dari_meta": a.db_dari_meta, "options": options,
             "deskripsi_run_jumlah_karakter": deskripsi,
             "mulai": datetime.datetime.now().isoformat()}
 
@@ -108,7 +117,8 @@ def main():
             try:
                 o = session.classify(img, image_bytes=b, photo_signal=sig)
                 oc = fuse_photo_signals(filename_match=sig.suggested_variety_hint, registry_known=registry, visual_result=o,
-                                        is_exact_hint=getattr(sig, "is_exact_hint", True), raw_filename=fn)
+                                        is_exact_hint=getattr(sig, "is_exact_hint", True), raw_filename=fn,
+                                        independent_signals=session.independent_signals)
                 rec.update(status=o.classification_status, matched_variety=o.matched_variety, identified_part=o.identified_part,
                            confidence=o.confidence, visual_confidence=getattr(o, "visual_confidence", ""),
                            signals_consistent=getattr(o, "signals_consistent", ""), filename_hint=sig.suggested_variety_hint or "",

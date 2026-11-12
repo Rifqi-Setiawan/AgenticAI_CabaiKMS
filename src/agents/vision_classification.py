@@ -12,12 +12,15 @@ decide, in one model call:
     unlisted one (OTHER), or the visual evidence is too weak to decide
     (UNCERTAIN).
 
-Filename text is an auxiliary signal ONLY: it's included in the prompt as
-extra context the model may weigh however it likes, but nothing in this
-module ever inspects the model's output and overrides it based on the
-filename. There is structurally no code path that could do that — the
-filename signal is consumed only while building the prompt, then discarded
-before the LVM call happens.
+Filename text (D24, default mode "two_stage") is NOT shown to the model. Stage 1 is a visual-only call
+(photo + variety list + morphology descriptions); stage 2 matches the filename/caption against the variety
+registry deterministically (`extract_photo_context_signal`); `signal_fusion.fuse_photo_signals` combines the
+two independent answers, so a filename naming the wrong registered variety surfaces as REVIEW_MISMATCH instead
+of silently steering the model. Experiments up to D23 showed that with the filename in the prompt the model
+followed it (30/40 photos) and no wrong filename was ever caught (0/40).
+Mode "single_call" (CABAI_KMS_VISION_MODE=single_call) keeps the earlier behaviour as a baseline: the filename
+and its hint are part of the prompt as auxiliary context, and nothing in this module overrides the model's
+output based on the filename.
 
 Prompt caching (batch reuse): VisionSession reads and builds the
 varietas-description text ONCE per session (not once per image), and every
@@ -35,6 +38,7 @@ project, not an oversight.
 from __future__ import annotations
 
 import base64
+import contextvars
 import os
 import re
 import uuid
@@ -55,6 +59,7 @@ from src.storage.document_contracts import (
 from src.llm.openai_compatible import provider_mode
 from src.llm.vision_providers import call_second_voter, call_vision
 from src.agents.variety_registry import is_numbered_variety, numbered_form_match
+from src.agents.signal_fusion import same_variety
 
 LVMCall = Callable[..., Any]
 
@@ -99,6 +104,55 @@ Aturan status klasifikasi:
 Sinyal dari nama berkas (jika ada) HANYA penguat opsional, BUKAN dasar
 utama keputusan — jangan biarkan nama berkas menggantikan bukti visual
 jika keduanya bertentangan."""
+
+# Two-stage mode (D24): the model sees ONLY the photo, the variety list and the morphology descriptions.
+# The filename/caption is matched against the registry by deterministic code (stage 2) and combined with the
+# visual answer in signal_fusion, so the two signals are independent and a contradiction can be detected.
+SYSTEM_PROMPT_VISUAL_ONLY_TEMPLATE = """Anda adalah asisten identifikasi visual varietas cabai untuk CABAI-KMS.
+
+Dari SATU foto, tentukan dalam SATU keputusan:
+1. Bagian tanaman yang terlihat: DAUN, BATANG, BUAH, atau BUNGA.
+2. Apakah foto ini cocok dengan salah satu varietas yang dikenal di bawah,
+   HANYA berdasarkan perbandingan ciri visual foto terhadap deskripsi
+   morfologi tiap varietas.
+
+Daftar varietas yang dikenal (sumber pengetahuan dinamis, dibaca ulang setiap
+sesi baru dari spreadsheet run aktif dan template kanonik). Nama varietas bisa
+hanya berbeda angka (mis. "Turima 1" dan "Turima 2"): tulis matched_variety
+persis seperti di daftar.
+{knowledge_source}
+
+Aturan status klasifikasi:
+- KNOWN: ciri visual foto cocok jelas dengan salah satu varietas di atas
+  -> isi matched_variety dengan nama varietas tersebut.
+- OTHER: foto terlihat seperti tanaman cabai tetapi TIDAK cocok dengan
+  varietas manapun di atas (diduga varietas baru/tidak terdaftar) ->
+  matched_variety=null.
+- UNCERTAIN: bukti visual terlalu lemah atau tidak jelas untuk memutuskan
+  (foto buram, bagian tanaman tidak jelas, beberapa varietas di daftar
+  terlihat sama, dll) -> matched_variety=null.
+
+Nama berkas dan keterangan foto sengaja TIDAK diberikan. Bila ada tulisan
+nama varietas di dalam foto (label, kartu), jangan jadikan tulisan itu
+satu-satunya dasar; nilai ciri tanamannya. Isi visual_confidence dengan
+tingkat keyakinan visual Anda sendiri; text_confidence=0 dan
+signals_consistent=false (keduanya dihitung oleh sistem, bukan oleh Anda)."""
+
+VISION_MODES = ("two_stage", "single_call")
+DEFAULT_VISION_MODE = "two_stage"
+
+# The deterministic mock (pytest / CABAI_KMS_VISION_PROVIDER=mock) derives its fake answer from the filename.
+# In two-stage mode the filename is no longer in the prompt, so it is handed to the mock out of band here;
+# this value is never part of the messages sent to a real provider.
+_MOCK_FILENAME: contextvars.ContextVar[str | None] = contextvars.ContextVar("cabai_mock_filename", default=None)
+
+
+def resolve_vision_mode(mode: str | None = None) -> str:
+    """Vision mode: explicit argument, else CABAI_KMS_VISION_MODE, else two_stage."""
+    value = (mode or os.environ.get("CABAI_KMS_VISION_MODE", "") or DEFAULT_VISION_MODE).strip().lower()
+    if value not in VISION_MODES:
+        raise ValueError(f"CABAI_KMS_VISION_MODE must be one of {VISION_MODES}, got {value!r}")
+    return value
 
 
 @dataclass(frozen=True)
@@ -168,6 +222,16 @@ def variety_descriptions_from_worksheet(ws: Any) -> list[VarietyDescription]:
     one of the template's own columns (e.g. varieties from a PVT/Kementan description workbook).
     """
     return _descriptions_from_rows(ws.iter_rows(values_only=True), skip_image_rows=True)
+
+
+def stage_signals_consistent(hint: str | None, status: str, matched_variety: str | None) -> bool:
+    """Two-stage consistency, computed by code: the visual answer and the filename match name the same
+    registered variety (exact name key, so "Turima 1" != "Turima 2"). No hint = nothing to contradict."""
+    if not hint:
+        return status == "KNOWN"
+    if status != "KNOWN" or not matched_variety:
+        return False
+    return same_variety(hint, matched_variety)
 
 
 def build_knowledge_source_text(varieties: list[VarietyDescription]) -> str:
@@ -372,10 +436,24 @@ def build_messages(
     knowledge_source_text: str,
     filename_signal: FilenameSignal,
     photo_signal: PhotoContextSignal | None = None,
+    *,
+    include_filename: bool = True,
 ) -> list[dict[str, Any]]:
-    system_prompt = SYSTEM_PROMPT_TEMPLATE.format(knowledge_source=knowledge_source_text)
     b64 = base64.b64encode(image_bytes).decode()
+    if not include_filename:
+        # Two-stage mode: no filename, no caption, no filename-derived hint reaches the model.
+        return [
+            {"role": "system", "content": SYSTEM_PROMPT_VISUAL_ONLY_TEMPLATE.format(knowledge_source=knowledge_source_text)},
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "Tentukan bagian tanaman dan kecocokan varietas dari foto berikut."},
+                    {"type": "image_url", "image_url": {"url": f"data:{mime_type};base64,{b64}"}},
+                ],
+            },
+        ]
 
+    system_prompt = SYSTEM_PROMPT_TEMPLATE.format(knowledge_source=knowledge_source_text)
     user_lines = [f"Nama berkas: {filename!r}"]
     if photo_signal and photo_signal.caption:
         user_lines.append(f"Caption: {photo_signal.caption}")
@@ -469,6 +547,9 @@ def deterministic_mock_lvm(
     match_fn = re.search(r"Nama berkas:\s*['\"]([^'\"]+)['\"]", text_content)
     if match_fn:
         filename = match_fn.group(1)
+    elif _MOCK_FILENAME.get():
+        filename = _MOCK_FILENAME.get() or ""
+        part = next((p for p, hints in _PART_FILENAME_HINTS.items() if any(h in filename.lower() for h in hints)), part)
 
     photo_signal = extract_photo_context_signal(filename, known_varieties=known_varieties)
 
@@ -587,10 +668,17 @@ def classify_image(
     second_voter_call: LVMCall = call_second_voter,
     photo_signal: PhotoContextSignal | None = None,
     run_scope_varieties: list[str] | None = None,
+    mode: str | None = None,
 ) -> VisionResult | VisionClassificationResult:
     """Classify one image. `image_bytes` can be injected directly (tests,
     or a caller that already has the bytes) — otherwise it's downloaded
-    from Drive by `image.file_id`."""
+    from Drive by `image.file_id`.
+
+    mode="two_stage" (default, D24): stage 1 is this visual-only model call (no filename, no caption);
+    stage 2 is the deterministic filename/registry match in `photo_signal`; the code — never the model —
+    sets text_confidence and signals_consistent, and signal_fusion combines both stages.
+    mode="single_call": the pre-D24 behaviour (filename and its hint inside the prompt), kept as baseline."""
+    mode = resolve_vision_mode(mode)
     if image_bytes is None:
         image_bytes = download_image_bytes(image.file_id, service=drive_service)
 
@@ -606,17 +694,44 @@ def classify_image(
         knowledge_source_text,
         filename_signal,
         photo_signal=photo_signal,
+        include_filename=(mode == "single_call"),
     )
 
     actual_lvm_call = lvm_call or default_lvm_call
     resp_model = VisionClassificationResult if run_scope_varieties is not None else VisionResult
 
-    primary = actual_lvm_call(response_model=resp_model, messages=messages)
+    token = _MOCK_FILENAME.set(image.filename)
+    try:
+        primary = actual_lvm_call(response_model=resp_model, messages=messages)
+    finally:
+        _MOCK_FILENAME.reset(token)
     if not isinstance(primary, (VisionResult, VisionClassificationResult)):
         raise TypeError(f"lvm_call must return a VisionResult, got {type(primary)!r}")
 
+    if mode == "two_stage" and isinstance(primary, VisionClassificationResult):
+        # The model did not see the filename, so its own text_confidence / signals_consistent are meaningless:
+        # recompute both from the stage-2 deterministic match.
+        hint = photo_signal.suggested_variety_hint if photo_signal else None
+        primary = primary.model_copy(update={
+            "text_confidence": 0.85 if hint else 0.0,
+            "signals_consistent": stage_signals_consistent(hint, primary.classification_status, primary.matched_variety),
+        })
+
     if run_scope_varieties is not None:
-        if isinstance(primary, VisionResult) and not isinstance(primary, VisionClassificationResult):
+        if isinstance(primary, VisionResult) and not isinstance(primary, VisionClassificationResult) and mode == "two_stage":
+            hint = photo_signal.suggested_variety_hint if photo_signal else None
+            primary = VisionClassificationResult(
+                classification_status=primary.classification_status,
+                matched_variety=primary.matched_variety,
+                identified_part=primary.identified_part,
+                visual_confidence=primary.confidence,
+                text_confidence=0.85 if hint else 0.0,
+                confidence=primary.confidence,
+                visual_evidence=primary.visual_evidence,
+                options_evaluated=run_scope_varieties,
+                signals_consistent=stage_signals_consistent(hint, primary.classification_status, primary.matched_variety),
+            )
+        elif isinstance(primary, VisionResult) and not isinstance(primary, VisionClassificationResult):
             signals_consistent = True
             if photo_signal and photo_signal.suggested_variety_hint and primary.matched_variety:
                 hint_low = photo_signal.suggested_variety_hint.lower()
@@ -674,7 +789,11 @@ class VisionSession:
         consensus: bool = False,
         second_voter_call: LVMCall = call_second_voter,
         drive_service: Any = None,
+        mode: str | None = None,
     ):
+        self.mode = resolve_vision_mode(mode)
+        # Fusion may only treat filename and visual answer as independent evidence in two-stage mode.
+        self.independent_signals = self.mode == "two_stage"
         if run_scope_varieties is None and run_descriptions is not None:
             run_scope_varieties = [d.name for d in run_descriptions]
         if run_scope_varieties is not None:
@@ -735,6 +854,7 @@ class VisionSession:
             second_voter_call=self.second_voter_call,
             photo_signal=photo_signal,
             run_scope_varieties=self.run_scope_varieties,
+            mode=self.mode,
         )
 
     def evaluate_photo_alignment(

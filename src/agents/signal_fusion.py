@@ -28,6 +28,10 @@ class FusionAction(str, Enum):
 class FusionThresholds:
     known_threshold: float = 0.85
     other_threshold: float = 0.80
+    # Two-stage only (independent_signals=True): a KNOWN visual answer below known_threshold but at or above
+    # this value is auto-linked when the deterministic filename match names exactly the same registered
+    # variety (two independent signals agree). Not used when the model saw the filename.
+    agreement_threshold: float = 0.60
 
 
 @dataclass(frozen=True)
@@ -57,6 +61,32 @@ def _is_in_registry(name: str | None, known_names: set[str]) -> bool:
     clean_norm = re.sub(r"\bcabe\b", "cabai", clean)
     known_norm = {re.sub(r"\bcabe\b", "cabai", k) for k in known_names}
     return clean in known_names or clean_norm in known_norm
+
+
+_NAME_STOP = {"cabai", "cabe", "capsicum", "tanaman", "l", "sp", "var"}
+
+
+def same_variety(var1: str | None, var2: str | None) -> bool:
+    """Variety identity for two-stage fusion (D24).
+
+    Case, spacing and punctuation are ignored and 'cabe' == 'cabai'. Names are the same variety when their
+    name tokens are equal or one is contained in the other ("Cabai rawit" ~ "Cabai rawit (Capsicum frutescens L)"),
+    but ONLY if their numbers are identical: "Rikub 1" and "Rikub 2" are different varieties, which the older
+    token-overlap rule (_varieties_conflict) could not see."""
+    if not var1 or not var2:
+        return False
+    t1 = set(re.findall(r"[a-z0-9]+", var1.casefold()))
+    t2 = set(re.findall(r"[a-z0-9]+", var2.casefold()))
+    d1, d2 = {t for t in t1 if t.isdigit()}, {t for t in t2 if t.isdigit()}
+    if {t.lstrip("0") or "0" for t in d1} != {t.lstrip("0") or "0" for t in d2}:
+        return False
+    w1, w2 = {t for t in t1 if not t.isdigit()} - _NAME_STOP, {t for t in t2 if not t.isdigit()} - _NAME_STOP
+    if not w1 or not w2:
+        return w1 == w2
+    return w1 <= w2 or w2 <= w1
+
+
+_same_variety = same_variety
 
 
 def _varieties_conflict(var1: str | None, var2: str | None) -> bool:
@@ -92,8 +122,15 @@ def fuse_photo_signals(
     thresholds: FusionThresholds | None = None,
     is_exact_hint: bool = True,
     raw_filename: str | None = None,
+    independent_signals: bool = False,
 ) -> FusionOutcome:
-    """Evaluate alignment across filename, registry, and visual model inference."""
+    """Evaluate alignment across filename, registry, and visual model inference.
+
+    independent_signals=True (two-stage vision, D24): the visual answer was produced without the filename, so
+    (a) filename and visual variety are compared by exact name key ("Rikub 1" contradicts "Rikub 2"; the
+    token-overlap rule below treats them as consistent), and (b) agreement of the two independent signals can
+    lift a KNOWN answer between agreement_threshold and known_threshold to AUTO_LINK.
+    independent_signals=False keeps the pre-D24 rules exactly (baseline)."""
     thresholds = thresholds or FusionThresholds()
     known_names = _extract_known_set(registry_known)
 
@@ -163,6 +200,30 @@ def fuse_photo_signals(
 
     # 3. KNOWN status
     if status == "KNOWN":
+        if independent_signals and filename_match and vis_matched and is_exact_hint:
+            if _is_in_registry(filename_match, known_names) and not _same_variety(filename_match, vis_matched):
+                # Checked before the confidence gate: a contradiction is worth a reviewer's attention at any
+                # confidence, and it is exactly the case the single-call design could not surface.
+                return FusionOutcome(
+                    action=FusionAction.REVIEW_MISMATCH,
+                    matched_variety=vis_matched,
+                    confidence=conf,
+                    reason=f"Filename names '{filename_match}' but the filename-blind visual answer is '{vis_matched}'",
+                    signals_consistent=False,
+                )
+            if (
+                thresholds.agreement_threshold <= conf < thresholds.known_threshold
+                and _is_in_registry(vis_matched, known_names)
+                and _same_variety(filename_match, vis_matched)
+            ):
+                return FusionOutcome(
+                    action=FusionAction.AUTO_LINK,
+                    matched_variety=vis_matched,
+                    confidence=conf,
+                    reason=(f"Filename-blind visual answer ({conf:.2f}) and deterministic filename match agree on "
+                            f"'{vis_matched}'"),
+                    signals_consistent=True,
+                )
         if conf < thresholds.known_threshold:
             return FusionOutcome(
                 action=FusionAction.REVIEW_UNCERTAIN,

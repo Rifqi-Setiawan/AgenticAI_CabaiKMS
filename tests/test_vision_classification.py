@@ -162,7 +162,7 @@ class TestClassifyImage:
         assert result.classification_status == status
 
     def test_filename_signal_is_included_in_prompt_but_does_not_touch_output(self):
-        """The core guarantee from the brief: a filename hint never
+        """Baseline single_call mode (<= D23): a filename hint never
         overrides a conflicting visual result. Filename here screams
         "daun" (leaf); the mocked LVM insists on "BUAH" (fruit) — the
         final result must still be BUAH, and the filename hint must have
@@ -172,12 +172,28 @@ class TestClassifyImage:
 
         result = classify_image(
             _image("daun_daun_daun.jpg"), "- Gendot: habitus=perdu", VARIETIES,
-            image_bytes=FAKE_IMAGE_BYTES, lvm_call=recorder,
+            image_bytes=FAKE_IMAGE_BYTES, lvm_call=recorder, mode="single_call",
         )
 
         assert result.identified_part == "BUAH"  # visual result wins, unmodified
         text_block = next(b for b in recorder.calls[0][1]["content"] if b["type"] == "text")
         assert "DAUN" in text_block["text"]  # the hint really was offered as context
+
+    def test_two_stage_default_never_sends_filename_to_the_model(self):
+        """D24 default: the filename and its hint stay out of every message; the visual result is unmodified."""
+        visual_result = _vision_result(part="BUAH", variety=None, status="KNOWN")
+        recorder = _recording_lvm(visual_result)
+
+        result = classify_image(
+            _image("gendot_daun_daun.jpg"), "- Gendot: habitus=perdu", VARIETIES,
+            image_bytes=FAKE_IMAGE_BYTES, lvm_call=recorder,
+        )
+
+        assert result.identified_part == "BUAH"
+        sent = str(recorder.calls[0])
+        assert "gendot_daun_daun" not in sent
+        assert "Nama berkas:" not in sent
+        assert "kemungkinan varietas" not in sent
 
     def test_no_consensus_by_default_second_voter_never_called(self):
         called = []

@@ -173,6 +173,7 @@ def vision_classification_with_storage(state: dict[str, Any], config: dict[str, 
                 visual_result=result,
                 is_exact_hint=getattr(photo_signal, "is_exact_hint", True),
                 raw_filename=image.filename,
+                independent_signals=getattr(vision, "independent_signals", False),
             )
 
             review_item = None
