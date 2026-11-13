@@ -3,7 +3,7 @@
 Memakai jalur yang sama dengan pipeline: atribut dibaca dengan parser legacy (runtime_attribute_from_legacy),
 query = SourceAttributeProfile.build_query(), dokumen = CanonicalRow.serialize() dari template yang dimuat.
 Butir yang selesai lewat exact-name tidak masuk retrieval, jadi dipisah (subset "semantik").
-Gold: gold_semua_dataset_final.csv (terverifikasi) dan gold_P01_P02_pvt.csv (belum diverifikasi), butir ONE_TO_ONE.
+Gold: gold_semua_dataset_final.csv (terverifikasi) dan gold_P01_P02_pvt.csv (P01 terverifikasi, P02 belum), butir ONE_TO_ONE.
 
   python data_evaluasi/skrip/banding_embedding.py [--model NAMA ...] [--cache DIR] [--out DIR]
 """

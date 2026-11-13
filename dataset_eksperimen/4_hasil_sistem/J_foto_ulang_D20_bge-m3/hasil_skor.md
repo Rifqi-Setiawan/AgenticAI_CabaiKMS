@@ -29,4 +29,4 @@ AUTO_LINK benar per kondisi nama file (Commons): INFORMATIF 3/3 = 1.000, MENYESA
 | P01+pvt40_tertutup | 1.000 / 0.930 / 0.964 | 3 / 5 / 15 (18) | 0.987 / 0.898 / 0.940 |
 | Indonesia S01-S03 total | | | 0.976 / 0.945 / 0.960 |
 
-Catatan: gold atribut dan kunci sel P01 belum diverifikasi. Commons hanya punya 7 foto KNOWN (registri 1 varietas).
+Catatan: gold atribut dan kunci sel P01 terverifikasi. Commons hanya punya 7 foto KNOWN (registri 1 varietas).

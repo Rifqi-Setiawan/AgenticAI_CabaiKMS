@@ -266,7 +266,7 @@ def main():
     tot = {k: sum(gab[r]["gabungan"][k] for r in ("S01", "S02", "S03")) for k in ("benar", "salah_tulis", "terlewat")}
     pt = prf(tot["benar"], tot["salah_tulis"], tot["terlewat"])
     md += [f"| Indonesia S01-S03 total | | | {pt[0]:.3f} / {pt[1]:.3f} / {pt[2]:.3f} |", "",
-           "Catatan: gold atribut dan kunci sel P01 belum diverifikasi. Commons hanya punya 7 foto KNOWN (registri 1 varietas)."]
+           "Catatan: gold atribut dan kunci sel P01 terverifikasi. Commons hanya punya 7 foto KNOWN (registri 1 varietas)."]
     for r in res.values():
         r.pop("_xs", None)
     (out / "hasil_skor.md").write_text("\n".join(md), encoding="utf-8")

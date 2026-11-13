@@ -212,7 +212,8 @@ KMS). Model teks `ag/gemini-3.8-flash-medium`, visi `ag/gemini-3.8-flash-high`. 
 dijalankan.
 
 ### 6A.1 Retrieval (`banding_embedding.py`, tanpa LLM)
-Butir semantik ONE_TO_ONE (tidak selesai lewat exact-name). Gold terverifikasi n = 109; gold PVT belum diverifikasi n = 96.
+Butir semantik ONE_TO_ONE (tidak selesai lewat exact-name). Gold terverifikasi n = 109; gold PVT P01+P02 n = 96 (P01 terverifikasi 42, P02 belum diverifikasi 54).
+P01 saja: bge-m3 Hit@1 0,714, Hit@8 0,905, MRR 0,776; MiniLM 0,381 / 0,762 / 0,519.
 
 | Model | Hit@1 | Hit@3 | Hit@5 | Hit@8 | MRR | PVT Hit@1 / Hit@8 / MRR |
 |---|---|---|---|---|---|---|
@@ -278,7 +279,7 @@ Hasil: `hasil_eksperimen/foto_nama_berpasangan_2026-11-07/`.
 
 ### 6A.6 Workbook gabungan
 Indonesia S01-S03: sel 112/112 benar; link foto 9 benar, 3 salah, 7 terlewat; gabungan P 0,976, R 0,945, **F1 0,960**.
-P01 + PVT (gold atribut P01 belum diverifikasi): kartu terlihat F1 0,950, kartu tertutup 0,940.
+P01 + PVT: kartu terlihat F1 0,950, kartu tertutup 0,940.
 (Angka 6A.4-6A.6 adalah run D23, 7 Nov. Hasil foto terbaru D24 ada di 6A.7.)
 
 ### 6A.7 Visi dua tahap (D24, 12 Nov 2026; `job_m2.sh`, `ablasi_fusi_m2.py`)
@@ -500,7 +501,7 @@ Hal terbuka:
 - Nama berkas yang menyebut varietas tidak terdaftar belum dipakai sebagai sinyal CANDIDATE (D24).
 - Foto baru dijalankan 1x per kondisi; perlu >= 3 ulangan untuk klaim statistik.
 - Uji paritas lewat jalur produksi penuh (Drive + `vision_hook` + KMS) belum dijalankan.
-- Gold atribut P01/P02 belum diverifikasi (144 butir perlu diputuskan).
+- Gold atribut P02 belum diverifikasi (79 butir perlu diputuskan); P01 sudah diverifikasi.
 - Diagram alur (Fig. 1): tambahkan panah registry/nama file ke model visi, lalu ganti label "curator-approved" (baris baru
   langsung ditulis sebagai provisional).
 - Paper masih menyajikan foto Indonesia terpisah dari foto Commons; belum diputuskan apakah tabelnya digabung.

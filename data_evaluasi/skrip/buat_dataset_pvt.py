@@ -4,7 +4,7 @@ cabai terdaftar dari Berita Resmi PVT Kementan (sumber yang sama dengan 317 foto
 Keluaran (relatif ke data_evaluasi/):
   inputs/P01_pvt_hasil_pemuliaan_24.xlsx   row-oriented, sheet "Deskripsi Varietas", 24 varietas hasil pemuliaan
   inputs/P02_pvt_varietas_lokal_10.xlsx    transposed, sheet "transposed" (baris "Karakter"), 10 varietas lokal
-  gold/gold_P01_P02_pvt.csv                gold pemetaan atribut (belum diverifikasi)
+  gold/gold_P01_P02_pvt.csv                gold pemetaan atribut (P01 terverifikasi, P02 belum diverifikasi)
   gold/kunci_sel/kunci_sel_pvt.csv          kunci nilai per sel (atribut ONE_TO_ONE), format kunci_sel_semua.csv
   gambar/manifest/gold_foto_pvt_317.csv     gold varietas per foto (label resmi dokumen) + skenario registri
 
@@ -43,7 +43,8 @@ OUT_KEY = EV / "gold" / "kunci_sel" / "kunci_sel_pvt.csv"
 OUT_FOTO = EV / "gambar" / "manifest" / "gold_foto_pvt_317.csv"
 
 ANNOTATOR = ""
-SOURCE = "belum_diverifikasi_v1"
+# P01 diverifikasi langsung oleh penulis (234 butir, 13 Nov 2026); P02 belum.
+SOURCE = {"P01": "terverifikasi_v1", "P02": "belum_diverifikasi_v1"}
 HDR = PatternFill("solid", fgColor="1F4E78")
 
 
@@ -202,7 +203,7 @@ def gold_rows(dataset_id: str, path: Path, sheet: str, fmt: str):
             continue
         status, keys, amb, note, conf, src = rule
         rows.append(OrderedDict(
-            annotation_version="schema-mapping-gold-v1", annotation_source=SOURCE, mapping_item_id=i.mapping_item_id,
+            annotation_version="schema-mapping-gold-v1", annotation_source=SOURCE[dataset_id], mapping_item_id=i.mapping_item_id,
             mapping_identity_kind=getattr(i.identity_kind, "value", str(i.identity_kind)),
             mapping_identity_value=i.identity_value, mapping_identity_issue=i.issue_code or "", dataset_id=dataset_id,
             source_file_name=path.name, source_file_sha256=sha, source_sheet=sheet, source_format=fmt,
@@ -211,7 +212,7 @@ def gold_rows(dataset_id: str, path: Path, sheet: str, fmt: str):
             contoh_nilai_sumber=" || ".join(str(v)[:60] for v in a.sample_values[:3]),
             gold_status=status, gold_canonical_keys=keys, ambiguous_candidate_canonical_keys=amb,
             annotator_id=ANNOTATOR, annotation_round=1, notes=note, confidence_usulan=conf,
-            perlu_adjudikasi="N" if conf == "H" else "Y", rule_source=src))
+            perlu_adjudikasi="N" if conf == "H" or SOURCE[dataset_id] == "terverifikasi_v1" else "Y", rule_source=src))
     if missing:
         raise SystemExit(f"{dataset_id}: label tanpa aturan anotasi: {missing}")
     ids = [r["mapping_item_id"] for r in rows]

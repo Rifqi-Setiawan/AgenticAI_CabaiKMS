@@ -8,7 +8,8 @@ semuanya disalin ke `inputs/` dengan isi yang sama (SHA-256 identik).
 > `gold/final/gold_semua_dataset_final.csv` (312 butir, sumber `terverifikasi_v1`), diverifikasi langsung oleh penulis butir per butir.
 > Foto: `gambar/manifest/gold_gambar_manifest_final.csv` (Commons, 35 foto) serta `gambar/manifest/gold_foto_pvt_317.csv` dan
 > `gold_kanonik_foto_pvt.csv` (PVT, 317 foto) juga diverifikasi penulis (`terverifikasi_v1`). Berkas `gold/gold_semua_dataset.*`
-> adalah usulan awal sebelum verifikasi (pembanding). Gold atribut P01/P02 (`gold/gold_P01_P02_pvt.csv`) belum diverifikasi.
+> adalah usulan awal sebelum verifikasi (pembanding). Gold atribut P01 di `gold/gold_P01_P02_pvt.csv` (234 butir) juga diverifikasi
+> penulis (`terverifikasi_v1`); P02 (264 butir) belum (`belum_diverifikasi_v1`).
 > Lembar verifikasi dan skripnya: `verifikasi_gold/`, `skrip/terapkan_verifikasi.py`.
 
 > **Pembersihan level varietas (4-5 November 2026, D19).** Data yang hanya sampai spesies atau tipe buah (mis. R01, Cabai Rawit/Korea,
@@ -199,7 +200,7 @@ Gold:
 
 | Berkas | Isi | Status |
 |---|---|---|
-| `gold/gold_P01_P02_pvt.csv` | Pemetaan atribut, 498 butir (P01 234, P02 264): ONE_TO_ONE 124, NO_MATCH 344, AMBIGUOUS 28, COMPOSITE 2. Mencakup 41 kunci kanonik. Format sama dengan `gold_semua_dataset.csv` + kolom `rule_source` | **Belum diverifikasi** (`belum_diverifikasi_v1`). 190 butir memakai aturan lama yang sudah terverifikasi (`lama_terverifikasi`); 308 butir dari aturan baru (`pvt_baru`). 144 butir `perlu_adjudikasi = Y` |
+| `gold/gold_P01_P02_pvt.csv` | Pemetaan atribut, 498 butir (P01 234, P02 264): ONE_TO_ONE 124, NO_MATCH 344, AMBIGUOUS 28, COMPOSITE 2. Mencakup 41 kunci kanonik. Format sama dengan `gold_semua_dataset.csv` + kolom `rule_source` | P01 **terverifikasi** (`terverifikasi_v1`), P02 **belum diverifikasi** (`belum_diverifikasi_v1`). 190 butir memakai aturan lama yang sudah terverifikasi (`lama_terverifikasi`); 308 butir dari aturan baru (`pvt_baru`). 79 butir P02 `perlu_adjudikasi = Y` |
 | `gold/kunci_sel/kunci_sel_pvt.csv` | Kunci nilai per sel (varietas × kunci kanonik) untuk atribut ONE_TO_ONE, format `kunci_sel_semua.csv`; nilai = teks dokumen resmi | Mengikuti gold atribut |
 | `gambar/manifest/gold_foto_pvt_317.csv` | 317 foto: `true_variety` (dari dokumen resmi), skenario KNOWN/OTHER, `true_part`, `ada_kartu_nama`, No. Publikasi, URL | Varietas: label resmi. Bagian tanaman, kartu, dan kelayakan: diverifikasi penulis (`terverifikasi_v1`) |
 | `gambar/manifest/gold_kanonik_foto_pvt.csv` | Gold kanonik 317 foto (D21): `bagian_utama`, `bagian_boleh`, sel tujuan (`expected_canonical_row` x `expected_column`), `expected_fusion` dan `fusion_boleh` (AUTO_LINK / CANDIDATE / REVIEW), `dinilai_kanonik`. Diturunkan dari `lembar_gold_kanonik_foto_pvt.xlsx` oleh `skrip/gold_kanonik_foto_pvt.py --turunkan` | Sel dan tindakan: aturan D21 (otomatis). Bagian: diverifikasi penulis (`terverifikasi_v1`) |
@@ -210,7 +211,7 @@ varietas P01 menjadi daftar terdaftar (174 foto KNOWN), 10 varietas lokal P02 ti
 `part_dinilai = Y`), ditambah HABITUS 30, BIJI 7, TIDAK_JELAS 11 yang tidak punya kelas di kontrak `VisionResult`.
 
 Keterbatasan: foto hanya 125–164 px (resolusi tertanam di PDF); 287 dari 317 foto memuat kartu nama varietas
-(bocoran label, gunakan kondisi kartu tertutup seperti `pvt_uji_40` untuk klaim visual); gold atribut P01/P02
+(bocoran label, gunakan kondisi kartu tertutup seperti `pvt_uji_40` untuk klaim visual); gold atribut P02
 belum diverifikasi; syarat penggunaan ulang foto belum diperiksa (cantumkan No. Publikasi). Keputusan pemetaan
 baru yang paling perlu diperiksa: warna daun permukaan atas → `warna_daun` (bawah → NO_MATCH); `Warna tangkai daun` →
 AMBIGUOUS pangkal atas/bawah; `Bulu pada buku` → `batang`; undulasi tepi daun → `tepi_daun`; `Lepuhan daun` →
