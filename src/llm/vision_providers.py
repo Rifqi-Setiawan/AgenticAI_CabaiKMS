@@ -37,6 +37,8 @@ from src.reliability.provider_failures import (
 from src.llm.openai_compatible import (
     NINEROUTER_REQUIRED_VISION_MODEL,
     NinerouterConfig,
+    effective_vision_model,
+    eval_vision_base_url,
     ninerouter_instructor_client,
     provider_mode,
 )
@@ -129,11 +131,12 @@ def call_ninerouter_vision(
 ) -> T:
     """Call the fixed 9Router multimodal model with no legacy fallback."""
     started = time.perf_counter()
+    model_id = effective_vision_model()
     base_record = {
         "gateway": "9router",
-        "provider_route": "antigravity",
-        "requested_model": NINEROUTER_REQUIRED_VISION_MODEL,
-        "model_id": NINEROUTER_REQUIRED_VISION_MODEL,
+        "provider_route": "eval_custom" if eval_vision_base_url() else ("antigravity" if model_id == NINEROUTER_REQUIRED_VISION_MODEL else model_id.split("/")[0]),
+        "requested_model": model_id,
+        "model_id": model_id,
         "role": "vision",
         "attempt": 1,
         "selected_account": "unknown",

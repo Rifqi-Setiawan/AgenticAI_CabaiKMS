@@ -35,6 +35,7 @@ from src.agents import vision_classification as vc  # noqa: E402
 from src.agents.signal_fusion import fuse_photo_signals  # noqa: E402
 from src.agents.variety_registry import VarietyRegistry  # noqa: E402
 from src.integrations.client import KmsClient  # noqa: E402
+from src.llm.openai_compatible import effective_vision_model, eval_vision_base_url  # noqa: E402
 from src.schema.contracts import ImageMetadata  # noqa: E402
 from src.storage.config import get_settings  # noqa: E402
 
@@ -91,7 +92,7 @@ def main():
     options = registry.get_canonical_names()
     session = vc.VisionSession(run_scope_varieties=options, run_descriptions=run_descriptions, lvm_call=strict_call, mode=a.mode)
     deskripsi = {d.name: sum(1 for v in d.characteristics.values() if v) for d in (run_descriptions or [])}
-    meta = {"label": a.label, "vision_mode": session.mode, "kanonik": a.kanonik, "run_scope": reg, "db_varieties": db, "db_dari_meta": a.db_dari_meta, "options": options,
+    meta = {"label": a.label, "vision_mode": session.mode, "vision_model": effective_vision_model(), "vision_base_url": eval_vision_base_url() or "9router", "kanonik": a.kanonik, "run_scope": reg, "db_varieties": db, "db_dari_meta": a.db_dari_meta, "options": options,
             "deskripsi_run_jumlah_karakter": deskripsi,
             "mulai": datetime.datetime.now().isoformat()}
 

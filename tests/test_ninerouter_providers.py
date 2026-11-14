@@ -13,6 +13,7 @@ from src.llm.openai_compatible import (
     NINEROUTER_REQUIRED_TEXT_MODEL,
     NINEROUTER_REQUIRED_VISION_MODEL,
     NinerouterConfig,
+    ProviderCallError,
     openai_instructor_client,
 )
 from src.llm.providers import LLMCallError, call_ninerouter_text, call_with_fallback
@@ -41,6 +42,8 @@ def ninerouter_env(monkeypatch):
     monkeypatch.setenv("NINEROUTER_TEXT_MODEL", NINEROUTER_REQUIRED_TEXT_MODEL)
     monkeypatch.setenv("NINEROUTER_VISION_MODEL", NINEROUTER_REQUIRED_VISION_MODEL)
     monkeypatch.setenv("NINEROUTER_TIMEOUT_SECONDS", "60")
+    for v in ("CABAI_KMS_EVAL_VISION_MODEL", "CABAI_KMS_EVAL_VISION_BASE_URL", "CABAI_KMS_EVAL_VISION_API_KEY"):
+        monkeypatch.delenv(v, raising=False)
     drain_provider_calls()
 
 
@@ -60,6 +63,27 @@ def test_configuration_uses_windows_loopback_and_role_specific_models(ninerouter
     assert config.base_url == "http://127.0.0.1:20128/v1"
     assert config.text_model == NINEROUTER_REQUIRED_TEXT_MODEL
     assert config.vision_model == NINEROUTER_REQUIRED_VISION_MODEL
+
+
+def test_eval_vision_override_replaces_only_the_vision_model(monkeypatch, ninerouter_env):
+    monkeypatch.setenv("CABAI_KMS_EVAL_VISION_MODEL", "cc/claude-opus-5-5")
+    config = NinerouterConfig.from_env()
+    assert config.vision_model == "cc/claude-opus-5-5"
+    assert config.text_model == NINEROUTER_REQUIRED_TEXT_MODEL
+    monkeypatch.setenv("CABAI_KMS_EVAL_VISION_MODEL", "  ")
+    assert NinerouterConfig.from_env().vision_model == NINEROUTER_REQUIRED_VISION_MODEL
+
+
+def test_eval_gateway_applies_to_vision_only(monkeypatch, ninerouter_env):
+    monkeypatch.setenv("CABAI_KMS_EVAL_VISION_MODEL", "grok-4.7")
+    monkeypatch.setenv("CABAI_KMS_EVAL_VISION_BASE_URL", "https://eval.example.test/v1")
+    with pytest.raises(ProviderCallError):
+        NinerouterConfig.from_env(require_role="vision")
+    monkeypatch.setenv("CABAI_KMS_EVAL_VISION_API_KEY", "eval-secret")
+    vision = NinerouterConfig.from_env(require_role="vision")
+    assert (vision.base_url, vision.api_key, vision.vision_model) == ("https://eval.example.test/v1", "eval-secret", "grok-4.7")
+    text = NinerouterConfig.from_env(require_role="text")
+    assert (text.base_url, text.api_key) == (NINEROUTER_DEFAULT_BASE_URL, "unit-test-secret")
 
 
 def test_text_and_vision_configuration_are_independent(monkeypatch, ninerouter_env):

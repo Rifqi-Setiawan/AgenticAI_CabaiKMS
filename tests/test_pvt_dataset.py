@@ -49,15 +49,16 @@ def schema():
 
 
 def test_gold_loads_strictly_against_canonical_schema(schema, tmp_path):
-    # Loader ketat menolak sumber AI (benar: usulan AI bukan gold manusia). Struktur, status, kunci kanonik,
-    # dan identitas butir divalidasi lewat salinan berlabel legacy_unverified; berkas asli tidak diubah.
+    # Loader ketat hanya menerima sumber human_independent/adjudicated/legacy_unverified dengan annotator_id terisi.
+    # Struktur, status, kunci kanonik, dan identitas butir divalidasi lewat salinan berlabel legacy_unverified;
+    # berkas asli tidak diubah.
     rows = _rows(GOLD)
     copy = tmp_path / "gold.csv"
     with open(copy, "w", encoding="utf-8", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0]))
         w.writeheader()
         for r in rows:
-            w.writerow({**r, "annotation_source": "legacy_unverified"})
+            w.writerow({**r, "annotation_source": "legacy_unverified", "annotator_id": "uji"})
     gold = load_gold_annotations(copy, schema=schema)
     assert len(gold.annotations) == len(rows)
 
@@ -76,9 +77,10 @@ def test_gold_ids_match_current_workbook(dataset_id):
     assert sorted(i.mapping_item_id for i in idents) == sorted(r["mapping_item_id"] for r in rows)
 
 
-def test_gold_is_marked_as_unverified_ai_proposal():
-    sources = {r["annotation_source"] for r in _rows(GOLD)}
-    assert sources == {"ai_single_annotator_v1"}
+def test_gold_source_marks_p01_verified_and_p02_unverified():
+    sources = {(r["dataset_id"], r["annotation_source"]) for r in _rows(GOLD)}
+    assert sources == {("P01", "terverifikasi_v1"), ("P02", "belum_diverifikasi_v1")}
+    assert all(not r["annotator_id"] for r in _rows(GOLD))
 
 
 def test_cell_keys_reference_known_varieties_and_one_to_one_gold():
