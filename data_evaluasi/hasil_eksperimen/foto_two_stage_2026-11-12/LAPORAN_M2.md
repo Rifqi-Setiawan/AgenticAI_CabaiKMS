@@ -123,7 +123,7 @@ Pada set ini aturan fusi lama dan baru memberi hasil yang identik, jadi semua pe
 
 ## Batasan
 
-- **Satu ulangan per set, dan model tidak deterministik.** Selisih kecil seperti commons 35 → 32, PVT terlihat 27 → 25, dan tertutup 4 → 3 berada di dalam CI 95%. Di set PVT foto ulang, yang nama berkasnya tidak relevan, 10 dan 4 jawaban tetap berubah antar-run. Untuk klaim statistik, jalankan ≥3 ulangan.
+- **Model tidak deterministik; sudah diulang 3x** (`rekap_ulangan/rekap_ulangan.md`). Kesimpulan nama berkas stabil di 3 ulangan (ikut nama salah 2/40, REVIEW_MISMATCH 7/40, AUTO_LINK salah berpasangan 7-8/120). Commons 32-34/35, PVT kartu terlihat Top-1 0,526-0,632, tertutup 0,158-0,211; keputusan identik di semua ulangan 84,2% (foto ulang) dan 87,2% (berpasangan). D23 hanya satu run, jadi selisih kecil D24 vs D23 tidak diklaim.
 - **Gold atribut P01 sudah diverifikasi penulis (13 Nov 2026, tanpa koreksi); skor di laporan ini tetap.**
 - **Latensi provider (25-90 detik per foto) berbeda dari 7 Nov,** sehingga run dibagi menjadi 3 job paralel. Urutan foto tidak memengaruhi hasil.
 - **Varietas di registri hanya dicocokkan oleh kode dari nama berkas.** Nama berkas yang menyebut varietas *tidak terdaftar* (kasus OTHER BENAR) belum dipakai sebagai sinyal CANDIDATE, sehingga sel itu turun dari 17/21 ke 3/21. Ini kandidat perbaikan berikutnya.

@@ -327,12 +327,17 @@ K_nama_file_berpasangan/ (7 Nov 2026, D23, skrip sama dengan J_)
 L_visi_dua_tahap_D24/ (12 Nov 2026, D24, branch feat/vision-two-stage; uji_visi_commons_vps.py --mode two_stage)
   Input, registri, deskripsi varietas, kanonik P01/S01-S03 dan varietas DB (--db-dari-meta) SAMA dengan J_ dan K_; yang
   berubah hanya kode visi: model visi tidak menerima nama berkas/caption, nama berkas dicocokkan deterministik ke registri,
-  konflik dicek di fusi (independent_signals). 271 panggilan visi, 0 gagal, 1 ulangan.
+  konflik dicek di fusi (independent_signals). 271 panggilan visi per ulangan, 3 ulangan; foto yang
+  gagal karena galat provider dijalankan ulang sampai berhasil (akhirnya 0 gagal).
   commons35/, indonesia_S01..S03/, pvt40_kartu_terlihat/, pvt40_kartu_tertutup/   padanan set J_.
   ind6_netral_S01..S03/, pvt40_netral/, pvt40_benar/, pvt40_salah_terdaftar/      padanan set K_.
   Isi: klasifikasi_foto.csv + meta_run.json per set (meta memuat vision_mode dan db_dari_meta).
   skor_foto/ (skor_foto_ulang.py) dan skor_berpasangan/ (skor_nama_file_berpasangan.py): hasil_skor.md/.json + rincian.
   skor_ablasi_fusi_lama/: jawaban visual yang sama digabung dengan aturan fusi lama (ablasi_fusi_m2.py --fusi lama).
+  Folder set di atas = ulangan 1. ulangan2/ dan ulangan3/: struktur sama (+ klasifikasi_foto_percobaan1.csv = hasil
+  percobaan pertama bila ada foto yang gagal). rekap_ulangan/: rerata, SB, rentang, dan kestabilan 3 ulangan
+  (rekap_ulangan_m2.py). Rerata: PVT Top-1 kartu terlihat 0,579 ± 0,053, tertutup 0,175 ± 0,030; Commons 32,67/35;
+  AUTO_LINK salah berpasangan 7,67/120; ikut nama salah 2/40 dan REVIEW_MISMATCH 7/40 di semua ulangan.
   Ringkas: PVT nama SALAH_TERDAFTAR, ikut nama berkas 30/40 -> 2/40, REVIEW_MISMATCH 0/40 -> 7/40; tautan otomatis salah
   di 120 keputusan berpasangan 17 -> 8 (ablasi fusi lama: 12); tindakan sesuai gold 48 -> 33 karena kondisi nama BENAR tidak
   lagi tertolong nama berkas (kondisi NETRAL identik: KNOWN 4/19 status benar). Commons 35/35 -> 32/35; Indonesia Top-1

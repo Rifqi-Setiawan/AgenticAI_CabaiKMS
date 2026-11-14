@@ -32,7 +32,7 @@ Daftar isi:
 | Isi spreadsheet per sel (ketat) | 328 sel kunci | held-out 216/216, dev 112/112 = **1,000** |
 | Foto Commons (D24) | 35 foto, registri Hungarian Wax | 32/35 status benar, AUTO_LINK 5/6 (D23: 35/35, 7/7) |
 | Foto Indonesia (D24) | 6 foto x S01-S03 | Top-1 0,750, AUTO_LINK **12/13**, bagian **18/18** (D23: 0,812, 12/12, 15/18) |
-| Foto PVT (D24) | 40 foto, registri + deskripsi 24 varietas P01 | Top-1 kartu terlihat 0,579, kartu tertutup **0,158**; AUTO_LINK 8/13 dan **2/6** (D23: 0,632 / 0,211; 12/19 / 3/8) |
+| Foto PVT (D24) | 40 foto, registri + deskripsi 24 varietas P01 | Top-1 kartu terlihat 0,579, kartu tertutup **0,158**; AUTO_LINK 8/13 dan **2/6** (D23: 0,632 / 0,211; 12/19 / 3/8). Rerata 3 ulangan: Top-1 0,579 / **0,175** |
 | Nama file berpasangan (D24) | 40 PVT kartu tertutup x 3 nama | nama salah terdaftar: REVIEW_MISMATCH **7/40** (D23 0/40), ikut nama berkas **2/40** (D23 30/40); tautan salah semua kondisi **8/120** (D23 17/120) |
 | Workbook gabungan (D24) | Indonesia S01-S03 | F1 **0,980** (sel 1,000; link foto 12 benar / 1 salah / 4 terlewat; D23 0,960) |
 
@@ -303,8 +303,12 @@ data 7 Nov). Ablasi: jawaban visual D24 digabung ulang dengan aturan fusi lama, 
 | Workbook gabungan Indonesia F1 | 0,960 | sama dengan D24 | **0,980** |
 
 Kebocoran nama berkas hilang; kondisi netral identik, jadi turunnya total tindakan benar berasal dari skor D23 kondisi "nama
-benar" yang terlalu tinggi. Aturan fusi baru hanya mengubah 8 dari 271 tindakan (semua di set PVT berpasangan). Satu ulangan;
-selisih kecil di set foto ulang ada di dalam CI. Hasil: `hasil_eksperimen/foto_two_stage_2026-11-12/` (`LAPORAN_M2.md`).
+benar" yang terlalu tinggi. Aturan fusi baru hanya mengubah 8 dari 271 tindakan (semua di set PVT berpasangan). Diulang 3x (13-14 Nov,
+foto gagal karena galat provider dijalankan ulang, akhirnya 0 gagal): nama berkas berpasangan stabil (ikut nama salah 2/40,
+REVIEW_MISMATCH 7/40 di semua ulangan; AUTO_LINK salah 7,67 ± 0,58 dari 120; tindakan sesuai gold 32,33 ± 0,58); Commons
+status benar 32,67 ± 1,15; PVT Top-1 kartu terlihat 0,579 ± 0,053, tertutup 0,175 ± 0,030; Indonesia dan workbook gabungan
+(F1 0,980) sama di 3 ulangan. Keputusan sama di semua ulangan: foto ulang 112/133 (84,2%), berpasangan 136/156 (87,2%).
+Rekap: `rekap_ulangan/rekap_ulangan.md` (`skrip/rekap_ulangan_m2.py`). Hasil: `hasil_eksperimen/foto_two_stage_2026-11-12/` (`LAPORAN_M2.md`).
 
 ---
 
@@ -499,7 +503,7 @@ Selesai 12 Nov:
 Hal terbuka:
 - Angka di draf paper masih versi v11 (data dan sistem lama).
 - Nama berkas yang menyebut varietas tidak terdaftar belum dipakai sebagai sinyal CANDIDATE (D24).
-- Foto baru dijalankan 1x per kondisi; perlu >= 3 ulangan untuk klaim statistik.
+- Foto D24 sudah 3 ulangan; D23 (pembanding) tetap satu run.
 - Uji paritas lewat jalur produksi penuh (Drive + `vision_hook` + KMS) belum dijalankan.
 - Gold atribut P02 belum diverifikasi (79 butir perlu diputuskan); P01 sudah diverifikasi.
 - Diagram alur (Fig. 1): tambahkan panah registry/nama file ke model visi, lalu ganti label "curator-approved" (baris baru

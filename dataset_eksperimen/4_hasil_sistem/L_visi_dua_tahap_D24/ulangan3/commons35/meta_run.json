@@ -1,0 +1,16 @@
+{
+  "label": "commons35",
+  "vision_mode": "two_stage",
+  "kanonik": null,
+  "run_scope": [
+    "Hungarian Wax"
+  ],
+  "db_varieties": [],
+  "db_dari_meta": "/srv/hermes-control/services/agentic-ai-cabai-kms/data_evaluasi/hasil_eksperimen/foto_ulang_2026-11-07/commons/meta_commons35.json",
+  "options": [
+    "Hungarian Wax"
+  ],
+  "deskripsi_run_jumlah_karakter": {},
+  "mulai": "2026-11-13T02:54:47.321111",
+  "selesai": "2026-11-13T03:25:15.480107"
+}

@@ -45,14 +45,14 @@ Kesimpulan paling jujur:
 | | Ditulis otomatis benar / salah | 141 / 0 | 6.3 |
 | | Dikirim ke review | 139 dari 285 (49%), semuanya usulan NULL | 6.3 |
 | **Isi sel** (ketat) | Uji baru / pengembangan | 216/216 = **1,000** / 112/112 = **1,000** | 6.4 |
-| **Foto Commons** (35, registri 1 varietas) | Status benar / tautan otomatis benar | 32/35 / 5/6 (D23: 35/35 / 7/7) | 6.5 |
-| **Foto Indonesia** (6 x 3 spreadsheet) | Top-1 / tautan otomatis benar / bagian benar | 0,750 / 12/13 / 18/18 (D23: 0,812 / 12/12 / 15/18) | 6.6 |
-| **Foto PVT** (40, registri 24 varietas P01) | Top-1, kartu terlihat / tertutup | 0,579 / **0,158** (D23: 0,632 / 0,211) | 6.7 |
-| | Tautan otomatis benar, kartu terlihat / tertutup | 8/13 / **2/6** (D23: 12/19 / 3/8) | 6.7 |
-| **Nama file berpasangan** (PVT kartu tertutup) | Nama salah tertangkap sebagai konflik (REVIEW_MISMATCH) | **7/40** (D23: 0/40) | 6.8 |
-| | Model ikut varietas di nama berkas / tautan salah (nama salah) | **2/40 / 2** (D23: 30/40 / 12) | 6.8 |
-| | Tautan otomatis salah, semua 120 keputusan | **8/120** (D23: 17/120) | 6.8 |
-| **Workbook akhir** (atribut + foto) | F1 Indonesia S01-S03 | **0,980** (D23: 0,960) | 6.9 |
+| **Foto Commons** (35, registri 1 varietas) | Status benar / tautan otomatis benar | 32,67 ± 1,15 (32-34) / 5/6, 7/8, 5/6 (D23: 35/35 / 7/7) | 6.5 |
+| **Foto Indonesia** (6 x 3 spreadsheet) | Top-1 / tautan otomatis benar / bagian benar | 0,750 / 12/13 / 18/18, sama di 3 ulangan (D23: 0,812 / 12/12 / 15/18) | 6.6 |
+| **Foto PVT** (40, registri 24 varietas P01) | Top-1, kartu terlihat / tertutup | 0,579 ± 0,053 / **0,175 ± 0,030** (D23: 0,632 / 0,211) | 6.7 |
+| | Tautan otomatis benar, kartu terlihat / tertutup | 8/13, 9/13, 7/11 / **2/6, 1/4, 4/7** (D23: 12/19 / 3/8) | 6.7 |
+| **Nama file berpasangan** (PVT kartu tertutup) | Nama salah tertangkap sebagai konflik (REVIEW_MISMATCH) | **7/40** di 3 ulangan (D23: 0/40) | 6.8 |
+| | Model ikut varietas di nama berkas / tautan salah (nama salah) | **2/40 / 2** di 3 ulangan (D23: 30/40 / 12) | 6.8 |
+| | Tautan otomatis salah, semua 120 keputusan | **7,67 ± 0,58** (7-8; D23: 17/120) | 6.8 |
+| **Workbook akhir** (atribut + foto) | F1 Indonesia S01-S03 | **0,980** di 3 ulangan (D23: 0,960) | 6.9 |
 | **Skema dinamis** | Baris baru / duplikat template / kemiripan antarpengulangan | 40 / 0 / 70-78% (data lama) | 6.10 |
 
 ---
@@ -355,6 +355,28 @@ Dengan kartu nama terlihat, model membaca tulisan di kartu. Dengan kartu tertutu
 tetapi **4 dari 6 tautan otomatis salah**. Selisih D24 vs D23 di set ini ada di dalam CI 95% (nama berkas set ini netral,
 jadi perubahannya berasal dari variasi model antar-run).
 
+**Tiga ulangan D24 (13-14 Nov 2026).** Input, registri, deskripsi, dan skrip skor sama; foto yang gagal karena galat
+provider dijalankan ulang sampai berhasil (akhirnya 0 gagal). Rerata ± SB antar-ulangan (variasi model, bukan
+ketidakpastian sampel); D23 hanya satu run.
+
+| Metrik | Ulangan 1 / 2 / 3 | Rerata ± SB | D23 |
+|---|---|---|---|
+| Commons: status benar (dari 35) | 32 / 34 / 32 | 32,67 ± 1,15 | 35 |
+| Commons: AUTO_LINK benar / total | 5/6, 7/8, 5/6 | - | 7/7 |
+| Indonesia S01-S03: Top-1 / AUTO_LINK benar / bagian | sama di 3 ulangan: 0,750 / 12/13 / 18/18 | - | 0,812 / 12/12 / 15/18 |
+| PVT kartu terlihat: Top-1 | 0,579 / 0,632 / 0,526 | 0,579 ± 0,053 | 0,632 |
+| PVT kartu terlihat: AUTO_LINK benar / total | 8/13, 9/13, 7/11 | - | 12/19 |
+| **PVT kartu tertutup: Top-1** | 0,158 / 0,158 / 0,211 | **0,175 ± 0,030** | 0,211 |
+| PVT kartu tertutup: AUTO_LINK benar / total | 2/6, 1/4, 4/7 | - | 3/8 |
+| PVT nama salah: ikut nama berkas / REVIEW_MISMATCH (dari 40) | 2, 7 di semua ulangan | - | 30, 0 |
+| PVT berpasangan: tindakan sesuai gold (dari 120) | 33 / 32 / 32 | 32,33 ± 0,58 | 48 |
+| PVT berpasangan: AUTO_LINK salah (dari 120) | 8 / 7 / 8 | 7,67 ± 0,58 | 17 |
+| Workbook gabungan Indonesia F1 | 0,980 / 0,980 / 0,980 | 0,980 ± 0,000 | 0,960 |
+| Workbook P01 + PVT kartu terlihat / tertutup F1 | 0,947-0,949 / 0,940-0,944 | 0,947 / 0,941 | 0,950 / 0,940 |
+
+Keputusan (status, varietas, tindakan) sama di ketiga ulangan pada 112/133 foto ulang (84,2%) dan 136/156 keputusan
+nama berkas berpasangan (87,2%). Kesimpulan nama berkas stabil; tabel di atas dan 6.8 memakai ulangan 1. Rekap: `hasil_eksperimen/foto_two_stage_2026-11-12/rekap_ulangan/rekap_ulangan.md`.
+
 ### 6.8 Nama file berpasangan (D23 → D24): foto sama, nama berkas berbeda
 
 Foto yang **sama persis** diuji dengan tiga nama berkas, jadi perbedaan hasil hanya disebabkan nama berkas. Set utama: 40
@@ -438,10 +460,11 @@ run di dokumen ini menonaktifkan fitur ini (`KMS_DYNAMIC_SCHEMA=0`).
    Gold atribut P02 (varietas lokal) belum diverifikasi dan tidak dipakai untuk skor utama.
 2. **Data kecil setelah pembersihan level varietas:** 7 workbook dinilai, foto Commons tinggal 35 (7 terdaftar), foto
    Indonesia 6 foto unik.
-3. **Varietas Indonesia yang mirip belum bisa dikenali dari foto** (PVT kartu tertutup Top-1 0,158; D23 0,211), dan tautan
-   otomatis yang salah masih lolos (4 dari 6). Ambang AUTO_LINK 0,85 belum cukup aman pada foto ini.
-4. **Foto hanya dijalankan 1x per kondisi** dan model visi tidak deterministik: pada set yang nama berkasnya tidak relevan,
-   10 dari 40 jawaban (kartu terlihat) berubah antar-run. Selisih kecil antar-run tidak boleh diklaim.
+3. **Varietas Indonesia yang mirip belum bisa dikenali dari foto** (PVT kartu tertutup Top-1 0,175 ± 0,030 dari 3 ulangan; D23
+   0,211), dan tautan otomatis yang salah masih lolos (3-4 per ulangan; ulangan 1: 4 dari 6). Ambang AUTO_LINK 0,85 belum cukup aman pada foto ini.
+4. **Model visi tidak deterministik.** Foto D24 dijalankan 3x per kondisi: 84,2% keputusan foto ulang dan 87,2% keputusan
+   nama berkas berpasangan sama di ketiga ulangan. SB antar-ulangan kecil (PVT kartu terlihat Top-1 ± 0,053), tetapi hanya
+   mengukur variasi model, bukan ketidakpastian sampel. D23 hanya satu run, jadi selisih kecil D24 vs D23 tidak diklaim.
 5. **Nama varietas tidak terdaftar di nama berkas belum dipakai** sebagai sinyal CANDIDATE (kasus 2 turun 17/21 → 3/21 setelah
    D24). Konflik nama terdaftar yang salah baru tertangkap 7/40, karena sebagian besar foto PVT berakhir REVIEW_UNCERTAIN.
 6. **Tidak ada penolakan otomatis untuk foto yang bukan cabai.** Foto seperti itu masuk ke review.

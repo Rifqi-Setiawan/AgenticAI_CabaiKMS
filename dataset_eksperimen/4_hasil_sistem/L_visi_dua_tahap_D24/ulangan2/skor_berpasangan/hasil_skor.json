@@ -1,0 +1,166 @@
+{
+ "sel": {
+  "ind6|KNOWN|NETRAL": {
+   "aksi_ok": 13,
+   "status_ok": 12,
+   "auto_salah": 1,
+   "ikut_nama": 0,
+   "gagal": 0,
+   "n": 16
+  },
+  "ind6|KNOWN|BENAR": {
+   "aksi_ok": 12,
+   "status_ok": 12,
+   "auto_salah": 0,
+   "ikut_nama": 0,
+   "gagal": 0,
+   "n": 16
+  },
+  "ind6|OTHER|NETRAL": {
+   "aksi_ok": 1,
+   "status_ok": 1,
+   "auto_salah": 1,
+   "ikut_nama": 0,
+   "gagal": 0,
+   "n": 2
+  },
+  "ind6|OTHER|BENAR": {
+   "aksi_ok": 1,
+   "status_ok": 1,
+   "auto_salah": 1,
+   "ikut_nama": 0,
+   "gagal": 0,
+   "n": 2
+  },
+  "pvt40|KNOWN|NETRAL": {
+   "aksi_ok": 15,
+   "status_ok": 4,
+   "auto_salah": 4,
+   "ikut_nama": 0,
+   "gagal": 0,
+   "n": 19
+  },
+  "pvt40|KNOWN|BENAR": {
+   "aksi_ok": 4,
+   "status_ok": 3,
+   "auto_salah": 0,
+   "ikut_nama": 0,
+   "gagal": 1,
+   "n": 19
+  },
+  "pvt40|KNOWN|SALAH_TERDAFTAR": {
+   "aksi_ok": 5,
+   "status_ok": 3,
+   "auto_salah": 2,
+   "ikut_nama": 2,
+   "gagal": 0,
+   "n": 19
+  },
+  "pvt40|OTHER|NETRAL": {
+   "aksi_ok": 3,
+   "status_ok": 0,
+   "auto_salah": 1,
+   "ikut_nama": 0,
+   "gagal": 0,
+   "n": 21
+  },
+  "pvt40|OTHER|BENAR": {
+   "aksi_ok": 3,
+   "status_ok": 0,
+   "auto_salah": 0,
+   "ikut_nama": 0,
+   "gagal": 1,
+   "n": 21
+  },
+  "pvt40|OTHER|SALAH_TERDAFTAR": {
+   "aksi_ok": 2,
+   "status_ok": 0,
+   "auto_salah": 0,
+   "ikut_nama": 0,
+   "gagal": 0,
+   "n": 21
+  }
+ },
+ "berpasangan": [
+  {
+   "set": "pvt40",
+   "gold": "KNOWN",
+   "a": "BENAR",
+   "b": "NETRAL",
+   "n": 19,
+   "selisih": -0.5789473684210527,
+   "lo": -0.7894736842105263,
+   "hi": -0.3684210526315789
+  },
+  {
+   "set": "pvt40",
+   "gold": "KNOWN",
+   "a": "SALAH_TERDAFTAR",
+   "b": "NETRAL",
+   "n": 19,
+   "selisih": -0.5263157894736842,
+   "lo": -0.7894736842105263,
+   "hi": -0.2631578947368421
+  },
+  {
+   "set": "pvt40",
+   "gold": "KNOWN",
+   "a": "SALAH_TERDAFTAR",
+   "b": "BENAR",
+   "n": 19,
+   "selisih": 0.05263157894736842,
+   "lo": -0.10526315789473684,
+   "hi": 0.21052631578947367
+  },
+  {
+   "set": "pvt40",
+   "gold": "OTHER",
+   "a": "BENAR",
+   "b": "NETRAL",
+   "n": 21,
+   "selisih": 0.0,
+   "lo": 0.0,
+   "hi": 0.0
+  },
+  {
+   "set": "pvt40",
+   "gold": "OTHER",
+   "a": "SALAH_TERDAFTAR",
+   "b": "NETRAL",
+   "n": 21,
+   "selisih": -0.047619047619047616,
+   "lo": -0.2857142857142857,
+   "hi": 0.14285714285714285
+  },
+  {
+   "set": "pvt40",
+   "gold": "OTHER",
+   "a": "SALAH_TERDAFTAR",
+   "b": "BENAR",
+   "n": 21,
+   "selisih": -0.047619047619047616,
+   "lo": -0.23809523809523808,
+   "hi": 0.14285714285714285
+  },
+  {
+   "set": "ind6",
+   "gold": "KNOWN",
+   "a": "BENAR",
+   "b": "NETRAL",
+   "n": 16,
+   "selisih": -0.0625,
+   "lo": -0.25,
+   "hi": 0.125
+  },
+  {
+   "set": "ind6",
+   "gold": "OTHER",
+   "a": "BENAR",
+   "b": "NETRAL",
+   "n": 2,
+   "selisih": 0.0,
+   "lo": 0.0,
+   "hi": 0.0
+  }
+ ]
+}

@@ -1,0 +1,291 @@
+{
+ "ulangan": [
+  "data_evaluasi/hasil_eksperimen/foto_two_stage_2026-11-12/skor",
+  "data_evaluasi/hasil_eksperimen/foto_two_stage_2026-11-12/ulangan2/skor",
+  "data_evaluasi/hasil_eksperimen/foto_two_stage_2026-11-12/ulangan3/skor"
+ ],
+ "metrik": {
+  "PVT nama salah: ikut nama berkas (dari 40)": {
+   "ulangan": [
+    2,
+    2,
+    2
+   ],
+   "d23": 30
+  },
+  "PVT nama salah: tindakan sesuai gold / REVIEW_MISMATCH benar (dari 40)": {
+   "ulangan": [
+    7,
+    7,
+    7
+   ],
+   "d23": 0
+  },
+  "PVT nama salah: AUTO_LINK salah": {
+   "ulangan": [
+    2,
+    2,
+    2
+   ],
+   "d23": 12
+  },
+  "PVT berpasangan: tindakan sesuai gold (dari 120)": {
+   "ulangan": [
+    33,
+    32,
+    32
+   ],
+   "d23": 48
+  },
+  "PVT berpasangan: AUTO_LINK salah (dari 120)": {
+   "ulangan": [
+    8,
+    7,
+    8
+   ],
+   "d23": 17
+  },
+  "PVT KNOWN NETRAL: status benar (dari 19)": {
+   "ulangan": [
+    4,
+    4,
+    3
+   ],
+   "d23": 4
+  },
+  "PVT KNOWN NETRAL: tindakan sesuai gold": {
+   "ulangan": [
+    16,
+    15,
+    15
+   ],
+   "d23": 16
+  },
+  "PVT KNOWN BENAR: status benar (dari 19)": {
+   "ulangan": [
+    3,
+    3,
+    3
+   ],
+   "d23": 16
+  },
+  "PVT KNOWN BENAR: tindakan sesuai gold": {
+   "ulangan": [
+    4,
+    4,
+    4
+   ],
+   "d23": 12
+  },
+  "PVT OTHER BENAR: status benar (dari 21)": {
+   "ulangan": [
+    0,
+    0,
+    0
+   ],
+   "d23": 19
+  },
+  "PVT OTHER BENAR: tindakan sesuai gold": {
+   "ulangan": [
+    3,
+    3,
+    3
+   ],
+   "d23": 17
+  },
+  "Commons: status benar (dari 35)": {
+   "ulangan": [
+    32,
+    34,
+    32
+   ],
+   "d23": 35
+  },
+  "Commons: Top-1 KNOWN": {
+   "ulangan": [
+    0.7142857142857143,
+    1.0,
+    0.7142857142857143
+   ],
+   "d23": 1.0
+  },
+  "Commons: macro-F1 kelas gold": {
+   "ulangan": [
+    0.8667582417582418,
+    0.9575757575757575,
+    0.8755244755244755
+   ],
+   "d23": 1.0
+  },
+  "Commons: AUTO_LINK benar / total": {
+   "ulangan": [
+    "5/6",
+    "7/8",
+    "5/6"
+   ],
+   "d23": "7/7"
+  },
+  "Commons: AUTO_LINK salah": {
+   "ulangan": [
+    1,
+    1,
+    1
+   ],
+   "d23": 0
+  },
+  "Indonesia S01-S03: status benar (dari 18)": {
+   "ulangan": [
+    13,
+    13,
+    13
+   ],
+   "d23": 15
+  },
+  "Indonesia S01-S03: Top-1 KNOWN": {
+   "ulangan": [
+    0.75,
+    0.75,
+    0.75
+   ],
+   "d23": 0.8125
+  },
+  "Indonesia S01-S03: macro-F1 kelas gold": {
+   "ulangan": [
+    0.6333333333333333,
+    0.6333333333333333,
+    0.6333333333333333
+   ],
+   "d23": 0.7339901477832512
+  },
+  "Indonesia S01-S03: AUTO_LINK benar / total": {
+   "ulangan": [
+    "12/13",
+    "12/13",
+    "12/13"
+   ],
+   "d23": "12/12"
+  },
+  "Indonesia S01-S03: AUTO_LINK salah": {
+   "ulangan": [
+    1,
+    1,
+    1
+   ],
+   "d23": 0
+  },
+  "PVT kartu terlihat: status benar (dari 40)": {
+   "ulangan": [
+    25,
+    26,
+    23
+   ],
+   "d23": 27
+  },
+  "PVT kartu terlihat: Top-1 KNOWN": {
+   "ulangan": [
+    0.5789473684210527,
+    0.631578947368421,
+    0.5263157894736842
+   ],
+   "d23": 0.631578947368421
+  },
+  "PVT kartu terlihat: macro-F1 kelas gold": {
+   "ulangan": [
+    0.8055555555555556,
+    0.8210526315789474,
+    0.7712418300653594
+   ],
+   "d23": 0.8640350877192983
+  },
+  "PVT kartu terlihat: AUTO_LINK benar / total": {
+   "ulangan": [
+    "8/13",
+    "9/13",
+    "7/11"
+   ],
+   "d23": "12/19"
+  },
+  "PVT kartu terlihat: AUTO_LINK salah": {
+   "ulangan": [
+    5,
+    4,
+    4
+   ],
+   "d23": 7
+  },
+  "PVT kartu tertutup: status benar (dari 40)": {
+   "ulangan": [
+    3,
+    3,
+    4
+   ],
+   "d23": 4
+  },
+  "PVT kartu tertutup: Top-1 KNOWN": {
+   "ulangan": [
+    0.15789473684210525,
+    0.15789473684210525,
+    0.21052631578947367
+   ],
+   "d23": 0.21052631578947367
+  },
+  "PVT kartu tertutup: macro-F1 kelas gold": {
+   "ulangan": [
+    0.25925925925925924,
+    0.2692307692307692,
+    0.25925925925925924
+   ],
+   "d23": 0.27586206896551724
+  },
+  "PVT kartu tertutup: AUTO_LINK benar / total": {
+   "ulangan": [
+    "2/6",
+    "1/4",
+    "4/7"
+   ],
+   "d23": "3/8"
+  },
+  "PVT kartu tertutup: AUTO_LINK salah": {
+   "ulangan": [
+    4,
+    3,
+    3
+   ],
+   "d23": 5
+  },
+  "Workbook gabungan Indonesia F1": {
+   "ulangan": [
+    0.9802371541501976,
+    0.9802371541501976,
+    0.9802371541501976
+   ],
+   "d23": 0.9603174603174603
+  },
+  "Workbook P01+PVT terlihat F1": {
+   "ulangan": [
+    0.9467162329615861,
+    0.9491945477075588,
+    0.9465838509316771
+   ],
+   "d23": 0.949569495694957
+  },
+  "Workbook P01+PVT tertutup F1": {
+   "ulangan": [
+    0.9400000000000001,
+    0.9398496240601505,
+    0.9438202247191012
+   ],
+   "d23": 0.9401496259351622
+  }
+ },
+ "kestabilan": {
+  "foto": [
+   112,
+   133
+  ],
+  "berpasangan": [
+   136,
+   156
+  ]
+ }
+}

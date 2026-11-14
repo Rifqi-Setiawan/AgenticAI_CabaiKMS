@@ -1,0 +1,21 @@
+{
+  "label": "S01",
+  "vision_mode": "two_stage",
+  "kanonik": "/srv/hermes-control/services/agentic-ai-cabai-kms/dataset_eksperimen/4_hasil_sistem/I_atribut_bge-m3_39f4213/S01_D01_transposed/hasil_kanonik.xlsx",
+  "run_scope": [
+    "Kopay",
+    "Katokkon"
+  ],
+  "db_varieties": [],
+  "db_dari_meta": "/srv/hermes-control/services/agentic-ai-cabai-kms/data_evaluasi/hasil_eksperimen/foto_nama_berpasangan_2026-11-07/ind6_netral/meta_S01.json",
+  "options": [
+    "Katokkon",
+    "Kopay"
+  ],
+  "deskripsi_run_jumlah_karakter": {
+    "Kopay": 20,
+    "Katokkon": 20
+  },
+  "mulai": "2026-11-13T01:06:15.853182",
+  "selesai": "2026-11-13T01:18:58.305426"
+}
