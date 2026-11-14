@@ -1,0 +1,20 @@
+{
+  "label": "S03",
+  "vision_mode": "two_stage",
+  "vision_model": "grok-4.7",
+  "vision_base_url": "https://octa.telkomsel.com/v1",
+  "kanonik": "C:/Users/Rifqi/AppData/Local/Temp/cvr/dataset_eksperimen/4_hasil_sistem/I_atribut_bge-m3_39f4213/S03_D03_bertingkat/hasil_kanonik.xlsx",
+  "run_scope": [
+    "Katokkon"
+  ],
+  "db_varieties": [],
+  "db_dari_meta": "C:/Users/Rifqi/AppData/Local/Temp/cvr/data_evaluasi/hasil_eksperimen/foto_ulang_2026-11-07/indonesia/meta_S03.json",
+  "options": [
+    "Katokkon"
+  ],
+  "deskripsi_run_jumlah_karakter": {
+    "Katokkon": 28
+  },
+  "mulai": "2026-11-14T17:19:11.290050",
+  "selesai": "2026-11-14T17:20:58.298621"
+}

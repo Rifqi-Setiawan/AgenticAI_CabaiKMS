@@ -1,0 +1,497 @@
+{
+ "foto": {
+  "commons35": {
+   "n": 35,
+   "gagal": 0,
+   "status_benar": 0,
+   "macro_f1_3": 0.0,
+   "macro_f1_ada": 0.0,
+   "kelas_gold": [
+    "KNOWN",
+    "OTHER"
+   ],
+   "mf1_ci": [
+    0.0,
+    0.0
+   ],
+   "n_known": 7,
+   "top1": 0.0,
+   "top1_ci": [
+    0.0,
+    0.0
+   ],
+   "other_recall": [
+    0,
+    28
+   ],
+   "dipaksa_known": [
+    0,
+    28
+   ],
+   "auto_link": [
+    0,
+    0
+   ],
+   "bagian": [
+    31,
+    32
+   ],
+   "fusi": [
+    0,
+    35
+   ],
+   "aksi": {
+    "REVIEW_UNCERTAIN": 35
+   },
+   "auto_per_kondisi": {
+    "INFORMATIF": [
+     0,
+     0
+    ],
+    "MENYESATKAN": [
+     0,
+     0
+    ],
+    "NETRAL": [
+     0,
+     0
+    ]
+   }
+  },
+  "S01": {
+   "n": 6,
+   "gagal": 0,
+   "status_benar": 2,
+   "macro_f1_3": 0.16666666666666666,
+   "macro_f1_ada": 0.5,
+   "kelas_gold": [
+    "KNOWN"
+   ],
+   "mf1_ci": [
+    0.0,
+    0.8
+   ],
+   "n_known": 6,
+   "top1": 0.3333333333333333,
+   "top1_ci": [
+    0.0,
+    0.6666666666666666
+   ],
+   "other_recall": [
+    0,
+    0
+   ],
+   "dipaksa_known": [
+    0,
+    0
+   ],
+   "auto_link": [
+    1,
+    1
+   ],
+   "bagian": [
+    6,
+    6
+   ],
+   "fusi": [
+    0,
+    0
+   ],
+   "aksi": {
+    "AUTO_LINK": 1,
+    "REVIEW_MISMATCH": 1,
+    "REVIEW_UNCERTAIN": 4
+   },
+   "auto_per_kondisi": {
+    "INDONESIA": [
+     1,
+     1
+    ]
+   }
+  },
+  "S02": {
+   "n": 6,
+   "gagal": 0,
+   "status_benar": 2,
+   "macro_f1_3": 0.16666666666666666,
+   "macro_f1_ada": 0.5,
+   "kelas_gold": [
+    "KNOWN"
+   ],
+   "mf1_ci": [
+    0.0,
+    0.8
+   ],
+   "n_known": 6,
+   "top1": 0.3333333333333333,
+   "top1_ci": [
+    0.0,
+    0.6666666666666666
+   ],
+   "other_recall": [
+    0,
+    0
+   ],
+   "dipaksa_known": [
+    0,
+    0
+   ],
+   "auto_link": [
+    1,
+    1
+   ],
+   "bagian": [
+    6,
+    6
+   ],
+   "fusi": [
+    0,
+    0
+   ],
+   "aksi": {
+    "AUTO_LINK": 1,
+    "CANDIDATE": 1,
+    "REVIEW_MISMATCH": 1,
+    "REVIEW_UNCERTAIN": 3
+   },
+   "auto_per_kondisi": {
+    "INDONESIA": [
+     1,
+     1
+    ]
+   }
+  },
+  "S03": {
+   "n": 6,
+   "gagal": 0,
+   "status_benar": 3,
+   "macro_f1_3": 0.35555555555555557,
+   "macro_f1_ada": 0.5333333333333333,
+   "kelas_gold": [
+    "KNOWN",
+    "OTHER"
+   ],
+   "mf1_ci": [
+    0.14285714285714285,
+    0.9
+   ],
+   "n_known": 4,
+   "top1": 0.5,
+   "top1_ci": [
+    0.0,
+    1.0
+   ],
+   "other_recall": [
+    1,
+    2
+   ],
+   "dipaksa_known": [
+    0,
+    2
+   ],
+   "auto_link": [
+    1,
+    1
+   ],
+   "bagian": [
+    6,
+    6
+   ],
+   "fusi": [
+    0,
+    0
+   ],
+   "aksi": {
+    "AUTO_LINK": 1,
+    "CANDIDATE": 3,
+    "REVIEW_UNCERTAIN": 2
+   },
+   "auto_per_kondisi": {
+    "INDONESIA": [
+     1,
+     1
+    ]
+   }
+  },
+  "pvt40_terlihat": {
+   "n": 40,
+   "gagal": 0,
+   "status_benar": 0,
+   "macro_f1_3": 0.0,
+   "macro_f1_ada": 0.0,
+   "kelas_gold": [
+    "KNOWN",
+    "OTHER"
+   ],
+   "mf1_ci": [
+    0.0,
+    0.0
+   ],
+   "n_known": 19,
+   "top1": 0.0,
+   "top1_ci": [
+    0.0,
+    0.0
+   ],
+   "other_recall": [
+    0,
+    21
+   ],
+   "dipaksa_known": [
+    0,
+    21
+   ],
+   "auto_link": [
+    0,
+    0
+   ],
+   "bagian": [
+    33,
+    36
+   ],
+   "fusi": [
+    4,
+    40
+   ],
+   "aksi": {
+    "REVIEW_UNCERTAIN": 40
+   },
+   "auto_per_kondisi": {
+    "NETRAL": [
+     0,
+     0
+    ]
+   }
+  },
+  "pvt40_tertutup": {
+   "n": 40,
+   "gagal": 0,
+   "status_benar": 0,
+   "macro_f1_3": 0.0,
+   "macro_f1_ada": 0.0,
+   "kelas_gold": [
+    "KNOWN",
+    "OTHER"
+   ],
+   "mf1_ci": [
+    0.0,
+    0.0
+   ],
+   "n_known": 19,
+   "top1": 0.0,
+   "top1_ci": [
+    0.0,
+    0.0
+   ],
+   "other_recall": [
+    0,
+    21
+   ],
+   "dipaksa_known": [
+    0,
+    21
+   ],
+   "auto_link": [
+    0,
+    0
+   ],
+   "bagian": [
+    32,
+    36
+   ],
+   "fusi": [
+    4,
+    40
+   ],
+   "aksi": {
+    "REVIEW_UNCERTAIN": 40
+   },
+   "auto_per_kondisi": {
+    "NETRAL": [
+     0,
+     0
+    ]
+   }
+  },
+  "indonesia_S01-S03": {
+   "n": 18,
+   "gagal": 0,
+   "status_benar": 7,
+   "macro_f1_3": 0.26515151515151514,
+   "macro_f1_ada": 0.3977272727272727,
+   "kelas_gold": [
+    "KNOWN",
+    "OTHER"
+   ],
+   "mf1_ci": [
+    0.15789473684210525,
+    0.6457142857142857
+   ],
+   "n_known": 16,
+   "top1": 0.375,
+   "top1_ci": [
+    0.13333333333333333,
+    0.625
+   ],
+   "other_recall": [
+    1,
+    2
+   ],
+   "dipaksa_known": [
+    0,
+    2
+   ],
+   "auto_link": [
+    3,
+    3
+   ],
+   "bagian": [
+    18,
+    18
+   ],
+   "fusi": [
+    0,
+    0
+   ],
+   "aksi": {
+    "AUTO_LINK": 3,
+    "CANDIDATE": 4,
+    "REVIEW_MISMATCH": 2,
+    "REVIEW_UNCERTAIN": 9
+   },
+   "auto_per_kondisi": {
+    "INDONESIA": [
+     3,
+     3
+    ]
+   }
+  }
+ },
+ "gabungan": {
+  "S01": {
+   "sel": {
+    "benar": 40,
+    "salah_tulis": 0,
+    "harapan": 40,
+    "terlewat": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "foto": {
+    "benar": 1,
+    "salah_tulis": 0,
+    "harapan": 6,
+    "terlewat": 5
+   },
+   "gabungan": {
+    "benar": 41,
+    "salah_tulis": 0,
+    "terlewat": 5,
+    "precision": 1.0,
+    "recall": 0.8913043478260869,
+    "f1": 0.9425287356321839
+   }
+  },
+  "S02": {
+   "sel": {
+    "benar": 44,
+    "salah_tulis": 0,
+    "harapan": 44,
+    "terlewat": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "foto": {
+    "benar": 1,
+    "salah_tulis": 0,
+    "harapan": 6,
+    "terlewat": 5
+   },
+   "gabungan": {
+    "benar": 45,
+    "salah_tulis": 0,
+    "terlewat": 5,
+    "precision": 1.0,
+    "recall": 0.9,
+    "f1": 0.9473684210526316
+   }
+  },
+  "S03": {
+   "sel": {
+    "benar": 28,
+    "salah_tulis": 0,
+    "harapan": 28,
+    "terlewat": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "foto": {
+    "benar": 1,
+    "salah_tulis": 0,
+    "harapan": 4,
+    "terlewat": 3
+   },
+   "gabungan": {
+    "benar": 29,
+    "salah_tulis": 0,
+    "terlewat": 3,
+    "precision": 1.0,
+    "recall": 0.90625,
+    "f1": 0.9508196721311475
+   }
+  },
+  "P01+pvt40_terlihat": {
+   "sel": {
+    "benar": 374,
+    "salah_tulis": 0,
+    "harapan": 402,
+    "terlewat": 28,
+    "precision": 1.0,
+    "recall": 0.9303482587064676,
+    "f1": 0.9639175257731958
+   },
+   "foto": {
+    "benar": 0,
+    "salah_tulis": 0,
+    "harapan": 18,
+    "terlewat": 18
+   },
+   "gabungan": {
+    "benar": 374,
+    "salah_tulis": 0,
+    "terlewat": 46,
+    "precision": 1.0,
+    "recall": 0.8904761904761904,
+    "f1": 0.9420654911838791
+   }
+  },
+  "P01+pvt40_tertutup": {
+   "sel": {
+    "benar": 374,
+    "salah_tulis": 0,
+    "harapan": 402,
+    "terlewat": 28,
+    "precision": 1.0,
+    "recall": 0.9303482587064676,
+    "f1": 0.9639175257731958
+   },
+   "foto": {
+    "benar": 0,
+    "salah_tulis": 0,
+    "harapan": 18,
+    "terlewat": 18
+   },
+   "gabungan": {
+    "benar": 374,
+    "salah_tulis": 0,
+    "terlewat": 46,
+    "precision": 1.0,
+    "recall": 0.8904761904761904,
+    "f1": 0.9420654911838791
+   }
+  }
+ }
+}

@@ -1,0 +1,18 @@
+{
+  "label": "commons35",
+  "vision_mode": "two_stage",
+  "vision_model": "grok-4.7",
+  "vision_base_url": "https://octa.telkomsel.com/v1",
+  "kanonik": null,
+  "run_scope": [
+    "Hungarian Wax"
+  ],
+  "db_varieties": [],
+  "db_dari_meta": "C:/Users/Rifqi/AppData/Local/Temp/cvr/data_evaluasi/hasil_eksperimen/foto_ulang_2026-11-07/commons/meta_commons35.json",
+  "options": [
+    "Hungarian Wax"
+  ],
+  "deskripsi_run_jumlah_karakter": {},
+  "mulai": "2026-11-14T17:02:13.747660",
+  "selesai": "2026-11-14T17:11:40.729292"
+}

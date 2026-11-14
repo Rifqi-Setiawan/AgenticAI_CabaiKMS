@@ -1,0 +1,64 @@
+== Gemini_ulangan1
+  S01                gold KNOWN   6 | jawab KNOWN   4 | benar   4 (presisi 1.00, recall 0.67) | KNOWN padahal bukan 0
+  S02                gold KNOWN   6 | jawab KNOWN   5 | benar   4 (presisi 0.80, recall 0.67) | KNOWN padahal bukan 0
+  S03                gold KNOWN   4 | jawab KNOWN   5 | benar   4 (presisi 0.80, recall 1.00) | KNOWN padahal bukan 1
+  TOTAL              gold KNOWN  61 | jawab KNOWN  45 | benar  31 (presisi 0.69, recall 0.51) | KNOWN padahal bukan 5
+  commons35          gold KNOWN   7 | jawab KNOWN   6 | benar   5 (presisi 0.83, recall 0.71) | KNOWN padahal bukan 1
+  pvt40_terlihat     gold KNOWN  19 | jawab KNOWN  17 | benar  11 (presisi 0.65, recall 0.58) | KNOWN padahal bukan 2
+  pvt40_tertutup     gold KNOWN  19 | jawab KNOWN   8 | benar   3 (presisi 0.38, recall 0.16) | KNOWN padahal bukan 1
+== Gemini_ulangan2
+  S01                gold KNOWN   6 | jawab KNOWN   4 | benar   4 (presisi 1.00, recall 0.67) | KNOWN padahal bukan 0
+  S02                gold KNOWN   6 | jawab KNOWN   6 | benar   5 (presisi 0.83, recall 0.83) | KNOWN padahal bukan 0
+  S03                gold KNOWN   4 | jawab KNOWN   4 | benar   3 (presisi 0.75, recall 0.75) | KNOWN padahal bukan 1
+  TOTAL              gold KNOWN  61 | jawab KNOWN  48 | benar  34 (presisi 0.71, recall 0.56) | KNOWN padahal bukan 5
+  commons35          gold KNOWN   7 | jawab KNOWN   8 | benar   7 (presisi 0.88, recall 1.00) | KNOWN padahal bukan 1
+  pvt40_terlihat     gold KNOWN  19 | jawab KNOWN  19 | benar  12 (presisi 0.63, recall 0.63) | KNOWN padahal bukan 3
+  pvt40_tertutup     gold KNOWN  19 | jawab KNOWN   7 | benar   3 (presisi 0.43, recall 0.16) | KNOWN padahal bukan 0
+== Gemini_ulangan3
+  S01                gold KNOWN   6 | jawab KNOWN   4 | benar   4 (presisi 1.00, recall 0.67) | KNOWN padahal bukan 0
+  S02                gold KNOWN   6 | jawab KNOWN   6 | benar   5 (presisi 0.83, recall 0.83) | KNOWN padahal bukan 0
+  S03                gold KNOWN   4 | jawab KNOWN   4 | benar   3 (presisi 0.75, recall 0.75) | KNOWN padahal bukan 1
+  TOTAL              gold KNOWN  61 | jawab KNOWN  45 | benar  31 (presisi 0.69, recall 0.51) | KNOWN padahal bukan 6
+  commons35          gold KNOWN   7 | jawab KNOWN   6 | benar   5 (presisi 0.83, recall 0.71) | KNOWN padahal bukan 1
+  pvt40_terlihat     gold KNOWN  19 | jawab KNOWN  17 | benar  10 (presisi 0.59, recall 0.53) | KNOWN padahal bukan 3
+  pvt40_tertutup     gold KNOWN  19 | jawab KNOWN   8 | benar   4 (presisi 0.50, recall 0.21) | KNOWN padahal bukan 1
+== Claude_Opus_5.5
+  S01                gold KNOWN   6 | jawab KNOWN   2 | benar   2 (presisi 1.00, recall 0.33) | KNOWN padahal bukan 0
+  S02                gold KNOWN   6 | jawab KNOWN   3 | benar   2 (presisi 0.67, recall 0.33) | KNOWN padahal bukan 0
+  S03                gold KNOWN   4 | jawab KNOWN   2 | benar   2 (presisi 1.00, recall 0.50) | KNOWN padahal bukan 0
+  TOTAL              gold KNOWN  61 | jawab KNOWN  15 | benar  10 (presisi 0.67, recall 0.16) | KNOWN padahal bukan 0
+  commons35          gold KNOWN   7 | jawab KNOWN   1 | benar   1 (presisi 1.00, recall 0.14) | KNOWN padahal bukan 0
+  pvt40_terlihat     gold KNOWN  19 | jawab KNOWN   5 | benar   3 (presisi 0.60, recall 0.16) | KNOWN padahal bukan 0
+  pvt40_tertutup     gold KNOWN  19 | jawab KNOWN   2 | benar   0 (presisi 0.00, recall 0.00) | KNOWN padahal bukan 0
+== GPT-6_Astra
+  S01                gold KNOWN   6 | jawab KNOWN   2 | benar   2 (presisi 1.00, recall 0.33) | KNOWN padahal bukan 0
+  S02                gold KNOWN   6 | jawab KNOWN   2 | benar   2 (presisi 1.00, recall 0.33) | KNOWN padahal bukan 0
+  S03                gold KNOWN   4 | jawab KNOWN   1 | benar   1 (presisi 1.00, recall 0.25) | KNOWN padahal bukan 0
+  TOTAL              gold KNOWN  61 | jawab KNOWN   5 | benar   5 (presisi 1.00, recall 0.08) | KNOWN padahal bukan 0
+  commons35          gold KNOWN   7 | jawab KNOWN   0 | benar   0 (presisi 0.00, recall 0.00) | KNOWN padahal bukan 0
+  pvt40_terlihat     gold KNOWN  19 | jawab KNOWN   0 | benar   0 (presisi 0.00, recall 0.00) | KNOWN padahal bukan 0
+  pvt40_tertutup     gold KNOWN  19 | jawab KNOWN   0 | benar   0 (presisi 0.00, recall 0.00) | KNOWN padahal bukan 0
+== GPT-6.1_Sol
+  S01                gold KNOWN   6 | jawab KNOWN   2 | benar   2 (presisi 1.00, recall 0.33) | KNOWN padahal bukan 0
+  S02                gold KNOWN   6 | jawab KNOWN   2 | benar   2 (presisi 1.00, recall 0.33) | KNOWN padahal bukan 0
+  S03                gold KNOWN   4 | jawab KNOWN   2 | benar   2 (presisi 1.00, recall 0.50) | KNOWN padahal bukan 0
+  TOTAL              gold KNOWN  61 | jawab KNOWN   6 | benar   6 (presisi 1.00, recall 0.10) | KNOWN padahal bukan 0
+  commons35          gold KNOWN   7 | jawab KNOWN   0 | benar   0 (presisi 0.00, recall 0.00) | KNOWN padahal bukan 0
+  pvt40_terlihat     gold KNOWN  19 | jawab KNOWN   0 | benar   0 (presisi 0.00, recall 0.00) | KNOWN padahal bukan 0
+  pvt40_tertutup     gold KNOWN  19 | jawab KNOWN   0 | benar   0 (presisi 0.00, recall 0.00) | KNOWN padahal bukan 0
+== Qwen3.8_Flash
+  S01                gold KNOWN   6 | jawab KNOWN   0 | benar   0 (presisi 0.00, recall 0.00) | KNOWN padahal bukan 0
+  S02                gold KNOWN   6 | jawab KNOWN   1 | benar   1 (presisi 1.00, recall 0.17) | KNOWN padahal bukan 0
+  S03                gold KNOWN   4 | jawab KNOWN   1 | benar   1 (presisi 1.00, recall 0.25) | KNOWN padahal bukan 0
+  TOTAL              gold KNOWN  61 | jawab KNOWN  24 | benar  16 (presisi 0.67, recall 0.26) | KNOWN padahal bukan 4
+  commons35          gold KNOWN   7 | jawab KNOWN   4 | benar   3 (presisi 0.75, recall 0.43) | KNOWN padahal bukan 1
+  pvt40_terlihat     gold KNOWN  19 | jawab KNOWN  12 | benar  10 (presisi 0.83, recall 0.53) | KNOWN padahal bukan 2
+  pvt40_tertutup     gold KNOWN  19 | jawab KNOWN   6 | benar   1 (presisi 0.17, recall 0.05) | KNOWN padahal bukan 1
+== Grok_4.7
+  S01                gold KNOWN   6 | jawab KNOWN   3 | benar   2 (presisi 0.67, recall 0.33) | KNOWN padahal bukan 0
+  S02                gold KNOWN   6 | jawab KNOWN   3 | benar   2 (presisi 0.67, recall 0.33) | KNOWN padahal bukan 0
+  S03                gold KNOWN   4 | jawab KNOWN   1 | benar   1 (presisi 1.00, recall 0.25) | KNOWN padahal bukan 0
+  TOTAL              gold KNOWN  61 | jawab KNOWN  17 | benar   9 (presisi 0.53, recall 0.15) | KNOWN padahal bukan 2
+  commons35          gold KNOWN   7 | jawab KNOWN   1 | benar   1 (presisi 1.00, recall 0.14) | KNOWN padahal bukan 0
+  pvt40_terlihat     gold KNOWN  19 | jawab KNOWN   5 | benar   3 (presisi 0.60, recall 0.16) | KNOWN padahal bukan 0
+  pvt40_tertutup     gold KNOWN  19 | jawab KNOWN   4 | benar   0 (presisi 0.00, recall 0.00) | KNOWN padahal bukan 2

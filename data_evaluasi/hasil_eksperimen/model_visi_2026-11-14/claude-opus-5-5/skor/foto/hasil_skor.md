@@ -1,0 +1,32 @@
+# Run ulang foto dan workbook gabungan (7 Nov 2026)
+
+Data bersih D19, kode visi D20 (deskripsi varietas dari sheet kanonik run), embedding bge-m3 (D22). Jalur visi = vision_hook tanpa tulis KMS (uji_visi_commons_vps.py). Definisi metrik: docstring skrip/skor_foto_ulang.py.
+
+## 1. Klasifikasi foto
+
+| Set | Foto dinilai | Gagal | Status benar | Macro-F1 kelas gold (CI 95%) | Macro-F1 3 kelas | Top-1 KNOWN (CI 95%) | Recall OTHER | Non-KNOWN dipaksa KNOWN | AUTO_LINK benar | Bagian benar | Tindakan fusi sesuai gold |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| commons35 | 35 | 0 | 28/35 | 0.607 (0.463-0.816) | 0.405 | 0.143 (0.000-0.500) | 27/28 = 0.964 | 0/28 = 0.000 | 0/0 | 31/32 = 0.969 | 15/35 = 0.429 |
+| S01 | 6 | 0 | 2/6 | 0.500 (0.000-0.800) | 0.167 | 0.333 (0.000-0.667) | 0/0 | 0/0 | 0/0 | 6/6 = 1.000 | - |
+| S02 | 6 | 0 | 2/6 | 0.667 (0.286-0.909) | 0.222 | 0.333 (0.000-0.667) | 0/0 | 0/0 | 0/0 | 6/6 = 1.000 | - |
+| S03 | 6 | 0 | 4/6 | 0.667 (0.250-1.000) | 0.444 | 0.500 (0.000-1.000) | 2/2 = 1.000 | 0/2 = 0.000 | 0/0 | 6/6 = 1.000 | - |
+| pvt40_terlihat | 40 | 0 | 3/40 | 0.208 (0.067-0.321) | 0.139 | 0.158 (0.000-0.348) | 0/21 = 0.000 | 0/21 = 0.000 | 0/0 | 34/36 = 0.944 | 4/40 = 0.100 |
+| pvt40_tertutup | 40 | 0 | 0/40 | 0.095 (0.000-0.208) | 0.063 | 0.000 (0.000-0.000) | 0/21 = 0.000 | 0/21 = 0.000 | 0/0 | 33/36 = 0.917 | 4/40 = 0.100 |
+| indonesia_S01-S03 | 18 | 0 | 8/18 | 0.554 (0.250-0.804) | 0.370 | 0.375 (0.133-0.625) | 2/2 = 1.000 | 0/2 = 0.000 | 0/0 | 18/18 = 1.000 | - |
+
+Tindakan fusi per set: commons35: {'CANDIDATE': 14, 'REVIEW_MISMATCH': 1, 'REVIEW_UNCERTAIN': 20}; S01: {'REVIEW_UNCERTAIN': 6}; S02: {'REVIEW_UNCERTAIN': 6}; S03: {'CANDIDATE': 1, 'REVIEW_UNCERTAIN': 5}; pvt40_terlihat: {'REVIEW_UNCERTAIN': 40}; pvt40_tertutup: {'REVIEW_UNCERTAIN': 40}; indonesia_S01-S03: {'CANDIDATE': 1, 'REVIEW_UNCERTAIN': 17}
+
+AUTO_LINK benar per kondisi nama file (Commons): INFORMATIF 0/0, MENYESATKAN 0/0, NETRAL 0/0
+
+## 2. Workbook gabungan (sel atribut + tautan foto)
+
+| Run | Sel P / R / F1 | Tautan foto benar / salah / terlewat (harapan) | Gabungan P / R / F1 |
+|---|---|---|---|
+| S01 | 1.000 / 1.000 / 1.000 | 0 / 0 / 6 (6) | 1.000 / 0.870 / 0.930 |
+| S02 | 1.000 / 1.000 / 1.000 | 0 / 0 / 6 (6) | 1.000 / 0.880 / 0.936 |
+| S03 | 1.000 / 1.000 / 1.000 | 0 / 0 / 4 (4) | 1.000 / 0.875 / 0.933 |
+| P01+pvt40_terlihat | 1.000 / 0.930 / 0.964 | 0 / 0 / 18 (18) | 1.000 / 0.890 / 0.942 |
+| P01+pvt40_tertutup | 1.000 / 0.930 / 0.964 | 0 / 0 / 18 (18) | 1.000 / 0.890 / 0.942 |
+| Indonesia S01-S03 total | | | 1.000 / 0.875 / 0.933 |
+
+Catatan: gold atribut dan kunci sel P01 terverifikasi. Commons hanya punya 7 foto KNOWN (registri 1 varietas).

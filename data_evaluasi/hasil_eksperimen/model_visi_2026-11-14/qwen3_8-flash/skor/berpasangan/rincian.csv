@@ -1,0 +1,157 @@
+set,spreadsheet,foto,varian,filename,gold,true_variety,hint,pred,pred_var,aksi,aksi_boleh,aksi_ok,status_ok,auto_salah,ikut_nama,gagal
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4101.webp,NETRAL,IMG_4101.webp,OTHER,Turima 2,,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4101.webp,BENAR,turima_2_35.webp,OTHER,Turima 2,Turima 2,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4101.webp,SALAH_TERDAFTAR,ck_52358_35.webp,OTHER,Turima 2,CK 52358,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4102.webp,NETRAL,IMG_4102.webp,OTHER,Rabon Bojonegoro 2,,OTHER,,REVIEW_UNCERTAIN,CANDIDATE,False,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4102.webp,BENAR,rabon_bojonegoro_2_69.webp,OTHER,Rabon Bojonegoro 2,Rabon Bojonegoro 2,OTHER,,CANDIDATE,CANDIDATE,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4102.webp,SALAH_TERDAFTAR,carabrina_01_69.webp,OTHER,Rabon Bojonegoro 2,Carabrina 01,OTHER,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4103.webp,NETRAL,IMG_4103.webp,KNOWN,Indina,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4103.webp,BENAR,indina_30.webp,KNOWN,Indina,Indina,OTHER,,REVIEW_MISMATCH,AUTO_LINK,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4103.webp,SALAH_TERDAFTAR,carabrina_01_30.webp,KNOWN,Indina,Carabrina 01,OTHER,,REVIEW_MISMATCH,REVIEW_MISMATCH,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4104.webp,NETRAL,IMG_4104.webp,KNOWN,IPBrin KR 03,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4104.webp,BENAR,ipbrin_kr_03_26.webp,KNOWN,IPBrin KR 03,IPBrin KR 03,UNCERTAIN,,REVIEW_UNCERTAIN,AUTO_LINK,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4104.webp,SALAH_TERDAFTAR,ipbrin_kr_01_26.webp,KNOWN,IPBrin KR 03,IPBrin KR 01,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4105.webp,NETRAL,IMG_4105.webp,KNOWN,Tabia Sala 2 IPB,,KNOWN,Magda IPB,AUTO_LINK,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,True,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4105.webp,BENAR,tabia_sala_2_ipb_11.webp,KNOWN,Tabia Sala 2 IPB,Tabia Sala 2 IPB,KNOWN,Magda IPB,REVIEW_MISMATCH,AUTO_LINK,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4105.webp,SALAH_TERDAFTAR,tabia_sala_oranye_ipb_11.webp,KNOWN,Tabia Sala 2 IPB,Tabia Sala Oranye IPB,OTHER,,REVIEW_MISMATCH,REVIEW_MISMATCH,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4106.webp,NETRAL,IMG_4106.webp,KNOWN,Guritno IPB,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4106.webp,BENAR,guritno_ipb_45.webp,KNOWN,Guritno IPB,Guritno IPB,KNOWN,Guritno IPB,AUTO_LINK,AUTO_LINK,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4106.webp,SALAH_TERDAFTAR,gemoy_ipb_45.webp,KNOWN,Guritno IPB,Gemoy IPB,KNOWN,Guritno IPB,REVIEW_MISMATCH,REVIEW_MISMATCH,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4107.webp,NETRAL,IMG_4107.webp,OTHER,Jabung,,OTHER,,CANDIDATE,CANDIDATE,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4107.webp,BENAR,jabung_15.webp,OTHER,Jabung,Jabung,OTHER,,CANDIDATE,CANDIDATE,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4107.webp,SALAH_TERDAFTAR,hlb_cr_33_15.webp,OTHER,Jabung,HLB CR 33,OTHER,,REVIEW_MISMATCH,REVIEW_MISMATCH,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4108.webp,NETRAL,IMG_4108.webp,OTHER,Rabon Bojonegoro 2,,OTHER,,CANDIDATE,CANDIDATE,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4108.webp,BENAR,rabon_bojonegoro_2_47.webp,OTHER,Rabon Bojonegoro 2,Rabon Bojonegoro 2,KNOWN,Guritno IPB,AUTO_LINK,CANDIDATE,False,False,True,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4108.webp,SALAH_TERDAFTAR,carabrina_01_47.webp,OTHER,Rabon Bojonegoro 2,Carabrina 01,OTHER,,REVIEW_MISMATCH,REVIEW_MISMATCH,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4109.webp,NETRAL,IMG_4109.webp,OTHER,Rungun Tabalong Smart,,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4109.webp,BENAR,rungun_tabalong_smart_91.webp,OTHER,Rungun Tabalong Smart,Rungun Tabalong Smart,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4109.webp,SALAH_TERDAFTAR,hlb_cr_33_91.webp,OTHER,Rungun Tabalong Smart,HLB CR 33,OTHER,,REVIEW_MISMATCH,REVIEW_MISMATCH,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4110.webp,NETRAL,IMG_4110.webp,KNOWN,IPBrin KR 03,,UNCERTAIN,,REVIEW_UNCERTAIN,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4110.webp,BENAR,ipbrin_kr_03_12.webp,KNOWN,IPBrin KR 03,IPBrin KR 03,OTHER,,REVIEW_MISMATCH,AUTO_LINK,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4110.webp,SALAH_TERDAFTAR,ipbrin_kr_01_12.webp,KNOWN,IPBrin KR 03,IPBrin KR 01,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4111.webp,NETRAL,IMG_4111.webp,OTHER,Jabung,,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4111.webp,BENAR,jabung_22.webp,OTHER,Jabung,Jabung,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4111.webp,SALAH_TERDAFTAR,hlb_cr_33_22.webp,OTHER,Jabung,HLB CR 33,OTHER,,REVIEW_MISMATCH,REVIEW_MISMATCH,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4112.webp,NETRAL,IMG_4112.webp,KNOWN,Carabrina 01,,KNOWN,CIN 124R,AUTO_LINK,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,True,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4112.webp,BENAR,carabrina_01_27.webp,KNOWN,Carabrina 01,Carabrina 01,OTHER,,REVIEW_UNCERTAIN,AUTO_LINK,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4112.webp,SALAH_TERDAFTAR,hlb_cr_33_27.webp,KNOWN,Carabrina 01,HLB CR 33,KNOWN,CIN 124R,REVIEW_MISMATCH,REVIEW_MISMATCH,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4113.webp,NETRAL,IMG_4113.webp,KNOWN,Margi 2 IPB,,KNOWN,Magda IPB,AUTO_LINK,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,True,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4113.webp,BENAR,margi_2_ipb_44.webp,KNOWN,Margi 2 IPB,Margi 2 IPB,OTHER,,REVIEW_MISMATCH,AUTO_LINK,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4113.webp,SALAH_TERDAFTAR,tabia_sala_oranye_ipb_44.webp,KNOWN,Margi 2 IPB,Tabia Sala Oranye IPB,KNOWN,Magda IPB,REVIEW_MISMATCH,REVIEW_MISMATCH,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4114.webp,NETRAL,IMG_4114.webp,OTHER,Jabung,,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4114.webp,BENAR,jabung_76.webp,OTHER,Jabung,Jabung,OTHER,,REVIEW_UNCERTAIN,CANDIDATE,False,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4114.webp,SALAH_TERDAFTAR,carabrina_01_76.webp,OTHER,Jabung,Carabrina 01,OTHER,,REVIEW_MISMATCH,REVIEW_MISMATCH,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4115.webp,NETRAL,IMG_4115.webp,KNOWN,Indina,,KNOWN,Carabrina 01,AUTO_LINK,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,True,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4115.webp,BENAR,indina_65.webp,KNOWN,Indina,Indina,OTHER,,REVIEW_MISMATCH,AUTO_LINK,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4115.webp,SALAH_TERDAFTAR,carabrina_01_65.webp,KNOWN,Indina,Carabrina 01,OTHER,,REVIEW_MISMATCH,REVIEW_MISMATCH,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4116.webp,NETRAL,IMG_4116.webp,OTHER,Humbang Roberkat,,OTHER,,CANDIDATE,CANDIDATE,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4116.webp,BENAR,humbang_roberkat_85.webp,OTHER,Humbang Roberkat,Humbang Roberkat,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4116.webp,SALAH_TERDAFTAR,ipbrin_kr_03_85.webp,OTHER,Humbang Roberkat,IPBrin KR 03,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4117.webp,NETRAL,IMG_4117.webp,OTHER,Turima 1,,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4117.webp,BENAR,turima_1_78.webp,OTHER,Turima 1,Turima 1,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4117.webp,SALAH_TERDAFTAR,rikub_2_78.webp,OTHER,Turima 1,RIKUB 2,OTHER,,REVIEW_MISMATCH,REVIEW_MISMATCH,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4118.webp,NETRAL,IMG_4118.webp,OTHER,Rungun Tabalong Smart,,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4118.webp,BENAR,rungun_tabalong_smart_80.webp,OTHER,Rungun Tabalong Smart,Rungun Tabalong Smart,OTHER,,REVIEW_UNCERTAIN,CANDIDATE,False,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4118.webp,SALAH_TERDAFTAR,hlb_cr_33_80.webp,OTHER,Rungun Tabalong Smart,HLB CR 33,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4119.webp,NETRAL,IMG_4119.webp,OTHER,Rabon Bojonegoro 1,,OTHER,,CANDIDATE,CANDIDATE,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4119.webp,BENAR,rabon_bojonegoro_1_56.webp,OTHER,Rabon Bojonegoro 1,Rabon Bojonegoro 1,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4119.webp,SALAH_TERDAFTAR,carabrina_01_56.webp,OTHER,Rabon Bojonegoro 1,Carabrina 01,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4120.webp,NETRAL,IMG_4120.webp,OTHER,Turima 1,,OTHER,,CANDIDATE,CANDIDATE,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4120.webp,BENAR,turima_1_97.webp,OTHER,Turima 1,Turima 1,OTHER,,CANDIDATE,CANDIDATE,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4120.webp,SALAH_TERDAFTAR,rckj_20_97.webp,OTHER,Turima 1,RCKJ 20,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4121.webp,NETRAL,IMG_4121.webp,OTHER,Rabon Bojonegoro 1,,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4121.webp,BENAR,rabon_bojonegoro_1_96.webp,OTHER,Rabon Bojonegoro 1,Rabon Bojonegoro 1,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4121.webp,SALAH_TERDAFTAR,carabrina_01_96.webp,OTHER,Rabon Bojonegoro 1,Carabrina 01,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4122.webp,NETRAL,IMG_4122.webp,KNOWN,Tabia Sala 2 IPB,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4122.webp,BENAR,tabia_sala_2_ipb_28.webp,KNOWN,Tabia Sala 2 IPB,Tabia Sala 2 IPB,KNOWN,Magda IPB,REVIEW_MISMATCH,AUTO_LINK,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4122.webp,SALAH_TERDAFTAR,tabia_sala_kuning_ipb_28.webp,KNOWN,Tabia Sala 2 IPB,Tabia Sala Kuning IPB,KNOWN,Magda IPB,REVIEW_MISMATCH,REVIEW_MISMATCH,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4123.webp,NETRAL,IMG_4123.webp,OTHER,Humbang Roberkat,,KNOWN,WP001,AUTO_LINK,CANDIDATE,False,False,True,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4123.webp,BENAR,humbang_roberkat_34.webp,OTHER,Humbang Roberkat,Humbang Roberkat,KNOWN,WP001,AUTO_LINK,CANDIDATE,False,False,True,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4123.webp,SALAH_TERDAFTAR,rikub_1_34.webp,OTHER,Humbang Roberkat,RIKUB 1,KNOWN,WP001,REVIEW_MISMATCH,REVIEW_MISMATCH,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4124.webp,NETRAL,IMG_4124.webp,KNOWN,IPBrin KR 03,,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4124.webp,BENAR,ipbrin_kr_03_55.webp,KNOWN,IPBrin KR 03,IPBrin KR 03,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4124.webp,SALAH_TERDAFTAR,ipbrin_kr_01_55.webp,KNOWN,IPBrin KR 03,IPBrin KR 01,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4125.webp,NETRAL,IMG_4125.webp,OTHER,Turima 1,,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4125.webp,BENAR,turima_1_75.webp,OTHER,Turima 1,Turima 1,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4125.webp,SALAH_TERDAFTAR,rikub_2_75.webp,OTHER,Turima 1,RIKUB 2,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4126.webp,NETRAL,IMG_4126.webp,KNOWN,Carabrina 01,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4126.webp,BENAR,carabrina_01_20.webp,KNOWN,Carabrina 01,Carabrina 01,OTHER,,REVIEW_MISMATCH,AUTO_LINK,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4126.webp,SALAH_TERDAFTAR,hlb_cr_33_20.webp,KNOWN,Carabrina 01,HLB CR 33,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4127.webp,NETRAL,IMG_4127.webp,KNOWN,Guritno IPB,,KNOWN,Gemoy IPB,AUTO_LINK,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,True,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4127.webp,BENAR,guritno_ipb_21.webp,KNOWN,Guritno IPB,Guritno IPB,KNOWN,Guritno IPB,AUTO_LINK,AUTO_LINK,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4127.webp,SALAH_TERDAFTAR,gemoy_ipb_21.webp,KNOWN,Guritno IPB,Gemoy IPB,KNOWN,Tabia Sala Kuning IPB,REVIEW_MISMATCH,REVIEW_MISMATCH,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4128.webp,NETRAL,IMG_4128.webp,OTHER,Rabon Bojonegoro 1,,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4128.webp,BENAR,rabon_bojonegoro_1_48.webp,OTHER,Rabon Bojonegoro 1,Rabon Bojonegoro 1,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4128.webp,SALAH_TERDAFTAR,carabrina_01_48.webp,OTHER,Rabon Bojonegoro 1,Carabrina 01,OTHER,,REVIEW_MISMATCH,REVIEW_MISMATCH,True,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4129.webp,NETRAL,IMG_4129.webp,KNOWN,Guritno IPB,,OTHER,,REVIEW_UNCERTAIN,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4129.webp,BENAR,guritno_ipb_10.webp,KNOWN,Guritno IPB,Guritno IPB,UNCERTAIN,,REVIEW_UNCERTAIN,AUTO_LINK,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4129.webp,SALAH_TERDAFTAR,dh_3_10.webp,KNOWN,Guritno IPB,DH 3,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4130.webp,NETRAL,IMG_4130.webp,KNOWN,Tabia Sala 2 IPB,,UNCERTAIN,,REVIEW_UNCERTAIN,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4130.webp,BENAR,tabia_sala_2_ipb_59.webp,KNOWN,Tabia Sala 2 IPB,Tabia Sala 2 IPB,UNCERTAIN,,REVIEW_UNCERTAIN,AUTO_LINK,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4130.webp,SALAH_TERDAFTAR,tabia_sala_oranye_ipb_59.webp,KNOWN,Tabia Sala 2 IPB,Tabia Sala Oranye IPB,OTHER,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4131.webp,NETRAL,IMG_4131.webp,OTHER,AF Wonosobo,,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4131.webp,BENAR,af_wonosobo_17.webp,OTHER,AF Wonosobo,AF Wonosobo,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4131.webp,SALAH_TERDAFTAR,ck_52358_17.webp,OTHER,AF Wonosobo,CK 52358,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4132.webp,NETRAL,IMG_4132.webp,KNOWN,Carabrina 01,,OTHER,,REVIEW_UNCERTAIN,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4132.webp,BENAR,carabrina_01_77.webp,KNOWN,Carabrina 01,Carabrina 01,UNCERTAIN,,REVIEW_UNCERTAIN,AUTO_LINK,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4132.webp,SALAH_TERDAFTAR,hlb_cr_33_77.webp,KNOWN,Carabrina 01,HLB CR 33,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4133.webp,NETRAL,IMG_4133.webp,KNOWN,IPBrin KR 03,,UNCERTAIN,,REVIEW_UNCERTAIN,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4133.webp,BENAR,ipbrin_kr_03_70.webp,KNOWN,IPBrin KR 03,IPBrin KR 03,OTHER,,REVIEW_UNCERTAIN,AUTO_LINK,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4133.webp,SALAH_TERDAFTAR,ipbrin_kr_01_70.webp,KNOWN,IPBrin KR 03,IPBrin KR 01,OTHER,,REVIEW_MISMATCH,REVIEW_MISMATCH,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4134.webp,NETRAL,IMG_4134.webp,OTHER,Rabon Bojonegoro 1,,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4134.webp,BENAR,rabon_bojonegoro_1_53.webp,OTHER,Rabon Bojonegoro 1,Rabon Bojonegoro 1,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4134.webp,SALAH_TERDAFTAR,carabrina_01_53.webp,OTHER,Rabon Bojonegoro 1,Carabrina 01,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4135.webp,NETRAL,IMG_4135.webp,OTHER,Turima 1,,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4135.webp,BENAR,turima_1_23.webp,OTHER,Turima 1,Turima 1,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4135.webp,SALAH_TERDAFTAR,rikub_2_23.webp,OTHER,Turima 1,RIKUB 2,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4136.webp,NETRAL,IMG_4136.webp,KNOWN,Indina,,UNCERTAIN,,REVIEW_UNCERTAIN,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4136.webp,BENAR,indina_83.webp,KNOWN,Indina,Indina,UNCERTAIN,,REVIEW_UNCERTAIN,AUTO_LINK,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4136.webp,SALAH_TERDAFTAR,hlb_cr_33_83.webp,KNOWN,Indina,HLB CR 33,OTHER,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4137.webp,NETRAL,IMG_4137.webp,KNOWN,Indina,,UNCERTAIN,,REVIEW_UNCERTAIN,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4137.webp,BENAR,indina_68.webp,KNOWN,Indina,Indina,OTHER,,REVIEW_UNCERTAIN,AUTO_LINK,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4137.webp,SALAH_TERDAFTAR,hlb_cr_33_68.webp,KNOWN,Indina,HLB CR 33,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4138.webp,NETRAL,IMG_4138.webp,KNOWN,Carabrina 01,,UNCERTAIN,,REVIEW_UNCERTAIN,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4138.webp,BENAR,carabrina_01_16.webp,KNOWN,Carabrina 01,Carabrina 01,UNCERTAIN,,REVIEW_UNCERTAIN,AUTO_LINK,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4138.webp,SALAH_TERDAFTAR,hlb_cr_33_16.webp,KNOWN,Carabrina 01,HLB CR 33,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4139.webp,NETRAL,IMG_4139.webp,OTHER,Jabung,,OTHER,,REVIEW_UNCERTAIN,CANDIDATE,False,True,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4139.webp,BENAR,jabung_79.webp,OTHER,Jabung,Jabung,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4139.webp,SALAH_TERDAFTAR,carabrina_01_79.webp,OTHER,Jabung,Carabrina 01,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4140.webp,NETRAL,IMG_4140.webp,OTHER,Turima 2,,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4140.webp,BENAR,turima_2_36.webp,OTHER,Turima 2,Turima 2,UNCERTAIN,,REVIEW_UNCERTAIN,CANDIDATE,False,False,False,False,False
+pvt40,P01,pvt_uji_40/kartu_tertutup/IMG_4140.webp,SALAH_TERDAFTAR,hlb_cb_0147_36.webp,OTHER,Turima 2,HLB CB 0147,UNCERTAIN,,REVIEW_UNCERTAIN,REVIEW_MISMATCH,False,False,False,False,False
+ind6,S01,foto_indonesia_drive1/cabai katokon - bentuk daun.jpg,NETRAL,IMG_5101.jpg,KNOWN,Katokkon,,OTHER,,REVIEW_UNCERTAIN,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+ind6,S01,foto_indonesia_drive1/cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,NETRAL,IMG_5102.jpg,KNOWN,Katokkon,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+ind6,S01,foto_indonesia_drive1/cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,NETRAL,IMG_5103.jpg,KNOWN,Katokkon,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+ind6,S01,foto_indonesia_drive1/cabai katokon - warna tangkai daun.jpg,NETRAL,IMG_5104.jpg,KNOWN,Katokkon,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+ind6,S01,foto_indonesia_drive1/cabai kopay.webp,NETRAL,IMG_5105.webp,KNOWN,Kopay,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+ind6,S01,foto_indonesia_drive1/daun cabai kopay.jpg,NETRAL,IMG_5106.jpg,KNOWN,Kopay,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+ind6,S02,foto_indonesia_drive1/cabai katokon - bentuk daun.jpg,NETRAL,IMG_5101.jpg,KNOWN,Katokkon,,KNOWN,Katokkon,AUTO_LINK,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,True,False,False,False
+ind6,S02,foto_indonesia_drive1/cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,NETRAL,IMG_5102.jpg,KNOWN,Katokkon,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+ind6,S02,foto_indonesia_drive1/cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,NETRAL,IMG_5103.jpg,KNOWN,Katokkon,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+ind6,S02,foto_indonesia_drive1/cabai katokon - warna tangkai daun.jpg,NETRAL,IMG_5104.jpg,KNOWN,Katokkon,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+ind6,S02,foto_indonesia_drive1/cabai kopay.webp,NETRAL,IMG_5105.webp,KNOWN,Kopay,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+ind6,S02,foto_indonesia_drive1/daun cabai kopay.jpg,NETRAL,IMG_5106.jpg,KNOWN,Kopay,,OTHER,,REVIEW_UNCERTAIN,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,False,False,False,False
+ind6,S03,foto_indonesia_drive1/cabai katokon - bentuk daun.jpg,NETRAL,IMG_5101.jpg,KNOWN,Katokkon,,KNOWN,Katokkon,AUTO_LINK,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,True,True,False,False,False
+ind6,S03,foto_indonesia_drive1/cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,NETRAL,IMG_5102.jpg,KNOWN,Katokkon,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+ind6,S03,foto_indonesia_drive1/cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,NETRAL,IMG_5103.jpg,KNOWN,Katokkon,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+ind6,S03,foto_indonesia_drive1/cabai katokon - warna tangkai daun.jpg,NETRAL,IMG_5104.jpg,KNOWN,Katokkon,,OTHER,,CANDIDATE,AUTO_LINK|REVIEW_MISMATCH|REVIEW_UNCERTAIN,False,False,False,False,False
+ind6,S03,foto_indonesia_drive1/cabai kopay.webp,NETRAL,IMG_5105.webp,OTHER,Kopay,,OTHER,,CANDIDATE,CANDIDATE,True,True,False,False,False
+ind6,S03,foto_indonesia_drive1/daun cabai kopay.jpg,NETRAL,IMG_5106.jpg,OTHER,Kopay,,OTHER,,CANDIDATE,CANDIDATE,True,True,False,False,False
+ind6,S01,foto_indonesia_drive1/cabai katokon - bentuk daun.jpg,BENAR,cabai katokon - bentuk daun.jpg,KNOWN,Katokkon,Katokkon,OTHER,,CANDIDATE,AUTO_LINK,False,False,False,False,False
+ind6,S01,foto_indonesia_drive1/cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,BENAR,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,KNOWN,Katokkon,Katokkon,OTHER,,CANDIDATE,AUTO_LINK,False,False,False,False,False
+ind6,S01,foto_indonesia_drive1/cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,BENAR,cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,KNOWN,Katokkon,Katokkon,OTHER,,REVIEW_UNCERTAIN,AUTO_LINK,False,False,False,False,False
+ind6,S01,foto_indonesia_drive1/cabai katokon - warna tangkai daun.jpg,BENAR,cabai katokon - warna tangkai daun.jpg,KNOWN,Katokkon,Katokkon,OTHER,,CANDIDATE,AUTO_LINK,False,False,False,False,False
+ind6,S01,foto_indonesia_drive1/cabai kopay.webp,BENAR,cabai kopay.webp,KNOWN,Kopay,Kopay,OTHER,,REVIEW_MISMATCH,AUTO_LINK,False,False,False,False,False
+ind6,S01,foto_indonesia_drive1/daun cabai kopay.jpg,BENAR,daun cabai kopay.jpg,KNOWN,Kopay,Kopay,OTHER,,REVIEW_MISMATCH,AUTO_LINK,False,False,False,False,False
+ind6,S02,foto_indonesia_drive1/cabai katokon - bentuk daun.jpg,BENAR,cabai katokon - bentuk daun.jpg,KNOWN,Katokkon,Katokkon,KNOWN,Katokkon,AUTO_LINK,AUTO_LINK,True,True,False,False,False
+ind6,S02,foto_indonesia_drive1/cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,BENAR,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,KNOWN,Katokkon,Katokkon,OTHER,,CANDIDATE,AUTO_LINK,False,False,False,False,False
+ind6,S02,foto_indonesia_drive1/cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,BENAR,cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,KNOWN,Katokkon,Katokkon,OTHER,,CANDIDATE,AUTO_LINK,False,False,False,False,False
+ind6,S02,foto_indonesia_drive1/cabai katokon - warna tangkai daun.jpg,BENAR,cabai katokon - warna tangkai daun.jpg,KNOWN,Katokkon,Katokkon,OTHER,,CANDIDATE,AUTO_LINK,False,False,False,False,False
+ind6,S02,foto_indonesia_drive1/cabai kopay.webp,BENAR,cabai kopay.webp,KNOWN,Kopay,Kopay,OTHER,,REVIEW_MISMATCH,AUTO_LINK,False,False,False,False,False
+ind6,S02,foto_indonesia_drive1/daun cabai kopay.jpg,BENAR,daun cabai kopay.jpg,KNOWN,Kopay,Kopay,OTHER,,REVIEW_UNCERTAIN,AUTO_LINK,False,False,False,False,False
+ind6,S03,foto_indonesia_drive1/cabai katokon - bentuk daun.jpg,BENAR,cabai katokon - bentuk daun.jpg,KNOWN,Katokkon,Katokkon,KNOWN,Katokkon,AUTO_LINK,AUTO_LINK,True,True,False,False,False
+ind6,S03,foto_indonesia_drive1/cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,BENAR,cabai katokon - posisi bunga tegak_ jumlah bunga 1 per ruas_ warna bunga putih kehijauan.jpg,KNOWN,Katokkon,Katokkon,OTHER,,CANDIDATE,AUTO_LINK,False,False,False,False,False
+ind6,S03,foto_indonesia_drive1/cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,BENAR,cabai katokon - posisi bunga tegak_ jumlah bunga 2 per ruas.jpg,KNOWN,Katokkon,Katokkon,OTHER,,CANDIDATE,AUTO_LINK,False,False,False,False,False
+ind6,S03,foto_indonesia_drive1/cabai katokon - warna tangkai daun.jpg,BENAR,cabai katokon - warna tangkai daun.jpg,KNOWN,Katokkon,Katokkon,OTHER,,CANDIDATE,AUTO_LINK,False,False,False,False,False
+ind6,S03,foto_indonesia_drive1/cabai kopay.webp,BENAR,cabai kopay.webp,OTHER,Kopay,Kopay,OTHER,,CANDIDATE,CANDIDATE,True,True,False,False,False
+ind6,S03,foto_indonesia_drive1/daun cabai kopay.jpg,BENAR,daun cabai kopay.jpg,OTHER,Kopay,Kopay,OTHER,,CANDIDATE,CANDIDATE,True,True,False,False,False

@@ -1,0 +1,23 @@
+{
+  "label": "S01",
+  "vision_mode": "two_stage",
+  "vision_model": "grok-4.7",
+  "vision_base_url": "https://octa.telkomsel.com/v1",
+  "kanonik": "C:/Users/Rifqi/AppData/Local/Temp/cvr/dataset_eksperimen/4_hasil_sistem/I_atribut_bge-m3_39f4213/S01_D01_transposed/hasil_kanonik.xlsx",
+  "run_scope": [
+    "Kopay",
+    "Katokkon"
+  ],
+  "db_varieties": [],
+  "db_dari_meta": "C:/Users/Rifqi/AppData/Local/Temp/cvr/data_evaluasi/hasil_eksperimen/foto_nama_berpasangan_2026-11-07/ind6_netral/meta_S01.json",
+  "options": [
+    "Katokkon",
+    "Kopay"
+  ],
+  "deskripsi_run_jumlah_karakter": {
+    "Kopay": 20,
+    "Katokkon": 20
+  },
+  "mulai": "2026-11-14T17:14:07.248084",
+  "selesai": "2026-11-14T17:15:25.083990"
+}

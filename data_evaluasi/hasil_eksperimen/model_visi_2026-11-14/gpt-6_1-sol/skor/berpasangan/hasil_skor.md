@@ -1,0 +1,34 @@
+# Desain nama file berpasangan (D23): foto sama, nama berkas berbeda
+
+PVT: 40 foto kartu tertutup, registri 24 varietas P01 + deskripsi morfologi P01 (D20). Indonesia: 6 foto x spreadsheet S01-S03 (registri dan deskripsi dari sheet kanonik run bge-m3). Jalur visi = vision_hook tanpa tulis KMS.
+
+## 1. Per sel
+
+| Set | Status gold | Varian nama file | Foto | Gagal | Tindakan sesuai gold | Status visual benar | AUTO_LINK salah | Ikut nama file | Sebaran tindakan |
+|---|---|---|---|---|---|---|---|---|---|
+| ind6 | KNOWN | NETRAL | 16 | 0 | 9/16 | 4/16 | 0/16 | - | AUTO_LINK 2, CANDIDATE 7, REVIEW_UNCERTAIN 7 |
+| ind6 | KNOWN | BENAR | 16 | 0 | 3/16 | 6/16 | 0/16 | - | AUTO_LINK 3, CANDIDATE 3, REVIEW_MISMATCH 2, REVIEW_UNCERTAIN 8 |
+| ind6 | OTHER | NETRAL | 2 | 0 | 1/2 | 1/2 | 0/2 | - | CANDIDATE 1, REVIEW_UNCERTAIN 1 |
+| ind6 | OTHER | BENAR | 2 | 0 | 1/2 | 1/2 | 0/2 | - | CANDIDATE 1, REVIEW_UNCERTAIN 1 |
+| pvt40 | KNOWN | NETRAL | 19 | 0 | 19/19 | 0/19 | 0/19 | - | REVIEW_UNCERTAIN 19 |
+| pvt40 | KNOWN | BENAR | 19 | 0 | 1/19 | 0/19 | 0/19 | - | REVIEW_UNCERTAIN 19 |
+| pvt40 | KNOWN | SALAH_TERDAFTAR | 19 | 0 | 0/19 | 0/19 | 0/19 | 0/19 | REVIEW_UNCERTAIN 19 |
+| pvt40 | OTHER | NETRAL | 21 | 0 | 3/21 | 0/21 | 0/21 | - | REVIEW_UNCERTAIN 21 |
+| pvt40 | OTHER | BENAR | 21 | 0 | 3/21 | 0/21 | 0/21 | - | REVIEW_UNCERTAIN 21 |
+| pvt40 | OTHER | SALAH_TERDAFTAR | 21 | 0 | 0/21 | 0/21 | 0/21 | 0/21 | REVIEW_UNCERTAIN 21 |
+
+## 2. Uji berpasangan (foto yang sama; selisih proporsi tindakan sesuai gold, bootstrap per foto)
+
+| Set | Status gold | Perbandingan | Foto berpasangan | Selisih | CI 95% |
+|---|---|---|---|---|---|
+| pvt40 | KNOWN | BENAR vs NETRAL | 19 | -0.947 | -1.000 sampai -0.842 |
+| pvt40 | KNOWN | SALAH_TERDAFTAR vs NETRAL | 19 | -1.000 | -1.000 sampai -1.000 |
+| pvt40 | KNOWN | SALAH_TERDAFTAR vs BENAR | 19 | -0.053 | -0.158 sampai +0.000 |
+| pvt40 | OTHER | BENAR vs NETRAL | 21 | +0.000 | +0.000 sampai +0.000 |
+| pvt40 | OTHER | SALAH_TERDAFTAR vs NETRAL | 21 | -0.143 | -0.286 sampai +0.000 |
+| pvt40 | OTHER | SALAH_TERDAFTAR vs BENAR | 21 | -0.143 | -0.286 sampai +0.000 |
+| ind6 | KNOWN | BENAR vs NETRAL | 16 | -0.375 | -0.688 sampai -0.062 |
+| ind6 | OTHER | BENAR vs NETRAL | 2 | +0.000 | +0.000 sampai +0.000 |
+
+Total PVT: tindakan sesuai gold 26/120, AUTO_LINK salah 0/120.
+Catatan: bagian tanaman hanya memengaruhi foto berbagian tanpa baris Gambar (D21).

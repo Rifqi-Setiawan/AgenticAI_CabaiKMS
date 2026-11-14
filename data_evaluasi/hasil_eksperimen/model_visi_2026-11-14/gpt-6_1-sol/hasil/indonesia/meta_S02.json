@@ -1,0 +1,22 @@
+{
+  "label": "S02",
+  "vision_mode": "two_stage",
+  "vision_model": "cx/gpt-6.1-sol",
+  "kanonik": "/srv/hermes-control/services/agentic-ai-cabai-kms/dataset_eksperimen/4_hasil_sistem/I_atribut_bge-m3_39f4213/S02_D02_english/hasil_kanonik.xlsx",
+  "run_scope": [
+    "Kopay",
+    "Katokkon"
+  ],
+  "db_varieties": [],
+  "db_dari_meta": "/srv/hermes-control/services/agentic-ai-cabai-kms/data_evaluasi/hasil_eksperimen/foto_ulang_2026-11-07/indonesia/meta_S02.json",
+  "options": [
+    "Katokkon",
+    "Kopay"
+  ],
+  "deskripsi_run_jumlah_karakter": {
+    "Kopay": 22,
+    "Katokkon": 22
+  },
+  "mulai": "2026-11-14T14:08:25.813930",
+  "selesai": "2026-11-14T14:09:29.474970"
+}

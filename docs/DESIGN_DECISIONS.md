@@ -437,3 +437,11 @@ mapping problems that sit above "which variant is this":
 - **Koreksi:** satu butir diubah, R02 `Leaf size as recorded`: COMPOSITE -> AMBIGUOUS (kandidat `panjang_daun|lebar_daun`), sama dengan butir N08 yang bernama sama.
 - **Dampak skor:** tidak ada. AMBIGUOUS dan COMPOSITE sama-sama di luar skor inti (pemetaan, retrieval, dan isi sel hanya memakai ONE_TO_ONE dan NO_MATCH); butir ini tidak ada di subset anotasi ulang buta, jadi kappa 0,97 tetap.
 - **Tambahan (13 Nov 2026):** gold atribut P01 (`gold_P01_P02_pvt.csv`, 234 butir: ONE_TO_ONE 58, NO_MATCH 160, AMBIGUOUS 14, COMPOSITE 2) diverifikasi langsung oleh penulis butir per butir; tidak ada butir yang diubah. Sumber P01 menjadi `terverifikasi_v1`; P02 tetap `belum_diverifikasi_v1`. Skor workbook P01+PVT dan kunci sel tidak berubah; retrieval PVT kini juga dilaporkan untuk P01 saja (n = 42).
+
+## (y) D26: Perbandingan model visi (14 Nov 2026)
+
+- **Konteks:** klasifikasi varietas dari foto lemah (PVT kartu tertutup Top-1 0,175 ± 0,030 dengan Gemini 3.8 Flash). Pertanyaannya: apakah model visi lain lebih baik pada harness yang sama?
+- **Keputusan:** override khusus eksperimen `CABAI_KMS_EVAL_VISION_MODEL` (model visi) dan `CABAI_KMS_EVAL_VISION_BASE_URL` + `CABAI_KMS_EVAL_VISION_API_KEY` (gateway OpenAI-compatible lain, hanya untuk peran visi). Produksi tidak mengeset variabel ini dan tetap memakai `ag/gemini-3.8-flash-high`. Model dan gateway dicatat di `meta_*.json` dan telemetri provider.
+- **Hasil** (`data_evaluasi/hasil_eksperimen/model_visi_2026-11-14/LAPORAN_D26.md`): tidak ada kandidat yang lebih baik secara keseluruhan. Recall KNOWN Gemini 0,51-0,56 vs Qwen3.8 Flash 0,26, Claude Opus 5.5 0,16, Grok 4.7 0,15, GPT-6.1 Sol 0,10, GPT-6 Astra 0,08. Claude, GPT, dan Grok 0 tautan salah tetapi hampir semua foto ke REVIEW; Qwen3.8 Flash paling banyak menangkap nama berkas salah (REVIEW_MISMATCH 17/40 vs 7/40) dengan tautan salah setara Gemini (8/120). Workbook Indonesia F1 Gemini 0,980 vs kandidat 0,933-0,947.
+- **Akibat:** Gemini 3.8 Flash high tetap model visi sistem. Hasil D26 dilaporkan sebagai trade-off presisi/cakupan antar model; perbandingan memakai prompt dan ambang yang dikembangkan bersama Gemini.
+
